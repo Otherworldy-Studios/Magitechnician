@@ -7,6 +7,17 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.LevelGenerator
 {
+    [Serializable]
+    struct WeightedRoom
+    {
+        [SerializeField] private Room _room;
+        
+        [SerializeField] private int _weight;
+        
+        public Room Room { get { return _room; } }
+        public int Weight { get { return _weight; } }
+    }
+    
     public class LevelGenerator : MonoBehaviour
     {
         private enum Direction
@@ -37,11 +48,11 @@ namespace _Project.Scripts.LevelGenerator
         [SerializeField] private int _generationChanceDelta;
 
         [Header("Room Prefabs")] 
-        [SerializeField] private Room[] _startRooms;
+        [SerializeField] private WeightedRoom[] _startRooms;
 
-        [SerializeField] private Room[] _combatRooms;
+        [SerializeField] private WeightedRoom[] _combatRooms;
 
-        [SerializeField] private Room[] _endRooms;
+        [SerializeField] private WeightedRoom[] _endRooms;
 
         [Header("Debug (Do not edit)")] 
         [SerializeField] private Room _startRoom;
@@ -75,7 +86,7 @@ namespace _Project.Scripts.LevelGenerator
         {
             if (!Validate())
             {
-                Debug.LogError("[LevelGenerator] Error: Missing room prefabs");
+                Debug.LogError("[LevelGenerator] Error");
                 return;
             }
 
@@ -199,17 +210,32 @@ namespace _Project.Scripts.LevelGenerator
 
         private Room GetRandomCombatRoom()
         {
-            return _combatRooms[_random.Next(0, _combatRooms.Length)];
+            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
+            
+            foreach (WeightedRoom room in _combatRooms)
+                roomSelector.AddItem(room, room.Weight);
+            
+            return roomSelector.Roll().Room;
         }
 
         private Room GetRandomStartRoom()
         {
-            return _startRooms[_random.Next(0, _startRooms.Length)];
+            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
+            
+            foreach (WeightedRoom room in _startRooms)
+                roomSelector.AddItem(room, room.Weight);
+            
+            return roomSelector.Roll().Room;
         }
 
         private Room GetRandomEndRoom()
         {
-            return _endRooms[_random.Next(0, _endRooms.Length)];
+            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
+            
+            foreach (WeightedRoom room in _endRooms)
+                roomSelector.AddItem(room, room.Weight);
+            
+            return roomSelector.Roll().Room;
         }
     }
 }

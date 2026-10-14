@@ -5,28 +5,28 @@ namespace _Project.Scripts.LevelGenerator.Utility
 {
     class ItemSelector<T> where T : notnull
     {
-        private readonly LinearCongruentialGenerator random;
-        private readonly Dictionary<T, int> entries;
-        private int totalWeight;
+        private readonly LinearCongruentialGenerator _random;
+        private readonly Dictionary<T, int> _entries;
+        private int _totalWeight;
 
-        public int TotalWeight { get { return totalWeight; } }
+        public int TotalWeight { get { return _totalWeight; } }
 
-        public int Size { get { return entries.Count; } }
+        public int Size { get { return _entries.Count; } }
 
         public bool Empty { get { return Size == 0; } }
 
         public ItemSelector()
         {
-            entries = new Dictionary<T, int>();
-            totalWeight = 0;
-            random = new LinearCongruentialGenerator();
+            _entries = new Dictionary<T, int>();
+            _totalWeight = 0;
+            _random = new LinearCongruentialGenerator();
         }
         
         public ItemSelector(int seed)
         {
-            entries = new Dictionary<T, int>();
-            totalWeight = 0;
-            random = new LinearCongruentialGenerator(seed);
+            _entries = new Dictionary<T, int>();
+            _totalWeight = 0;
+            _random = new LinearCongruentialGenerator(seed);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace _Project.Scripts.LevelGenerator.Utility
         /// </exception>
         public void AddItem(T item, int weight)
         {
-            if (entries.ContainsKey(item))
+            if (_entries.ContainsKey(item))
             {
                 RemoveItem(item);
             }
@@ -53,8 +53,8 @@ namespace _Project.Scripts.LevelGenerator.Utility
                 throw new ArgumentException("Weight must be greater than 0");
             }
 
-            entries[item] = weight;
-            totalWeight += weight;
+            _entries[item] = weight;
+            _totalWeight += weight;
         }
 
         /// <summary>
@@ -65,11 +65,11 @@ namespace _Project.Scripts.LevelGenerator.Utility
         /// </param>
         public void RemoveItem(T item)
         {
-            if (!entries.TryGetValue(item, out _))
+            if (!_entries.TryGetValue(item, out _))
                 return;
 
-            totalWeight -= entries[item];
-            entries.Remove(item);
+            _totalWeight -= _entries[item];
+            _entries.Remove(item);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace _Project.Scripts.LevelGenerator.Utility
             if (!Contains(item))
                 return -1;
 
-            return entries[item];
+            return _entries[item];
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace _Project.Scripts.LevelGenerator.Utility
         /// </returns>
         public bool Contains(T item)
         {
-            return entries.ContainsKey(item);
+            return _entries.ContainsKey(item);
         }
 
         /// <summary>
@@ -134,11 +134,11 @@ namespace _Project.Scripts.LevelGenerator.Utility
         /// </exception>
         public T Roll()
         {
-            long value = random.Next(totalWeight);
+            long value = _random.Next(_totalWeight);
 
-            foreach (var item in entries.Keys)
+            foreach (var item in _entries.Keys)
             {
-                long weight = entries[item];
+                long weight = _entries[item];
                 value -= weight;
 
                 if (value < 0)
@@ -164,7 +164,7 @@ namespace _Project.Scripts.LevelGenerator.Utility
             if (!Contains(item))
                 return 0;
 
-            return (float)entries[item] / totalWeight;
+            return (float)_entries[item] / _totalWeight;
         }        
     }
 }
