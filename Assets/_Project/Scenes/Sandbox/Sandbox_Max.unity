@@ -288,9 +288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c3a7d8baf948698b8958310e356c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.LevelGenerator.LevelGenerator
-  _roomGridSize: 10
-  _minCombatRooms: 20
-  _maxCombatRooms: 100
+  _roomOffset: 2
+  _roomGridWidth: 5
+  _roomGridHeight: 5
+  _minCombatRooms: 3
+  _maxCombatRooms: 5
   _seed: 55
   _generateSeed: 1
   _baseGenerationChance: 100
@@ -302,7 +304,7 @@ MonoBehaviour:
   - _room: {fileID: 1458581775930988942, guid: 8834285ee8a3d314191add714955a75c, type: 3}
     _weight: 1
   _endRooms:
-  - _room: {fileID: 4591625701127608042, guid: d5c632d6c1f922a42aae10f0e1203f27, type: 3}
+  - _room: {fileID: 4285176508233607939, guid: fec2bed7108327f45882f05fd1e40275, type: 3}
     _weight: 1
   _startRoom: {fileID: 0}
   _generatedCombatRooms: []

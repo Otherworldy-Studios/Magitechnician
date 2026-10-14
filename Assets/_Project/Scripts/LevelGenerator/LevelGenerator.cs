@@ -34,8 +34,11 @@ namespace _Project.Scripts.LevelGenerator
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
 
-        [Header("Generator Settings")]
-        [SerializeField] private int _roomGridSize;
+        [Header("Generator Settings")] 
+        [SerializeField] private int _roomOffset;
+        
+        [SerializeField] private int _roomGridWidth;
+        [SerializeField] private int _roomGridHeight;
 
         [SerializeField] private int _minCombatRooms;
         
@@ -81,7 +84,7 @@ namespace _Project.Scripts.LevelGenerator
 
             _generationChance = _baseGenerationChance;
             
-            _roomGrid = new Room[_roomGridSize, _roomGridSize];
+            _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
         }
 
         void Start()
@@ -118,7 +121,7 @@ namespace _Project.Scripts.LevelGenerator
             
             _startRoom = startRoom;
             
-            Vector2Int currentGridPos = new Vector2Int(_roomGridSize / 2, _roomGridSize / 2);
+            Vector2Int currentGridPos = new Vector2Int(_roomGridHeight / 2, _roomGridWidth / 2);
             _roomGrid[currentGridPos.x, currentGridPos.y] = startRoom;
 
             Queue<(Room, Vector2Int)> rooms = new Queue<(Room, Vector2Int)>();
@@ -135,12 +138,9 @@ namespace _Project.Scripts.LevelGenerator
                 
                 while(priorityQueue.Count > 0)
                 {
-                    Direction direction = priorityQueue.Dequeue();
-                    if (_generatedCombatRooms.Count >= _maxCombatRooms)
-                        break;
-
                     Vector2Int gridDiff = new Vector2Int(0, 0);
-
+                    Direction direction = priorityQueue.Dequeue();
+                    
                     switch (direction)
                     {
                         case Direction.North:
@@ -159,8 +159,11 @@ namespace _Project.Scripts.LevelGenerator
                     
                     Vector2Int added = currentPos + gridDiff;
 
+                    if (_generatedCombatRooms.Count >= _maxCombatRooms)
+                        break;
+
                     if (added.x < 0 || added.y < 0 ||
-                        added.x >= _roomGridSize || added.y >= _roomGridSize)
+                        added.x >= _roomGridWidth || added.y >= _roomGridHeight)
                     {
                         continue;
                     }
@@ -169,11 +172,11 @@ namespace _Project.Scripts.LevelGenerator
                     {
                         if (_roomGrid[added.x, added.y] != null)
                             continue;
-
-                        Room nextRoom = Instantiate(GetRandomCombatRoom(), 
-                            room.gameObject.transform.position + (_directions[direction] * 2), 
-                            Quaternion.identity);
                         
+                        Room nextRoom = Instantiate(GetRandomCombatRoom(),
+                            room.gameObject.transform.position + (_directions[direction] * _roomOffset),
+                            Quaternion.identity);
+
                         _roomGrid[added.x, added.y] = nextRoom;
 
                         switch (direction)
@@ -207,6 +210,84 @@ namespace _Project.Scripts.LevelGenerator
                     }
                 }
             }
+            
+            PlaceEndRoom();
+        }
+
+        private void PlaceEndRoom()
+        {
+            Room farthest = GetFarthest();
+
+            if (farthest == null)
+            {
+                Debug.LogError("[LevelGenerator] Error: No farthest room found");
+                return;
+            }
+
+            Direction direction = Direction.North;
+
+            if (farthest.North == null)
+                direction = Direction.North;
+            else if (farthest.South == null)
+                direction = Direction.South;
+            else if (farthest.East == null)
+                direction = Direction.East;
+            else if(farthest.West == null)
+                direction = Direction.West;
+            
+            Vector3 dir = _directions[direction];
+            
+            Room end = Instantiate(GetRandomEndRoom(),
+                farthest.gameObject.transform.position + (dir * _roomOffset),
+                Quaternion.identity);
+            
+            switch (direction)
+            {
+                case Direction.North:
+                    farthest.North = end;
+                    end.South = farthest;
+                    break;
+                case Direction.South:
+                    farthest.South = end;
+                    end.North = farthest;
+                    break;
+                case Direction.East:
+                    farthest.East = end;
+                    end.West = farthest;
+                    break;
+                case Direction.West:
+                    farthest.West = end;
+                    end.East = farthest;
+                    break;
+            }
+        }
+
+        private Room GetFarthest()
+        {
+            Queue<Room> rooms = new Queue<Room>();
+            HashSet<Room> visited = new HashSet<Room>();
+
+            rooms.Enqueue(_startRoom);
+            
+            while (rooms.Count > 0)
+            {
+                Room room = rooms.Dequeue();
+                visited.Add(room);
+
+                if (rooms.Count == 1)
+                    return room;
+
+                if (room.North != null && !visited.Contains(room.North))
+                    rooms.Enqueue(room.North);
+                if(room.South != null && !visited.Contains(room.South))
+                    rooms.Enqueue(room.South);
+                if (room.East != null && !visited.Contains(room.East))
+                    rooms.Enqueue(room.East);
+                if(room.West != null && !visited.Contains(room.West))
+                    rooms.Enqueue(room.West);
+            }
+
+            return null;
         }
 
         private void ResetMap()
