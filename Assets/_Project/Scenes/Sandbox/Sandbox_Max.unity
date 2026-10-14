@@ -296,11 +296,14 @@ MonoBehaviour:
   _baseGenerationChance: 100
   _generationChanceDelta: -10
   _startRooms:
-  - {fileID: 6095790962355764772, guid: 41975cac0aaafd9469956e35e9a9d6e3, type: 3}
+  - _room: {fileID: 6095790962355764772, guid: 41975cac0aaafd9469956e35e9a9d6e3, type: 3}
+    _weight: 1
   _combatRooms:
-  - {fileID: 1458581775930988942, guid: 8834285ee8a3d314191add714955a75c, type: 3}
+  - _room: {fileID: 1458581775930988942, guid: 8834285ee8a3d314191add714955a75c, type: 3}
+    _weight: 1
   _endRooms:
-  - {fileID: 4591625701127608042, guid: d5c632d6c1f922a42aae10f0e1203f27, type: 3}
+  - _room: {fileID: 4591625701127608042, guid: d5c632d6c1f922a42aae10f0e1203f27, type: 3}
+    _weight: 1
   _startRoom: {fileID: 0}
   _generatedCombatRooms: []
   _endRoom: {fileID: 0}
