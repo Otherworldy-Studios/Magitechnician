@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
+  <component name="CMakeSettings">
+    <configurations />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="7cef4a18-8b67-47e6-9c56-278264fef4ab" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LinearCongruentialGenerator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LevelGenerator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LevelGenerator.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Room.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/ItemSelector.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/ItemSelector.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/LinearCongruentialGenerator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/PriorityQueue.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/PriorityQueue.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Sandbox_Max.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Sandbox_Max.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LinearCongruentialGenerator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LinearCongruentialGenerator.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/LinearCongruentialGenerator.cs.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,6 +33,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b7840b1dfe7b4a73b466889f96810c49212400/9b/6a2cbb70/Object.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LevelGenerator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Room.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/ItemSelector.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/Utility/PriorityQueue.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo"><![CDATA[{
   "customColor": "",
   "associatedIndex": 3
@@ -31,6 +60,10 @@
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "feature/t3-level-layout-generation",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
@@ -77,13 +110,14 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1791963082005</updated>
-      <workItem from="1791963085555" duration="298000" />
+      <workItem from="1791963085555" duration="7658000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
     <option name="hasUnityReference" value="true" />
