@@ -289,8 +289,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.LevelGenerator.LevelGenerator
   _roomGridSize: 10
-  _minCombatRooms: 3
-  _maxCombatRooms: 20
+  _minCombatRooms: 20
+  _maxCombatRooms: 100
   _seed: 55
   _generateSeed: 1
   _baseGenerationChance: 100

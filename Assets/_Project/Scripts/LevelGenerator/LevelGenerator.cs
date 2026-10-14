@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.LevelGenerator.Utility;
 using _Project.Scripts.LevelGenerator.Utility.System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.LevelGenerator
@@ -93,8 +95,24 @@ namespace _Project.Scripts.LevelGenerator
             GenerateMap();
         }
 
+        void Update()
+        {
+            #if UNITY_EDITOR
+            if (Keyboard.current != null)
+            {
+                if (Keyboard.current.spaceKey.wasPressedThisFrame)
+                {
+                    ResetMap();
+                    GenerateMap();
+                }
+            }
+            #endif
+        }
+
         private void GenerateMap()
         {
+            Debug.Log($"Seed: {_seed}");
+            
             Room startRoom = Instantiate(GetRandomStartRoom(), 
                 gameObject.transform.position, Quaternion.identity);
             
@@ -189,6 +207,22 @@ namespace _Project.Scripts.LevelGenerator
                     }
                 }
             }
+        }
+
+        private void ResetMap()
+        {
+            Room[] rooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
+            
+            foreach (Room room in rooms)
+                Destroy(room.gameObject);
+
+            _startRoom = null;
+            _endRoom = null;
+            _generatedCombatRooms.Clear();
+            _generationChance = _baseGenerationChance;
+            
+            if (_generateSeed)
+                _seed = Random.Range(-int.MaxValue, int.MaxValue);
         }
 
         private bool Validate()
