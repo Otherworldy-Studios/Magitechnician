@@ -3,7 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Guns/Gun Part")]
 public class GunPartData : ScriptableObject
 {
-    public GameObject partPrefab;
-    public string partName;
-    public GunPartType partType;
+    [SerializeField] private GameObject _partPrefab;
+    [SerializeField] private string _partName;
+    [SerializeField] private GunPartType _partType;
+    //[SerializeField] private GunStats _statModifiers;
+
+    public GameObject PartPrefab => _partPrefab;
+    public string PartName => _partName;
+    public GunPartType PartType => _partType;
 }

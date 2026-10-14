@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878faf962267a4cf9a3f89cdb3e5bbe9, type: 3}
+  m_Name: Gun_TestPart
+  m_EditorClassIdentifier: Assembly-CSharp::GunPartData
+  _partPrefab: {fileID: 7291729812624770082, guid: 8f9cf98d520ab49fcaad2d8feb839b3a, type: 3}
+  _partName: Barrel
+  _partType: 0

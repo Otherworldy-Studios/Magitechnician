@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GunSocket : MonoBehaviour
 {
-    private GunPartType socketType;
+    private GunPartType _socketType;
 
-    public GunPartType SocketType => socketType;
+    public GunPartType SocketType => _socketType;
 }

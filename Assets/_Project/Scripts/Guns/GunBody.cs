@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GunBody : MonoBehaviour
 {
-    private Dictionary<GunPartType, GunSocket> sockets = new();
+    private Dictionary<GunPartType, GunSocket> _sockets = new();
 
     private void Awake()
     {
@@ -13,5 +12,10 @@ public class GunBody : MonoBehaviour
         foreach (GunSocket socket in sockets)
         {
         }
+    }
+
+    public bool GetSocket(GunPartType type, out GunSocket socket)
+    {
+        return _sockets.TryGetValue(type, out socket);
     }
 }
