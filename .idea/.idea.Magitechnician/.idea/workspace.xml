@@ -11,10 +11,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cef4a18-8b67-47e6-9c56-278264fef4ab" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Prefabs/LevelGenerator/PH_PF_EndRoom.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Prefabs/LevelGenerator/PH_PF_EndRoom.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Sandbox_Max.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Sandbox_Max.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LevelGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/LevelGenerator/LevelGenerator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,6 +107,7 @@
       <workItem from="1791999757534" duration="1652000" />
       <workItem from="1792014635808" duration="3811000" />
       <workItem from="1792018630440" duration="784000" />
+      <workItem from="1792084176770" duration="108000" />
     </task>
     <servers />
   </component>

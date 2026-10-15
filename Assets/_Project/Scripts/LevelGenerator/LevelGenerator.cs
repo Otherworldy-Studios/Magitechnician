@@ -219,10 +219,7 @@ namespace _Project.Scripts.LevelGenerator
             Room farthest = GetFarthest();
 
             if (farthest == null)
-            {
-                Debug.LogError("[LevelGenerator] Error: No farthest room found");
                 return;
-            }
 
             Direction direction = Direction.North;
 
