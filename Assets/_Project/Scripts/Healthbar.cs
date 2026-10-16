@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Healthbar : MonoBehaviour, IDamageable
 {
-    public int CurrentHealth { get; private set; }
+    public float CurrentHealth { get; private set; }
 
-    [field: SerializeField] public int MaxHealth { get; private set; } = 100;
+    [field: SerializeField] public float MaxHealth { get; private set; } = 100;
 
-    public event Action<int, GameObject> OnDamaged;
-    public event Action<int, GameObject> OnHealed;
+    public event Action<float, GameObject> OnDamaged;
+    public event Action<float, GameObject> OnHealed;
     public event Action<GameObject> OnDied;
 
     void Start()
@@ -20,7 +20,7 @@ public class Healthbar : MonoBehaviour, IDamageable
     {
         if (CurrentHealth <= 0) return;
 
-        CurrentHealth -= damageInfo.amount;
+        CurrentHealth -= damageInfo.DamageAmount;
 
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
@@ -32,7 +32,7 @@ public class Healthbar : MonoBehaviour, IDamageable
         }
     }
 
-    public void RegenHealth(int amount)
+    public void RegenHealth(float amount)
     {
         if (CurrentHealth <= 0) return;
 
