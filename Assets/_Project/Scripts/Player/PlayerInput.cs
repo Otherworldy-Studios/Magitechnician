@@ -14,6 +14,7 @@ public class PlayerInput : MonoBehaviour
     public bool IsFiring => _input.Player.Fire.IsPressed();
     
     public event Action JumpPressed;
+    public event Action JumpReleased;
     public event Action DashPressed;
     public event Action FirePressed;
 
@@ -24,7 +25,8 @@ public class PlayerInput : MonoBehaviour
 
     private void OnEnable()
     {
-        _input.Player.Jump.performed += OnJump;
+        _input.Player.Jump.performed += OnJumpPressed;
+        _input.Player.Jump.canceled += OnJumpReleased;
         _input.Player.Dash.performed += OnRoll;
         _input.Player.Fire.performed += OnFire;
         
@@ -33,7 +35,8 @@ public class PlayerInput : MonoBehaviour
 
     private void OnDisable()
     {
-        _input.Player.Jump.performed -= OnJump;
+        _input.Player.Jump.performed -= OnJumpPressed;
+        _input.Player.Jump.canceled -= OnJumpReleased;
         _input.Player.Dash.performed -= OnRoll;
         _input.Player.Fire.performed -= OnFire;
         
@@ -59,7 +62,8 @@ public class PlayerInput : MonoBehaviour
                keyboard.dKey.isPressed;
     }
     
-    private void OnJump(InputAction.CallbackContext context) => JumpPressed?.Invoke();
+    private void OnJumpPressed(InputAction.CallbackContext context) => JumpPressed?.Invoke();
+    private void OnJumpReleased(InputAction.CallbackContext context) => JumpReleased?.Invoke();
 
     private void OnRoll(InputAction.CallbackContext context) => DashPressed?.Invoke();
 

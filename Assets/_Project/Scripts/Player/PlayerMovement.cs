@@ -1,4 +1,5 @@
 using System;
+using System.Timers;
 using ScriptableSettings;
 using UnityEditor;
 using UnityEngine;
@@ -44,12 +45,14 @@ public class PlayerMovement : MonoBehaviour
     private bool _isRising;
     private bool _isFalling;
     
-    private bool _intendToJump;
+    private float _jumpBufferTimer;
+    private float _coyoteTimeTimer;
+    private bool _jumpHold;
 
     private void Awake()
     {
-        if(!_controller)
-            _controller = GetComponent<CharacterController>();
+        _controller = GetComponent<CharacterController>();
+        
         if(!_input)
             _input =  GetComponent<PlayerInput>();
         if(!_cameraController)
@@ -62,23 +65,25 @@ public class PlayerMovement : MonoBehaviour
     {
         _moveInput = _input.Move;
         
+        AirState();
         HandleGravity();
         HandleJump();
         _dash.HandleDash(GetMovementDirection(), IsGrounded);
-        AirState();
         StateController();
         ApplyMovement();
     }
     
     private void OnEnable()
     {
-        _input.JumpPressed += IntendToJump;
+        _input.JumpPressed += JumpPressed;
+        _input.JumpReleased += JumpReleased;
         _input.DashPressed += IntendToDash;
     }
 
     private void OnDisable()
     {
-        _input.JumpPressed -= IntendToJump;
+        _input.JumpPressed -= JumpPressed;
+        _input.JumpReleased -= JumpReleased;
         _input.DashPressed -= IntendToDash;
     }
 
@@ -124,9 +129,19 @@ public class PlayerMovement : MonoBehaviour
     private void HandleGravity()
     {
         if (_controller.isGrounded && _velocity.y < 0f)
-            _velocity.y = _settings.GroundGravity; //Increase if max speed is increased
+            _velocity.y = _settings.GroundGravity;
 
-        _velocity.y += _settings.Gravity * Time.deltaTime;
+        float gravity = _settings.Gravity;
+
+        if (_isRising)
+        {
+            if (_jumpHold)
+            {
+                gravity *= _settings.MinJumpHeight / _settings.MaxJumpHeight;
+            }
+        }
+
+        _velocity.y += gravity * Time.deltaTime;
     }
 
     private void StateController()
@@ -186,26 +201,45 @@ public class PlayerMovement : MonoBehaviour
     
     private void HandleJump()
     {
-        if (!_intendToJump)
+        JumpTimers();
+        if (_jumpBufferTimer <= 0f || _coyoteTimeTimer <= 0f)
             return;
         
-        _intendToJump = false;
-
-        if (!_controller.isGrounded)
-            return;
+        _jumpBufferTimer = 0f;
+        _coyoteTimeTimer = 0f;
         
         OnJump?.Invoke();
-        _velocity.y = Mathf.Sqrt(_settings.JumpHeight * -2f * _settings.Gravity);
+        _velocity.y = Mathf.Sqrt(_settings.MinJumpHeight * -2f * _settings.Gravity);
     }
-    
-    
+
+    private void JumpTimers()
+    {
+        // Coyote timer
+        if(_controller.isGrounded) 
+            _coyoteTimeTimer = _settings.CoyoteTime;
+        else
+            _coyoteTimeTimer = Mathf.Max(0f, _coyoteTimeTimer - Time.deltaTime);
+        
+        //Jump Buffer timer
+        if (_jumpBufferTimer > 0f)
+            _jumpBufferTimer = Mathf.Max(0f, _jumpBufferTimer - Time.deltaTime);
+    }
 
     private void AirState()
     {
         _isRising = !_controller.isGrounded && _velocity.y > 0.1f;
         _isFalling = !_controller.isGrounded && _velocity.y < -0.1f;
     }
-    
-    private void IntendToJump() => _intendToJump = true;
+
+    private void JumpPressed()
+    {
+        _jumpHold = true;
+        _jumpBufferTimer = _settings.JumpBufferTime;
+    }
+
+    private void JumpReleased()
+    {
+        _jumpHold = false;
+    }
     private void IntendToDash() => _dash.IntendToDash();
 }
