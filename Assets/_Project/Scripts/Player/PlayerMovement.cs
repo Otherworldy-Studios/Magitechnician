@@ -233,6 +233,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpPressed()
     {
+        if(_dash.IsDashing)
+            return;
+        
         _jumpHold = true;
         _jumpBufferTimer = _settings.JumpBufferTime;
     }
