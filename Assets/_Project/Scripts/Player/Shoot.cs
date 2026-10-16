@@ -44,10 +44,7 @@ public class Shoot : MonoBehaviour
 
         Quaternion rotation = Quaternion.LookRotation(direction);
 
-        GameObject bullet = Instantiate(_bulletPrefab, _spawnPoint.position, rotation);
-        Projectile projectile = bullet.GetComponent<Projectile>();
-        projectile.Initialize(_input.gameObject); // 100% on main player object
-        
+        Instantiate(_bulletPrefab, _spawnPoint.position, rotation);
         OnFire?.Invoke();
     }
 }
