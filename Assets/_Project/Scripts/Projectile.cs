@@ -7,26 +7,24 @@ public class Projectile : MonoBehaviour
     
     private Vector3 _direction;
     private float _travelTime;
-    /*DamageInfo _damageInfo;
-    
     private DamageInfo _damageInfo;
     private bool _initialized;
     
     public void Initialize(GameObject attacker)
     {
-        _damageInfo.attacker = attacker;
-        _damageInfo.Damage = _settings.Damage;
+        _damageInfo.DamageSource = attacker;
+        _damageInfo.DamageAmount = _settings.Damage;
         _initialized = true;
-    }*/
+    }
     
     private void Start()
     {
-        /*if (!_initialized)
+        if (!_initialized)
         {
             Debug.LogError("Projectile was not initialized!");
             Destroy(gameObject);
             return;
-        }*/
+        }
         
         _direction = transform.forward.normalized;
         Destroy(gameObject, 5f); // Just in case
@@ -58,22 +56,23 @@ public class Projectile : MonoBehaviour
                 _settings.BulletCollisionLayer,
                 QueryTriggerInteraction.Collide))
         {
-             /*if (_damageInfo.Owner != null && hit.collider.transform.IsChildOf(_damageInfo.Owner.transform))
+             if (!_damageInfo.DamageSource && 
+                 hit.collider.transform.IsChildOf(_damageInfo.DamageSource.transform))
              {
                  transform.position = newPos;
                  return;
              }
 
-            IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
+             IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
 
              if (damageable != null)
              {
                  damageable.TakeDamage(_damageInfo);
                  Debug.Log($"Hit damageable: {hit.collider.name}");
-             }*/
+             }
 
-            Destroy(gameObject);
-            return;
+             Destroy(gameObject);
+             return;
         }
         
         // move forward if nothing hit
