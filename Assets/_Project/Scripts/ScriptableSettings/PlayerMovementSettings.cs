@@ -9,7 +9,14 @@ namespace ScriptableSettings
         [field: SerializeField] public float AimSpeed { get; private set; } = 2.5f;
         [field: SerializeField] public float WalkSpeed { get; private set; } = 4f;
         [field: SerializeField] public float SprintSpeed { get; private set; } = 7f;
-        [field: SerializeField] public float JumpHeight { get; private set; } = 1.5f;
+        
+        [field: Header("Jump")]
+        [field: SerializeField] public float MinJumpHeight { get; private set; } = 1f;
+        [field: SerializeField] public float MaxJumpHeight { get; private set; } = 1.5f;
+        [field: SerializeField] public float CoyoteTime { get; private set; } = 0.1f;
+        [field: SerializeField] public float JumpBufferTime { get; private set; } = 0.1f;
+        
+        [field: Header("Gravity")]
         [field: SerializeField] public float Gravity { get; private set; } = -20f;
         [field: SerializeField] public float GroundGravity { get; private set; } = -5f;
         
