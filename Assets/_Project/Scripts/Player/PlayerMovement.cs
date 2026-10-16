@@ -202,7 +202,8 @@ public class PlayerMovement : MonoBehaviour
     private void HandleJump()
     {
         JumpTimers();
-        if (_jumpBufferTimer <= 0f || _coyoteTimeTimer <= 0f)
+        if ((_jumpBufferTimer <= 0f || _coyoteTimeTimer <= 0f) 
+            && !_dash.IsDashing)
             return;
         
         _jumpBufferTimer = 0f;
