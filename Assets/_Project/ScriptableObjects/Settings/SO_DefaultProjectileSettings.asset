@@ -17,6 +17,6 @@ MonoBehaviour:
   <MaxDistance>k__BackingField: 100
   <BulletCollisionLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 9
+    m_Bits: 1
   <Damage>k__BackingField: 10
   <Prefab>k__BackingField: {fileID: 3957664738974331342, guid: b6a0de0609a91f549823946eddd3a554, type: 3}
