@@ -1,21 +1,22 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Stat", menuName = "Scriptable Objects/Stat")]
 public class Stat : ScriptableObject
 {
     public float value;
-    public GunStat gunStatName;
+    public GunStatName statName;
+    public Dictionary<string, StatModifier> statModifiers = new Dictionary<string, StatModifier>();
 
-    public float AddTo(float value)
+
+    public void AddModifier(string modifierName, StatModifier modifier)
     {
-        this.value += value;
-        return this.value;
+        statModifiers[modifierName] = modifier;
     }
 
-    public float MultiplyBy(float value)
+    public void RemoveModifier(string modifierName)
     {
-        this.value *= value;
-        return this.value;
+        statModifiers.Remove(modifierName);
     }
 
     public float GetStatValue()
@@ -24,4 +25,4 @@ public class Stat : ScriptableObject
     }
 }
 
-public enum GunStat { FireRate, FireType, BurstCount, BurstDelay, Damage, Range, BulletSpeed, Spread, MagazineSize, ReloadSpeed, AmmoType }
+public enum GunStatName { FireRate, FireType, BurstCount, BurstDelay, Damage, Range, BulletSpeed, Spread, MagazineSize, ReloadSpeed, AmmoType }

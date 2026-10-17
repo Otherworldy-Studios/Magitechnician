@@ -1,17 +1,20 @@
-using UnityEngine;
+using System;
 
+[Serializable]
 public class StatModifier
 {
-    private float value;
-    private modifierType type;
-    private string source;
+    public float value;
+    public modifierType type;
+    public string source;
+    public string modifierName;
 
 
-    public StatModifier(float value, modifierType type, string source)
+    public StatModifier(float value, modifierType type, string source, string modifierName)
     {
         this.value = value;
         this.type = type;
         this.source = source;
+        this.modifierName = modifierName;
     }
 
 
