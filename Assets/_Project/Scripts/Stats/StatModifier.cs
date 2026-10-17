@@ -6,15 +6,15 @@ public class StatModifier
     public float value;
     public modifierType type;
     public string source;
-    public string modifierName;
+    public string modifierID;
 
 
-    public StatModifier(float value, modifierType type, string source, string modifierName)
+    public StatModifier(float value, modifierType type, string source, string modifierID)
     {
         this.value = value;
         this.type = type;
         this.source = source;
-        this.modifierName = modifierName;
+        this.modifierID = modifierID;
     }
 
 
