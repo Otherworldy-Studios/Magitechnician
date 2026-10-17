@@ -5,23 +5,8 @@ using UnityEngine;
 
 public class StatRuntime : MonoBehaviour
 {
-    private List<Stat> stats = new();
+    public List<Stat> stats = new();
     public Dictionary<string, StatModifier> statModifiers = new Dictionary<string, StatModifier>();
-
-    [SerializeField] private StatBlock statBlock;
-
-    private void InitializeStats()
-    {
-        if (statBlock != null)
-        {
-            foreach (StatRuntime stat in statBlock)
-            {
-                StatRuntime newStat = new StatRuntime();
-
-                stats.Add(newStat);
-            }
-        }
-    }
 
 
     public void AddModifier(string modifierID, StatModifier modifier)
@@ -60,7 +45,7 @@ public class StatRuntime : MonoBehaviour
     {
         foreach (var s in stats)
         {
-            if (s.StatID == stat)
+            if (s.StatID == statID)
                 return s.BaseValue;
         }
 

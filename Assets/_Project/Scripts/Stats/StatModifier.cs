@@ -5,7 +5,6 @@ public class StatModifier
 {
     public float value;
     public modifierType type;
-    public string source;
     public string modifierID;
 
 
