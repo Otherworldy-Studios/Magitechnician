@@ -5,39 +5,35 @@ using UnityEngine;
 [RequireComponent(typeof(GunBody))]
 public class Gun : MonoBehaviour
 {
-    // [SerializeField] private GunStats _gunStats;
+    [SerializeField] private GunFrame _defaultFrame;
+    [SerializeField] private GunPart[] _gunParts;
 
-    private GunBody _gunBody;
-    private Dictionary<GunPartType, GameObject> _partModels = new();
-    private Dictionary<GunPartType, GunPartData> _equippedParts = new();
+    private Dictionary<GunPartType, GunPart> _gunSockets;
+    private Dictionary<GunPartType, GunPart> _equippedParts;
 
-    private void Awake()
-    {
-        _gunBody = GetComponent<GunBody>();
-    }
-
-    public bool EquipPart(GunPartData part)
-    {
-        if (!_gunBody.GetSocket(part.PartType, out GunSocket socket))
-        {
-            return false;
-        }
-        
-        GameObject newModel = Instantiate(part.PartPrefab, socket.transform, false);
-
-        if (_partModels.TryGetValue(part.PartType, out GameObject oldModel))
-        {
-            Destroy(oldModel);
-        }
-
-        _partModels[part.PartType] = newModel;
-        _equippedParts[part.PartType] = part;
-
-        return true;
-    }
-
-    public bool RemovePart(GunPartData part)
+    public bool HasSocket(GunPartType type)
     {
         return true;
     }
+
+    public GunPart GetEquippedPart(GunPartType type)
+    {
+        return null;
+    }
+
+    public bool EquipPart(GunPart part)
+    {
+        return true;
+    }
+    
+    public bool RemovePart(GunPartType type)
+    {
+        return true;
+    }
+    
+    private void SpawnPartModel(GunPart part)
+    {}
+    
+    private void RemovePartModel(GunPart part)
+    {}
 }
