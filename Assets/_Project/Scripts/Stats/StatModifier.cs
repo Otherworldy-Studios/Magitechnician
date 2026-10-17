@@ -9,11 +9,10 @@ public class StatModifier
     public string modifierID;
 
 
-    public StatModifier(float value, modifierType type, string source, string modifierID)
+    public StatModifier(float value, modifierType type, string modifierID)
     {
         this.value = value;
         this.type = type;
-        this.source = source;
         this.modifierID = modifierID;
     }
 

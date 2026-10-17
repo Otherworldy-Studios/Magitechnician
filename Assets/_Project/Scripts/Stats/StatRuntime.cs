@@ -27,16 +27,13 @@ public class StatRuntime : MonoBehaviour
 
         foreach (var modifier in statModifiers)
         {
-            if (statModifiers[modifier].source == statID)
+            if (statModifiers[modifier].type == additive)
             {
-                if (statModifiers[modifier].type == additive)
-                {
-                    additive += statModifiers[modifier].value;
-                }
-                else
-                {
-                    multiplier *= statModifiers[modifier].value;
-                }
+                additive += statModifiers[modifier].value;
+            }
+            else
+            {
+                multiplier *= statModifiers[modifier].value;
             }
         }
 
