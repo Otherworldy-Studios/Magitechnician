@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c24dd7a15e9a8f47adaf5603a314531, type: 3}
+  m_Name: SO_TestGun_Underbarrel
+  m_EditorClassIdentifier: Assembly-CSharp::GunUnderbarrel
+  _partPrefab: {fileID: 9133284278568096088, guid: 739e189178a9a1443a847625760d1f77, type: 3}
+  _partName: TestGun Underbarrel
