@@ -14,7 +14,7 @@ public enum GunPartType
 public enum FireMode
 {
     Semi,
-    Burt,
+    Burst,
     Auto
 }
 
