@@ -13,7 +13,7 @@ public class StatsRuntime : MonoBehaviour
     {
         if (statBlock != null)
         {
-            foreach (Stat stat in statBlock.stats)
+            foreach (Stat stat in statBlock.GetStats())
             {
                 currentStats[stat.statID] = new StatRuntime(stat);
             }

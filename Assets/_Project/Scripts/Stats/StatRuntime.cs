@@ -25,19 +25,19 @@ public class StatRuntime : MonoBehaviour
         float additive = 0f;     
         float multiplier = 1f;
 
-        foreach (var modifier in statModifiers)
+        foreach (var (modifierID, modifier) in statModifiers)
         {
-            if (statModifiers[modifier].type == additive)
+            if (statModifiers[modifierID].type == additive)
             {
-                additive += statModifiers[modifier].value;
+                additive += statModifiers[modifierID].value;
             }
             else
             {
-                multiplier *= statModifiers[modifier].value;
+                multiplier *= statModifiers[modifierID].value;
             }
         }
 
-        return (GetBaseValue(stat) + additive) * multiplier;
+        return (GetBaseValue(statID) + additive) * multiplier;
     }
 
     
@@ -45,8 +45,8 @@ public class StatRuntime : MonoBehaviour
     {
         foreach (var s in stats)
         {
-            if (s.StatID == statID)
-                return s.BaseValue;
+            if (s.statID == statID)
+                return s.GetStatValue();
         }
 
     }

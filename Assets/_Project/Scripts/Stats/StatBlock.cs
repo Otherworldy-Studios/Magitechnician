@@ -7,4 +7,9 @@ using System.Collections.Generic;
 public class StatBlock : ScriptableObject
 {
     private string[] stats;
+
+    public string[] GetStats()
+    {
+        return stats;
+    }
 }
