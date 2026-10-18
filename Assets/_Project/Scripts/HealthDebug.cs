@@ -28,8 +28,8 @@ public class HealthDebug : MonoBehaviour
     [SerializeField] private string _instructions =
         "F1 - Heal 25 HP\n" +
         "F2 - Deal 25 damage\n" +
-        "F3 - Toggle 5 damage over time\n" +
-        "F4 - Toggle 5 healing over time";
+        "F3 - Toggle 50 damage over 10 seconds\n" +
+        "F4 - Toggle 50 heal over 10 seconds";
 
     private bool _isDamageOverTime = false;
     private bool _isHealOverTime = false;
