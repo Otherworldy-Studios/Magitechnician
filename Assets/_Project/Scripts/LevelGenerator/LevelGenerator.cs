@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.LevelGenerator.Utility;
 using _Project.Scripts.LevelGenerator.Utility.System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -33,6 +32,8 @@ namespace _Project.Scripts.LevelGenerator
         private LinearCongruentialGenerator _random;
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
+
+        public Room[,] RoomGrid  { get  { return _roomGrid; } }
 
         [Header("Generator Settings")] 
         [SerializeField] private int _roomOffset;
