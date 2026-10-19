@@ -32,6 +32,7 @@ namespace _Project.Scripts.LevelGenerator
         private LinearCongruentialGenerator _random;
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
+        public event Action onMapGenerated;
 
         public Room[,] RoomGrid  { get  { return _roomGrid; } }
 
@@ -258,6 +259,8 @@ namespace _Project.Scripts.LevelGenerator
                     end.East = farthest;
                     break;
             }
+            
+            onMapGenerated.Invoke();
         }
 
         private Room GetFarthest()
