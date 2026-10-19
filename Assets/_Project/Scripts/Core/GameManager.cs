@@ -21,13 +21,11 @@ public class GameManager : MonoBehaviour
     public static event Action OnRunStart;
     public event Action<GameState> OnGameStateChanged;
     
-    
+    public float StartTime { get; private set; }
     public float RunTime { get; private set; }
     public float RoomTime { get; private set; } //should rooms carry their own timer?
 
     [SerializeField] private GameState currentState; //serialized for viewing in editor
-    
-    private float _startTime; //helper variable to find other times
 
     private bool _isPaused;
     
@@ -41,7 +39,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         PH_UIManager.OnPauseRequested += TogglePause;
-        PH_DungeonManager.OnGenerate += StartRun;
+        PH_DungeonManager.OnGenerateComplete += StartRun;
+    }
+
+    private void Update()
+    {
+        StartTime = Time.time;
     }
 
     private void ChangeState(GameState newState)
@@ -81,7 +84,7 @@ public class GameManager : MonoBehaviour
         
         //ask to generate run
         //move player over to the first room
-        OnGenerateRequested?.Invoke();
+        OnGenerateRequested?.Invoke(); 
         
         
     }
@@ -90,10 +93,10 @@ public class GameManager : MonoBehaviour
     {
         OnRunStart?.Invoke();
         ChangeState(GameState.Playing);
-        _startTime = 0;
+        StartTime = 0;
     }
     
-    private void TogglePause() //separate pause state method needed for timescale order funkyness
+    private void TogglePause()
     {
         if (_isPaused)
         {
@@ -124,11 +127,13 @@ public class GameManager : MonoBehaviour
     private void EnterDead()
     {
         OnGameOver?.Invoke();
+        //start the process to reset to hub/menu
     }
 
     private void EnterWin()
     {
         OnGameWin?.Invoke();
+        //start the process to reset to hub/menu
     }
     
     //track player room

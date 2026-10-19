@@ -9,8 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6d878791-32e4-42ca-8cca-4d1b9c4b61ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptableObjects/Settings/SO_DefaultPlayerMovementSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/ScriptableObjects/Settings/SO_DefaultPlayerMovementSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/ScriptableObjects/Settings/SO_DefaultProjectileSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/ScriptableObjects/Settings/SO_DefaultProjectileSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Core/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Core/GameManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +21,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "git-widget-placeholder": "feature/t1-player-jump",
+    "git-widget-placeholder": "feature/t3-gamemanger",
     "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
