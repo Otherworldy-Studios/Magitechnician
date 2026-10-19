@@ -3,46 +3,59 @@ using UnityEngine;
 
 public class Healthbar : MonoBehaviour, IDamageable
 {
-    // 1. Core tracking variables (Original logic)
-    public int CurrentHealth { get; private set; }
+    public float CurrentHealth { get; private set; }
 
-    [field: SerializeField] public int MaxHealth { get; private set; } = 100;
+    [field: SerializeField] public float MaxHealth { get; private set; } = 100;
 
-    public event Action<int, GameObject> OnDamaged;
-    public event Action<int, GameObject> OnHealed;
+    public event Action<float, GameObject> OnDamaged;
+    public event Action<float, GameObject> OnHealed;
     public event Action<GameObject> OnDied;
 
-    // 2. Sprint requirements: Variables used by Update and TriggerInvincibility
-    public bool IsInvincible { get; private set; }
-    private float invincibilityTimer;
+    private float _damagePerSecond;
+    private float _damageTimer = 0f;
+    
+    private float _healPerSecond;
+    private float _healTimer = 0f;
 
-    void Start()
+    private void Awake()
     {
         CurrentHealth = MaxHealth;
     }
 
-    // 3. Game frame loops
-    void Update()
+    private void Update()
     {
-        if (IsInvincible)
+        if(CurrentHealth <= 0f)
         {
-            invincibilityTimer -= Time.deltaTime;
-
-            if (invincibilityTimer <= 0)
-            {
-                IsInvincible = false;
-            }
+            _healTimer = 0f;
+            _damageTimer = 0f;
+        }
+        
+        //Healing over time
+        if (_healTimer > 0f)
+        {
+            float delta = Mathf.Min(Time.deltaTime, _healTimer);
+            float heal = _healPerSecond * delta;
+            
+            RegenHealth(heal);
+            _healTimer -= delta;
+        }
+        
+        //Damaging over time
+        if (_damageTimer > 0f)
+        {
+            float delta = Mathf.Min(Time.deltaTime, _damageTimer);
+            float damage = _damagePerSecond * delta;
+            
+            TakeDamage(new DamageInfo(){DamageAmount = damage});
+            _damageTimer -= delta;
         }
     }
 
-    // 4. Interface compliance method (Integrates teammate's float DamageAmount)
     public void TakeDamage(DamageInfo damageInfo)
     {
-        if (IsInvincible) return;
+        if (CurrentHealth <= 0 || damageInfo.DamageAmount <= 0) return;
 
-        if (CurrentHealth <= 0) return;
-
-        CurrentHealth -= Mathf.RoundToInt(damageInfo.DamageAmount);
+        CurrentHealth -= damageInfo.DamageAmount;
 
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
@@ -54,10 +67,9 @@ public class Healthbar : MonoBehaviour, IDamageable
         }
     }
 
-    // 5. Health utility functions
-    public void RegenHealth(int amount)
+    public void RegenHealth(float amount)
     {
-        if (CurrentHealth <= 0) return;
+        if (CurrentHealth <= 0  || amount <= 0f) return;
 
         CurrentHealth += amount;
 
@@ -66,15 +78,20 @@ public class Healthbar : MonoBehaviour, IDamageable
         OnHealed?.Invoke(CurrentHealth, gameObject);
     }
 
-    /// <summary>
-    /// Fulfills the 'Add timed invincibility to Health' acceptance criteria card.
-    /// </summary>
-    public void TriggerInvincibility(float duration)
+    public void TakeDamageOverTime(DamageInfo damageInfo, float time)
     {
-        if (duration > 0)
-        {
-            IsInvincible = true;
-            invincibilityTimer = duration;
-        }
+        if (CurrentHealth <= 0 || time <= 0f) return;
+
+        _damagePerSecond = damageInfo.DamageAmount / time;
+        _damageTimer = time;
+    }
+
+    public void RegenHealthOverTime(float amount, float time)
+    {
+        if (time <= 0f)
+            return;
+        
+        _healPerSecond = amount / time;
+        _healTimer = time;
     }
 }
