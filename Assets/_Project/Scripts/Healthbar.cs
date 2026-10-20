@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Healthbar : MonoBehaviour, IDamageable
@@ -16,6 +17,8 @@ public class Healthbar : MonoBehaviour, IDamageable
     
     private float _healPerSecond;
     private float _healTimer = 0f;
+    
+    private bool isInvincible = false;
 
     private void Awake()
     {
@@ -54,6 +57,9 @@ public class Healthbar : MonoBehaviour, IDamageable
     public void TakeDamage(DamageInfo damageInfo)
     {
         if (CurrentHealth <= 0 || damageInfo.DamageAmount <= 0) return;
+
+        if (isInvincible)
+            return; 
 
         CurrentHealth -= damageInfo.DamageAmount;
 
@@ -94,4 +100,29 @@ public class Healthbar : MonoBehaviour, IDamageable
         _healPerSecond = amount / time;
         _healTimer = time;
     }
+    
+    public void SetInvincible(bool value) //Switch Tool
+    {
+        isInvincible = value;
+    }
+    
+    public void MakeInvincible(float invincibleTimeSeconds)
+    {
+        StartCoroutine(InvincibilityTimer(invincibleTimeSeconds));
+    }
+
+    private IEnumerator InvincibilityTimer(float invincibleTimeSeconds)
+    {
+        isInvincible = true;
+        
+        //Invicible started
+        
+        yield return new WaitForSeconds(invincibleTimeSeconds);
+        
+        //Invicible ended
+        
+        isInvincible = false;
+        
+    }
+    
 }
