@@ -4,7 +4,6 @@ using UnityEngine;
 public class ShieldSystem : MonoBehaviour, IDamageable
 {
     [SerializeField] private ShieldSettings settings;
-    [SerializeField] private Healthbar healthScript;
 
     public float CurrentShield { get; private set; }
     public bool IsBroken { get; private set; }
@@ -42,35 +41,29 @@ public class ShieldSystem : MonoBehaviour, IDamageable
         }
     }
 
-    public void TakeDamage(DamageInfo damageInfo)
+    public float AbsorbDamageAndReturnOverflow(DamageInfo damageInfo)
     {
-        if (settings == null || damageInfo.DamageAmount <= 0) return;
+        if (settings == null || damageInfo.DamageAmount <= 0) return damageInfo.DamageAmount;
 
-        // If shield is already down, pass all incoming raw damage straight to health bar
         if (CurrentShield <= 0 || IsBroken)
         {
-            if (healthScript != null)
-            {
-                healthScript.TakeDamage(damageInfo);
-            }
-            return;
+            timer = settings.brokenRegenDelay; // Nikita's requested fix
+            return damageInfo.DamageAmount;
         }
 
-        // Percentage criteria: Reduce incoming hit amount by the reduction multiplier
         float multiplier = 1f - (settings.damageReductionPercent / 100f);
         float modifiedDamage = damageInfo.DamageAmount * multiplier;
 
         if (modifiedDamage <= CurrentShield)
         {
-            // Shield has enough armor to absorb the hit entirely
             CurrentShield -= modifiedDamage;
             timer = settings.regenDelay;
 
             OnShieldDamaged?.Invoke(CurrentShield, gameObject);
+            return 0f; 
         }
         else
         {
-            // Overflow criteria: Calculate raw damage amount absorbed before breaking
             float shieldAbsorbedRaw = CurrentShield / multiplier;
             float leftoverDamage = damageInfo.DamageAmount - shieldAbsorbedRaw;
 
@@ -81,11 +74,12 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             OnShieldDamaged?.Invoke(CurrentShield, gameObject);
             OnShieldBroken?.Invoke(gameObject);
 
-            if (healthScript != null)
-            {
-                damageInfo.DamageAmount = leftoverDamage;
-                healthScript.TakeDamage(damageInfo);
-            }
+            return leftoverDamage; 
         }
+    }
+
+    public void TakeDamage(DamageInfo damageInfo)
+    {
+        AbsorbDamageAndReturnOverflow(damageInfo);
     }
 }

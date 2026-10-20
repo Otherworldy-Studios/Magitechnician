@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class ShieldTester : MonoBehaviour
 {
     public ShieldSystem shield;
+    public Healthbar health;
 
     void OnEnable()
     {
@@ -34,18 +35,24 @@ public class ShieldTester : MonoBehaviour
 
             if (shield != null)
             {
-                shield.TakeDamage(info);
+                float overflow = shield.AbsorbDamageAndReturnOverflow(info);
+
+                if (overflow > 0f && health != null)
+                {
+                    info.DamageAmount = overflow;
+                    health.TakeDamage(info);
+                }
             }
         }
     }
 
     void TestDamageEvent(float currentShield, GameObject obj)
     {
-        Debug.Log("Shield took damage! Current shield value is: " + currentShield);
+        Debug.Log("Shield took damage. Current shield is now: " + currentShield);
     }
 
     void TestBreakEvent(GameObject obj)
     {
-        Debug.LogWarning("Shield broke completely!");
+        Debug.Log("Shield broke completely!");
     }
 }
