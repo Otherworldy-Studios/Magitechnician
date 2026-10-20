@@ -12,6 +12,7 @@ public class ShieldTester : MonoBehaviour
         {
             shield.OnShieldDamaged += TestDamageEvent;
             shield.OnShieldBroken += TestBreakEvent;
+            shield.OnShieldRestored += TestRestoreEvent; // Track the new restoration event criteria!
         }
     }
 
@@ -21,6 +22,7 @@ public class ShieldTester : MonoBehaviour
         {
             shield.OnShieldDamaged -= TestDamageEvent;
             shield.OnShieldBroken -= TestBreakEvent;
+            shield.OnShieldRestored -= TestRestoreEvent;
         }
     }
 
@@ -53,6 +55,11 @@ public class ShieldTester : MonoBehaviour
 
     void TestBreakEvent(GameObject obj)
     {
-        Debug.Log("Shield broke completely!");
+        Debug.Log("Shield broke completely");
+    }
+
+    void TestRestoreEvent(GameObject obj)
+    {
+        Debug.Log("Shield fully restored back to 100% capacity");
     }
 }

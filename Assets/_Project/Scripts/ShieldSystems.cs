@@ -10,6 +10,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
 
     public event Action<float, GameObject> OnShieldDamaged;
     public event Action<GameObject> OnShieldBroken;
+    public event Action<GameObject> OnShieldRestored;
 
     private float timer;
 
@@ -31,12 +32,18 @@ public class ShieldSystem : MonoBehaviour, IDamageable
         }
         else if (CurrentShield < settings.maxShield)
         {
+            float previousShield = CurrentShield;
             CurrentShield += settings.regenRate * Time.deltaTime;
             CurrentShield = Mathf.Clamp(CurrentShield, 0, settings.maxShield);
 
             if (CurrentShield > 0)
             {
                 IsBroken = false;
+            }
+
+            if (previousShield < settings.maxShield && CurrentShield >= settings.maxShield)
+            {
+                OnShieldRestored?.Invoke(gameObject);
             }
         }
     }
@@ -47,7 +54,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
 
         if (CurrentShield <= 0 || IsBroken)
         {
-            timer = settings.brokenRegenDelay; // Nikita's requested fix
+            timer = settings.brokenRegenDelay;
             return damageInfo.DamageAmount;
         }
 
@@ -60,7 +67,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             timer = settings.regenDelay;
 
             OnShieldDamaged?.Invoke(CurrentShield, gameObject);
-            return 0f; 
+            return 0f;
         }
         else
         {
@@ -74,7 +81,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             OnShieldDamaged?.Invoke(CurrentShield, gameObject);
             OnShieldBroken?.Invoke(gameObject);
 
-            return leftoverDamage; 
+            return leftoverDamage;
         }
     }
 
