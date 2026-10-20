@@ -9,6 +9,5 @@ public class GunBarrel : GunPart
     [SerializeField] private float _accuracy = 85.0f;
     [SerializeField] private float _spread = 1.0f;
     
-    
     public override GunPartType PartType => GunPartType.Barrel;
 }
