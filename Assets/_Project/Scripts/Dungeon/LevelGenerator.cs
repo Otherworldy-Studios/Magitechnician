@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.LevelGenerator.Utility;
-using _Project.Scripts.LevelGenerator.Utility.System.Collections.Generic;
-using Unity.VisualScripting;
+using _Project.Scripts.Dungeon.Utility;
+using _Project.Scripts.Dungeon.Utility.System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-namespace _Project.Scripts.LevelGenerator
+namespace _Project.Scripts.Dungeon
 {
     [Serializable]
     struct WeightedRoom
@@ -22,7 +21,7 @@ namespace _Project.Scripts.LevelGenerator
     
     public class LevelGenerator : MonoBehaviour
     {
-        private enum Direction
+        public enum Direction
         {
             North,
             South,

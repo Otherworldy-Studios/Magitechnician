@@ -1,4 +1,4 @@
-namespace _Project.Scripts.LevelGenerator.Utility
+namespace _Project.Scripts.Dungeon.Utility
 {
     public class LinearCongruentialGenerator
     {

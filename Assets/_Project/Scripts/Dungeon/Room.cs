@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace _Project.Scripts.LevelGenerator
+namespace _Project.Scripts.Dungeon
 {
     public class Room : MonoBehaviour
     {
