@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb738f89001c144429d2dfe120ee9b94, type: 3}
   m_Name: SO_TestGun_BarrelAlt
   m_EditorClassIdentifier: Assembly-CSharp::GunBarrel
-  _partPrefab: {fileID: 2881647987052027899, guid: 15a366c1b1eba5d4696d022d81e1819b, type: 3}
-  _partName: TestGun Barrel
+  _partPrefab: {fileID: 2881647987052027899, guid: b0be8fb8944344af587fd8e90e9d3478, type: 3}
+  _partName: TestGun Barrel Alternative
   _range: 100
+  _damage: 5
+  _bulletSpeed: 200
+  _accuracy: 85
+  _spread: 1
