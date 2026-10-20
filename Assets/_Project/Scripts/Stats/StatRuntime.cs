@@ -27,9 +27,7 @@ public class StatRuntime : MonoBehaviour
 
         foreach (var (modifierID, modifier) in statModifiers)
         {
-            // Reason for Error: 'additive' is of type float and .type is modifierType, which is an enum.
-            // Fix for Error: Instead of this, you should write out modifierType.Additive in place of 'additive'
-            if (statModifiers[modifierID].type == additive)
+            if (statModifiers[modifierID].type == modifierType.Additive)
             {
                 additive += statModifiers[modifierID].value;
             }
@@ -50,7 +48,6 @@ public class StatRuntime : MonoBehaviour
             if (s.statID == statID)
                 return s.GetStatValue();
         }
-        // Reason for Error: No base return statement given
-        // Fix for Error: Do return 0f;
+        return 0f;
     }
 }

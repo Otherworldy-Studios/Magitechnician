@@ -6,9 +6,9 @@ using System.Collections.Generic;
 [System.Serializable]
 public class StatBlock : ScriptableObject
 {
-    private string[] stats;
+    private Stat[] stats;
 
-    public string[] GetStats()
+    public Stat[] GetStats()
     {
         return stats;
     }
