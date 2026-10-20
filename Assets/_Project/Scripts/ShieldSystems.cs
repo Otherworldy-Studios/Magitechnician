@@ -8,9 +8,9 @@ public class ShieldSystem : MonoBehaviour, IDamageable
     public float CurrentShield { get; private set; }
     public bool IsBroken { get; private set; }
 
-    public event Action<float, GameObject> OnShieldDamaged;
-    public event Action<GameObject> OnShieldBroken;
-    public event Action<GameObject> OnShieldRestored;
+    public event Action<float> OnShieldDamaged;
+    public event Action OnShieldBroken;
+    public event Action OnShieldRestored;
 
     private float timer;
 
@@ -43,7 +43,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
 
             if (previousShield < settings.maxShield && CurrentShield >= settings.maxShield)
             {
-                OnShieldRestored?.Invoke(gameObject);
+                OnShieldRestored?.Invoke();
             }
         }
     }
@@ -66,7 +66,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             CurrentShield -= modifiedDamage;
             timer = settings.regenDelay;
 
-            OnShieldDamaged?.Invoke(CurrentShield, gameObject);
+            OnShieldDamaged?.Invoke(CurrentShield);
             return 0f;
         }
         else
@@ -78,8 +78,8 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             IsBroken = true;
             timer = settings.brokenRegenDelay;
 
-            OnShieldDamaged?.Invoke(CurrentShield, gameObject);
-            OnShieldBroken?.Invoke(gameObject);
+            OnShieldDamaged?.Invoke(CurrentShield);
+            OnShieldBroken?.Invoke();
 
             return leftoverDamage;
         }
