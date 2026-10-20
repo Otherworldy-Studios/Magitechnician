@@ -120,6 +120,7 @@ namespace _Project.Scripts.LevelGenerator
             
             Room startRoom = Instantiate(GetRandomStartRoom(), 
                 gameObject.transform.position, Quaternion.identity);
+            startRoom.Id = $"Start{(startRoom != null ? 1 : 0)}";
             
             _startRoom = startRoom;
             
@@ -178,6 +179,7 @@ namespace _Project.Scripts.LevelGenerator
                         Room nextRoom = Instantiate(GetRandomCombatRoom(),
                             room.gameObject.transform.position + (_directions[direction] * _roomOffset),
                             Quaternion.identity);
+                        nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
                         _roomGrid[added.x, added.y] = nextRoom;
 
@@ -240,6 +242,8 @@ namespace _Project.Scripts.LevelGenerator
                 farthest.gameObject.transform.position + (dir * _roomOffset),
                 Quaternion.identity);
             
+            end.Id = $"End{(end != null ? 1 : 0)}";
+            
             switch (direction)
             {
                 case Direction.North:
@@ -260,7 +264,7 @@ namespace _Project.Scripts.LevelGenerator
                     break;
             }
             
-            onMapGenerated.Invoke();
+            onMapGenerated?.Invoke();
         }
 
         private Room GetFarthest()
