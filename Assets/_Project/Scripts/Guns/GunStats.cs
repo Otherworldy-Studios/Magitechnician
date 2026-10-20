@@ -1,16 +1,18 @@
+using System;
 using UnityEngine;
 
-public class GunStats : MonoBehaviour
+[Serializable]
+public struct GunStats
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float range;
+    public float damage;
+    public float bulletSpeed;
+    public float accuracy;
+    public float spread;
+    public float fireRate;
+    public FireMode fireMode;
+    public int magazineSize;
+    public float reloadSpeed;
+    public AmmoType ammoType;
+    public float zoom;
 }
