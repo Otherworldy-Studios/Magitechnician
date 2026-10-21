@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.LevelGenerator;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,16 +20,15 @@ public class GameManager : MonoBehaviour
     public static event Action OnGameWin;
     public static event Action OnGenerateRequested;
     public static event Action OnRunStart;
-    public event Action<GameState> OnGameStateChanged;
+    public event Action<GameState> OnGameStateChanged; //each rom has a modifier REMINDER RMEINDER REMINDER RMEINDER
     
-    public float StartTime { get; private set; }
-    public float RunTime { get; private set; }
-    public float RoomTime { get; private set; } //should rooms carry their own timer?
-
+    public float StartTime { get; private set; } //MUST BE EQUALIZED
+    
     [SerializeField] private GameState currentState; //serialized for viewing in editor
 
     private bool _isPaused;
-    
+    private float _runTime;
+    //should rooms carry their own timer? i think so 
     
     private void Awake()
     {
@@ -39,12 +39,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         PH_UIManager.OnPauseRequested += TogglePause;
-        PH_DungeonManager.OnGenerateComplete += StartRun;
+        LevelGenerator.OnMapGenerated += StartRun;
     }
 
-    private void Update()
+    public float GetRunTime()
     {
-        StartTime = Time.time;
+        _runTime = Time.time - StartTime; //necessary step to equalize the Time.time
+        return _runTime;
     }
 
     private void ChangeState(GameState newState)
@@ -79,7 +80,7 @@ public class GameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(currentState); 
     }
 
-    private void InitializeRun() //generation of layout, and helps move towards playing
+    private void InitializeRun() //generation of layout, and helps move towards playing, essentially when the player enters the hubs start run portal
     {
         
         //ask to generate run
@@ -91,9 +92,8 @@ public class GameManager : MonoBehaviour
 
     private void StartRun()
     {
-        OnRunStart?.Invoke();
         ChangeState(GameState.Playing);
-        StartTime = 0;
+        OnRunStart?.Invoke();
     }
     
     private void TogglePause()
@@ -111,7 +111,7 @@ public class GameManager : MonoBehaviour
     }
     private void EnterPlaying()
     {
-        //start a timer based off Time.time for the stat
+        StartTime = Time.time; //start time is equalized to 0, showing it will be a crazy ass number
         //give player full control over their character n such, systems all working
     }
     private void EnterMenu()
@@ -127,13 +127,19 @@ public class GameManager : MonoBehaviour
     private void EnterDead()
     {
         OnGameOver?.Invoke();
-        //start the process to reset to hub/menu
+        ResetGame();
     }
 
     private void EnterWin()
     {
         OnGameWin?.Invoke();
-        //start the process to reset to hub/menu
+        ResetGame();
+    }
+
+    private void ResetGame()
+    {
+        
+        ChangeState(GameState.Hub);
     }
     
     //track player room
@@ -189,11 +195,6 @@ public class PH_UIManager : MonoBehaviour
 public class PH_RoomManager : MonoBehaviour //each room cares about its own wave?
 {
     public static event Action OnRoomEntered;
-}
-
-public class PH_DungeonManager : MonoBehaviour
-{
-    
 }
 
 public class PH_HubManager : MonoBehaviour //unsure if this needs to be a future thing, im currently assuming multiple systems would like to know whether someones in
