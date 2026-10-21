@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using _Project.Scripts.LevelGenerator;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,18 +15,30 @@ public class GameManager : MonoBehaviour
         Dead, //game over
         Win
     }
-    public static GameManager Instance { get; private set; } //singleton just in case, assumed GameManager persists between scenes
+
+    public enum RunResult
+    {
+        Victory,
+        Lose,
+    }
+    public static GameManager Instance { get; private set; } //assumed GameManager persists between scenes
     
     public static event Action OnGameOver;
     public static event Action OnGameWin;
-    public static event Action OnGenerateRequested;
+    public static event Action OnGenerateRequested; //an event so that the UI can listen and add a loading thing
     public static event Action OnRunStart;
-    public event Action<GameState> OnGameStateChanged; //each rom has a modifier REMINDER RMEINDER REMINDER RMEINDER
+    public static event Action<bool> OnPauseToggle;
+    public event Action<GameState> OnGameStateChanged; 
     
     public float StartTime { get; private set; } //MUST BE EQUALIZED
+    public float EndTime { get; private set; }
+   
+    public float CurrentRoom { get; private set; }
+    public float RunTime => Time.time - StartTime;
     
     [SerializeField] private GameState currentState; //serialized for viewing in editor
-
+    [SerializeField] private PH_Player playerCharacter;
+    [SerializeField] private Room[,] currentDungeon;
     private bool _isPaused;
     private float _runTime;
     //should rooms carry their own timer? i think so 
@@ -39,7 +52,10 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         PH_UIManager.OnPauseRequested += TogglePause;
-        LevelGenerator.OnMapGenerated += StartRun;
+        PH_UIManager.OnResetRequested += ResetGame;
+        PH_UIManager.OnStartRequested += StartHub;
+        PH_LevelGenerator.OnMapGenerated += StartRun;
+        PH_Player.OnPlayerDeath += PlayerDied;
     }
 
     public float GetRunTime()
@@ -48,119 +64,179 @@ public class GameManager : MonoBehaviour
         return _runTime;
     }
 
-    private void ChangeState(GameState newState)
+    public void RequestGameEnd(RunResult result)
     {
-        if (currentState == newState)
+        if (currentState != GameState.Playing)
         {
-            return; 
+            return;
         }
 
-        //currently no exit state switch but no use for it right now
-        
-        currentState = newState; 
-        
-        switch (newState)
+        switch (result)
         {
-            case GameState.Menu:
-                EnterMenu();
+            case RunResult.Victory:
+                ChangeState(GameState.Win);
                 break;
-            case GameState.Hub:
-                EnterHub();
-                break;
-            case GameState.Playing:
-                EnterPlaying();
-                break;
-            case GameState.Dead:
-                EnterDead();
-                break;
-            case GameState.Win:
-                EnterWin();
+            case RunResult.Lose:
+                ChangeState(GameState.Dead);
                 break;
         }
-        OnGameStateChanged?.Invoke(currentState); 
     }
 
-    private void InitializeRun() //generation of layout, and helps move towards playing, essentially when the player enters the hubs start run portal
+    private void PlayerDied() //i personally prefer having these simple named methods for events rather than lambdaing it to 
     {
-        
-        //ask to generate run
-        //move player over to the first room
+        RequestGameEnd(RunResult.Lose);
+    }
+
+    #region StateBackbone
+
+    private void ChangeState(GameState newState)
+        {
+            if (currentState == newState)
+            {
+                return; 
+            }
+    
+            if (_isPaused)
+            {
+                TogglePause(); //unpause when quiting to menu or hub
+            }
+            
+            currentState = newState; 
+            
+            switch (newState)
+            {
+                case GameState.Menu:
+                    EnterMenu();
+                    break;
+                case GameState.Hub:
+                    EnterHub();
+                    break;
+                case GameState.Playing:
+                    EnterPlaying();
+                    break;
+                case GameState.Dead:
+                    EnterDead();
+                    break;
+                case GameState.Win:
+                    EnterWin();
+                    break;
+            }
+            OnGameStateChanged?.Invoke(currentState); 
+        }
+    
+    private void EnterPlaying()
+        {
+            StartTime = Time.time; //start time is equalized to 0, showing it will be a crazy ass number
+            //give player full control over their character n such, systems all working
+            
+        }
+        private void EnterMenu()
+        {
+            //probably some code here about spawning back in the menu and despawning everything
+        }
+    
+        private void EnterHub()
+        {
+            
+        }
+    
+        private void EnterDead()
+        {
+            CaptureTime();
+            OnGameOver?.Invoke();
+        }
+    
+        private void EnterWin()
+        {
+            CaptureTime();
+            OnGameWin?.Invoke();
+        }
+
+    #endregion
+    
+    private void InitializeRun() //unsure how to trigger this
+    {
         OnGenerateRequested?.Invoke(); 
-        
-        
+    }
+
+    private void StartHub()
+    {
+        ChangeState(GameState.Hub);
     }
 
     private void StartRun()
     {
         ChangeState(GameState.Playing);
+        //teleport player function should be its own script?
+        //get 1st room reference
         OnRunStart?.Invoke();
     }
     
+    #region Misc
+    
     private void TogglePause()
-    {
-        if (_isPaused)
         {
-            Time.timeScale = 1;
-            _isPaused = false;
+            if (currentState != GameState.Playing) 
+            {
+                return;
+            }
+    
+            if (_isPaused)
+            {
+                Time.timeScale = 1;
+                _isPaused = false;
+            }
+            else
+            {
+                Time.timeScale = 0;
+                _isPaused = true;
+            }
+            OnPauseToggle?.Invoke(_isPaused);
         }
-        else
-        {
-            Time.timeScale = 0;
-            _isPaused = true;
-        }
-    }
-    private void EnterPlaying()
-    {
-        StartTime = Time.time; //start time is equalized to 0, showing it will be a crazy ass number
-        //give player full control over their character n such, systems all working
-    }
-    private void EnterMenu()
-    {
-        //probably some code here about spawning back in the menu and despawning everything
-    }
-
-    private void EnterHub()
-    {
-        
-    }
-
-    private void EnterDead()
-    {
-        OnGameOver?.Invoke();
-        ResetGame();
-    }
-
-    private void EnterWin()
-    {
-        OnGameWin?.Invoke();
-        ResetGame();
-    }
+    
+    
+    #endregion
+    
+    
 
     private void ResetGame()
     {
-        
-        ChangeState(GameState.Hub);
+        if (currentState == GameState.Win || currentState == GameState.Dead) //only allow the reset request to work on win/loss
+        {
+           ChangeState(GameState.Hub); 
+        }
     }
+
+    #region stats
+
+    private void CaptureTime() //for the end of the run for stats
+    {
+        EndTime = Time.time - StartTime;
+        //some extra time adding up all the room times? do this when the rooms are up
+    }
+    
+    //EnemiesKilled
+    //DamageTaken
+
+    
+    #endregion
+    
     
     //track player room
     
-    //generate rooms on playing, take in their room id
-    
     //subscribe to room on enter event, wavemanager will probably also use that
     
-    //when ui sends signal that 
-    
-    //stats,
-    
-    //on UI event call, toggle pause
     
     
 }
+
+#region PLACEHOLDERS
 
 public class PH_UIManager : MonoBehaviour
 {
     public static event Action OnPauseRequested;
     public static event Action OnStartRequested;
+    public static event Action OnResetRequested;
 
     
     private void Start()
@@ -191,13 +267,22 @@ public class PH_UIManager : MonoBehaviour
     }
     
 }
-
 public class PH_RoomManager : MonoBehaviour //each room cares about its own wave?
 {
     public static event Action OnRoomEntered;
 }
-
-public class PH_HubManager : MonoBehaviour //unsure if this needs to be a future thing, im currently assuming multiple systems would like to know whether someones in
+public class PH_LevelGenerator : MonoBehaviour
 {
-    
+    public static event Action OnMapGenerated;
 }
+
+public class PH_Player : MonoBehaviour
+{
+    public static event Action OnPlayerDeath;
+    private void OnPlayerDied()
+    {
+        OnPlayerDeath?.Invoke();
+    }
+}
+
+#endregion
