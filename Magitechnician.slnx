@@ -1,4 +1,5 @@
 ﻿<Solution>
+<Solution>
   <Project Path="MoreMountains.Tools.csproj" />
   <Project Path="MoreMountains.Tools.Editor.csproj" />
   <Project Path="Lofelt.NiceVibrations.csproj" />
