@@ -4,7 +4,9 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Debug tool: one key cycles through the gun's sockets, the other cycles the part in that socket.
+// Debug tool: one key lets you swap gun parts at runtime with two keys.
+// "[" moves to the next socket, and "]" cycles through the parts you’ve assigned to that socket.
+// After every press it writes a readout of everything equipped into its own Inspector fields.
 public class PartSwapTest : MonoBehaviour
 {
     [SerializeField] private Gun _gun;
@@ -98,6 +100,9 @@ public class PartSwapTest : MonoBehaviour
         RefreshReadout();
     }
 
+    //adds 1 to _currentSocket and loops back at the end. It skips any socket that the frame doesn’t have or that has an empty array.
+    //It then calls SyncPartIndex, which looks up which part is currently equipped in that socket and points _currentPart at it.
+    //That way the next ] press moves to the other part instead of re-equipping the same one. If nothing from the list is equipped, the index is -1, so the next press lands on element 0.
     private void OnNextSocket(InputAction.CallbackContext context)
     {
         SelectNextSocket();
