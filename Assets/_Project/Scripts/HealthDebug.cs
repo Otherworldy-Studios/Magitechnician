@@ -2,6 +2,11 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+/// <summary>
+/// Provides debugging controls for health, damage,
+/// healing, status effects, and invincibility.
+/// </summary>
 public class HealthDebug : MonoBehaviour
 {
     [Header("Instant heal")]
@@ -49,7 +54,7 @@ public class HealthDebug : MonoBehaviour
             _playerMovement = GetComponent<PlayerMovement>();
     }
     
-    // Just in case
+    // Releases the debug invincibility token when disabled
     private void OnDisable()
     {
         if (_invincibilityActive && _health)
@@ -73,6 +78,9 @@ public class HealthDebug : MonoBehaviour
         UpdateInvincibility();
     }
 
+    /// <summary>
+    /// Handles keyboard shortcuts for player health debugging.
+    /// </summary>
     private void AnyEntityDebug()
     {
         if (_heal > 0f && _apply)
@@ -106,6 +114,9 @@ public class HealthDebug : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Handles keyboard shortcuts for player health debugging.
+    /// </summary>
     private void PlayerDebug()
     {
         if(!_playerMovement || Keyboard.current == null)
