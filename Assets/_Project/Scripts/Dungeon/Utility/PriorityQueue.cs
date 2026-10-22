@@ -7,7 +7,7 @@ using UnityEngine;
 // Ok to be honest, I don't even know where this came from, I just stole it
 // from my last build because we had to download it from I don't even know where
 
-namespace _Project.Scripts.LevelGenerator.Utility
+namespace _Project.Scripts.Dungeon.Utility
 {
     // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
