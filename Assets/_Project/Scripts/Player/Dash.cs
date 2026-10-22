@@ -8,6 +8,7 @@ public class Dash : MonoBehaviour
     
     [Header("References")]
     [SerializeField] private Transform _orientation;
+    [SerializeField] private Healthbar _healthbar;
     
     public bool IsDashing { get; private set; }
     public Vector3 DashDirection {get; private set;}
@@ -17,11 +18,22 @@ public class Dash : MonoBehaviour
     private float _dashTimer;
     private float _nextDashTime;
     private bool _intendToDash;
+    
+    private object invincibilityToken;
+    private bool _wasInvincible = false;
 
     private void Awake()
     {
         if(!_orientation)
             Debug.LogError($"{nameof(Dash)} requires a {nameof(_orientation)}");
+        
+        if (!_healthbar)
+            _healthbar = GetComponent<Healthbar>();
+    }
+
+    private void OnDisable()
+    {
+        CancelDash();
     }
 
     public Vector3 GetDashVelocity()
@@ -45,8 +57,12 @@ public class Dash : MonoBehaviour
             _dashTimer += Time.deltaTime;
 
             if (_dashTimer >= _settings.DashDuration)
+            {
+                CancelDash();
                 IsDashing = false;
-
+            }
+            
+            HandleInvincibility();
             return;
         }
 
@@ -81,6 +97,45 @@ public class Dash : MonoBehaviour
             return;
 
         IsDashing = false;
+        StopDashInvincibility();
+        _wasInvincible = false;
+    }
+
+    private void HandleInvincibility()
+    {
+        if(!_healthbar || !_settings.InvincibilityEnabled)
+            return;
+        
+        bool shouldBeInvincible = IsDashing &&
+            _dashTimer >= _settings.InvincibilityStart &&
+            _dashTimer < _settings.InvincibilityStart + _settings.InvincibilityDuration;
+
+        if (shouldBeInvincible == _wasInvincible)
+            return;
+        
+        if(shouldBeInvincible)
+            StartDashInvincibility();
+        else
+            StopDashInvincibility();
+            
+        _wasInvincible = shouldBeInvincible;
+    }
+    
+    private void StartDashInvincibility()
+    {
+        if (invincibilityToken != null || !_healthbar || !_settings.InvincibilityEnabled)
+            return;
+
+        invincibilityToken = _healthbar.StartInvincibility();
+    }
+
+    private void StopDashInvincibility()
+    {
+        if(!_healthbar || !_settings.InvincibilityEnabled)
+            return;
+        
+        _healthbar.StopInvincibility(invincibilityToken);
+        invincibilityToken = null;
     }
     
     public void IntendToDash() => _intendToDash = true;
