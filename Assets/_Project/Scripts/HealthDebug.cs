@@ -17,6 +17,9 @@ public class HealthDebug : MonoBehaviour
     [Header("Damage over time")]
     [SerializeField] private float _damageOverTime;
     [SerializeField] private float _damageTimer;
+    
+    [Header("Invincibility")]
+    [SerializeField] private bool _invincibilityEnabled;
 
     [Space(5)] [SerializeField] private bool _apply;
     
@@ -24,16 +27,19 @@ public class HealthDebug : MonoBehaviour
     [SerializeField] private PlayerMovement _playerMovement;
     
     [Header("Player Debug Controls")]
-    [TextArea(5, 8)]
+    [TextArea(6, 8)]
     [SerializeField] private string _instructions =
-        "F1 - Heal 25 HP\n" +
-        "F2 - Deal 25 damage\n" +
-        "F3 - Toggle 50 damage over 10 seconds\n" +
-        "F4 - Toggle 50 heal over 10 seconds";
-
-    private bool _isDamageOverTime = false;
-    private bool _isHealOverTime = false;
+        "F1 | Heal 25 HP\n" +
+        "F2 | Deal 25 damage\n" +
+        "F3 | Toggle damage over time (50 damage / 10s)\n" +
+        "F4 | Toggle heal over time (50 HP / 10s)\n" +
+        "F5 | Toggle Invincibility(doesn't need apply)";
     
+    private object _invincibilityToken;
+    private bool _invincibilityActive;
+    
+    private float _dotTimeRemaining; // Damage over time
+    private float _hotTimeRemaining; // Heal over time
 
     private void Awake()
     {
@@ -43,6 +49,19 @@ public class HealthDebug : MonoBehaviour
             _playerMovement = GetComponent<PlayerMovement>();
     }
     
+    // Just in case
+    private void OnDisable()
+    {
+        if (_invincibilityActive && _health)
+        {
+            _health.StopInvincibility(_invincibilityToken);
+        }
+
+        _invincibilityToken = null;
+        _invincibilityActive = false;
+        _invincibilityEnabled = false;
+    }
+    
     private void Update()
     {
         if (!_health)
@@ -50,6 +69,8 @@ public class HealthDebug : MonoBehaviour
         
         AnyEntityDebug();
         PlayerDebug();
+        UpdateDebugTimers();
+        UpdateInvincibility();
     }
 
     private void AnyEntityDebug()
@@ -70,7 +91,7 @@ public class HealthDebug : MonoBehaviour
 
         if (_damageOverTime > 0f && _damageTimer > 0f && _apply)
         {
-            _health.TakeDamageOverTime(new DamageInfo(){DamageAmount = _damageOverTime}, _damageTimer);
+            StartDebugDoT(_damageOverTime, _damageTimer);
             _damageOverTime = 0f;
             _damageTimer = 0f;
             _apply = false;
@@ -78,7 +99,7 @@ public class HealthDebug : MonoBehaviour
 
         if (_healOverTime > 0f && _healTimer > 0f && _apply)
         {
-            _health.RegenHealthOverTime(_healOverTime, _healTimer);
+            StartDebugHoT(_healOverTime, _healTimer);
             _healOverTime = 0f;
             _healTimer = 0f;
             _apply = false;
@@ -87,7 +108,7 @@ public class HealthDebug : MonoBehaviour
     
     private void PlayerDebug()
     {
-        if(!_playerMovement)
+        if(!_playerMovement || Keyboard.current == null)
             return;
         
         if (Keyboard.current.f1Key.wasPressedThisFrame)
@@ -102,33 +123,76 @@ public class HealthDebug : MonoBehaviour
 
         if (Keyboard.current.f3Key.wasPressedThisFrame)
         {
-            _isDamageOverTime = !_isDamageOverTime;
-
-            if (_isDamageOverTime)
+            if (_dotTimeRemaining <= 0f)
             {
-                _health.TakeDamageOverTime(
-                    new DamageInfo() { DamageAmount = 50f }, 10f);
+                StartDebugDoT(50f, 10f);
             }
             else
             {
-                _health.TakeDamageOverTime(
-                    new DamageInfo() { DamageAmount = 0f }, 0f);
+                _health.TakeDamageOverTime(new DamageInfo { DamageAmount = 0f }, 0f);
+
+                _dotTimeRemaining = 0f;
             }
         }
 
         if (Keyboard.current.f4Key.wasPressedThisFrame)
         {
-            _isHealOverTime = !_isHealOverTime;
-            
-            if (_isHealOverTime)
+            if (_hotTimeRemaining <= 0f)
             {
-                _health.RegenHealthOverTime(50f, 10f);
-            } 
+                StartDebugHoT(50f, 10f);
+            }
             else
             {
                 _health.RegenHealthOverTime(0f, 0f);
+                _hotTimeRemaining = 0f;
             }
         }
+
+        if (Keyboard.current.f5Key.wasPressedThisFrame)
+        {
+            _invincibilityEnabled = !_invincibilityEnabled;
+        }
+    }
+    
+    private void UpdateDebugTimers()
+    {
+        if (_dotTimeRemaining > 0f)
+            _dotTimeRemaining = Mathf.Max(0f, _dotTimeRemaining - Time.deltaTime);
+
+        if (_hotTimeRemaining > 0f)
+            _hotTimeRemaining = Mathf.Max(0f, _hotTimeRemaining - Time.deltaTime);
+    }
+    
+    private void UpdateInvincibility()
+    {
+        if (_invincibilityEnabled == _invincibilityActive)
+            return;
+
+        if (_invincibilityEnabled)
+        {
+            _invincibilityToken = _health.StartInvincibility();
+        }
+        else
+        {
+            _health.StopInvincibility(_invincibilityToken);
+            _invincibilityToken = null;
+        }
+
+        _invincibilityActive = _invincibilityEnabled;
+    }
+    
+    // Damage over time
+    private void StartDebugDoT(float damage, float duration)
+    {
+        _health.TakeDamageOverTime(new DamageInfo { DamageAmount = damage }, duration);
+        _dotTimeRemaining = duration;
+    }
+    
+    //Heal over time
+    private void StartDebugHoT(float healing, float duration)
+    {
+        _health.RegenHealthOverTime(healing, duration);
+        _hotTimeRemaining = duration;
     }
 }
 #endif
