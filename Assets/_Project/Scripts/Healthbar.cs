@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Object = System.Object;
 
 public class Healthbar : MonoBehaviour, IDamageable
 {
@@ -17,8 +19,10 @@ public class Healthbar : MonoBehaviour, IDamageable
     
     private float _healPerSecond;
     private float _healTimer = 0f;
+
+    private readonly HashSet<Object> _invincibilityTokens = new();
     
-    private bool isInvincible = false;
+    private bool _isInvincible => _invincibilityTokens.Count > 0;
 
     private void Awake()
     {
@@ -58,7 +62,7 @@ public class Healthbar : MonoBehaviour, IDamageable
     {
         if (CurrentHealth <= 0 || damageInfo.DamageAmount <= 0) return;
 
-        if (isInvincible)
+        if (_isInvincible)
             return; 
 
         CurrentHealth -= damageInfo.DamageAmount;
@@ -101,9 +105,20 @@ public class Healthbar : MonoBehaviour, IDamageable
         _healTimer = time;
     }
     
-    public void SetInvincible(bool value) //Switch Tool
+    public object StartInvincibility()
     {
-        isInvincible = value;
+        object token = new object();
+        _invincibilityTokens.Add(token);
+        
+        return token;
+    }
+
+    public void StopInvincibility(object token)
+    {
+        if (token == null)
+            return;
+        
+        _invincibilityTokens.Remove(token);
     }
     
     public void MakeInvincible(float invincibleTimeSeconds)
@@ -113,16 +128,10 @@ public class Healthbar : MonoBehaviour, IDamageable
 
     private IEnumerator InvincibilityTimer(float invincibleTimeSeconds)
     {
-        isInvincible = true;
-        
-        //Invicible started
+        object token = StartInvincibility();
         
         yield return new WaitForSeconds(invincibleTimeSeconds);
         
-        //Invicible ended
-        
-        isInvincible = false;
-        
+        StopInvincibility(token);
     }
-    
 }
