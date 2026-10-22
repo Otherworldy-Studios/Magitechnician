@@ -13,9 +13,13 @@ namespace _Project.Scripts.LevelGenerator
 
         [Header("Room Settings")] 
         [SerializeField]
-        private RoomType roomType;
+        private RoomType _roomType;
 
         [Header("Debug (Do not edit)")] 
+        
+        [SerializeField]
+        private string _id;
+        
         [SerializeField] 
         private Room _north;
 
@@ -48,10 +52,11 @@ namespace _Project.Scripts.LevelGenerator
             get => _west;
             set => _west = value;
         }
+        
+        public string Id { get => _id; set => _id = value; }
 
         void Start()
         {
-
         }
 
         void Update()
