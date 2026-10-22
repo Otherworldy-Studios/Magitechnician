@@ -12,5 +12,6 @@ namespace ScriptableSettings
         [field: Header ("Invincibility Settings")]
         [field: SerializeField] public float InvincibilityStart {get; private set;}  = 0.1f;
         [field: SerializeField] public float InvincibilityDuration {get; private set;}  = 0.1f;
+        [field: SerializeField] public bool InvincibilityEnabled {get; private set;}  = true;
     }
 }

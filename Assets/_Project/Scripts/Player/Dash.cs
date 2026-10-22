@@ -103,7 +103,7 @@ public class Dash : MonoBehaviour
 
     private void HandleInvincibility()
     {
-        if(!_healthbar)
+        if(!_healthbar || !_settings.InvincibilityEnabled)
             return;
         
         bool shouldBeInvincible = IsDashing &&
@@ -123,7 +123,7 @@ public class Dash : MonoBehaviour
     
     private void StartDashInvincibility()
     {
-        if (invincibilityToken != null || !_healthbar)
+        if (invincibilityToken != null || !_healthbar || !_settings.InvincibilityEnabled)
             return;
 
         invincibilityToken = _healthbar.StartInvincibility();
@@ -131,7 +131,7 @@ public class Dash : MonoBehaviour
 
     private void StopDashInvincibility()
     {
-        if(!_healthbar)
+        if(!_healthbar || !_settings.InvincibilityEnabled)
             return;
         
         _healthbar.StopInvincibility(invincibilityToken);
