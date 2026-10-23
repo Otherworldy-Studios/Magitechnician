@@ -35,6 +35,8 @@ public class RoomCompletionLootPool : ScriptableObject
     
     [SerializeField]
     private List<WeightedReward<GunPart>> _obtained; // This needs to be wiped manually in the inspector
+    
+    public List<WeightedReward<GunPart>> Obtained { get { return _obtained; } }
 
     // This gets really weird when there are multiple rooms rolling at once
     public List<WeightedReward<GunPart>> PickThree()

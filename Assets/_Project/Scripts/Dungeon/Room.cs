@@ -63,6 +63,9 @@ namespace _Project.Scripts.Dungeon
         public string Id { get => _id; set => _id = value; }
         
         public bool Complete { get => _complete; }
+        
+        // This should possibly be temporary
+        private List<WeightedReward<GunPart>> rewardOptions;
 
         void Start()
         {
@@ -76,6 +79,14 @@ namespace _Project.Scripts.Dungeon
             {
                 if (Keyboard.current.zKey.wasPressedThisFrame)
                     OnComplete();
+                
+                // Really truly terrible reward pick logic
+                if(Keyboard.current.digit1Key.wasPressedThisFrame)
+                    PickReward(0);
+                if(Keyboard.current.digit2Key.wasPressedThisFrame) 
+                    PickReward(1);
+                if(Keyboard.current.digit3Key.wasPressedThisFrame)
+                    PickReward(2);
             }
             #endif
         }
@@ -96,6 +107,28 @@ namespace _Project.Scripts.Dungeon
                     Debug.Log($"{_id} Completion Reward {i + 1}:" +
                               $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
                 }
+                
+                rewardOptions = rewards;
+            }
+        }
+
+        // This should probably be temporary
+        // Picks the reward at an index of options
+        // This needs to just be a player pickup thing
+        void PickReward(int reward)
+        {
+            if (rewardOptions == null || reward >= rewardOptions.Count)
+                return;
+
+            for (int i = 0; i < rewardOptions.Count; i++)
+            {
+                if (i == reward)
+                {
+                    Debug.Log($"{_id} Picked Reward {i + 1}");
+                    continue;
+                }
+
+                _lootPool.Obtained.Remove(rewardOptions[i]);
             }
         }
     }
