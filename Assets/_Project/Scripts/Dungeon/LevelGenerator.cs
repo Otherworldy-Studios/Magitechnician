@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.LevelGenerator.Utility;
-using _Project.Scripts.LevelGenerator.Utility.System.Collections.Generic;
-using Unity.VisualScripting;
+using _Project.Scripts.Dungeon.Utility;
+using _Project.Scripts.Dungeon.Utility.System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-namespace _Project.Scripts.LevelGenerator
+namespace _Project.Scripts.Dungeon
 {
     [Serializable]
     struct WeightedRoom
@@ -22,7 +21,7 @@ namespace _Project.Scripts.LevelGenerator
     
     public class LevelGenerator : MonoBehaviour
     {
-        private enum Direction
+        public enum Direction
         {
             North,
             South,
@@ -33,6 +32,9 @@ namespace _Project.Scripts.LevelGenerator
         private LinearCongruentialGenerator _random;
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
+        public event Action OnMapGenerated;
+
+        public Room[,] RoomGrid  { get  { return _roomGrid; } }
 
         [Header("Generator Settings")] 
         [SerializeField] private int _roomOffset;
@@ -118,6 +120,7 @@ namespace _Project.Scripts.LevelGenerator
             
             Room startRoom = Instantiate(GetRandomStartRoom(), 
                 gameObject.transform.position, Quaternion.identity);
+            startRoom.Id = $"Start{(startRoom != null ? 1 : 0)}";
             
             _startRoom = startRoom;
             
@@ -176,6 +179,7 @@ namespace _Project.Scripts.LevelGenerator
                         Room nextRoom = Instantiate(GetRandomCombatRoom(),
                             room.gameObject.transform.position + (_directions[direction] * _roomOffset),
                             Quaternion.identity);
+                        nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
                         _roomGrid[added.x, added.y] = nextRoom;
 
@@ -238,6 +242,8 @@ namespace _Project.Scripts.LevelGenerator
                 farthest.gameObject.transform.position + (dir * _roomOffset),
                 Quaternion.identity);
             
+            end.Id = $"End{(end != null ? 1 : 0)}";
+            
             switch (direction)
             {
                 case Direction.North:
@@ -257,6 +263,8 @@ namespace _Project.Scripts.LevelGenerator
                     end.East = farthest;
                     break;
             }
+            
+            OnMapGenerated?.Invoke();
         }
 
         private Room GetFarthest()

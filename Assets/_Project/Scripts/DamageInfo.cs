@@ -5,6 +5,4 @@ public struct DamageInfo {
     public Vector3 DamageDirection;
     public DamageType DamageType;
 }
-
 public enum DamageType {Physical, Fire, Ice, Electric, Poison}
-
