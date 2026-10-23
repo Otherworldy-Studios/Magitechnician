@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Dungeon.Utility
 {
@@ -19,7 +20,7 @@ namespace _Project.Scripts.Dungeon.Utility
         {
             _entries = new Dictionary<T, int>();
             _totalWeight = 0;
-            _random = new LinearCongruentialGenerator();
+            _random = new LinearCongruentialGenerator(Random.Range(-int.MaxValue, int.MaxValue));
         }
         
         public ItemSelector(int seed)
@@ -38,7 +39,7 @@ namespace _Project.Scripts.Dungeon.Utility
         /// <param name="weight">
         /// The weight of the item
         /// </param>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="System.ArgumentException">
         /// If the weight is less than or equal to 0
         /// </exception>
         public void AddItem(T item, int weight)
@@ -134,6 +135,9 @@ namespace _Project.Scripts.Dungeon.Utility
         /// </exception>
         public T Roll()
         {
+            if(_totalWeight <= 0)
+                return default(T);
+            
             long value = _random.Next(_totalWeight);
 
             foreach (var item in _entries.Keys)
@@ -148,6 +152,19 @@ namespace _Project.Scripts.Dungeon.Utility
             }
 
             throw new Exception("Impossible state");
+        }
+
+        /// <summary>
+        /// Rolls the ItemSelector and removes the rolled item
+        /// </summary>
+        /// <returns>
+        /// The rolled item
+        /// </returns>
+        public T RollWithRemoval()
+        {
+            T item = Roll();
+            RemoveItem(item);
+            return item;
         }
 
         /// <summary>
