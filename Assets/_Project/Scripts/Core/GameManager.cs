@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using _Project.Scripts.LevelGenerator;
+using _Project.Scripts.Dungeon;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -25,16 +25,16 @@ public class GameManager : MonoBehaviour
     
     public static event Action OnGameOver;
     public static event Action OnGameWin;
-    public static event Action OnGenerateRequested; //an event so that the UI can listen and add a loading thing
+    public static event Action OnGenerateRequested; 
     public static event Action OnRunStart;
     public static event Action<bool> OnPauseToggle;
     public event Action<GameState> OnGameStateChanged; 
     
-    public float StartTime { get; private set; } //MUST BE EQUALIZED
+    public float StartTime { get; private set; } 
     public float EndTime { get; private set; }
-   
-    public float CurrentRoom { get; private set; }
-    public float RunTime => Time.time - StartTime;
+    public float RunTime => Time.time - StartTime; 
+    
+    public Room CurrentRoom { get; private set; }
     
     [SerializeField] private GameState currentState; //serialized for viewing in editor
     [SerializeField] private PH_Player playerCharacter;
@@ -46,16 +46,28 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        DontDestroyOnLoad(gameObject);
         currentState = GameState.Menu;
     }
 
-    private void Start()
+    private void Start() 
     {
         PH_UIManager.OnPauseRequested += TogglePause;
         PH_UIManager.OnResetRequested += ResetGame;
         PH_UIManager.OnStartRequested += StartHub;
-        PH_LevelGenerator.OnMapGenerated += StartRun;
+        LevelGenerator.OnMapGenerated += StartRun;
         PH_Player.OnPlayerDeath += PlayerDied;
+        PH_Boss.OnBossDefeated += BossDefeated;
+        PH_RoomManager.OnRoomCleared += RoomCleared;
+
+    }
+
+    private void Update()
+    {
+        if (currentState == GameState.Hub && Input.GetKeyDown(KeyCode.K)) //DEBUG METHOD 
+        {
+            InitializeRun();
+        }
     }
 
     public float GetRunTime()
@@ -81,133 +93,150 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    
+    #region EventHandlers
 
-    private void PlayerDied() //i personally prefer having these simple named methods for events rather than lambdaing it to 
+    private void PlayerDied()  
     {
         RequestGameEnd(RunResult.Lose);
+    }
+    
+    private void StartHub()
+    {
+        ChangeState(GameState.Hub);
+    }
+    
+    private void StartRun(LevelGenerator generator) 
+    {
+        currentDungeon = generator.RoomGrid;
+        Room startRoom = generator.StartRoom;
+        CurrentRoom = startRoom;
+        
+        ChangeState(GameState.Playing);
+        //TODO: teleport player function should be its own script?
+        OnRunStart?.Invoke();
+    }
+
+    private void BossDefeated()
+    {
+        RequestGameEnd(RunResult.Victory);
+    }
+    
+    private void RoomCleared()
+    {
+        //room itself invokes the room clear? wave manager?
+        //allow the doors to open
+        //rewards shou
+    }
+    
+
+    #endregion
+    
+    private void InitializeRun() //TODO: triggered by hub system in whatever way, be it UI or portal
+    {
+        //DEBUG METHOD
+        OnGenerateRequested?.Invoke(); 
     }
 
     #region StateBackbone
 
     private void ChangeState(GameState newState)
+    {
+        if (currentState == newState)
         {
-            if (currentState == newState)
-            {
-                return; 
-            }
-    
-            if (_isPaused)
-            {
-                TogglePause(); //unpause when quiting to menu or hub
-            }
-            
-            currentState = newState; 
-            
-            switch (newState)
-            {
-                case GameState.Menu:
-                    EnterMenu();
-                    break;
-                case GameState.Hub:
-                    EnterHub();
-                    break;
-                case GameState.Playing:
-                    EnterPlaying();
-                    break;
-                case GameState.Dead:
-                    EnterDead();
-                    break;
-                case GameState.Win:
-                    EnterWin();
-                    break;
-            }
-            OnGameStateChanged?.Invoke(currentState); 
+            return; 
         }
+    
+        if (_isPaused)
+        {
+            TogglePause(); //unpause when quiting to menu or hub
+        }
+            
+        currentState = newState; 
+            
+        switch (newState)
+        {
+            case GameState.Menu:
+                EnterMenu();
+                break;
+            case GameState.Hub:
+                EnterHub();
+                break;
+            case GameState.Playing:
+                EnterPlaying();
+                break;
+            case GameState.Dead:
+                EnterDead();
+                break;
+            case GameState.Win:
+                EnterWin();
+                break;
+        }
+        OnGameStateChanged?.Invoke(currentState); 
+    }
     
     private void EnterPlaying()
-        {
-            StartTime = Time.time; //start time is equalized to 0, showing it will be a crazy ass number
-            //give player full control over their character n such, systems all working
+    {
+        StartTime = Time.time; //start time is equalized to 0, showing it will be a crazy ass number cause of time.time
+        //TODO: give player full control over their character n such, systems all working
+    }
+    private void EnterMenu()
+    {
+        //probably some code here about spawning back in the menu and despawning everything
+    }
+    
+    private void EnterHub()
+    {
             
-        }
-        private void EnterMenu()
-        {
-            //probably some code here about spawning back in the menu and despawning everything
-        }
+    }
     
-        private void EnterHub()
-        {
-            
-        }
+    private void EnterDead()
+    {
+        CaptureTime();
+        OnGameOver?.Invoke();
+    }
     
-        private void EnterDead()
-        {
-            CaptureTime();
-            OnGameOver?.Invoke();
-        }
-    
-        private void EnterWin()
-        {
-            CaptureTime();
-            OnGameWin?.Invoke();
-        }
+    private void EnterWin()
+    {
+        CaptureTime();
+        OnGameWin?.Invoke();
+    }
 
     #endregion
-    
-    private void InitializeRun() //unsure how to trigger this
-    {
-        OnGenerateRequested?.Invoke(); 
-    }
-
-    private void StartHub()
-    {
-        ChangeState(GameState.Hub);
-    }
-
-    private void StartRun()
-    {
-        ChangeState(GameState.Playing);
-        //teleport player function should be its own script?
-        //get 1st room reference
-        OnRunStart?.Invoke();
-    }
     
     #region Misc
     
     private void TogglePause()
+    {
+        if (currentState != GameState.Playing) 
         {
-            if (currentState != GameState.Playing) 
-            {
-                return;
-            }
-    
-            if (_isPaused)
-            {
-                Time.timeScale = 1;
-                _isPaused = false;
-            }
-            else
-            {
-                Time.timeScale = 0;
-                _isPaused = true;
-            }
-            OnPauseToggle?.Invoke(_isPaused);
+            return;
         }
     
+        if (_isPaused)
+        {
+            Time.timeScale = 1;
+            _isPaused = false;
+        }
+        else
+        {
+            Time.timeScale = 0;
+            _isPaused = true;
+        }
+        OnPauseToggle?.Invoke(_isPaused);
+    }
     
-    #endregion
-    
-    
-
     private void ResetGame()
     {
         if (currentState == GameState.Win || currentState == GameState.Dead) //only allow the reset request to work on win/loss
         {
-           ChangeState(GameState.Hub); 
+            ChangeState(GameState.Hub); 
         }
     }
+    
+    #endregion
 
-    #region stats
+    #region Stats
 
     private void CaptureTime() //for the end of the run for stats
     {
@@ -221,12 +250,7 @@ public class GameManager : MonoBehaviour
     
     #endregion
     
-    
     //track player room
-    
-    //subscribe to room on enter event, wavemanager will probably also use that
-    
-    
     
 }
 
@@ -270,10 +294,7 @@ public class PH_UIManager : MonoBehaviour
 public class PH_RoomManager : MonoBehaviour //each room cares about its own wave?
 {
     public static event Action OnRoomEntered;
-}
-public class PH_LevelGenerator : MonoBehaviour
-{
-    public static event Action OnMapGenerated;
+    public static event Action OnRoomCleared;
 }
 
 public class PH_Player : MonoBehaviour
@@ -282,6 +303,16 @@ public class PH_Player : MonoBehaviour
     private void OnPlayerDied()
     {
         OnPlayerDeath?.Invoke();
+    }
+}
+
+public class PH_Boss : MonoBehaviour
+{
+    public static event Action OnBossDefeated;
+
+    private void OnBossDead()
+    {
+        OnBossDefeated?.Invoke();
     }
 }
 
