@@ -50,9 +50,9 @@ public class RoomCompletionLootPool : ScriptableObject
             rewardPool.AddItem(part, (int)part.Weight);
         }
 
-        for (int i = 0; i < 3 && _rewards.Count > 0; i++)
+        for (int i = 0; i < 3 && _obtained.Count < _rewards.Count; i++)
         {
-            WeightedReward<GunPart> roll = rewardPool.Roll();
+            WeightedReward<GunPart> roll = rewardPool.RollWithRemoval();
             rolledRewards.Add(roll);
             
             if(roll.Item == null)

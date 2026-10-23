@@ -93,7 +93,8 @@ namespace _Project.Scripts.Dungeon
                     if (rewards[i].Item == null)
                         continue;
                     
-                    Debug.Log($"Reward {i + 1}: {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
+                    Debug.Log($"{_id} Completion Reward {i + 1}:" +
+                              $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
                 }
             }
         }
