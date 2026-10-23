@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 
+// Holds the final stats of an assembled gun
 [Serializable]
 public struct GunStats
 {
