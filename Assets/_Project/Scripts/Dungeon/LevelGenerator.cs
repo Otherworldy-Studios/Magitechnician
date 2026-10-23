@@ -8,6 +8,10 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Dungeon
 {
+    /// <summary>
+    /// Represents a room and the weight it will hold in the
+    /// level generator's weighted randomizer
+    /// </summary>
     [Serializable]
     struct WeightedRoom
     {
@@ -21,6 +25,9 @@ namespace _Project.Scripts.Dungeon
     
     public class LevelGenerator : MonoBehaviour
     {
+        /// <summary>
+        /// The four possible generation directions
+        /// </summary>
         public enum Direction
         {
             North,
@@ -32,8 +39,9 @@ namespace _Project.Scripts.Dungeon
         private LinearCongruentialGenerator _random;
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
-        public event Action OnMapGenerated;
+        public event Action OnMapGenerated; // This is for the game manager to know when the map is generated
 
+        // The 2D array representing the map layout
         public Room[,] RoomGrid  { get  { return _roomGrid; } }
 
         [Header("Generator Settings")] 
@@ -114,6 +122,9 @@ namespace _Project.Scripts.Dungeon
             #endif
         }
 
+        /// <summary>
+        /// Generates the entire map except for the end room
+        /// </summary>
         private void GenerateMap()
         {
             Debug.Log($"Seed: {_seed}");
@@ -134,6 +145,7 @@ namespace _Project.Scripts.Dungeon
             {
                 (Room room, Vector2Int currentPos) = rooms.Dequeue();
                 
+                // This randomizes the directions we will generate in
                 PriorityQueue<Direction> priorityQueue = new PriorityQueue<Direction>();
                 
                 foreach(Direction dir in Enum.GetValues(typeof(Direction)))
@@ -183,6 +195,7 @@ namespace _Project.Scripts.Dungeon
 
                         _roomGrid[added.x, added.y] = nextRoom;
 
+                        // Linking rooms
                         switch (direction)
                         {
                             case Direction.North:
@@ -218,6 +231,9 @@ namespace _Project.Scripts.Dungeon
             PlaceEndRoom();
         }
 
+        /// <summary>
+        /// Places the ending boss room
+        /// </summary>
         private void PlaceEndRoom()
         {
             Room farthest = GetFarthest();
@@ -264,9 +280,16 @@ namespace _Project.Scripts.Dungeon
                     break;
             }
             
-            OnMapGenerated?.Invoke();
+            OnMapGenerated?.Invoke(); // We are done generating the map
         }
 
+        /// <summary>
+        /// Finds the "farthest" room using
+        /// BFS
+        /// </summary>
+        /// <returns>
+        /// The farthest room
+        /// </returns>
         private Room GetFarthest()
         {
             Queue<Room> rooms = new Queue<Room>();
@@ -295,6 +318,9 @@ namespace _Project.Scripts.Dungeon
             return null;
         }
 
+        /// <summary>
+        /// Wipes the entire map
+        /// </summary>
         private void ResetMap()
         {
             Room[] rooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
@@ -311,6 +337,11 @@ namespace _Project.Scripts.Dungeon
                 _seed = Random.Range(-int.MaxValue, int.MaxValue);
         }
 
+        /// <summary>
+        /// Basic validation checks to make sure
+        ///  the generator has valid information
+        /// </summary>
+        /// <returns></returns>
         private bool Validate()
         {
             if (_maxCombatRooms < _minCombatRooms)
@@ -328,6 +359,12 @@ namespace _Project.Scripts.Dungeon
             return true;
         }
 
+        /// <summary>
+        /// Gets a random room from the room pool
+        /// </summary>
+        /// <returns>
+        /// A random room
+        /// </returns>
         private Room GetRandomCombatRoom()
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
@@ -338,6 +375,12 @@ namespace _Project.Scripts.Dungeon
             return roomSelector.Roll().Room;
         }
 
+        /// <summary>
+        /// Gets a random start room (if we have more than one)
+        /// </summary>
+        /// <returns>
+        /// A random start room
+        /// </returns>
         private Room GetRandomStartRoom()
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
@@ -348,6 +391,12 @@ namespace _Project.Scripts.Dungeon
             return roomSelector.Roll().Room;
         }
 
+        /// <summary>
+        /// Gets a random end room (if we have more than one)
+        /// </summary>
+        /// <returns>
+        /// A random end room
+        /// </returns>
         private Room GetRandomEndRoom()
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();

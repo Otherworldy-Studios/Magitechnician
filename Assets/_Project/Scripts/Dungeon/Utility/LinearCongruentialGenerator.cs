@@ -1,5 +1,8 @@
 namespace _Project.Scripts.Dungeon.Utility
 {
+    /// <summary>
+    /// A deterministic random number generator
+    /// </summary>
     public class LinearCongruentialGenerator
     {
         private int _seed;
