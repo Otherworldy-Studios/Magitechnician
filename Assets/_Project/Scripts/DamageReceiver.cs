@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DamageReciver : MonoBehaviour, IDamageable
+public class DamageReceiver : MonoBehaviour, IDamageable
 {
     [SerializeField] private Healthbar _health;
     [SerializeField] private ShieldSystem _shield;
@@ -13,6 +13,7 @@ public class DamageReciver : MonoBehaviour, IDamageable
         if (!_shield)
             _shield = GetComponent<ShieldSystem>();
     }
+    
     public void TakeDamage(DamageInfo  damageInfo)
     {
         if (!_health && !_shield)
