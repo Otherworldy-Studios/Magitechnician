@@ -6,7 +6,7 @@ using Object = System.Object;
 
 public class Healthbar : MonoBehaviour, IDamageable
 {
-    public float CurrentHealth { get; private set; }
+    [field: SerializeField] public float CurrentHealth { get; private set; }
 
     [field: SerializeField] public float MaxHealth { get; private set; } = 100;
 
