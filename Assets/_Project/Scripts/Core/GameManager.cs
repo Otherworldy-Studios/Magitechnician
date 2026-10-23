@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
         Victory,
         Lose,
     }
-    public static GameManager Instance { get; private set; } //assumed GameManager persists between scenes
+    public static GameManager Instance { get; private set; } 
     
     public static event Action OnGameOver;
     public static event Action OnGameWin;
@@ -59,12 +59,16 @@ public class GameManager : MonoBehaviour
         PH_Player.OnPlayerDeath += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
         PH_RoomManager.OnRoomCleared += RoomCleared;
-
     }
 
     private void Update()
     {
-        if (currentState == GameState.Hub && Input.GetKeyDown(KeyCode.K)) //DEBUG METHOD 
+        DEBUGInitializeRun();
+    }
+
+    private void DEBUGInitializeRun()
+    {
+        if (currentState == GameState.Hub && Input.GetKeyDown(KeyCode.K)) 
         {
             InitializeRun();
         }
@@ -75,10 +79,10 @@ public class GameManager : MonoBehaviour
         _runTime = Time.time - StartTime; //necessary step to equalize the Time.time
         return _runTime;
     }
-
+    
     public void RequestGameEnd(RunResult result)
     {
-        if (currentState != GameState.Playing)
+        if (currentState != GameState.Playing) //only allow to happen while a run is going on
         {
             return;
         }
@@ -106,6 +110,10 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Hub);
     }
     
+    /// <summary>
+    /// happens after the generation request to the level gen is completed,
+    ///fills in necessary variables for tracking the dungeon here
+    /// </summary>
     private void StartRun(LevelGenerator generator) 
     {
         currentDungeon = generator.RoomGrid;
@@ -113,7 +121,7 @@ public class GameManager : MonoBehaviour
         CurrentRoom = startRoom;
         
         ChangeState(GameState.Playing);
-        //TODO: teleport player function should be its own script?
+        //TODO: teleport player function should be its own script maybe? reusable for the enemy spawns maybe?
         OnRunStart?.Invoke();
     }
 
@@ -129,17 +137,17 @@ public class GameManager : MonoBehaviour
         //rewards shou
     }
     
-
-    #endregion
-    
-    private void InitializeRun() //TODO: triggered by hub system in whatever way, be it UI or portal
+    private void InitializeRun() //TODO: triggered by hub system in whatever way, be it UI or hub portal
     {
-        //DEBUG METHOD
         OnGenerateRequested?.Invoke(); 
     }
 
-    #region StateBackbone
+    #endregion
+    
+    
 
+    #region StateBackbone
+    
     private void ChangeState(GameState newState)
     {
         if (currentState == newState)
@@ -238,10 +246,13 @@ public class GameManager : MonoBehaviour
 
     #region Stats
 
-    private void CaptureTime() //for the end of the run for stats
+    /// <summary>
+    /// End of run captures all total time
+    /// </summary>
+    private void CaptureTime() 
     {
         EndTime = Time.time - StartTime;
-        //some extra time adding up all the room times? do this when the rooms are up
+        //TODO: some extra time adding up all the room times? do this when the rooms are up
     }
     
     //EnemiesKilled
@@ -250,7 +261,6 @@ public class GameManager : MonoBehaviour
     
     #endregion
     
-    //track player room
     
 }
 
