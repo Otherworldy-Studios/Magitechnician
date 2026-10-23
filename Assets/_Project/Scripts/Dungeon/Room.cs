@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -82,6 +83,19 @@ namespace _Project.Scripts.Dungeon
         void OnComplete()
         {
             _complete = true;
+
+            if (_roomType == RoomType.Combat)
+            {
+                List<WeightedReward<GunPart>> rewards = _lootPool.PickThree();
+
+                for (int i = 0; i < rewards.Count; i++)
+                {
+                    if (rewards[i].Item == null)
+                        continue;
+                    
+                    Debug.Log($"Reward {i + 1}: {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
+                }
+            }
         }
     }
 }

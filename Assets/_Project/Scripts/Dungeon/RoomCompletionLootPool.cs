@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Dungeon.Utility;
 using UnityEngine;
 
 // An item and weight
 [Serializable]
-struct WeightedReward<T>
+public struct WeightedReward<T>
 {
     [SerializeField]
     private T _item;
@@ -16,7 +17,7 @@ struct WeightedReward<T>
     public RarityChance Weight { get { return _weight; } }
 }
 
-enum RarityChance
+public enum RarityChance
 {
     Common = 65,
     Uncommon = 20,
@@ -24,23 +25,45 @@ enum RarityChance
     Epic = 5,
 }
 
-// This may need to be moved
+// This will  appear in the right click menu in the Unity Project tab under
+// Create -> Dungeon -> Room Completion Loot Pool
+[CreateAssetMenu(menuName = "Dungeon/Room Completion Loot Pool")]
 public class RoomCompletionLootPool : ScriptableObject
 {
     [SerializeField]
-    private WeightedReward<GunPart>[] _rewards;
+    private List<WeightedReward<GunPart>> _rewards;
+    
+    [SerializeField]
+    private List<WeightedReward<GunPart>> _obtained; // This needs to be wiped manually in the inspector
 
-    public GunPart[] PickThree()
+    // This gets really weird when there are multiple rooms rolling at once
+    public List<WeightedReward<GunPart>> PickThree()
     {
-        GunPart[] rolled = new GunPart[3];
-        ItemSelector<GunPart> rewards = new ItemSelector<GunPart>();
-        
-        foreach(WeightedReward<GunPart> part in _rewards)
-            rewards.AddItem(part.Item, (int)part.Weight);
+        List<WeightedReward<GunPart>> rolledRewards = new List<WeightedReward<GunPart>>();
+        ItemSelector<WeightedReward<GunPart>> rewardPool = new ItemSelector<WeightedReward<GunPart>>();
 
-        for (int i = 0; i < 3; i++)
-            rolled[i] = rewards.RollWithRemoval();
-        
-        return rolled;
+        foreach (WeightedReward<GunPart> part in _rewards)
+        {
+            if(_obtained.Contains(part))
+                continue;
+            
+            rewardPool.AddItem(part, (int)part.Weight);
+        }
+
+        for (int i = 0; i < 3 && _rewards.Count > 0; i++)
+        {
+            WeightedReward<GunPart> roll = rewardPool.Roll();
+            rolledRewards.Add(roll);
+            
+            if(roll.Item == null)
+                continue;
+            
+            if(_obtained.Contains(roll))
+                continue;
+            
+            _obtained.Add(roll);
+        }
+
+        return rolledRewards;
     }
 }

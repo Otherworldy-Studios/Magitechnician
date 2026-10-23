@@ -3,16 +3,20 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="CMakeProjectFlavorService">
+    <option name="flavorId" value="CMakePlainProjectFlavor" />
+  </component>
   <component name="CMakeSettings">
     <configurations />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d878791-32e4-42ca-8cca-4d1b9c4b61ac" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/RoomCompletionLootPool.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Prefabs/LevelGenerator/PH_PF_BossRoom.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Prefabs/LevelGenerator/PH_PF_BossRoom.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Prefabs/LevelGenerator/PH_PF_Room.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Prefabs/LevelGenerator/PH_PF_Room.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/Room.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/Room.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/RoomCompletionLootPool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/RoomCompletionLootPool.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/Utility/ItemSelector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/Utility/ItemSelector.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +200,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1792522494080</updated>
-      <workItem from="1792744557006" duration="915000" />
+      <workItem from="1792744557006" duration="2680000" />
     </task>
     <servers />
   </component>
