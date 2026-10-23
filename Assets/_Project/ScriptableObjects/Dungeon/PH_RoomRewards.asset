@@ -12,4 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184b1c80d495b2749b03707c6e3df001, type: 3}
   m_Name: PH_RoomRewards
   m_EditorClassIdentifier: Assembly-CSharp::RoomCompletionLootPool
-  _rewards: []
+  _rewards:
+  - _item: {fileID: 11400000, guid: ecdbab3c7e7e87f49845b53a95f5689e, type: 2}
+    _weight: 65
+  - _item: {fileID: 11400000, guid: 0d17cc4aadd8ca648a4688cb82bcad00, type: 2}
+    _weight: 10
+  - _item: {fileID: 11400000, guid: 4266155d7a0ba50479bf14782ec00637, type: 2}
+    _weight: 10
+  - _item: {fileID: 11400000, guid: c828773d786bfd2448a88da4aae88feb, type: 2}
+    _weight: 20
+  - _item: {fileID: 11400000, guid: 3167862ebde854d4794ee29a94793bef, type: 2}
+    _weight: 10
+  - _item: {fileID: 11400000, guid: 0275074d503c7df45bfe871079f7790d, type: 2}
+    _weight: 5
+  _obtained: []
