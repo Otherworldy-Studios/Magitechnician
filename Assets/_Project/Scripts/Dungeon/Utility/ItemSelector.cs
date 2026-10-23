@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace _Project.Scripts.LevelGenerator.Utility
+namespace _Project.Scripts.Dungeon.Utility
 {
     class ItemSelector<T> where T : notnull
     {
