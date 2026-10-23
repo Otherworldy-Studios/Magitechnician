@@ -151,6 +151,19 @@ namespace _Project.Scripts.Dungeon.Utility
         }
 
         /// <summary>
+        /// Rolls the ItemSelector and removes the rolled item
+        /// </summary>
+        /// <returns>
+        /// The rolled item
+        /// </returns>
+        public T RollWithRemoval()
+        {
+            T item = Roll();
+            RemoveItem(item);
+            return item;
+        }
+
+        /// <summary>
         /// The probability of receiving an item from a roll
         /// </summary>
         /// <param name="item">

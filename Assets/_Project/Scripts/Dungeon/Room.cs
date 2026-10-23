@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Dungeon
 {
@@ -14,11 +15,16 @@ namespace _Project.Scripts.Dungeon
         [Header("Room Settings")] 
         [SerializeField]
         private RoomType _roomType;
-
-        [Header("Debug (Do not edit)")] 
         
         [SerializeField]
+        private RoomCompletionLootPool _lootPool;
+
+        [Header("Debug (Do not edit)")] 
+        [SerializeField]
         private string _id;
+
+        [SerializeField]
+        private bool _complete;
         
         [SerializeField] 
         private Room _north;
@@ -54,6 +60,8 @@ namespace _Project.Scripts.Dungeon
         }
         
         public string Id { get => _id; set => _id = value; }
+        
+        public bool Complete { get => _complete; }
 
         void Start()
         {
@@ -61,7 +69,19 @@ namespace _Project.Scripts.Dungeon
 
         void Update()
         {
+            // Temporary, get rid of this later
+            #if UNITY_EDITOR
+            if (Keyboard.current != null)
+            {
+                if (Keyboard.current.zKey.wasPressedThisFrame)
+                    OnComplete();
+            }
+            #endif
+        }
 
+        void OnComplete()
+        {
+            _complete = true;
         }
     }
 }
