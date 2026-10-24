@@ -1,8 +1,7 @@
 using UnityEngine;
 
+// Used to group multiple base stats into one SO. Enables the creation of template stats
 [CreateAssetMenu(fileName = "StatBlock", menuName = "Stats/Stat Block")]
-
-[System.Serializable]
 public class StatBlock : ScriptableObject
 {
     [SerializeField] private Stat[] stats;

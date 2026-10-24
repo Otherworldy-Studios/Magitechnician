@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 public class StatsRuntime : MonoBehaviour
 {
-
     [SerializeField] private StatBlock statBlock;
     private Dictionary<string, StatRuntime> currentStats = new();
-
-
 
     private void InitializeStats()
     {

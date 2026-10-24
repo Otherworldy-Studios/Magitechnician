@@ -4,17 +4,11 @@ using UnityEngine;
 [Serializable]
 public class EntityStatModifier : StatModifier
 {
-    public float? expiresAt;
-    public bool isPermanent => !expiresAt.HasValue;
+    public EntityStatType entityStatType;
     
-    public EntityStatModifier(float value, modifierType type, string modifierID, float? duration) : base(value, type, modifierID)
+    public EntityStatModifier(float value, modifierType type, string modifierID, float? duration, EntityStatType entityStatType) : base(value, type, modifierID, duration)
     {
-        if (!duration.HasValue)
-        {
-            return;
-        }
-
-        expiresAt = Time.time + duration.Value;
+        this.entityStatType = entityStatType;
     }
 
     public bool IsExpired()
