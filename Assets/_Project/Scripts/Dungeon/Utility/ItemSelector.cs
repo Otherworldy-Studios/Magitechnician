@@ -3,6 +3,12 @@ using System.Collections.Generic;
 
 namespace _Project.Scripts.Dungeon.Utility
 {
+    /// <summary>
+    /// A weighted random selector
+    /// </summary>
+    /// <typeparam name="T">
+    /// The type of item that will be selected
+    /// </typeparam>
     class ItemSelector<T> where T : notnull
     {
         private readonly LinearCongruentialGenerator _random;

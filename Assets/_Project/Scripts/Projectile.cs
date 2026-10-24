@@ -4,21 +4,21 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private ProjectileSettings _settings;
-    
+
     private Vector3 _direction;
     private float _travelTime;
     /*DamageInfo _damageInfo;
-    
+
     private DamageInfo _damageInfo;
     private bool _initialized;
-    
+
     public void Initialize(GameObject attacker)
     {
         _damageInfo.attacker = attacker;
         _damageInfo.Damage = _settings.Damage;
         _initialized = true;
     }*/
-    
+
     private void Start()
     {
         /*if (!_initialized)
@@ -27,11 +27,16 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
             return;
         }*/
-        
+
         _direction = transform.forward.normalized;
         Destroy(gameObject, 5f); // Just in case
     }
-    
+
+    /// <summary>
+    /// Moves the projectile forward and checks for collisions using a SphereCast
+    /// to prevent missing objects between frames.
+    /// Destroys the projectile when it hits something or exceeds its maximum range.
+    /// </summary>
     private void Update()
     {
         _travelTime += Time.deltaTime;
@@ -40,7 +45,7 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
         Vector3 oldPos = transform.position;
         float step = _settings.Speed * Time.deltaTime;
         Vector3 newPos = oldPos + _direction * step;
@@ -75,7 +80,7 @@ public class Projectile : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        
+
         // move forward if nothing hit
         transform.position = newPos;
     }
