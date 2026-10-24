@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = System.Object;
 
-public class Healthbar : MonoBehaviour, IDamageable
+public class Healthbar : MonoBehaviour
 {
     [field: SerializeField] public float CurrentHealth { get; private set; }
 
@@ -58,6 +58,7 @@ public class Healthbar : MonoBehaviour, IDamageable
         }
     }
 
+    //Not related to IDamageable
     public void TakeDamage(DamageInfo damageInfo)
     {
         if (CurrentHealth <= 0 || damageInfo.DamageAmount <= 0) return;
