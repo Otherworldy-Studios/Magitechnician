@@ -43,6 +43,7 @@ namespace _Project.Scripts.Dungeon
 
         // The 2D array representing the map layout
         public Room[,] RoomGrid  { get  { return _roomGrid; } }
+        public Room StartRoom => _startRoom;
 
         [Header("Generator Settings")] 
         [SerializeField] private int _roomOffset;
@@ -70,7 +71,7 @@ namespace _Project.Scripts.Dungeon
         [SerializeField] private WeightedRoom[] _endRooms;
 
         [Header("Debug (Do not edit)")] 
-        [SerializeField] private Room _startRoom;
+        [SerializeField] public Room _startRoom;
 
         [SerializeField] private List<Room> _generatedCombatRooms;
 
@@ -97,7 +98,17 @@ namespace _Project.Scripts.Dungeon
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
         }
 
-        void Start()
+        private void OnEnable()
+        {
+            GameManager.OnGenerateRequested += ReceiveGeneration;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnGenerateRequested -= ReceiveGeneration;
+        }
+
+        private void ReceiveGeneration() //rocco: changed it generating on start and now relies on GM event
         {
             if (!Validate())
             {
