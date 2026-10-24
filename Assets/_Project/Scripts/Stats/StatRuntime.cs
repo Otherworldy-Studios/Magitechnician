@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 
 public class StatRuntime : MonoBehaviour
 {
     public List<Stat> stats = new();
     public Dictionary<string, StatModifier> statModifiers = new Dictionary<string, StatModifier>();
-
-
+    
     public void AddModifier(string modifierID, StatModifier modifier)
     {
         statModifiers[modifierID] = modifier;
@@ -18,7 +15,6 @@ public class StatRuntime : MonoBehaviour
     {
         statModifiers.Remove(modifierID);
     }
-
     
     public float GetFinalValue(string statID)
     {
@@ -40,7 +36,6 @@ public class StatRuntime : MonoBehaviour
         return (GetBaseValue(statID) + additive) * multiplier;
     }
 
-    
     private float GetBaseValue(string statID)
     {
         foreach (var s in stats)
