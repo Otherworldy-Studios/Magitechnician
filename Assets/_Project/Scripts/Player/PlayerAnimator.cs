@@ -8,7 +8,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private float _dampTime = 0.1f;
     [SerializeField] private float _idleAnimationMultiplier = 0.7f;
     [SerializeField] private float _sprintAnimationMultiplier = 1.4f;
-    
+
     [Header("References")]
     [SerializeField] private Animator _animator;
     [SerializeField] private PlayerMovement _playerMovement;
@@ -17,7 +17,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private CameraTargetController _cameraTargetController;
     [SerializeField] private Dash _playerDash;
     [SerializeField] private Shoot _shoot;
-    
+
     // Animator parameter names
     private static readonly int IsSprinting = Animator.StringToHash("IsSprinting");
     private static readonly int MoveX = Animator.StringToHash("MoveX");
@@ -65,6 +65,10 @@ public class PlayerAnimator : MonoBehaviour
             _shoot = FindFirstObjectByType<Shoot>();
     }
 
+    /// <summary>
+    /// Updates locomotion, airborne, and aim animation parameters each frame.
+    /// Uses damped movement input for smoother blend tree transitions.
+    /// </summary>
     private void Update()
     {
         if (!_animator || !_input)
@@ -81,7 +85,7 @@ public class PlayerAnimator : MonoBehaviour
             speedMultiplier = _idleAnimationMultiplier;
         else
             speedMultiplier = 1f;
-        
+
         _animator.SetFloat(LocomotionSpeed, speedMultiplier);
         _animator.SetBool(IsSprinting, isMoving && _input.IsSprinting);
         _animator.SetBool(IsMoving, isMoving);
@@ -92,7 +96,7 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetBool(IsGrounded, _playerMovement.IsGrounded);
         _animator.SetFloat(AimPitch, _cameraTargetController.AimPitch);
     }
-    
+
     private void JumpAnimation() => _animator.SetTrigger(Jump);
     private void AimingAnimation(bool aiming) => _animator.SetBool(IsAiming, aiming);
     private void DashAnimation() => _animator.SetTrigger(Dash);

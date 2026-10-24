@@ -31,6 +31,10 @@ public class PlayerAimController : MonoBehaviour
         UpdateCrosshair();
     }
 
+    /// <summary>
+    /// Finds the camera's target and calculates the projectile direction from the muzzle.
+    /// Limits the shot angle relative to the barrel to prevent extreme deviations.
+    /// </summary>
     private void CalculateAim()
     {
         // Find camera's target
@@ -47,10 +51,10 @@ public class PlayerAimController : MonoBehaviour
         {
             AimPoint = cameraRay.GetPoint(_maxDistance);
         }
-        
+
         // Direction needed to hit that target
         Vector3 desiredDirection = (AimPoint - _muzzle.position).normalized;
-        
+
         // Limit deviation from the barrel
         ShotDirection = Vector3.RotateTowards(
             _muzzle.forward,
@@ -59,7 +63,11 @@ public class PlayerAimController : MonoBehaviour
             0f
         ).normalized;
     }
-    
+
+    /// <summary>
+    /// Predicts the projectile's impact point using a raycast from the muzzle
+    /// along the calculated shot direction.
+    /// </summary>
     private void CalculateImpactPoint()
     {
         Ray ray = new Ray(_muzzle.position, ShotDirection);
@@ -73,7 +81,10 @@ public class PlayerAimController : MonoBehaviour
             ImpactPoint = ray.GetPoint(_maxDistance);
         }
     }
-    
+
+    /// <summary>
+    /// Positions the impact indicator on screen and hides it if the point is behind the camera.
+    /// </summary>
     private void UpdateCrosshair()
     {
         Vector3 screenPosition = _camera.WorldToScreenPoint(ImpactPoint);
