@@ -1,12 +1,11 @@
 using UnityEngine;
-using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "StatBlock", menuName = "Scriptable Objects/StatBlock")]
+[CreateAssetMenu(fileName = "StatBlock", menuName = "Stats/Stat Block")]
 
 [System.Serializable]
 public class StatBlock : ScriptableObject
 {
-    private Stat[] stats;
+    [SerializeField] private Stat[] stats;
 
     public Stat[] GetStats()
     {
