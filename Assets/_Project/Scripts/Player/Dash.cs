@@ -5,25 +5,43 @@ using UnityEngine;
 public class Dash : MonoBehaviour
 {
     [SerializeField] private DashSettings _settings;
-    
+
     [Header("References")]
+    // Reference direction used when dashing without movement input, usually camera orientation.
     [SerializeField] private Transform _orientation;
-    
+    [SerializeField] private Healthbar _healthbar;
+
     public bool IsDashing { get; private set; }
     public Vector3 DashDirection {get; private set;}
-    
+
     public event Action OnDashed;
-    
+
     private float _dashTimer;
     private float _nextDashTime;
     private bool _intendToDash;
+
+    // Tracks this dash's invincibility separately from other sources.
+    private object invincibilityToken;
+    private bool _wasInvincible = false;
 
     private void Awake()
     {
         if(!_orientation)
             Debug.LogError($"{nameof(Dash)} requires a {nameof(_orientation)}");
+
+        if (!_healthbar)
+            _healthbar = GetComponent<Healthbar>();
     }
 
+    private void OnDisable()
+    {
+        CancelDash();
+    }
+
+    /// <summary>
+    /// Calculates dash velocity using a linear slowdown over its duration.
+    /// The initial speed is doubled to maintain the configured dash distance.
+    /// </summary>
     public Vector3 GetDashVelocity()
     {
         float progress = Mathf.Clamp01(_dashTimer / _settings.DashDuration);
@@ -35,7 +53,11 @@ public class Dash : MonoBehaviour
 
         return DashDirection * dashSpeed;
     }
-    
+
+    /// <summary>
+    /// Updates an active dash or starts a requested dash if allowed.
+    /// Dash direction is locked at the start and cooldown includes dash duration.
+    /// </summary>
     public void HandleDash(Vector3 direction, bool canDash = true)
     {
         if (IsDashing)
@@ -45,8 +67,12 @@ public class Dash : MonoBehaviour
             _dashTimer += Time.deltaTime;
 
             if (_dashTimer >= _settings.DashDuration)
+            {
+                CancelDash();
                 IsDashing = false;
+            }
 
+            HandleInvincibility();
             return;
         }
 
@@ -68,20 +94,66 @@ public class Dash : MonoBehaviour
         DashDirection = direction.normalized;
         _dashTimer = 0f;
         IsDashing = true;
-        
+
         //Cooldown
         _nextDashTime = Time.time + _settings.DashDuration + _settings.DashCooldown;
 
         OnDashed?.Invoke();
     }
 
+    /// <summary>
+    /// Stops the dash and removes only its own invincibility.
+    /// </summary>
     public void CancelDash()
     {
         if (!IsDashing)
             return;
 
         IsDashing = false;
+        StopDashInvincibility();
+        _wasInvincible = false;
     }
-    
+
+    /// <summary>
+    /// Enables invincibility only during the configured window of the dash.
+    /// Tracks state changes to avoid repeatedly creating or removing tokens.
+    /// </summary>
+    private void HandleInvincibility()
+    {
+        if(!_healthbar || !_settings.InvincibilityEnabled)
+            return;
+
+        bool shouldBeInvincible = IsDashing &&
+            _dashTimer >= _settings.InvincibilityStart &&
+            _dashTimer < _settings.InvincibilityStart + _settings.InvincibilityDuration;
+
+        if (shouldBeInvincible == _wasInvincible)
+            return;
+
+        if(shouldBeInvincible)
+            StartDashInvincibility();
+        else
+            StopDashInvincibility();
+
+        _wasInvincible = shouldBeInvincible;
+    }
+
+    private void StartDashInvincibility()
+    {
+        if (invincibilityToken != null || !_healthbar || !_settings.InvincibilityEnabled)
+            return;
+
+        invincibilityToken = _healthbar.StartInvincibility();
+    }
+
+    private void StopDashInvincibility()
+    {
+        if(!_healthbar || !_settings.InvincibilityEnabled)
+            return;
+
+        _healthbar.StopInvincibility(invincibilityToken);
+        invincibilityToken = null;
+    }
+
     public void IntendToDash() => _intendToDash = true;
 }

@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.LevelGenerator.Utility;
-using _Project.Scripts.LevelGenerator.Utility.System.Collections.Generic;
-using Unity.VisualScripting;
+using _Project.Scripts.Dungeon.Utility;
+using _Project.Scripts.Dungeon.Utility.System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
-namespace _Project.Scripts.LevelGenerator
+namespace _Project.Scripts.Dungeon
 {
+    /// <summary>
+    /// Represents a room and the weight it will hold in the
+    /// level generator's weighted randomizer
+    /// </summary>
     [Serializable]
     struct WeightedRoom
     {
@@ -22,7 +25,10 @@ namespace _Project.Scripts.LevelGenerator
     
     public class LevelGenerator : MonoBehaviour
     {
-        private enum Direction
+        /// <summary>
+        /// The four possible generation directions
+        /// </summary>
+        public enum Direction
         {
             North,
             South,
@@ -33,6 +39,11 @@ namespace _Project.Scripts.LevelGenerator
         private LinearCongruentialGenerator _random;
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
+        public event Action OnMapGenerated; // This is for the game manager to know when the map is generated
+
+        // The 2D array representing the map layout
+        public Room[,] RoomGrid  { get  { return _roomGrid; } }
+        public Room StartRoom => _startRoom;
 
         [Header("Generator Settings")] 
         [SerializeField] private int _roomOffset;
@@ -60,7 +71,7 @@ namespace _Project.Scripts.LevelGenerator
         [SerializeField] private WeightedRoom[] _endRooms;
 
         [Header("Debug (Do not edit)")] 
-        [SerializeField] private Room _startRoom;
+        [SerializeField] public Room _startRoom;
 
         [SerializeField] private List<Room> _generatedCombatRooms;
 
@@ -87,7 +98,17 @@ namespace _Project.Scripts.LevelGenerator
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
         }
 
-        void Start()
+        private void OnEnable()
+        {
+            GameManager.OnGenerateRequested += ReceiveGeneration;
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnGenerateRequested -= ReceiveGeneration;
+        }
+
+        private void ReceiveGeneration() //rocco: changed it generating on start and now relies on GM event
         {
             if (!Validate())
             {
@@ -112,12 +133,16 @@ namespace _Project.Scripts.LevelGenerator
             #endif
         }
 
+        /// <summary>
+        /// Generates the entire map except for the end room
+        /// </summary>
         private void GenerateMap()
         {
             Debug.Log($"Seed: {_seed}");
             
             Room startRoom = Instantiate(GetRandomStartRoom(), 
                 gameObject.transform.position, Quaternion.identity);
+            startRoom.Id = $"Start{(startRoom != null ? 1 : 0)}";
             
             _startRoom = startRoom;
             
@@ -131,6 +156,7 @@ namespace _Project.Scripts.LevelGenerator
             {
                 (Room room, Vector2Int currentPos) = rooms.Dequeue();
                 
+                // This randomizes the directions we will generate in
                 PriorityQueue<Direction> priorityQueue = new PriorityQueue<Direction>();
                 
                 foreach(Direction dir in Enum.GetValues(typeof(Direction)))
@@ -176,9 +202,11 @@ namespace _Project.Scripts.LevelGenerator
                         Room nextRoom = Instantiate(GetRandomCombatRoom(),
                             room.gameObject.transform.position + (_directions[direction] * _roomOffset),
                             Quaternion.identity);
+                        nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
                         _roomGrid[added.x, added.y] = nextRoom;
 
+                        // Linking rooms
                         switch (direction)
                         {
                             case Direction.North:
@@ -214,6 +242,9 @@ namespace _Project.Scripts.LevelGenerator
             PlaceEndRoom();
         }
 
+        /// <summary>
+        /// Places the ending boss room
+        /// </summary>
         private void PlaceEndRoom()
         {
             Room farthest = GetFarthest();
@@ -238,6 +269,8 @@ namespace _Project.Scripts.LevelGenerator
                 farthest.gameObject.transform.position + (dir * _roomOffset),
                 Quaternion.identity);
             
+            end.Id = $"End{(end != null ? 1 : 0)}";
+            
             switch (direction)
             {
                 case Direction.North:
@@ -257,8 +290,17 @@ namespace _Project.Scripts.LevelGenerator
                     end.East = farthest;
                     break;
             }
+            
+            OnMapGenerated?.Invoke(); // We are done generating the map
         }
 
+        /// <summary>
+        /// Finds the "farthest" room using
+        /// BFS
+        /// </summary>
+        /// <returns>
+        /// The farthest room
+        /// </returns>
         private Room GetFarthest()
         {
             Queue<Room> rooms = new Queue<Room>();
@@ -287,6 +329,9 @@ namespace _Project.Scripts.LevelGenerator
             return null;
         }
 
+        /// <summary>
+        /// Wipes the entire map
+        /// </summary>
         private void ResetMap()
         {
             Room[] rooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
@@ -303,6 +348,11 @@ namespace _Project.Scripts.LevelGenerator
                 _seed = Random.Range(-int.MaxValue, int.MaxValue);
         }
 
+        /// <summary>
+        /// Basic validation checks to make sure
+        ///  the generator has valid information
+        /// </summary>
+        /// <returns></returns>
         private bool Validate()
         {
             if (_maxCombatRooms < _minCombatRooms)
@@ -320,6 +370,12 @@ namespace _Project.Scripts.LevelGenerator
             return true;
         }
 
+        /// <summary>
+        /// Gets a random room from the room pool
+        /// </summary>
+        /// <returns>
+        /// A random room
+        /// </returns>
         private Room GetRandomCombatRoom()
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
@@ -330,6 +386,12 @@ namespace _Project.Scripts.LevelGenerator
             return roomSelector.Roll().Room;
         }
 
+        /// <summary>
+        /// Gets a random start room (if we have more than one)
+        /// </summary>
+        /// <returns>
+        /// A random start room
+        /// </returns>
         private Room GetRandomStartRoom()
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
@@ -340,6 +402,12 @@ namespace _Project.Scripts.LevelGenerator
             return roomSelector.Roll().Room;
         }
 
+        /// <summary>
+        /// Gets a random end room (if we have more than one)
+        /// </summary>
+        /// <returns>
+        /// A random end room
+        /// </returns>
         private Room GetRandomEndRoom()
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();

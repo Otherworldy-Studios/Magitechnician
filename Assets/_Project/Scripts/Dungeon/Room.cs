@@ -1,9 +1,16 @@
 using UnityEngine;
 
-namespace _Project.Scripts.LevelGenerator
+namespace _Project.Scripts.Dungeon
 {
+    /// <summary>
+    /// Represents a room, attach this script to a
+    /// room prefab.
+    /// </summary>
     public class Room : MonoBehaviour
     {
+        /// <summary>
+        /// The room types
+        /// </summary>
         public enum RoomType
         {
             Start,
@@ -13,9 +20,13 @@ namespace _Project.Scripts.LevelGenerator
 
         [Header("Room Settings")] 
         [SerializeField]
-        private RoomType roomType;
+        private RoomType _roomType;
 
         [Header("Debug (Do not edit)")] 
+        
+        [SerializeField]
+        private string _id;
+        
         [SerializeField] 
         private Room _north;
 
@@ -48,10 +59,12 @@ namespace _Project.Scripts.LevelGenerator
             get => _west;
             set => _west = value;
         }
+        
+        // A unique ID for the GameManager (?)
+        public string Id { get => _id; set => _id = value; }
 
         void Start()
         {
-
         }
 
         void Update()

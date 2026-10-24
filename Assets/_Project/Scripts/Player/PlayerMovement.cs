@@ -17,15 +17,15 @@ public class PlayerMovement : MonoBehaviour
         Aiming
     }
     public MovementStates CurrentState { get; private set; }
-    
+
     [SerializeField] private PlayerMovementSettings _settings;
-    
+
     [Header("References")]
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private PlayerInput _input;
     [SerializeField] private PlayerCameraController _cameraController;
     [SerializeField] private Dash _dash;
-    
+
     [Header("Public Variables")]
     public Vector3 Velocity => _velocity;
     public bool IsRising => _isRising;
@@ -33,18 +33,18 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrounded => _controller.isGrounded;
     public bool IsSprinting => CurrentState == MovementStates.Sprinting;
     public float MaxSpeed => _settings.SprintSpeed;
-    
+
     public event Action OnJump;
-    
+
     private CharacterController _controller;
     private Vector2 _moveInput;
     private Vector3 _velocity;
     private float _currentSpeed;
     private float _currentMaxSpeed = 0f;
-    
+
     private bool _isRising;
     private bool _isFalling;
-    
+
     private float _jumpBufferTimer;
     private float _coyoteTimeTimer;
     private bool _jumpHold;
@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
-        
+
         if(!_input)
             _input =  GetComponent<PlayerInput>();
         if(!_cameraController)
@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         _moveInput = _input.Move;
-        
+
         AirState();
         HandleGravity();
         HandleJump();
@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         StateController();
         ApplyMovement();
     }
-    
+
     private void OnEnable()
     {
         _input.JumpPressed += JumpPressed;
@@ -87,6 +87,9 @@ public class PlayerMovement : MonoBehaviour
         _input.DashPressed -= IntendToDash;
     }
 
+    /// <summary>
+    /// Converts movement input into a horizontal, camera-relative direction.
+    /// </summary>
     private Vector3 GetMovementDirection()
     {
         Vector3 forward = _cameraTransform.forward;
@@ -104,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (direction.sqrMagnitude < 0.01f)
             return Vector3.zero;
-        
+
         return direction;
     }
 
@@ -126,6 +129,9 @@ public class PlayerMovement : MonoBehaviour
         _controller.Move(totalVelocity * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Applies gravity and reduces it while the jump button is held during ascent.
+    /// </summary>
     private void HandleGravity()
     {
         if (_controller.isGrounded && _velocity.y < 0f)
@@ -144,6 +150,9 @@ public class PlayerMovement : MonoBehaviour
         _velocity.y += gravity * Time.deltaTime;
     }
 
+    /// <summary>
+    /// Selects the movement state by priority: dash, airborne, aim, sprint, walk, idle.
+    /// </summary>
     private void StateController()
     {
         if (_dash.IsDashing)
@@ -160,58 +169,69 @@ public class PlayerMovement : MonoBehaviour
             CurrentState = MovementStates.Idle;
     }
 
+    /// <summary>
+    /// Smoothly approaches the speed allowed by the current movement state.
+    /// Airborne movement retains the previous target speed.
+    /// </summary>
     private float SpeedControl()
     {
         float currentAcceleration = 0f;
-        
+
         switch (CurrentState)
         {
             case MovementStates.Sprinting:
                 currentAcceleration = _settings.SprintAcceleration;
                 _currentMaxSpeed = _settings.SprintSpeed;
                 break;
-            
+
             case MovementStates.Walking:
                 currentAcceleration = _settings.WalkAcceleration;
                 _currentMaxSpeed = _settings.WalkSpeed;
                 break;
-            
+
             case MovementStates.Aiming:
                 currentAcceleration = _settings.AimingAcceleration;
                 _currentMaxSpeed = _settings.AimSpeed;
                 break;
-            
+
             case MovementStates.Idle:
                 currentAcceleration = _settings.IdleAcceleration;
                 _currentMaxSpeed = 0f;
                 break;
-            
+
             case MovementStates.Airborne:
                 currentAcceleration = _settings.AirborneAcceleration;
                 break;
         }
-        
+
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, 
             _currentMaxSpeed, 
             currentAcceleration * Time.deltaTime);
-        
+
         return _currentSpeed;
     }
-    
-    
+
+
+    /// <summary>
+    /// Starts a jump when buffered input and coyote time overlap.
+    /// Initial upward velocity is calculated from the minimum jump height.
+    /// </summary>
     private void HandleJump()
     {
         JumpTimers();
         if (_jumpBufferTimer <= 0f || _coyoteTimeTimer <= 0f)
             return;
-        
+
         _jumpBufferTimer = 0f;
         _coyoteTimeTimer = 0f;
-        
+
         OnJump?.Invoke();
         _velocity.y = Mathf.Sqrt(_settings.MinJumpHeight * -2f * _settings.Gravity);
     }
 
+    /// <summary>
+    /// Refreshes coyote time while grounded and counts down the jump input buffer.
+    /// </summary>
     private void JumpTimers()
     {
         // Coyote timer
@@ -219,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
             _coyoteTimeTimer = _settings.CoyoteTime;
         else
             _coyoteTimeTimer = Mathf.Max(0f, _coyoteTimeTimer - Time.deltaTime);
-        
+
         //Jump Buffer timer
         if (_jumpBufferTimer > 0f)
             _jumpBufferTimer = Mathf.Max(0f, _jumpBufferTimer - Time.deltaTime);
@@ -235,7 +255,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(_dash.IsDashing)
             return;
-        
+
         _jumpHold = true;
         _jumpBufferTimer = _settings.JumpBufferTime;
     }

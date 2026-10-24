@@ -18,7 +18,7 @@ public class PlayerCameraController : MonoBehaviour
 
         _mainCamera.Priority = 10;
         _aimCamera.Priority = 0;
-        
+
         if(!_playerDash)
             _playerDash = FindFirstObjectByType<Dash>();
     }
@@ -30,15 +30,19 @@ public class PlayerCameraController : MonoBehaviour
             SetAiming(false);
             return;
         }
-        
+
         SetAiming(_input.IsAiming);
     }
 
+    /// <summary>
+    /// Switches between normal and aiming cameras using Cinemachine priorities.
+    /// Notifies listeners only when the aiming state changes.
+    /// </summary>
     private void SetAiming(bool aiming)
     {
         if (IsAiming == aiming)
             return;
-        
+
         IsAiming = aiming;
 
         _mainCamera.Priority = aiming ? 0 : 10;
