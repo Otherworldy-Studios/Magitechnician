@@ -23,6 +23,7 @@ public class Gun : MonoBehaviour
         BuildGun();
     }
 
+    // Builds/Rebuilds the gun using the set default frame and initial parts
     public void BuildGun()
     {
         ClearGun();
@@ -33,8 +34,10 @@ public class Gun : MonoBehaviour
         }
 
         _gunBody.SetFrame(_defaultFrame);
+        _equippedParts[GunPartType.Frame] = _defaultFrame;
 
-        foreach (GunSocket socket in _gunBody.GetComponentsInChildren<GunSocket>())
+        // Only allows one socket per type to be registered
+        foreach (GunSocket socket in _gunBody.GetComponentsInChildren<GunSocket>(true))
         {
             if (_gunBody.GetSocket(socket.SocketType, out GunSocket activeSocket) && activeSocket == socket)
             {
@@ -68,6 +71,7 @@ public class Gun : MonoBehaviour
         return part;
     }
 
+    // Equips a part if the socket exists
     public bool EquipPart(GunPart part)
     {
         if (!part)
@@ -89,7 +93,7 @@ public class Gun : MonoBehaviour
         
         SpawnPartModel(part);
         
-        // recalculate stats
+        // ToDo: Put Recalculate Stats method here using equipped parts
         
         return true;
     }
@@ -105,7 +109,7 @@ public class Gun : MonoBehaviour
 
         _equippedParts.Remove(type);
         
-        // recalculate stats
+        // ToDo: Put Recalculate Stats method here using equipped parts
         
         return true;
     }
@@ -124,6 +128,7 @@ public class Gun : MonoBehaviour
             return;
         }
 
+        // Spawns the part at the socket then resets its position and rotation
         GameObject model = Instantiate(part.PartPrefab, socket.transform);
         model.transform.localPosition = Vector3.zero;
         model.transform.localRotation = Quaternion.identity;
@@ -146,6 +151,7 @@ public class Gun : MonoBehaviour
         _partModels.Remove(part.PartType);
     }
 
+    // Clears the guns parts and sockets
     private void ClearGun()
     {
         foreach (GameObject model in _partModels.Values)
