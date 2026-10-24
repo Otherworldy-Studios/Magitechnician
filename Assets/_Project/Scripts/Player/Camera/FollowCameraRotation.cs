@@ -6,7 +6,7 @@ public class FollowCameraRotation : MonoBehaviour
     [SerializeField] private float _baseRotationSpeed = 15f;
     [SerializeField] private float _aimingRotationSpeed = 50f;
     [SerializeField] private float _rollingRotationSpeed = 10000f;
-    
+
     [Header("References")]
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private PlayerCameraController _cameraController;
@@ -21,7 +21,11 @@ public class FollowCameraRotation : MonoBehaviour
         if (!_dash)
             _dash = FindFirstObjectByType<Dash>();
     }
-    
+
+    /// <summary>
+    /// Rotates the player based on the current action.
+    /// Dash direction takes priority over aiming and normal movement.
+    /// </summary>
     void LateUpdate()
     {
         if (_dash.IsDashing)
@@ -38,12 +42,15 @@ public class FollowCameraRotation : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Smoothly rotates the player toward the target's horizontal facing direction.
+    /// </summary>
     private void FollowRotation(float rotationSpeed)
     {
         float targetY = _target.eulerAngles.y;
-        
+
         Quaternion targetRotation = Quaternion.Euler(0, targetY, 0);
-        
+
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
