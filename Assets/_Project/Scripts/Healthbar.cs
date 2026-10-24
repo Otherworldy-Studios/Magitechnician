@@ -58,7 +58,6 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    //Not related to IDamageable
     public void TakeDamage(DamageInfo damageInfo)
     {
         if (CurrentHealth <= 0 || damageInfo.DamageAmount <= 0) return;
