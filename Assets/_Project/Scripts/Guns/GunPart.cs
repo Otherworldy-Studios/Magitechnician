@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Base class for all gun parts
 public abstract class GunPart : ScriptableObject
 {
     [SerializeField] private GameObject _partPrefab;

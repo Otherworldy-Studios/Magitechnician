@@ -6,6 +6,7 @@ public class GunBody : MonoBehaviour
     private GameObject _frameModel;
     private Dictionary<GunPartType, GunSocket> _sockets = new();
 
+    // Sets/replaces the current frame with a new one
     public void SetFrame(GunFrame frame)
     {
         if (_frameModel)
@@ -24,6 +25,7 @@ public class GunBody : MonoBehaviour
         _frameModel.transform.localPosition = Vector3.zero;
         _frameModel.transform.localRotation = Quaternion.identity;
 
+        // Searches all the children of the Gun to find and add sockets
         GunSocket[] sockets = _frameModel.GetComponentsInChildren<GunSocket>(true);
 
         foreach (GunSocket socket in sockets)
