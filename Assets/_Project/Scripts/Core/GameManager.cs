@@ -1,17 +1,20 @@
 using System;
 using System.Collections;
+using System.Linq.Expressions;
 using _Project.Scripts.Dungeon;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
 {
     public enum GameState
     {
-        Menu,
-        Hub,
-        Playing,
+        Menu, //menu on bootup
+        Hub, //pre-run area
+        Playing, //playing game
+        Store, 
         Dead, //game over
         Win
     }
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour
     
     [SerializeField] private GameState currentState; //serialized for viewing in editor
     [SerializeField] private PH_Player playerCharacter;
+    [SerializeField] private PH_WaveManager waveManager; //wave manager responsible for spawning in enemies?
     [SerializeField] private Room[,] currentDungeon;
     private bool _isPaused;
     private float _runTime;
@@ -58,7 +62,7 @@ public class GameManager : MonoBehaviour
         LevelGenerator.OnMapGenerated += StartRun;
         PH_Player.OnPlayerDeath += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
-        PH_RoomManager.OnRoomCleared += RoomCleared;
+        PH_WaveManager.OnRoomCleared += RoomCleared;
     }
 
     private void Update()
@@ -73,16 +77,18 @@ public class GameManager : MonoBehaviour
             InitializeRun();
         }
     }
-
-    public float GetRunTime()
+    public void ChangeRoom(Room newRoom)
     {
-        _runTime = Time.time - StartTime; //necessary step to equalize the Time.time
-        return _runTime;
+        CurrentRoom = newRoom;
     }
     
+    /// <summary>
+    /// any necessary source may request the GM to end the game while giving the desired result, validates if a run should actually end then simply switches to the state
+    /// </summary>
+    /// <param name="result">Victory or Loss; whether the game should end in which.</param>
     public void RequestGameEnd(RunResult result)
     {
-        if (currentState != GameState.Playing) //only allow to happen while a run is going on
+        if (currentState != GameState.Playing && currentState != GameState.Store) //only allow to happen while a run is going on
         {
             return;
         }
@@ -96,6 +102,11 @@ public class GameManager : MonoBehaviour
                 ChangeState(GameState.Dead);
                 break;
         }
+    }
+
+    public void GoTo(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
     }
     
     #region EventHandlers
@@ -112,8 +123,10 @@ public class GameManager : MonoBehaviour
     
     /// <summary>
     /// happens after the generation request to the level gen is completed,
-    ///fills in necessary variables for tracking the dungeon here
+    /// fills in necessary variables for tracking the dungeon here
+    /// and handles the first swap to playing state for that dungeon (otherwise bugs between playing states)
     /// </summary>
+    /// <param name="generator">The level generator object that contains the dungeon</param>
     private void StartRun(LevelGenerator generator) 
     {
         currentDungeon = generator.RoomGrid;
@@ -121,6 +134,7 @@ public class GameManager : MonoBehaviour
         CurrentRoom = startRoom;
         
         ChangeState(GameState.Playing);
+        StartTime = Time.time; //start time is now the "0" that other times will be equalized to
         //TODO: teleport player function should be its own script maybe? reusable for the enemy spawns maybe?
         OnRunStart?.Invoke();
     }
@@ -135,8 +149,12 @@ public class GameManager : MonoBehaviour
         //room itself invokes the room clear? wave manager?
         //allow the doors to open
         //rewards shou
+        
     }
     
+    /// <summary>
+    /// Starts the request process for starting a run 
+    /// </summary>
     private void InitializeRun() //TODO: triggered by hub system in whatever way, be it UI or hub portal
     {
         OnGenerateRequested?.Invoke(); 
@@ -146,8 +164,13 @@ public class GameManager : MonoBehaviour
     
     
 
-    #region StateBackbone
+    #region StateManagement
     
+    /// <summary>
+    /// Checks if the newState is even different and denies otherwise, and handles unpausing for entering certain states for the pause menu
+    /// switches and calls enter(state) functions
+    /// </summary>
+    /// <param name="newState">The state to transition into.</param>
     private void ChangeState(GameState newState)
     {
         if (currentState == newState)
@@ -179,13 +202,15 @@ public class GameManager : MonoBehaviour
             case GameState.Win:
                 EnterWin();
                 break;
+            case GameState.Store:
+                EnterStore();
+                break;
         }
         OnGameStateChanged?.Invoke(currentState); 
     }
     
     private void EnterPlaying()
     {
-        StartTime = Time.time; //start time is equalized to 0, showing it will be a crazy ass number cause of time.time
         //TODO: give player full control over their character n such, systems all working
     }
     private void EnterMenu()
@@ -208,6 +233,11 @@ public class GameManager : MonoBehaviour
     {
         CaptureTime();
         OnGameWin?.Invoke();
+    }
+
+    private void EnterStore()
+    {
+        
     }
 
     #endregion
@@ -301,11 +331,6 @@ public class PH_UIManager : MonoBehaviour
     }
     
 }
-public class PH_RoomManager : MonoBehaviour //each room cares about its own wave?
-{
-    public static event Action OnRoomEntered;
-    public static event Action OnRoomCleared;
-}
 
 public class PH_Player : MonoBehaviour
 {
@@ -325,5 +350,20 @@ public class PH_Boss : MonoBehaviour
         OnBossDefeated?.Invoke();
     }
 }
+
+public class PH_WaveManager : MonoBehaviour
+{
+    //needs to be given the spawn points of each room
+    //instantiates/teleports in enemies at the spawn points
+    
+    public static event Action OnRoomCleared;
+
+
+    private void OnRoomCompleted()
+    {
+        OnRoomCleared?.Invoke();
+    }
+}
+
 
 #endregion
