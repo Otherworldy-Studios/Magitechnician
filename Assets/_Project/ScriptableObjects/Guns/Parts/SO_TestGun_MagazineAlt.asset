@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef9b75cbeea7e2a4da578a5dc0481fbb, type: 3}
+  m_Name: SO_TestGun_MagazineAlt
+  m_EditorClassIdentifier: Assembly-CSharp::GunMagazine
+  _partPrefab: {fileID: 2063286040651128319, guid: ad6a0307e0f85ac48b83f10a8181ebf0, type: 3}
+  _partName: TestGun Magazine Alternate
+  _magazineSize: 40
+  _reloadSpeed: 2.5
+  _ammoType: 0
