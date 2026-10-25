@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace _Project.Scripts.Dungeon
 {
+    /// <summary>
+    /// Portals connect rooms to each other in the game, allowing
+    /// the player to travel between them
+    /// </summary>
     public class Portal : MonoBehaviour
     {
         [Header("Debug (Do not edit)")]
@@ -26,6 +30,7 @@ namespace _Project.Scripts.Dungeon
 
         private void OnDrawGizmos()
         {
+            // Draws the portal gizmo
             Gizmos.color = Color.cyan;
             Vector3 destination = gameObject.transform.position;
 

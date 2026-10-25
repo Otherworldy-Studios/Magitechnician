@@ -4,8 +4,15 @@ using UnityEngine.InputSystem;
 
 namespace _Project.Scripts.Dungeon
 {
+    /// <summary>
+    /// Represents a room, attach this script to a
+    /// room prefab.
+    /// </summary>
     public class Room : MonoBehaviour
     {
+        /// <summary>
+        /// The room types
+        /// </summary>
         public enum RoomType
         {
             Start,
@@ -60,6 +67,7 @@ namespace _Project.Scripts.Dungeon
             set => _west = value;
         }
         
+        // A unique ID for the GameManager (?)
         public string Id { get => _id; set => _id = value; }
         
         public bool Complete { get => _complete; }

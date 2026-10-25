@@ -22,6 +22,9 @@ public class ShieldSystem : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>
+    /// Waits for the regeneration delay, then restores shield over time.
+    /// </summary>
     void Update()
     {
         if (settings == null) return;
@@ -48,6 +51,10 @@ public class ShieldSystem : MonoBehaviour, IDamageable
         }
     }
 
+    /// <summary>
+    /// Applies shield damage reduction, absorbs available damage,
+    /// and returns any remaining damage for the damage receiver.
+    /// </summary>
     public float AbsorbDamageAndReturnOverflow(DamageInfo damageInfo)
     {
         if (settings == null || damageInfo.DamageAmount <= 0) return damageInfo.DamageAmount;
@@ -71,6 +78,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
         }
         else
         {
+            // Convert absorbed shield damage back to its original amount before reduction.
             float shieldAbsorbedRaw = CurrentShield / multiplier;
             float leftoverDamage = damageInfo.DamageAmount - shieldAbsorbedRaw;
 
