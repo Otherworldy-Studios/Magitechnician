@@ -56,9 +56,9 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-        PH_UIManager.OnPauseRequested += TogglePause;
-        PH_UIManager.OnResetRequested += ResetGame;
-        PH_UIManager.OnStartRequested += StartHub;
+        UIManager.OnPauseRequested += TogglePause;
+        UIManager.OnResetRequested += ResetGame;
+        UIManager.OnStartRequested += StartHub;
         LevelGenerator.OnMapGenerated += StartRun;
         PH_Player.OnPlayerDeath += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
@@ -296,41 +296,7 @@ public class GameManager : MonoBehaviour
 
 #region PLACEHOLDERS
 
-public class PH_UIManager : MonoBehaviour
-{
-    public static event Action OnPauseRequested;
-    public static event Action OnStartRequested;
-    public static event Action OnResetRequested;
 
-    
-    private void Start()
-    {
-        GameManager.OnGameOver += GameOver;
-        GameManager.OnGameWin += GameWin;
-    }
-    
-    
-    private void PauseButtonPressed()
-    {
-        OnPauseRequested?.Invoke();
-    }
-
-    public void StartButtonPressed()
-    {
-        OnStartRequested?.Invoke();
-    }
-
-    private void GameOver()
-    {
-        
-    }
-
-    private void GameWin()
-    {
-        
-    }
-    
-}
 
 public class PH_Player : MonoBehaviour
 {
