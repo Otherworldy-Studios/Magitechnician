@@ -31,7 +31,7 @@ namespace _Project.Scripts.Dungeon.Utility
         public int Next()
         {
             _seed = Math.Abs((_multiplier * _seed + _increment)) % _modulus;
-            return (int)_seed;
+            return Math.Abs((int)_seed);
         }
 
         public int Next(int maxValue)

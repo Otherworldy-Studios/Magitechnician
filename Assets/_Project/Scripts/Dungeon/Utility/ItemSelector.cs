@@ -26,7 +26,7 @@ namespace _Project.Scripts.Dungeon.Utility
         {
             _entries = new Dictionary<T, int>();
             _totalWeight = 0;
-            _random = new LinearCongruentialGenerator(Random.Range(-int.MaxValue, int.MaxValue));
+            _random = new LinearCongruentialGenerator(Random.Range(0, int.MaxValue));
         }
         
         public ItemSelector(int seed)
