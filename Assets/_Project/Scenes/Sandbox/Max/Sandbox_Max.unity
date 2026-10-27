@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.LevelGenerator.LevelGenerator
   _roomOffset: 2
-  _roomGridWidth: 5
+  _roomGridWidth: 9
   _roomGridHeight: 5
   _minCombatRooms: 3
   _maxCombatRooms: 5
