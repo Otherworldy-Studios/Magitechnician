@@ -387,6 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dash
   _settings: {fileID: 11400000, guid: 5c0faf03648d58a4fad76a6e16cb9939, type: 2}
   _orientation: {fileID: 5732992565851014402}
+  _healthbar: {fileID: 0}
 --- !u!1 &3346735939129070630
 GameObject:
   m_ObjectHideFlags: 0
