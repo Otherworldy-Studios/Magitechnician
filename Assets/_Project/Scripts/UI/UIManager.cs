@@ -1,36 +1,60 @@
 using UnityEngine;
 using System;
+using UnityEngine.XR;
 
 public class UIManager : MonoBehaviour
 {
-    public static event Action OnPauseRequested;
-    public static event Action OnStartRequested;
-    public static event Action OnResetRequested; 
-
     
     private void Start()
     {
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
+        GameManager.OnPauseToggle += HandlePause;
+        GameManager.OnGameStateChanged += ;
     }
     
     
     private void PauseButtonPressed()
     {
-        OnPauseRequested?.Invoke();
+        GameManager.Instance.TogglePause();
     }
 
-    public void StartButtonPressed()
+    private void StartButtonPressed()
     {
-        OnStartRequested?.Invoke();
+        GameManager.Instance.StartHub();
+    }
+
+    private void ResetButtonPressed()
+    {
+        GameManager.Instance.ResetGame();
     }
 
     private void GameOver()
     {
-        
+        //show gameover screen
     }
 
     private void GameWin()
+    {
+        //show gamewin screen
+    }
+
+    private void ShowScreen()
+    {
+        
+    }
+
+    private void HideAllScreens()
+    {
+        
+    }
+
+    private void HandlePause(bool isPaused)
+    {
+        //show pause screen and menu
+    }
+
+    private void HandleStateChanged()
     {
         
     }

@@ -56,9 +56,6 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-        UIManager.OnPauseRequested += TogglePause;
-        UIManager.OnResetRequested += ResetGame;
-        UIManager.OnStartRequested += StartHub;
         LevelGenerator.OnMapGenerated += StartRun;
         PH_Player.OnPlayerDeath += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
@@ -81,6 +78,17 @@ public class GameManager : MonoBehaviour
     {
         CurrentRoom = newRoom;
     }
+
+    public void RequestPause()
+    {
+        
+    }
+
+    public void RequestStart()
+    {
+        
+    }
+
     
     /// <summary>
     /// any necessary source may request the GM to end the game while giving the desired result, validates if a run should actually end then simply switches to the state
@@ -116,7 +124,7 @@ public class GameManager : MonoBehaviour
         RequestGameEnd(RunResult.Lose);
     }
     
-    private void StartHub()
+    public void StartHub()
     {
         ChangeState(GameState.Hub);
     }
@@ -244,7 +252,7 @@ public class GameManager : MonoBehaviour
     
     #region Misc
     
-    private void TogglePause()
+    public void TogglePause()
     {
         if (currentState != GameState.Playing) 
         {
@@ -264,7 +272,7 @@ public class GameManager : MonoBehaviour
         OnPauseToggle?.Invoke(_isPaused);
     }
     
-    private void ResetGame()
+    public void ResetGame()
     {
         if (currentState == GameState.Win || currentState == GameState.Dead) //only allow the reset request to work on win/loss
         {
