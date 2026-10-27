@@ -125,7 +125,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed36c77408ff8374d8b9829326309fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
-  roomType: 0
+  _roomType: 0
+  _lootPool: {fileID: 11400000, guid: ff1199e589b64ee40ac2b0b89f92b51e, type: 2}
+  _id: 
+  _complete: 0
   _north: {fileID: 0}
   _south: {fileID: 0}
   _east: {fileID: 0}

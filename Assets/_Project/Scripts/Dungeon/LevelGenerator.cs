@@ -139,6 +139,12 @@ namespace _Project.Scripts.Dungeon
                     ResetMap();
                     GenerateMap();
                 }
+                
+                if (Keyboard.current.leftCtrlKey.wasPressedThisFrame)
+                {
+                    Debug.Log("Rolling debug");
+                    _startRoom.OnComplete(true);
+                }
             }
             #endif
         }

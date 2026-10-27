@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace _Project.Scripts.Dungeon.Utility
 {
@@ -8,9 +9,9 @@ namespace _Project.Scripts.Dungeon.Utility
     public class LinearCongruentialGenerator
     {
         private long _seed;
-        private int _multiplier;
-        private int _modulus;
-        private int _increment;
+        private long _multiplier;
+        private long _modulus;
+        private long _increment;
 
         public LinearCongruentialGenerator()
         {
@@ -28,20 +29,24 @@ namespace _Project.Scripts.Dungeon.Utility
             _increment = 12345;
         }
 
-        public int Next()
+        public long Next()
         {
             _seed = Math.Abs((_multiplier * _seed + _increment)) % _modulus;
-            return Math.Abs((int)_seed);
+            return _seed;
         }
 
-        public int Next(int maxValue)
+        public long Next(long maxValue)
         {
-            return Next() % maxValue;
+            long val = Next() % maxValue;
+            //Debug.Log($"Max. Val: {maxValue} - Next: {val}");
+            return val;
         }
 
-        public int Next(int minValue, int maxValue)
+        public long Next(long minValue, long maxValue)
         {
-            return Next() % (maxValue - minValue) + minValue;
+            long val = Next() % (maxValue - minValue) + minValue;
+            //Debug.Log($"Max. Val: {maxValue} - Min. Val: {minValue} - Next: {val}");
+            return val;
         }
     }
 }
