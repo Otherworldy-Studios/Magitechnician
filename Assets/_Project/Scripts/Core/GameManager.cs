@@ -59,10 +59,6 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-<<<<<<< HEAD
-        LevelGenerator.OnMapGenerated += StartRun;
-        PH_Player.OnPlayerDeath += PlayerDied;
-=======
         generator = LevelGenerator.Instance;
         if(player == null)
         {
@@ -73,12 +69,12 @@ public class GameManager : MonoBehaviour
         {
             _playerHealthbar = player.GetComponentInChildren<Healthbar>(); //TODO move to load function
         }
-        PH_UIManager.OnPauseRequested += TogglePause;
-        PH_UIManager.OnResetRequested += ResetGame;
-        PH_UIManager.OnStartRequested += StartHub;
+        
+        UIManager.OnPauseRequested += TogglePause; 
+        UIManager.OnResetRequested += ResetGame;
+        UIManager.OnStartRequested += StartHub;
         LevelGenerator.Instance.OnMapGenerated += StartRun;
         _playerHealthbar.OnDied += PlayerDied;
->>>>>>> main
         PH_Boss.OnBossDefeated += BossDefeated;
         PH_WaveManager.OnRoomCleared += RoomCleared;
     }

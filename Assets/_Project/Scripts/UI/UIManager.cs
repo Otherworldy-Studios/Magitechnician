@@ -4,13 +4,20 @@ using UnityEngine.XR;
 
 public class UIManager : MonoBehaviour
 {
+
+    public enum UIStates
+    {
+        StartMenu,
+        PauseMenu,
+        Gameplay
+    }
     
     private void Start()
     {
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
-        GameManager.OnGameStateChanged += ;
+        GameManager.OnGameStateChanged += HandleStateChanged;
     }
     
     
@@ -58,5 +65,6 @@ public class UIManager : MonoBehaviour
     {
         
     }
+    
 
 }
