@@ -46,7 +46,7 @@ namespace _Project.Scripts.Dungeon
         public Room StartRoom => _startRoom;
 
         [Header("Generator Settings")] 
-        [SerializeField] private int _roomOffset;
+        [SerializeField] private int _roomOffset; //this should not be hard-coded - Lee
         
         [SerializeField] private int _roomGridWidth;
         [SerializeField] private int _roomGridHeight;
@@ -80,8 +80,18 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private int _generationChance;
 
+
+        public static LevelGenerator Instance;
+
         void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
             _directions = new Dictionary<Direction, Vector3>();
             _directions[Direction.North] = new Vector3(0, 0, 1);
             _directions[Direction.South] = new Vector3(0, 0, -1);

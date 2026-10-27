@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using _Project.Scripts.Dungeon;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 
@@ -40,12 +41,14 @@ public class GameManager : MonoBehaviour
     public Room CurrentRoom { get; private set; }
     
     [SerializeField] private GameState currentState; //serialized for viewing in editor
-    [SerializeField] private PH_Player playerCharacter;
+    [SerializeField] private Healthbar _playerHealthbar;
+    [SerializeField] private GameObject player;
     [SerializeField] private PH_WaveManager waveManager; //wave manager responsible for spawning in enemies?
     [SerializeField] private Room[,] currentDungeon;
     private bool _isPaused;
     private float _runTime;
     //should rooms carry their own timer? i think so 
+    LevelGenerator generator;
     
     private void Awake()
     {
@@ -56,8 +59,26 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
+<<<<<<< HEAD
         LevelGenerator.OnMapGenerated += StartRun;
         PH_Player.OnPlayerDeath += PlayerDied;
+=======
+        generator = LevelGenerator.Instance;
+        if(player == null)
+        {
+            player = GameObject.Find("Player"); //TODO: move this to a load function
+        }
+       
+        if(_playerHealthbar == null)
+        {
+            _playerHealthbar = player.GetComponentInChildren<Healthbar>(); //TODO move to load function
+        }
+        PH_UIManager.OnPauseRequested += TogglePause;
+        PH_UIManager.OnResetRequested += ResetGame;
+        PH_UIManager.OnStartRequested += StartHub;
+        LevelGenerator.Instance.OnMapGenerated += StartRun;
+        _playerHealthbar.OnDied += PlayerDied;
+>>>>>>> main
         PH_Boss.OnBossDefeated += BossDefeated;
         PH_WaveManager.OnRoomCleared += RoomCleared;
     }
@@ -69,7 +90,7 @@ public class GameManager : MonoBehaviour
 
     private void DEBUGInitializeRun()
     {
-        if (currentState == GameState.Hub && Input.GetKeyDown(KeyCode.K)) 
+        if (currentState == GameState.Hub && Keyboard.current.kKey.wasPressedThisFrame) //updated to use new input system
         {
             InitializeRun();
         }
@@ -119,7 +140,7 @@ public class GameManager : MonoBehaviour
     
     #region EventHandlers
 
-    private void PlayerDied()  
+    private void PlayerDied(GameObject player)  
     {
         RequestGameEnd(RunResult.Lose);
     }
@@ -135,7 +156,7 @@ public class GameManager : MonoBehaviour
     /// and handles the first swap to playing state for that dungeon (otherwise bugs between playing states)
     /// </summary>
     /// <param name="generator">The level generator object that contains the dungeon</param>
-    private void StartRun(LevelGenerator generator) 
+    private void StartRun() 
     {
         currentDungeon = generator.RoomGrid;
         Room startRoom = generator.StartRoom;
@@ -306,14 +327,6 @@ public class GameManager : MonoBehaviour
 
 
 
-public class PH_Player : MonoBehaviour
-{
-    public static event Action OnPlayerDeath;
-    private void OnPlayerDied()
-    {
-        OnPlayerDeath?.Invoke();
-    }
-}
 
 public class PH_Boss : MonoBehaviour
 {

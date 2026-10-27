@@ -73,7 +73,7 @@ namespace _Project.Scripts.Dungeon
         public bool Complete { get => _complete; }
         
         // This should possibly be temporary
-        private List<WeightedReward<GunPart>> rewardOptions;
+        private List<WeightedReward<GunPart>> rewardOptions = new();
 
         void Start()
         {
