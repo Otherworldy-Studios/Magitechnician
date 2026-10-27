@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnGenerateRequested; 
     public static event Action OnRunStart;
     public static event Action<bool> OnPauseToggle;
-    public event Action<GameState> OnGameStateChanged; 
+    public static event Action<GameState> OnGameStateChanged; 
     
     public float StartTime { get; private set; } 
     public float EndTime { get; private set; }
@@ -70,9 +70,6 @@ public class GameManager : MonoBehaviour
             _playerHealthbar = player.GetComponentInChildren<Healthbar>(); //TODO move to load function
         }
         
-        UIManager.OnPauseRequested += TogglePause; 
-        UIManager.OnResetRequested += ResetGame;
-        UIManager.OnStartRequested += StartHub;
         LevelGenerator.Instance.OnMapGenerated += StartRun;
         _playerHealthbar.OnDied += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;

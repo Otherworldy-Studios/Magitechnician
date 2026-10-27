@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class UIScreen : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private bool _showsCursor;
+
+
+    virtual protected void Show()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    virtual protected void Hide()
     {
         
     }
+    
+    
 }

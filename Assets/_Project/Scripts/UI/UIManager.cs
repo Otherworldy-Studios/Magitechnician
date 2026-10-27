@@ -1,17 +1,27 @@
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 using UnityEngine.XR;
 
 public class UIManager : MonoBehaviour
 {
 
-    public enum UIStates
+    private enum UIStates
     {
         StartMenu,
         PauseMenu,
         Gameplay
     }
-    
+
+    [SerializeField] private UIScreen[] screenList;
+    [SerializeField] private MenuScreen menuScreen;
+    private bool _cursorVisible;
+
+    private void Awake()
+    {
+        //get all uiscreens in prefab
+    }
+
     private void Start()
     {
         GameManager.OnGameOver += GameOver;
@@ -19,7 +29,21 @@ public class UIManager : MonoBehaviour
         GameManager.OnPauseToggle += HandlePause;
         GameManager.OnGameStateChanged += HandleStateChanged;
     }
-    
+
+    private void ChangeState(UIStates state)
+    {
+        switch (state)
+        {
+            case UIStates.StartMenu:
+                HideAllScreens();
+                ShowScreen(menuScreen);
+                break;
+            case UIStates.PauseMenu:
+                break;
+            case UIStates.Gameplay:
+                break;
+        }
+    }
     
     private void PauseButtonPressed()
     {
@@ -46,24 +70,62 @@ public class UIManager : MonoBehaviour
         //show gamewin screen
     }
 
-    private void ShowScreen()
+    private void ShowScreen(UIStates givenScreen)
     {
-        
+        givenScreen..Enable();
     }
 
+    
     private void HideAllScreens()
     {
-        
+        foreach (UIScreen screen in screenList)
+        {
+            //screen.(screenpart).Disable();
+        }
     }
 
+    /// <summary>
+    /// Toggle cursor visibility
+    /// </summary>
+    private void ToggleCursor(bool isVisible)
+    {
+        if (!isVisible)
+        {
+           Cursor.visible = false; 
+           _cursorVisible = false;
+        }
+        else
+        {
+            Cursor.visible = true; 
+            _cursorVisible = true;
+        }
+    }
+
+    /// <summary>
+    /// Called when GM invokes the pause request
+    /// </summary>
+    /// <param name="isPaused"></param>
     private void HandlePause(bool isPaused)
     {
-        //show pause screen and menu
+        if (isPaused)
+        { 
+            ToggleCursor(true);
+            //show pause screen and menu
+        }
+        else
+        {
+            ToggleCursor(false);
+            //hide the pausescreen
+        }
+        
     }
 
-    private void HandleStateChanged()
+    private void HandleStateChanged(GameManager.GameState newState)
     {
-        
+        switch (newState)
+        {
+            
+        }
     }
     
 
