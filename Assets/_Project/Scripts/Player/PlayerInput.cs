@@ -48,20 +48,6 @@ public class PlayerInput : MonoBehaviour
         _input.Dispose();
     }
     
-    //That is bad unless player can't change WASD input
-    private bool IsMovementInputPressed()
-    {
-        Keyboard keyboard = Keyboard.current;
-
-        if (keyboard == null)
-            return false;
-
-        return keyboard.wKey.isPressed ||
-               keyboard.aKey.isPressed ||
-               keyboard.sKey.isPressed ||
-               keyboard.dKey.isPressed;
-    }
-    
     private void OnJumpPressed(InputAction.CallbackContext context) => JumpPressed?.Invoke();
     private void OnJumpReleased(InputAction.CallbackContext context) => JumpReleased?.Invoke();
 
