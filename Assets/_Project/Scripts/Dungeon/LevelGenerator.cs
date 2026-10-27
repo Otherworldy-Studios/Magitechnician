@@ -199,7 +199,7 @@ namespace _Project.Scripts.Dungeon
                         break;
 
                     if (added.x < 0 || added.y < 0 ||
-                        added.x >= _roomGridWidth || added.y >= _roomGridHeight)
+                        added.x >= _roomGridHeight || added.y >= _roomGridWidth)
                     {
                         continue;
                     }
@@ -301,6 +301,7 @@ namespace _Project.Scripts.Dungeon
                     break;
             }
             
+            _endRoom = end;
             OnMapGenerated?.Invoke(); // We are done generating the map
         }
 
@@ -317,14 +318,13 @@ namespace _Project.Scripts.Dungeon
             HashSet<Room> visited = new HashSet<Room>();
 
             rooms.Enqueue(_startRoom);
+            Room last = null;
             
             while (rooms.Count > 0)
             {
                 Room room = rooms.Dequeue();
+                last = room;
                 visited.Add(room);
-
-                if (rooms.Count == 1)
-                    return room;
 
                 if (room.North != null && !visited.Contains(room.North))
                     rooms.Enqueue(room.North);
@@ -336,7 +336,7 @@ namespace _Project.Scripts.Dungeon
                     rooms.Enqueue(room.West);
             }
 
-            return null;
+            return last;
         }
 
         /// <summary>
@@ -353,6 +353,7 @@ namespace _Project.Scripts.Dungeon
             _endRoom = null;
             _generatedCombatRooms.Clear();
             _generationChance = _baseGenerationChance;
+            _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
             
             if (_generateSeed)
                 _seed = Random.Range(-int.MaxValue, int.MaxValue);

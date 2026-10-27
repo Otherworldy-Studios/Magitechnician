@@ -1,3 +1,5 @@
+using System;
+
 namespace _Project.Scripts.Dungeon.Utility
 {
     /// <summary>
@@ -5,7 +7,7 @@ namespace _Project.Scripts.Dungeon.Utility
     /// </summary>
     public class LinearCongruentialGenerator
     {
-        private int _seed;
+        private long _seed;
         private int _multiplier;
         private int _modulus;
         private int _increment;
@@ -18,7 +20,7 @@ namespace _Project.Scripts.Dungeon.Utility
             _increment = 12345;
         }
 
-        public LinearCongruentialGenerator(int seed)
+        public LinearCongruentialGenerator(long seed)
         {
             _seed = seed;
             _multiplier = 1103515245;
@@ -28,8 +30,8 @@ namespace _Project.Scripts.Dungeon.Utility
 
         public int Next()
         {
-            _seed = (_multiplier * _seed + _increment) % _modulus;
-            return _seed;
+            _seed = Math.Abs((_multiplier * _seed + _increment)) % _modulus;
+            return (int)_seed;
         }
 
         public int Next(int maxValue)
