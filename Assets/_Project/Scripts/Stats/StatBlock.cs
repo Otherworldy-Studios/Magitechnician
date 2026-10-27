@@ -1,13 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-// Used to group multiple base stats into one SO. Enables the creation of template stats
+// This class is a ScriptableObject that holds a list of StatEntry objects, which represent individual stats and their values.
 [CreateAssetMenu(fileName = "StatBlock", menuName = "Stats/Stat Block")]
 public class StatBlock : ScriptableObject
 {
-    [SerializeField] private Stat[] stats;
-
-    public Stat[] GetStats()
-    {
-        return stats;
-    }
+    public List<StatEntry> Entries;
 }
