@@ -89,6 +89,11 @@ public class DamageReceiver : MonoBehaviour, IDamageable
         }
     }
     
+    /// <summary>
+    /// Applies damage over time.
+    /// DamageAmount represents the total damage dealt over the specified duration,
+    /// not damage per second. Replaces any currently active damage over time.
+    /// </summary>
     public void TakeDamageOverTime(DamageInfo damageInfo, float time)
     {
         _damageTimer = Mathf.Max(0f, time);
