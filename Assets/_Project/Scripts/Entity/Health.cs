@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = System.Object;
 
-public class Healthbar : MonoBehaviour
+public class Health : MonoBehaviour
 {
     [field: SerializeField] public float CurrentHealth { get; private set; }
 

@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     public Room CurrentRoom { get; private set; }
     
     [SerializeField] private GameState currentState; //serialized for viewing in editor
-    [SerializeField] private Healthbar _playerHealthbar;
+    [SerializeField] private Health _playerHealthbar;
     [SerializeField] private GameObject player;
     [SerializeField] private PH_WaveManager waveManager; //wave manager responsible for spawning in enemies?
     [SerializeField] private Room[,] currentDungeon;
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
        
         if(_playerHealthbar == null)
         {
-            _playerHealthbar = player.GetComponentInChildren<Healthbar>(); //TODO move to load function
+            _playerHealthbar = player.GetComponentInChildren<Health>(); //TODO move to load function
         }
         PH_UIManager.OnPauseRequested += TogglePause;
         PH_UIManager.OnResetRequested += ResetGame;
