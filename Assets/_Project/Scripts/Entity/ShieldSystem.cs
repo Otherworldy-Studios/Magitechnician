@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 
-public class ShieldSystem : MonoBehaviour, IDamageable
+public class ShieldSystem : MonoBehaviour
 {
     [SerializeField] private ShieldSettings settings;
 
-    public float CurrentShield { get; private set; }
-    public bool IsBroken { get; private set; }
+    [field: SerializeField] public float CurrentShield { get; private set; }
+    [field: SerializeField] public bool IsBroken { get; private set; }
 
     public event Action<float> OnShieldDamaged;
     public event Action OnShieldBroken;
@@ -55,7 +55,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
     /// Applies shield damage reduction, absorbs available damage,
     /// and returns any remaining damage for the damage receiver.
     /// </summary>
-    public float AbsorbDamageAndReturnOverflow(DamageInfo damageInfo)
+    public int AbsorbDamageAndReturnOverflow(DamageInfo damageInfo)
     {
         if (settings == null || damageInfo.DamageAmount <= 0) return damageInfo.DamageAmount;
 
@@ -65,7 +65,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             return damageInfo.DamageAmount;
         }
 
-        float multiplier = 1f - (settings.damageReductionPercent / 100f);
+        float multiplier = Mathf.Clamp01(1f - settings.damageReductionPercent / 100f);
         float modifiedDamage = damageInfo.DamageAmount * multiplier;
 
         if (modifiedDamage <= CurrentShield)
@@ -74,13 +74,13 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             timer = settings.regenDelay;
 
             OnShieldDamaged?.Invoke(CurrentShield);
-            return 0f;
+            return 0;
         }
         else
         {
             // Convert absorbed shield damage back to its original amount before reduction.
             float shieldAbsorbedRaw = CurrentShield / multiplier;
-            float leftoverDamage = damageInfo.DamageAmount - shieldAbsorbedRaw;
+            int leftoverDamage = Mathf.RoundToInt(damageInfo.DamageAmount - shieldAbsorbedRaw);
 
             CurrentShield = 0;
             IsBroken = true;
@@ -91,10 +91,5 @@ public class ShieldSystem : MonoBehaviour, IDamageable
 
             return leftoverDamage;
         }
-    }
-
-    public void TakeDamage(DamageInfo damageInfo)
-    {
-        AbsorbDamageAndReturnOverflow(damageInfo);
     }
 }
