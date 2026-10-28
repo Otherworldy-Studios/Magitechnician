@@ -8,7 +8,7 @@ using UnityEngine;
 /// and line-of-sight components.
 
 [RequireComponent(typeof(EnemyMovement))]
-[RequireComponent(typeof(Healthbar))]
+[RequireComponent(typeof(Health))]
 public class EnemyBase : MonoBehaviour
 {
     [Header("References")]
@@ -19,7 +19,7 @@ public class EnemyBase : MonoBehaviour
     private float detectionRange = 10f;
 
     public EnemyMovement Movement { get; private set; }
-    public Healthbar Health { get; private set; }
+    public Health Health { get; private set; }
 
     public IEnemyRange Range { get; private set; }
     public IEnemyLineOfSight LineOfSight { get; private set; }
@@ -51,7 +51,7 @@ public class EnemyBase : MonoBehaviour
     private void Awake()
     {
         Movement = GetComponent<EnemyMovement>();
-        Health = GetComponent<Healthbar>();
+        Health = GetComponent<Health>();
 
         // TODO: Connect Goldilocks component.
         Range = GetComponent(typeof(IEnemyRange)) as IEnemyRange;

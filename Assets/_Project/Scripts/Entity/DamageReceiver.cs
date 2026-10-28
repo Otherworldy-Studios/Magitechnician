@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class DamageReceiver : MonoBehaviour, IDamageable
 {
-    [SerializeField] private Healthbar _health;
+    [SerializeField] private Health _health;
     [SerializeField] private ShieldSystem _shield;
 
     private void Awake()
     {
         if(!_health)
-            _health = GetComponent<Healthbar>();
+            _health = GetComponent<Health>();
 
         if (!_shield)
             _shield = GetComponent<ShieldSystem>();
