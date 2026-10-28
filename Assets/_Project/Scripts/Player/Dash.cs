@@ -9,7 +9,7 @@ public class Dash : MonoBehaviour
     [Header("References")]
     // Reference direction used when dashing without movement input, usually camera orientation.
     [SerializeField] private Transform _orientation;
-    [SerializeField] private Healthbar _healthbar;
+    [SerializeField] private Health _healthbar;
 
     public bool IsDashing { get; private set; }
     public Vector3 DashDirection {get; private set;}
@@ -30,7 +30,7 @@ public class Dash : MonoBehaviour
             Debug.LogError($"{nameof(Dash)} requires a {nameof(_orientation)}");
 
         if (!_healthbar)
-            _healthbar = GetComponent<Healthbar>();
+            _healthbar = GetComponent<Health>();
     }
 
     private void OnDisable()

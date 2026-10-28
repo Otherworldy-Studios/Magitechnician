@@ -28,7 +28,7 @@ public class HealthDebug : MonoBehaviour
 
     [Space(5)] [SerializeField] private bool _apply;
     
-    [SerializeField] private Healthbar _health;
+    [SerializeField] private Health _health;
     [SerializeField] private PlayerMovement _playerMovement;
     
     [Header("Player Debug Controls")]
@@ -49,7 +49,7 @@ public class HealthDebug : MonoBehaviour
     private void Awake()
     {
         if (!_health)
-            _health = GetComponent<Healthbar>();
+            _health = GetComponent<Health>();
         if (!_playerMovement)
             _playerMovement = GetComponent<PlayerMovement>();
     }
