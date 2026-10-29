@@ -1,24 +1,27 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class ShieldSystem : MonoBehaviour
 {
-    [SerializeField] private ShieldSettings settings;
+    [SerializeField] private ShieldSettings _settings;
 
     [field: SerializeField] public float CurrentShield { get; private set; }
     [field: SerializeField] public bool IsBroken { get; private set; }
+    public float MaxShield =>  _settings.maxShield;
 
     public event Action<float> OnShieldDamaged;
     public event Action OnShieldBroken;
     public event Action OnShieldRestored;
+    public event Action OnShieldHealed;
 
     private float timer;
 
-    void Start()
+    void Awake()
     {
-        if (settings != null)
+        if (_settings != null)
         {
-            CurrentShield = settings.maxShield;
+            CurrentShield = _settings.maxShield;
         }
     }
 
@@ -27,24 +30,29 @@ public class ShieldSystem : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (settings == null) return;
+        if (_settings == null) return;
 
         if (timer > 0)
         {
             timer -= Time.deltaTime;
         }
-        else if (CurrentShield < settings.maxShield)
+        else if (CurrentShield < _settings.maxShield)
         {
             float previousShield = CurrentShield;
-            CurrentShield += settings.regenRate * Time.deltaTime;
-            CurrentShield = Mathf.Clamp(CurrentShield, 0, settings.maxShield);
+            CurrentShield += _settings.regenRate * Time.deltaTime;
+            CurrentShield = Mathf.Clamp(CurrentShield, 0, _settings.maxShield);
+            
+            if (CurrentShield > previousShield)
+            {
+                OnShieldHealed?.Invoke();
+            }
 
             if (CurrentShield > 0)
             {
                 IsBroken = false;
             }
 
-            if (previousShield < settings.maxShield && CurrentShield >= settings.maxShield)
+            if (previousShield < _settings.maxShield && CurrentShield >= _settings.maxShield)
             {
                 OnShieldRestored?.Invoke();
             }
@@ -57,21 +65,21 @@ public class ShieldSystem : MonoBehaviour
     /// </summary>
     public int AbsorbDamageAndReturnOverflow(DamageInfo damageInfo)
     {
-        if (settings == null || damageInfo.DamageAmount <= 0) return damageInfo.DamageAmount;
+        if (_settings == null || damageInfo.DamageAmount <= 0) return damageInfo.DamageAmount;
 
         if (CurrentShield <= 0 || IsBroken)
         {
-            timer = settings.brokenRegenDelay;
+            timer = _settings.brokenRegenDelay;
             return damageInfo.DamageAmount;
         }
 
-        float multiplier = Mathf.Clamp01(1f - settings.damageReductionPercent / 100f);
+        float multiplier = Mathf.Clamp01(1f - _settings.damageReductionPercent / 100f);
         float modifiedDamage = damageInfo.DamageAmount * multiplier;
 
         if (modifiedDamage <= CurrentShield)
         {
             CurrentShield -= modifiedDamage;
-            timer = settings.regenDelay;
+            timer = _settings.regenDelay;
 
             OnShieldDamaged?.Invoke(CurrentShield);
             return 0;
@@ -84,7 +92,7 @@ public class ShieldSystem : MonoBehaviour
 
             CurrentShield = 0;
             IsBroken = true;
-            timer = settings.brokenRegenDelay;
+            timer = _settings.brokenRegenDelay;
 
             OnShieldDamaged?.Invoke(CurrentShield);
             OnShieldBroken?.Invoke();
