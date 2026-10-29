@@ -1679,8 +1679,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec64f6a922e42d418aa4ac3863e2fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDScreen
-  _healthBar: {fileID: 0}
-  _shieldBar: {fileID: 0}
+  _healthBar: {fileID: 228193353579605080}
+  _shieldBar: {fileID: 7812177592832386689}
 --- !u!1 &8081295052617834883
 GameObject:
   m_ObjectHideFlags: 0
