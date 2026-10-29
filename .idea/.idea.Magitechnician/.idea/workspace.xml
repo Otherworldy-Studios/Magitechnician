@@ -12,13 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6d878791-32e4-42ca-8cca-4d1b9c4b61ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/DamageInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/DamageInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/DamageReceiver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/DamageReceiver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Health.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/Health.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/HealthDebug.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/HealthDebug.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/ShieldSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/ShieldSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/ShieldTester.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Entity/ShieldTester.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Player/Dash.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Player/Dash.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Nikita/SandBox_Nikita.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Nikita/SandBox_Nikita.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,7 +200,7 @@
       <updated>1792522494080</updated>
       <workItem from="1792744557006" duration="3969000" />
       <workItem from="1793157471643" duration="326000" />
-      <workItem from="1793157885818" duration="6768000" />
+      <workItem from="1793157885818" duration="8018000" />
     </task>
     <servers />
   </component>
