@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class ShieldTester : MonoBehaviour
 {
     public ShieldSystem shield;
-    public Healthbar health;
+    public Health health;
 
     void OnEnable()
     {
