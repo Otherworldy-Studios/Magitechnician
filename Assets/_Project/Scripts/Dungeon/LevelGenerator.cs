@@ -363,6 +363,8 @@ namespace _Project.Scripts.Dungeon
             
             if (_generateSeed)
                 _seed = Random.Range(-int.MaxValue, int.MaxValue);
+
+            _random = new LinearCongruentialGenerator(_seed);
         }
 
         /// <summary>
