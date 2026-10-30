@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private SettingsScreen settingsScreen;
     [SerializeField] private DeathScreen deathScreen;
     [SerializeField] private WinScreen winScreen;
+    [SerializeField] private PauseScreen pauseScreen;
 
     public event Action OnPauseRequested;
     public event Action OnStartRequested;
