@@ -1,20 +1,31 @@
 using UnityEngine;
 
-public class UIScreen : MonoBehaviour
+public abstract class UIScreen : MonoBehaviour
 {
 
-    private bool _showsCursor;
+    public bool showsCursor;
 
 
-    virtual protected void Show()
+    public virtual void Show()
+    {
+        gameObject.SetActive(true);
+        OnShown(); 
+    }
+
+    public virtual void Hide()
+    {
+        gameObject.SetActive(false);
+        OnHidden();
+    }
+
+    protected virtual void OnShown()
     {
         
     }
 
-    virtual protected void Hide()
+    protected virtual void OnHidden()
     {
         
     }
-    
     
 }

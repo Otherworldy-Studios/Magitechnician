@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class MenuScreen : UIScreen
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public override void Show()
     {
-        
+        base.Show();
     }
+    
 }
