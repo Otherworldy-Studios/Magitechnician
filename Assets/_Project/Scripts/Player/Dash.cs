@@ -13,6 +13,7 @@ public class Dash : MonoBehaviour
 
     public bool IsDashing { get; private set; }
     public Vector3 DashDirection {get; private set;}
+    public float DashCooldown {get; private set;}
 
     public event Action OnDashed;
 
@@ -31,6 +32,8 @@ public class Dash : MonoBehaviour
 
         if (!_health)
             _health = GetComponent<Health>();
+        
+        DashCooldown = _settings.DashCooldown + _settings.DashDuration;
     }
 
     private void OnDisable()
