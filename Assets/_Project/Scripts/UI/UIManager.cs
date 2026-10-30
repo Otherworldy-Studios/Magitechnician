@@ -17,6 +17,10 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private List<UIScreen> screenList;
     [SerializeField] private MenuScreen menuScreen;
+    [SerializeField] private RewardScreen rewardScreen;
+    [SerializeField] private SettingsScreen settingsScreen;
+    [SerializeField] private DeathScreen deathScreen;
+    [SerializeField] private WinScreen winScreen;
 
     public event Action OnPauseRequested;
     public event Action OnStartRequested;
@@ -27,7 +31,6 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        //get all uiscreens in prefab
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
     }

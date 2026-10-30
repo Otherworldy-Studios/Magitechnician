@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnGenerateRequested; 
     public static event Action OnRunStart;
     public static event Action<bool> OnPauseToggle;
-    public static event Action<GameState> OnGameStateChanged; 
+    public event Action<GameState> OnGameStateChanged; 
     
     public float StartTime { get; private set; } 
     public float EndTime { get; private set; }
@@ -69,7 +69,9 @@ public class GameManager : MonoBehaviour
         {
             _playerHealthbar = player.GetComponentInChildren<Health>(); //TODO move to load function
         }
-        
+        PH_UIManager.OnPauseRequested += TogglePause;
+        PH_UIManager.OnResetRequested += ResetGame;
+        PH_UIManager.OnStartRequested += StartHub;
         LevelGenerator.Instance.OnMapGenerated += StartRun;
         _playerHealthbar.OnDied += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
@@ -100,17 +102,6 @@ public class GameManager : MonoBehaviour
     {
         CurrentRoom = newRoom;
     }
-
-    public void RequestPause()
-    {
-        
-    }
-
-    public void RequestStart()
-    {
-        
-    }
-
     
     /// <summary>
     /// any necessary source may request the GM to end the game while giving the desired result, validates if a run should actually end then simply switches to the state
@@ -146,7 +137,7 @@ public class GameManager : MonoBehaviour
         RequestGameEnd(RunResult.Lose);
     }
     
-    public void StartHub()
+    private void StartHub()
     {
         ChangeState(GameState.Hub);
     }
@@ -274,7 +265,7 @@ public class GameManager : MonoBehaviour
     
     #region Misc
     
-    public void TogglePause()
+    private void TogglePause()
     {
         if (currentState != GameState.Playing) 
         {
@@ -313,7 +304,7 @@ public class GameManager : MonoBehaviour
         OnPauseToggle?.Invoke(_isPaused);
     }
     
-    public void ResetGame()
+    private void ResetGame()
     {
         if (currentState == GameState.Win || currentState == GameState.Dead) //only allow the reset request to work on win/loss
         {
@@ -345,7 +336,41 @@ public class GameManager : MonoBehaviour
 
 #region PLACEHOLDERS
 
+public class PH_UIManager : MonoBehaviour
+{
+    public static event Action OnPauseRequested;
+    public static event Action OnStartRequested;
+    public static event Action OnResetRequested;
 
+    
+    private void Start()
+    {
+        GameManager.OnGameOver += GameOver;
+        GameManager.OnGameWin += GameWin;
+    }
+    
+    
+    private void PauseButtonPressed()
+    {
+        OnPauseRequested?.Invoke();
+    }
+
+    public void StartButtonPressed()
+    {
+        OnStartRequested?.Invoke();
+    }
+
+    private void GameOver()
+    {
+        
+    }
+
+    private void GameWin()
+    {
+        
+    }
+    
+}
 
 
 public class PH_Boss : MonoBehaviour
