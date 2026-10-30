@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class ShieldSystem : MonoBehaviour, IDamageable
+public class ShieldSystem : MonoBehaviour
 {
     [SerializeField] private ShieldSettings settings;
 
@@ -82,7 +82,7 @@ public class ShieldSystem : MonoBehaviour, IDamageable
             float shieldAbsorbedRaw = CurrentShield / multiplier;
             float leftoverDamage = damageInfo.DamageAmount - shieldAbsorbedRaw;
 
-            CurrentShield = 0;
+            CurrentShield = 50;
             IsBroken = true;
             timer = settings.brokenRegenDelay;
 
@@ -91,10 +91,5 @@ public class ShieldSystem : MonoBehaviour, IDamageable
 
             return leftoverDamage;
         }
-    }
-
-    public void TakeDamage(DamageInfo damageInfo)
-    {
-        AbsorbDamageAndReturnOverflow(damageInfo);
     }
 }

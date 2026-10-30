@@ -263,6 +263,10 @@ GameObject:
   - component: {fileID: 8946386472445388545}
   - component: {fileID: 4666485014060152066}
   - component: {fileID: 3441230321980424680}
+  - component: {fileID: 587318347079165864}
+  - component: {fileID: 557096448507143632}
+  - component: {fileID: 986479138970913362}
+  - component: {fileID: 1300537016930732514}
   m_Layer: 3
   m_Name: Player Controller
   m_TagString: Untagged
@@ -387,6 +391,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dash
   _settings: {fileID: 11400000, guid: 5c0faf03648d58a4fad76a6e16cb9939, type: 2}
   _orientation: {fileID: 5732992565851014402}
+  _healthbar: {fileID: 587318347079165864}
+--- !u!114 &587318347079165864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae96f76db8979244afd2e688e650773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Healthbar
+  <CurrentHealth>k__BackingField: 0
+  <MaxHealth>k__BackingField: 100
+--- !u!114 &557096448507143632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45321246f18d063499e339a1f2143ab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldSystem
+  settings: {fileID: 11400000, guid: ed24f265d96090a40829f71798e57d4f, type: 2}
+--- !u!114 &986479138970913362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0a1fc3d847b7445a1362024c07b007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageReceiver
+  _health: {fileID: 587318347079165864}
+  _shield: {fileID: 557096448507143632}
+--- !u!114 &1300537016930732514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0dca7749ce14cd408fc0e6b3ee7581d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldTester
+  shield: {fileID: 557096448507143632}
+  health: {fileID: 587318347079165864}
 --- !u!1 &3346735939129070630
 GameObject:
   m_ObjectHideFlags: 0
