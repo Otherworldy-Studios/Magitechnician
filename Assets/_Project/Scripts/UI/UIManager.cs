@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
-        GameManager.OnGameStateChanged += HandleStateChanged;
+        GameManager.Instance.OnGameStateChanged += HandleStateChanged;
     }
     
     private void ChangeState(UIStates state)
