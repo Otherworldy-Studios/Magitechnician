@@ -46,8 +46,6 @@ namespace _Project.Scripts.Dungeon
         public Room StartRoom => _startRoom;
 
         [Header("Generator Settings")] 
-        [SerializeField] private int _roomOffset; //this should not be hard-coded - Lee
-        
         [SerializeField] private int _roomGridWidth;
         [SerializeField] private int _roomGridHeight;
 
@@ -177,7 +175,7 @@ namespace _Project.Scripts.Dungeon
                 PriorityQueue<Direction> priorityQueue = new PriorityQueue<Direction>();
                 
                 foreach(Direction dir in Enum.GetValues(typeof(Direction)))
-                    priorityQueue.Enqueue(dir, _random.Next());
+                    priorityQueue.Enqueue(dir, _random.Next(-int.MaxValue, int.MaxValue));
                 
                 while(priorityQueue.Count > 0)
                 {
@@ -215,10 +213,12 @@ namespace _Project.Scripts.Dungeon
                     {
                         if (_roomGrid[added.x, added.y] != null)
                             continue;
+
+                        Room selected = GetRandomCombatRoom(roomRandom.Next());
+                        Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity);
+                        nextRoom.transform.position = room.gameObject.transform.position + (_directions[direction] *
+                            nextRoom.gameObject.GetComponent<Collider>().bounds.size.magnitude);
                         
-                        Room nextRoom = Instantiate(GetRandomCombatRoom(roomRandom.Next()),
-                            room.gameObject.transform.position + (_directions[direction] * _roomOffset),
-                            Quaternion.identity);
                         nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
                         _roomGrid[added.x, added.y] = nextRoom;
@@ -281,10 +281,11 @@ namespace _Project.Scripts.Dungeon
                 direction = Direction.West;
             
             Vector3 dir = _directions[direction];
-            
-            Room end = Instantiate(GetRandomEndRoom(seed),
-                farthest.gameObject.transform.position + (dir * _roomOffset),
-                Quaternion.identity);
+
+            Room selected = GetRandomEndRoom(seed);
+            Room end = Instantiate(selected, farthest.transform.position, Quaternion.identity);
+            end.transform.position = farthest.gameObject.transform.position +
+                                     (dir * end.gameObject.GetComponent<Collider>().bounds.size.magnitude);
             
             end.Id = $"End{(end != null ? 1 : 0)}";
             
