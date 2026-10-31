@@ -1,30 +1,15 @@
 using System;
 using UnityEngine;
 
-// Multiplicative and Additive modifiers to stats in addition to having them be temporary/permenant
+// This class represents a modifier that can be applied to a stat, including the stat it modifies, the operation to perform, 
+// the value of the modifier, the source of the modifier, and its duration.
 [Serializable]
 public class StatModifier
 {
-    public float value;
-    public modifierType type;
-    public string modifierID;
-    public float? expiresAt;
-    public bool isPermanent => !expiresAt.HasValue;
-
-    public StatModifier(float value, modifierType type, string modifierID, float? duration)
-    {
-        this.value = value;
-        this.type = type;
-        this.modifierID = modifierID;
-        
-        if (!duration.HasValue)
-        {
-            return;
-        }
-
-        expiresAt = Time.time + duration.Value;
-    }
+    public StatDefinition Stat;
+    public ModifierOperation Operation;
+    public float Value;
+    public object Source;
+    public float Duration;
 
 }
-
-public enum modifierType {Multiplicative, Additive}

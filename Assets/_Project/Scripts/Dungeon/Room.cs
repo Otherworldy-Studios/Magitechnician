@@ -99,13 +99,15 @@ namespace _Project.Scripts.Dungeon
             #endif
         }
 
-        void OnComplete()
+        public void OnComplete(bool force = false)
         {
             _complete = true;
 
-            if (_roomType == RoomType.Combat)
+            if (_roomType == RoomType.Combat || force)
             {
                 List<WeightedReward<GunPart>> rewards = _lootPool.PickThree();
+                
+                //Debug.Log($"Rolled: {rewards.Count}");
 
                 for (int i = 0; i < rewards.Count; i++)
                 {

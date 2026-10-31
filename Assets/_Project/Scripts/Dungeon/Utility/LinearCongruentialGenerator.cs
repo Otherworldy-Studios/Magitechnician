@@ -1,3 +1,6 @@
+using System;
+using UnityEngine;
+
 namespace _Project.Scripts.Dungeon.Utility
 {
     /// <summary>
@@ -5,10 +8,10 @@ namespace _Project.Scripts.Dungeon.Utility
     /// </summary>
     public class LinearCongruentialGenerator
     {
-        private int _seed;
-        private int _multiplier;
-        private int _modulus;
-        private int _increment;
+        private long _seed;
+        private long _multiplier;
+        private long _modulus;
+        private long _increment;
 
         public LinearCongruentialGenerator()
         {
@@ -18,7 +21,7 @@ namespace _Project.Scripts.Dungeon.Utility
             _increment = 12345;
         }
 
-        public LinearCongruentialGenerator(int seed)
+        public LinearCongruentialGenerator(long seed)
         {
             _seed = seed;
             _multiplier = 1103515245;
@@ -26,20 +29,24 @@ namespace _Project.Scripts.Dungeon.Utility
             _increment = 12345;
         }
 
-        public int Next()
+        public long Next()
         {
-            _seed = (_multiplier * _seed + _increment) % _modulus;
+            _seed = Math.Abs((_multiplier * _seed + _increment)) % _modulus;
             return _seed;
         }
 
-        public int Next(int maxValue)
+        public long Next(long maxValue)
         {
-            return Next() % maxValue;
+            long val = Next() % maxValue;
+            //Debug.Log($"Max. Val: {maxValue} - Next: {val}");
+            return val;
         }
 
-        public int Next(int minValue, int maxValue)
+        public long Next(long minValue, long maxValue)
         {
-            return Next() % (maxValue - minValue) + minValue;
+            long val = Next() % (maxValue - minValue) + minValue;
+            //Debug.Log($"Max. Val: {maxValue} - Min. Val: {minValue} - Next: {val}");
+            return val;
         }
     }
 }
