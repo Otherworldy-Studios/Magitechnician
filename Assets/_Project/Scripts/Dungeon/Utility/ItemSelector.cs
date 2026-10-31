@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Dungeon.Utility
@@ -30,7 +29,7 @@ namespace _Project.Scripts.Dungeon.Utility
             _random = new LinearCongruentialGenerator(Random.Range(1, int.MaxValue));
         }
         
-        public ItemSelector(int seed)
+        public ItemSelector(long seed)
         {
             _entries = new Dictionary<T, long>();
             _totalWeight = 0;
