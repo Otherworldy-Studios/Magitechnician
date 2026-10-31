@@ -10,17 +10,17 @@ using UnityEngine.InputSystem;
 public class HealthDebug : MonoBehaviour
 {
     [Header("Instant heal")]
-    [SerializeField] private float _heal;
+    [SerializeField] private int _heal;
     
     [Header("Instant damage")]
-    [SerializeField] private float _damage;
+    [SerializeField] private int _damage;
     
     [Header("Heal over time")]
-    [SerializeField] private float _healOverTime;
+    [SerializeField] private int _healOverTime;
     [SerializeField] private float _healTimer;
 
     [Header("Damage over time")]
-    [SerializeField] private float _damageOverTime;
+    [SerializeField] private int _damageOverTime;
     [SerializeField] private float _damageTimer;
     
     [Header("Invincibility")]
@@ -29,6 +29,7 @@ public class HealthDebug : MonoBehaviour
     [Space(5)] [SerializeField] private bool _apply;
     
     [SerializeField] private Health _health;
+    [SerializeField] private DamageReceiver _damageReceiver;
     [SerializeField] private PlayerMovement _playerMovement;
     
     [Header("Player Debug Controls")]
@@ -52,6 +53,8 @@ public class HealthDebug : MonoBehaviour
             _health = GetComponent<Health>();
         if (!_playerMovement)
             _playerMovement = GetComponent<PlayerMovement>();
+        if (!_damageReceiver)
+            _damageReceiver = GetComponent<DamageReceiver>();
     }
     
     // Releases the debug invincibility token when disabled
@@ -86,21 +89,27 @@ public class HealthDebug : MonoBehaviour
         if (_heal > 0f && _apply)
         {
             _health.RegenHealth(_heal);
-            _heal = 0f;
+            _heal = 0;
             _apply = false;
         }
 
-        if (_damage > 0f && _apply)
+        if (_damage > 0f && _apply && _damageReceiver)
         {
-            _health.TakeDamage(new DamageInfo(){ DamageAmount = _damage});
-            _damage = 0f;
+            _damageReceiver.TakeDamage(new DamageInfo { 
+                DamageAmount = _damage, 
+                DamageSource = gameObject, 
+                DamageDirection = transform.forward,
+                DamageType = DamageType.Physical,
+            });
+            
+            _damage = 0;
             _apply = false;
         }
 
         if (_damageOverTime > 0f && _damageTimer > 0f && _apply)
         {
             StartDebugDoT(_damageOverTime, _damageTimer);
-            _damageOverTime = 0f;
+            _damageOverTime = 0;
             _damageTimer = 0f;
             _apply = false;
         }
@@ -108,7 +117,7 @@ public class HealthDebug : MonoBehaviour
         if (_healOverTime > 0f && _healTimer > 0f && _apply)
         {
             StartDebugHoT(_healOverTime, _healTimer);
-            _healOverTime = 0f;
+            _healOverTime = 0;
             _healTimer = 0f;
             _apply = false;
         }
@@ -127,20 +136,25 @@ public class HealthDebug : MonoBehaviour
             _health.RegenHealth(25);
         }
 
-        if (Keyboard.current.f2Key.wasPressedThisFrame)
+        if (Keyboard.current.f2Key.wasPressedThisFrame && _damageReceiver)
         {
-            _health.TakeDamage(new DamageInfo(){ DamageAmount = 25f});
+            _damageReceiver.TakeDamage(new DamageInfo { 
+                DamageAmount = 25, 
+                DamageSource = gameObject, 
+                DamageDirection = transform.forward,
+                DamageType = DamageType.Physical,
+            });
         }
 
-        if (Keyboard.current.f3Key.wasPressedThisFrame)
+        if (Keyboard.current.f3Key.wasPressedThisFrame && _damageReceiver)
         {
             if (_dotTimeRemaining <= 0f)
             {
-                StartDebugDoT(50f, 10f);
+                StartDebugDoT(50, 10f);
             }
             else
             {
-                _health.TakeDamageOverTime(new DamageInfo { DamageAmount = 0f }, 0f);
+                _damageReceiver.TakeDamageOverTime(new DamageInfo { DamageAmount = 0 }, 0f);
 
                 _dotTimeRemaining = 0f;
             }
@@ -150,11 +164,11 @@ public class HealthDebug : MonoBehaviour
         {
             if (_hotTimeRemaining <= 0f)
             {
-                StartDebugHoT(50f, 10f);
+                StartDebugHoT(50, 10f);
             }
             else
             {
-                _health.RegenHealthOverTime(0f, 0f);
+                _health.RegenHealthOverTime(0, 0f);
                 _hotTimeRemaining = 0f;
             }
         }
@@ -193,14 +207,23 @@ public class HealthDebug : MonoBehaviour
     }
     
     // Damage over time
-    private void StartDebugDoT(float damage, float duration)
+    private void StartDebugDoT(int damage, float duration)
     {
-        _health.TakeDamageOverTime(new DamageInfo { DamageAmount = damage }, duration);
+        if(!_damageReceiver)
+            return;
+        
+        _damageReceiver.TakeDamageOverTime(new DamageInfo { 
+                DamageAmount = damage, 
+                DamageSource = gameObject, 
+                DamageDirection = transform.forward,
+                DamageType = DamageType.Physical,
+        }, duration);
+        
         _dotTimeRemaining = duration;
     }
     
     //Heal over time
-    private void StartDebugHoT(float healing, float duration)
+    private void StartDebugHoT(int healing, float duration)
     {
         _health.RegenHealthOverTime(healing, duration);
         _hotTimeRemaining = duration;
