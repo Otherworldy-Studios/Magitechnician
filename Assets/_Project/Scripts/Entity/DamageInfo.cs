@@ -1,6 +1,6 @@
 using UnityEngine;
 public struct DamageInfo {
-    public float DamageAmount;
+    public int DamageAmount;
     public GameObject DamageSource;
     public Vector3 DamageDirection;
     public DamageType DamageType;

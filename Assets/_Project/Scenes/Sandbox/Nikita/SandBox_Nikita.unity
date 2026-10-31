@@ -305,6 +305,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3499401484581962967, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: <IsBroken>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3499401484581962967, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: <CurrentShield>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4285462192350137379, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.46462
@@ -372,7 +380,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2335441713561965772, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 731741950}
   m_SourcePrefab: {fileID: 100100000, guid: f7529fa31f785364580e94043da7fd01, type: 3}
 --- !u!1 &570939388
 GameObject:
@@ -730,6 +741,78 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &731741946 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2335441713561965772, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+  m_PrefabInstance: {fileID: 491917280}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &731741950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731741946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87dfd8eaa3da1ae48b1581edd6f9b436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthDebug
+  _heal: 0
+  _damage: 0
+  _healOverTime: 0
+  _healTimer: 0
+  _damageOverTime: 0
+  _damageTimer: 0
+  _invincibilityEnabled: 0
+  _apply: 0
+  _health: {fileID: 731741951}
+  _damageReceiver: {fileID: 731741953}
+  _playerMovement: {fileID: 731741955}
+  _instructions: 'F1 | Heal 25 HP
+
+    F2 | Deal 25 damage
+
+    F3 | Toggle damage
+    over time (50 damage / 10s)
+
+    F4 | Toggle heal over time (50 HP / 10s)
+
+    F5
+    | Toggle Invincibility(doesn''t need apply)'
+--- !u!114 &731741951 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2470234422445426739, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+  m_PrefabInstance: {fileID: 491917280}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731741946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae96f76db8979244afd2e688e650773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Healthbar
+--- !u!114 &731741953 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5614074075523072044, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+  m_PrefabInstance: {fileID: 491917280}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731741946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0a1fc3d847b7445a1362024c07b007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageReceiver
+--- !u!114 &731741955 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2796982883176742587, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+  m_PrefabInstance: {fileID: 491917280}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731741946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cfe033e7510bd3438d9aa7d370cf60a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
 --- !u!1 &788801122
 GameObject:
   m_ObjectHideFlags: 0
