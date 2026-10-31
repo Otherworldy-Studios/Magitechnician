@@ -44,25 +44,32 @@ public class RoomCompletionLootPool : ScriptableObject
         List<WeightedReward<GunPart>> rolledRewards = new List<WeightedReward<GunPart>>();
         ItemSelector<WeightedReward<GunPart>> rewardPool = new ItemSelector<WeightedReward<GunPart>>();
 
+        Debug.Log($"Items: {_rewards.Count}");
+        
         foreach (WeightedReward<GunPart> part in _rewards)
         {
-            if(_obtained.Contains(part))
+            if (_obtained.Contains(part))
+            {
+                Debug.Log($"{part.Item.PartName} is already obtained");
                 continue;
-            
-            rewardPool.AddItem(part, (int)part.Weight);
+            }
+
+            //Debug.Log($"{part} weight is {(int)part.Weight}");
+            rewardPool.AddItem(part, (long)part.Weight);
+            Debug.Log($"Added {part.Item.PartType}");
         }
 
         for (int i = 0; i < 3 && _obtained.Count < _rewards.Count; i++)
         {
             WeightedReward<GunPart> roll = rewardPool.RollWithRemoval();
-            rolledRewards.Add(roll);
             
             if(roll.Item == null)
                 continue;
             
             if(_obtained.Contains(roll))
                 continue;
-            
+
+            rolledRewards.Add(roll);
             _obtained.Add(roll);
         }
 
