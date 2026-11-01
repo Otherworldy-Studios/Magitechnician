@@ -288,12 +288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c3a7d8baf948698b8958310e356c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.LevelGenerator.LevelGenerator
-  _roomOffset: 2
   _roomGridWidth: 9
   _roomGridHeight: 5
-  _minCombatRooms: 3
-  _maxCombatRooms: 5
-  _seed: 55
+  _minCombatRooms: 4
+  _maxCombatRooms: 4
+  _seed: 0
   _generateSeed: 1
   _baseGenerationChance: 100
   _generationChanceDelta: -10
