@@ -12,9 +12,17 @@
   <component name="ChangeListManager">
     <list default="true" id="6d878791-32e4-42ca-8cca-4d1b9c4b61ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Magitechnician/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Rocco/Sandbox_Rocco.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scenes/Sandbox/Rocco/Sandbox_Rocco.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/UI/PauseScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/UI/PauseScreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/UI/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/UI/UIManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/HealthBG.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/HealthBG.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/HealthBar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/HealthBar.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/ShieldBG.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/ShieldBG.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/ShieldBar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Art/Sprites/ShieldBar.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Prefabs/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Player/Dash.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Player/Dash.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/_Project/Scripts/Player/UI/HUDScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/_Project/Scripts/Player/UI/HUDScreen.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +71,8 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Dungeon/RoomCompletionLootPool.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/UI/HUDScreen.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Player/UI/HealthBar.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/_Project/Scripts/Player/UI/ShieldBar.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
@@ -148,7 +157,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "cidr.known.project.marker": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/t3-pausemenu",
+    "git-widget-placeholder": "feature/t1-DashUI",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -162,7 +171,12 @@
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\sebas\Unity Projects\Magitechnician&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\sebas\Unity Projects\Magitechnician" />
       <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
@@ -170,23 +184,16 @@
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\sebas\Unity Projects\Magitechnician&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\sebas\Unity Projects\Magitechnician" />
       <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <option name="ENV_FILE_PATHS" value="" />
+      <option name="REDIRECT_INPUT_PATH" value="" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
-      <option name="allowRunningInParallel" value="false" />
-      <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
-      <option name="projectPathOnTarget" />
-      <option name="runtimes">
-        <list />
-      </option>
-      <option name="selectedOptions">
-        <list />
-      </option>
-      <method v="2" />
-    </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
@@ -203,7 +210,6 @@
       <method v="2" />
     </configuration>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="6d878791-32e4-42ca-8cca-4d1b9c4b61ac" name="Changes" comment="" />
@@ -212,8 +218,21 @@
       <option name="presentableId" value="Default" />
       <updated>1792522494080</updated>
       <workItem from="1792744557006" duration="3969000" />
-      <workItem from="1793593687434" duration="13200000" />
+      <workItem from="1793157471643" duration="326000" />
+      <workItem from="1793157885818" duration="8018000" />
+      <workItem from="1793292294566" duration="5683000" />
+      <workItem from="1793301027478" duration="4240000" />
+      <workItem from="1793340338238" duration="1227000" />
     </task>
+    <task id="LOCAL-00001" summary="Unsaved scene change">
+      <option name="closed" value="true" />
+      <created>1793125469373</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1793125469373</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,4 +246,8 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Unsaved scene change" />
+    <option name="LAST_COMMIT_MESSAGE" value="Unsaved scene change" />
+  </component>
 </project>

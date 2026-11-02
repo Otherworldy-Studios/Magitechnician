@@ -6,18 +6,17 @@ using Object = System.Object;
 
 public class Health : MonoBehaviour
 {
-    [field: SerializeField] public float CurrentHealth { get; private set; }
+    [field: SerializeField] public int CurrentHealth { get; private set; }
 
-    [field: SerializeField] public float MaxHealth { get; private set; } = 100;
+    [field: SerializeField] public int MaxHealth { get; private set; } = 100;
 
-    public event Action<float, GameObject> OnDamaged;
-    public event Action<float, GameObject> OnHealed;
+    public event Action<int, GameObject> OnDamaged;
+    public event Action<int, GameObject> OnHealed;
     public event Action<GameObject> OnDied;
 
-    private float _damagePerSecond;
-    private float _damageTimer = 0f;
-
-    private float _healPerSecond;
+    private float _healAccumulator;
+    private float _healDuration;
+    private int _healOverTimeAmount;
     private float _healTimer = 0f;
 
     // Tokens allow multiple sources of invincibility to work independently.
@@ -39,27 +38,22 @@ public class Health : MonoBehaviour
         if(CurrentHealth <= 0f)
         {
             _healTimer = 0f;
-            _damageTimer = 0f;
         }
 
         //Healing over time
         if (_healTimer > 0f)
         {
             float delta = Mathf.Min(Time.deltaTime, _healTimer);
-            float heal = _healPerSecond * delta;
+            _healAccumulator += (_healOverTimeAmount / _healDuration) * delta;
 
-            RegenHealth(heal);
+            int heal = Mathf.FloorToInt(_healAccumulator);
+            if (heal > 0)
+            {
+                RegenHealth(heal);
+                _healAccumulator -= heal;
+            }
+            
             _healTimer -= delta;
-        }
-
-        //Damaging over time
-        if (_damageTimer > 0f)
-        {
-            float delta = Mathf.Min(Time.deltaTime, _damageTimer);
-            float damage = _damagePerSecond * delta;
-
-            TakeDamage(new DamageInfo(){DamageAmount = damage});
-            _damageTimer -= delta;
         }
     }
 
@@ -86,7 +80,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void RegenHealth(float amount)
+    public void RegenHealth(int amount)
     {
         if (CurrentHealth <= 0  || amount <= 0f) return;
 
@@ -98,28 +92,17 @@ public class Health : MonoBehaviour
     }
 
     /// <summary>
-    /// Spreads the total damage evenly over the specified duration.
-    /// Replaces any existing damage-over-time effect.
-    /// </summary>
-    public void TakeDamageOverTime(DamageInfo damageInfo, float time)
-    {
-        if (CurrentHealth <= 0 || time <= 0f) return;
-
-        _damagePerSecond = damageInfo.DamageAmount / time;
-        _damageTimer = time;
-    }
-
-    /// <summary>
     /// Spreads healing evenly over the specified duration.
     /// Replaces any existing healing-over-time effect.
     /// </summary>
-    public void RegenHealthOverTime(float amount, float time)
+    public void RegenHealthOverTime(int amount, float time)
     {
         if (time <= 0f)
             return;
-
-        _healPerSecond = amount / time;
+        
         _healTimer = time;
+        _healDuration = time;
+        _healOverTimeAmount = amount;
     }
 
     /// <summary>

@@ -9,10 +9,11 @@ public class Dash : MonoBehaviour
     [Header("References")]
     // Reference direction used when dashing without movement input, usually camera orientation.
     [SerializeField] private Transform _orientation;
-    [SerializeField] private Health _healthbar;
+    [SerializeField] private Health _health;
 
     public bool IsDashing { get; private set; }
     public Vector3 DashDirection {get; private set;}
+    public float DashCooldown {get; private set;}
 
     public event Action OnDashed;
 
@@ -29,8 +30,10 @@ public class Dash : MonoBehaviour
         if(!_orientation)
             Debug.LogError($"{nameof(Dash)} requires a {nameof(_orientation)}");
 
-        if (!_healthbar)
-            _healthbar = GetComponent<Health>();
+        if (!_health)
+            _health = GetComponent<Health>();
+        
+        DashCooldown = _settings.DashCooldown + _settings.DashDuration;
     }
 
     private void OnDisable()
@@ -120,7 +123,7 @@ public class Dash : MonoBehaviour
     /// </summary>
     private void HandleInvincibility()
     {
-        if(!_healthbar || !_settings.InvincibilityEnabled)
+        if(!_health || !_settings.InvincibilityEnabled)
             return;
 
         bool shouldBeInvincible = IsDashing &&
@@ -140,18 +143,18 @@ public class Dash : MonoBehaviour
 
     private void StartDashInvincibility()
     {
-        if (invincibilityToken != null || !_healthbar || !_settings.InvincibilityEnabled)
+        if (invincibilityToken != null || !_health || !_settings.InvincibilityEnabled)
             return;
 
-        invincibilityToken = _healthbar.StartInvincibility();
+        invincibilityToken = _health.StartInvincibility();
     }
 
     private void StopDashInvincibility()
     {
-        if(!_healthbar || !_settings.InvincibilityEnabled)
+        if(!_health || !_settings.InvincibilityEnabled)
             return;
 
-        _healthbar.StopInvincibility(invincibilityToken);
+        _health.StopInvincibility(invincibilityToken);
         invincibilityToken = null;
     }
 

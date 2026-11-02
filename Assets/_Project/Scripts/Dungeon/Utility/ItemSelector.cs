@@ -13,10 +13,10 @@ namespace _Project.Scripts.Dungeon.Utility
     class ItemSelector<T> where T : notnull
     {
         private readonly LinearCongruentialGenerator _random;
-        private readonly Dictionary<T, int> _entries;
-        private int _totalWeight;
+        private readonly Dictionary<T, long> _entries;
+        private long _totalWeight;
 
-        public int TotalWeight { get { return _totalWeight; } }
+        public long TotalWeight { get { return _totalWeight; } }
 
         public int Size { get { return _entries.Count; } }
 
@@ -24,14 +24,14 @@ namespace _Project.Scripts.Dungeon.Utility
 
         public ItemSelector()
         {
-            _entries = new Dictionary<T, int>();
+            _entries = new Dictionary<T, long>();
             _totalWeight = 0;
-            _random = new LinearCongruentialGenerator(Random.Range(-int.MaxValue, int.MaxValue));
+            _random = new LinearCongruentialGenerator(Random.Range(1, int.MaxValue));
         }
         
-        public ItemSelector(int seed)
+        public ItemSelector(long seed)
         {
-            _entries = new Dictionary<T, int>();
+            _entries = new Dictionary<T, long>();
             _totalWeight = 0;
             _random = new LinearCongruentialGenerator(seed);
         }
@@ -48,7 +48,7 @@ namespace _Project.Scripts.Dungeon.Utility
         /// <exception cref="System.ArgumentException">
         /// If the weight is less than or equal to 0
         /// </exception>
-        public void AddItem(T item, int weight)
+        public void AddItem(T item, long weight)
         {
             if (_entries.ContainsKey(item))
             {
@@ -106,7 +106,7 @@ namespace _Project.Scripts.Dungeon.Utility
         /// <param name="weight">
         /// The weight of the item
         /// </param>
-        public void SetWeight(T item, int weight)
+        public void SetWeight(T item, long weight)
         {
             if (!Contains(item))
                 return;
@@ -143,15 +143,16 @@ namespace _Project.Scripts.Dungeon.Utility
         {
             if(_totalWeight <= 0)
                 return default(T);
-            
+
             long value = _random.Next(_totalWeight);
+            //Debug.Log($"Rolling value: {value}");
 
             foreach (var item in _entries.Keys)
             {
                 long weight = _entries[item];
                 value -= weight;
 
-                if (value < 0)
+                if (value <= 0)
                 {
                     return item;
                 }
@@ -170,6 +171,7 @@ namespace _Project.Scripts.Dungeon.Utility
         {
             T item = Roll();
             RemoveItem(item);
+            //Debug.Log($"Total Weight after removal: {_totalWeight}");
             return item;
         }
 
