@@ -8,6 +8,7 @@ using UnityEngine.XR;
 public class UIManager : MonoBehaviour
 {
 
+    public static UIManager instance {get; private set;}
     private enum UIStates
     {
         StartMenu,
@@ -26,12 +27,14 @@ public class UIManager : MonoBehaviour
     public event Action OnPauseRequested;
     public event Action OnStartRequested;
     public event Action OnResetRequested;
+    public event Action OnMenuRequested; //NEW EVENT, SEND TO MENU NEEDED IN GM
     
     private UIScreen _activeScreen;
     private bool _cursorVisible;
 
     private void Awake()
     {
+        instance = this;
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
     }
@@ -41,7 +44,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
-        GameManager.OnGameStateChanged += HandleStateChanged;
+        //GameManager.OnGameStateChanged += HandleStateChanged;
     }
     
     private void ChangeState(UIStates state)
@@ -64,19 +67,33 @@ public class UIManager : MonoBehaviour
 
     #region ButtonHandlers
 
-    private void PauseButtonPressed()
+    public void PauseButtonPressed()
     {
         OnPauseRequested?.Invoke();
     }
     
-    private void StartButtonPressed()
+    public void StartButtonPressed()
     {
         OnStartRequested?.Invoke();
     }
+
+    public void MenuButtonPressed()
+    {
+        OnMenuRequested?.Invoke();
+    }
     
-    private void ResetButtonPressed()
+    /// <summary>
+    /// To hub
+    /// </summary>
+    public void ResetButtonPressed()
     { 
         OnResetRequested?.Invoke();
+    }
+
+    public void SettingsButtonPressed()
+    {
+        HideAllScreens();
+        ShowScreen(settingsScreen);
     }
     
     #endregion
