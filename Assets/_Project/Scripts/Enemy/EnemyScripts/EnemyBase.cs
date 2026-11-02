@@ -13,14 +13,10 @@ public class EnemyBase : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform target;
-
-    [Header("Detection")]
-    [SerializeField, Min(0f)]
-    private float detectionRange = 10f;
+    [SerializeField] private EnemyStats stats;
 
     public EnemyMovement Movement { get; private set; }
     public Healthbar Health { get; private set; }
-
     public IEnemyRange Range { get; private set; }
     public IEnemyLineOfSight LineOfSight { get; private set; }
 
@@ -28,7 +24,6 @@ public class EnemyBase : MonoBehaviour
     public bool HasTarget => isLockedOn && target != null;
     public bool IsDead => isDead;
 
-    // Temporary fallback until the LOS system is implemented.
     public bool HasLineOfSight =>
         LineOfSight?.HasLineOfSight() ?? false;
     // Uses the Goldilocks interface to determine preferred distance.
@@ -53,10 +48,8 @@ public class EnemyBase : MonoBehaviour
         Movement = GetComponent<EnemyMovement>();
         Health = GetComponent<Healthbar>();
 
-        // TODO: Connect Goldilocks component.
         Range = GetComponent(typeof(IEnemyRange)) as IEnemyRange;
 
-        // TODO: Connect line-of-sight component.
         LineOfSight =
             GetComponent(typeof(IEnemyLineOfSight))
             as IEnemyLineOfSight;
@@ -102,14 +95,8 @@ public class EnemyBase : MonoBehaviour
                 target.position
             );
 
-            bool inRange = distance <= detectionRange;
+            bool inRange = distance <= stats.DetectionRange;
             bool canSeePlayer = inRange && HasLineOfSight;
-
-            Debug.Log(
-                $"In Range: {inRange} | " +
-                $"Line of Sight: {HasLineOfSight} | " +
-                $"Target: {target.name}"
-            );
 
             isLockedOn = canSeePlayer;
         }
@@ -168,10 +155,13 @@ public class EnemyBase : MonoBehaviour
     // Visualizes the detection radius in Unity's Scene view.
     private void OnDrawGizmosSelected()
     {
+        if (stats == null)
+            return;
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(
             transform.position,
-            detectionRange
+            stats.DetectionRange
         );
     }
 }

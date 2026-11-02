@@ -10,4 +10,8 @@ public class EnemyStats : ScriptableObject
     [SerializeField] private float _attackWindUpTime = 2f;
     [SerializeField] private float _attackCooldownTime = 3f;
     [SerializeField] private float _health = 100f;
+
+    public float DetectionRange => _detectionRange;
+    public float GoldilocksRangeMin => _goldilocksRangeMin;
+    public float GoldilocksRangeMax => _goldilocksRangeMax;
 }

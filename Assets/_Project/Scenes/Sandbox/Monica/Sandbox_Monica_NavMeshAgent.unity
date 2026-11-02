@@ -2778,6 +2778,7 @@ GameObject:
   - component: {fileID: 1422954570}
   - component: {fileID: 1422954578}
   - component: {fileID: 1422954579}
+  - component: {fileID: 1422954580}
   m_Layer: 0
   m_Name: Enemy_Capsule
   m_TagString: Untagged
@@ -2798,7 +2799,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   target: {fileID: 159728086}
-  detectionRange: 5
+  stats: {fileID: 11400000, guid: 48dcf74f58c8d4759a6443df836798d5, type: 2}
 --- !u!114 &1422954571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2988,6 +2989,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLineOfSight
   eyeHeight: 5
+--- !u!114 &1422954580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422954569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514194331d2c44857a97002e5d570aec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyRange
+  stats: {fileID: 11400000, guid: 48dcf74f58c8d4759a6443df836798d5, type: 2}
 --- !u!1 &1712109515
 GameObject:
   m_ObjectHideFlags: 0
