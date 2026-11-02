@@ -2776,6 +2776,7 @@ GameObject:
   - component: {fileID: 1422954572}
   - component: {fileID: 1422954571}
   - component: {fileID: 1422954570}
+  - component: {fileID: 1422954578}
   m_Layer: 0
   m_Name: Enemy_Capsule
   m_TagString: Untagged
@@ -2809,6 +2810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae96f76db8979244afd2e688e650773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Healthbar
+  <CurrentHealth>k__BackingField: 100
   <MaxHealth>k__BackingField: 100
 --- !u!114 &1422954572
 MonoBehaviour:
@@ -2939,6 +2941,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1422954578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422954569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87dfd8eaa3da1ae48b1581edd6f9b436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthDebug
+  _heal: 0
+  _damage: 0
+  _healOverTime: 0
+  _healTimer: 0
+  _damageOverTime: 30
+  _damageTimer: 2
+  _invincibilityEnabled: 0
+  _apply: 1
+  _health: {fileID: 0}
+  _playerMovement: {fileID: 0}
+  _instructions: 'F1 | Heal 25 HP
+
+    F2 | Deal 25 damage
+
+    F3 | Toggle damage
+    over time (50 damage / 10s)
+
+    F4 | Toggle heal over time (50 HP / 10s)
+
+    F5
+    | Toggle Invincibility(doesn''t need apply)'
 --- !u!1 &1712109515
 GameObject:
   m_ObjectHideFlags: 0
@@ -3105,7 +3140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.8224902
+      value: 1.02249
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3113,7 +3148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.3488102
+      value: -1.29881
       objectReference: {fileID: 0}
     - target: {fileID: 7357744756683246077, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_Name

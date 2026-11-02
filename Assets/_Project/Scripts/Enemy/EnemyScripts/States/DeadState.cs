@@ -13,14 +13,23 @@ public class DeadState : IEnemyState
     {
         this.enemy = enemy;
     }
-    // Stops movement and logs the enemy's death.
+    // Disables enemy behavior and collisions, then removes the enemy
     public void Enter()
     {
         enemy.Movement.StopMoving();
+        enemy.Movement.enabled = false;
 
-        Debug.Log($"{enemy.name} died");
+        // Disable enemy collisions
+        foreach (Collider collider in enemy.GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
 
-        // TODO: Trigger death animation and cleanup.
+        // Disable AI
+        enemy.enabled = false;
+
+        // Remove the enemy
+        Object.Destroy(enemy.gameObject);
     }
     // Dead enemies perform no further behavior.
     public void Update()
