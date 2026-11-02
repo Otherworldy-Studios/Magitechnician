@@ -196,19 +196,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edca2e63c50cffc49ab958255cd5a42a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  sounds:
-  - name: UI Click
-    clip: {fileID: 8300000, guid: c8c518d71a9f39343a63089f5da17550, type: 3}
-    track: 0
-    volume: 1
-    pitch: 1
-    loop: 0
+  sfxSounds: []
+  musicTracks:
   - name: Sewer Theme
-    clip: {fileID: 8300000, guid: 4a9aec01564be75429c91c22be4e9f72, type: 3}
-    track: 1
-    volume: 1
-    pitch: 1
-    loop: 1
+    soundData: {fileID: 11400000, guid: c1992ec5c6af778428df546c7029c29f, type: 2}
+  uiSounds:
+  - name: UI Click
+    soundData: {fileID: 11400000, guid: befc4c35c172f2249b71636696125fa7, type: 2}
 --- !u!4 &393324902
 Transform:
   m_ObjectHideFlags: 0

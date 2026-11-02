@@ -1,4 +1,5 @@
 using System;
+using MoreMountains.Feedbacks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -7,20 +8,17 @@ using UnityEngine.InputSystem;
 
 public class SoundController : MonoBehaviour
 {
-    [System.Serializable]
+    
+    [Serializable]
     public class Sound
     {
         public string name;
-        public AudioClip clip;
-        public MMSoundManager.MMSoundManagerTracks track;
-
-        [Range(0f, 1f)] public float volume = 1f;
-        [Range(-3f, 3f)] public float pitch = 1f;
-
-        public bool loop;
+        public MMF_MMSoundManagerSoundData soundData;
     }
 
-    [SerializeField] private Sound[] sounds;
+    [SerializeField] private Sound[] sfxSounds;
+    [SerializeField] private Sound[] musicTracks;
+    [SerializeField] private Sound[] uiSounds;
 
     private static SoundController _instance;
 
@@ -35,6 +33,13 @@ public class SoundController : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+
+        foreach (var sfxSound in  sfxSounds)
+            sfxSound.soundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
+        foreach (var musicTrack in  musicTracks)
+            musicTrack.soundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Music;
+        foreach (var uiSound in  uiSounds)
+            uiSound.soundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.UI;
     }
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -43,13 +48,41 @@ public class SoundController : MonoBehaviour
         if (Keyboard.current != null)
         {
             if (Keyboard.current.nKey.wasPressedThisFrame)
-                PlaySound("UI Click");
+                PlaySound(MMSoundManager.MMSoundManagerTracks.UI,"U Click");
             if (Keyboard.current.mKey.wasPressedThisFrame)
-                PlaySound("Sewer Theme", new Vector3(-5f, -5f, 5f));
+                PlaySound(MMSoundManager.MMSoundManagerTracks.Music,"Sewer Theme", new Vector3(-5f, -5f, 5f));
         }
     }
 #endif
 
+    public void PlaySound(MMSoundManager.MMSoundManagerTracks trackType, string soundName, Vector3 atPosition)
+    {
+        Sound s;
+        
+        if (trackType == MMSoundManager.MMSoundManagerTracks.Sfx)
+            s = Array.Find(sfxSounds, sfxSound => sfxSound.name == soundName);
+        else if (trackType == MMSoundManager.MMSoundManagerTracks.Music)
+            s = Array.Find(musicTracks, musicTrack => musicTrack.name == soundName);
+        else if (trackType == MMSoundManager.MMSoundManagerTracks.UI)
+            s = Array.Find(uiSounds, uiSound => uiSound.name == soundName);
+        else
+            s = null;
+        
+        if (s == null)
+        {
+            Debug.LogWarning("Sound not found: " + soundName);
+            return;
+        }
+        
+        s.soundData.Play(atPosition);
+    }
+
+    public void PlaySound(MMSoundManager.MMSoundManagerTracks trackType, string soundName)
+    {
+        PlaySound(trackType, soundName, transform.position);
+    }
+
+    /*
     public void PlaySound(string soundName, Vector3 uniquePosition)
     {
         Sound s = Array.Find(sounds, sound => sound.name == soundName);
@@ -72,4 +105,5 @@ public class SoundController : MonoBehaviour
     {
         PlaySound(soundName, transform.position);
     }
+    */
 }
