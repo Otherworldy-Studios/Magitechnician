@@ -259,8 +259,8 @@ Transform:
   m_GameObject: {fileID: 101176172}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.5924, y: 0.0905, z: -8.66}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.5924, y: 2, z: -8.66}
+  m_LocalScale: {x: 1, y: 5.1428, z: 7.0122}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1979418570}
@@ -2264,7 +2264,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: de43b06070b664a2b987e59e187e28a8, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 437b5cf21eb4243bd8f929ba5cc13319, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1155626413
 Transform:
@@ -2777,6 +2777,7 @@ GameObject:
   - component: {fileID: 1422954571}
   - component: {fileID: 1422954570}
   - component: {fileID: 1422954578}
+  - component: {fileID: 1422954579}
   m_Layer: 0
   m_Name: Enemy_Capsule
   m_TagString: Untagged
@@ -2935,7 +2936,7 @@ Transform:
   m_GameObject: {fileID: 1422954569}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.98862, y: 0.82426, z: -9.96}
+  m_LocalPosition: {x: 2.24, y: 0.82426, z: -9.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2974,6 +2975,19 @@ MonoBehaviour:
 
     F5
     | Toggle Invincibility(doesn''t need apply)'
+--- !u!114 &1422954579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422954569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8529adc018e4e46109a02a0e71463f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyLineOfSight
+  eyeHeight: 5
 --- !u!1 &1712109515
 GameObject:
   m_ObjectHideFlags: 0

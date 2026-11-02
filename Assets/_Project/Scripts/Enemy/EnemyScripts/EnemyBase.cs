@@ -30,7 +30,7 @@ public class EnemyBase : MonoBehaviour
 
     // Temporary fallback until the LOS system is implemented.
     public bool HasLineOfSight =>
-        LineOfSight?.HasLineOfSight() ?? true;
+        LineOfSight?.HasLineOfSight() ?? false;
     // Uses the Goldilocks interface to determine preferred distance.
     public RangeStatus CurrentRange =>
         HasTarget && Range != null
@@ -77,6 +77,12 @@ public class EnemyBase : MonoBehaviour
     // Sets the enemy's initial state based on its health.
     private void Start()
     {
+        if (target == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+                target = player.transform;
+        }
         if (Health.CurrentHealth <= 0f)
             Die();
         else
@@ -89,18 +95,33 @@ public class EnemyBase : MonoBehaviour
         if (isDead)
             return;
 
-        if (!isLockedOn && target != null)
+        if (target != null)
         {
             float distance = Vector3.Distance(
                 transform.position,
                 target.position
             );
 
-            if (distance <= detectionRange)
-                isLockedOn = true;
+            bool inRange = distance <= detectionRange;
+            bool canSeePlayer = inRange && HasLineOfSight;
+
+            Debug.Log(
+                $"In Range: {inRange} | " +
+                $"Line of Sight: {HasLineOfSight} | " +
+                $"Target: {target.name}"
+            );
+
+            isLockedOn = canSeePlayer;
+        }
+        else
+        {
+            isLockedOn = false;
         }
 
-        currentState?.Update();
+        if(!HasTarget && currentState != IdleState)
+            ChangeState(IdleState);
+
+        currentState?.Tick(Time.deltaTime);
     }
 
     // Unsubscribes from Healthbar's death event when disabled.

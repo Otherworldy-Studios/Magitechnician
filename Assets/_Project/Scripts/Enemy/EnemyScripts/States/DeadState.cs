@@ -32,7 +32,7 @@ public class DeadState : IEnemyState
         Object.Destroy(enemy.gameObject);
     }
     // Dead enemies perform no further behavior.
-    public void Update()
+    public void Tick(float dt)
     {
     }
 

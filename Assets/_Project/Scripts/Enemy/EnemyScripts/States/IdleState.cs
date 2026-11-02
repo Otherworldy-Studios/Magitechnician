@@ -15,7 +15,7 @@ public class IdleState : IEnemyState
         enemy.Movement.StopMoving();
     }
     // Waits for a target before transitioning to ChaseState.
-    public void Update()
+    public void Tick(float dt)
     {
         if (enemy.HasTarget)
             enemy.ChangeState(enemy.ChaseState);
