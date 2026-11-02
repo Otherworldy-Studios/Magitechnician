@@ -11,6 +11,7 @@ public class FollowCameraRotation : MonoBehaviour
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private PlayerCameraController _cameraController;
     [SerializeField] private Dash _dash;
+    [SerializeField] private PlayerCombatState _combatState;
 
     private void Awake()
     {
@@ -20,6 +21,8 @@ public class FollowCameraRotation : MonoBehaviour
             _cameraController = FindFirstObjectByType<PlayerCameraController>();
         if (!_dash)
             _dash = FindFirstObjectByType<Dash>();
+        if(!_combatState)
+            _combatState = FindFirstObjectByType<PlayerCombatState>();
     }
 
     /// <summary>
@@ -32,7 +35,8 @@ public class FollowCameraRotation : MonoBehaviour
         {
             SetRollingRotation();
         }
-        else if (_cameraController.IsAiming)
+        else if (_cameraController.IsAiming ||
+                 _combatState.CurrentCombatState == PlayerCombatStates.HipFire)
         {
             FollowRotation(_aimingRotationSpeed);
         }

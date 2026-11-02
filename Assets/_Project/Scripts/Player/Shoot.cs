@@ -37,9 +37,6 @@ public class Shoot : MonoBehaviour
 
     private void Fire()
     {
-        if (!_cameraController.IsAiming)
-            return;
-        
         Vector3 direction = _aimController.ShotDirection;
 
         Quaternion rotation = Quaternion.LookRotation(direction);

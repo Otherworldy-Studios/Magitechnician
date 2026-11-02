@@ -7,6 +7,7 @@ public class PlayerAimController : MonoBehaviour
     [SerializeField] private Transform _muzzle;
     [SerializeField] private PlayerCameraController _cameraController;
     [SerializeField] private RectTransform _impactDot;
+    [SerializeField] private PlayerCombatStates _combatStates;
 
     [Header("Settings")]
     [SerializeField] private float _maxDistance = 100f;
@@ -20,15 +21,10 @@ public class PlayerAimController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!_cameraController.IsAiming)
-        {
-            _impactDot.gameObject.SetActive(false);
-            return;
-        }
-
         CalculateAim();
         CalculateImpactPoint();
-        UpdateCrosshair();
+        if(_combatStates != PlayerCombatStates.Relaxed)
+            UpdateCrosshair();
     }
 
     /// <summary>

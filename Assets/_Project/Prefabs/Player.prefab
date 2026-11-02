@@ -179,6 +179,7 @@ MonoBehaviour:
   _muzzle: {fileID: 5442716831067654627}
   _cameraController: {fileID: 8946386472445388545}
   _impactDot: {fileID: 3617950425623483312}
+  _combatStates: 0
   _maxDistance: 100
   _maxAimAngle: 15
   _hitMask:
@@ -334,13 +335,14 @@ GameObject:
   - component: {fileID: 1287622597427531618}
   - component: {fileID: 5571396932141888879}
   - component: {fileID: 2796982883176742587}
+  - component: {fileID: 2470234422445426739}
+  - component: {fileID: 3499401484581962967}
   - component: {fileID: 4293993604866519486}
   - component: {fileID: 8946386472445388545}
   - component: {fileID: 4666485014060152066}
+  - component: {fileID: 8879478622747076826}
   - component: {fileID: 3441230321980424680}
   - component: {fileID: 5614074075523072044}
-  - component: {fileID: 3499401484581962967}
-  - component: {fileID: 2470234422445426739}
   m_Layer: 3
   m_Name: Player Controller
   m_TagString: Untagged
@@ -406,6 +408,35 @@ MonoBehaviour:
   _input: {fileID: 4293993604866519486}
   _cameraController: {fileID: 8946386472445388545}
   _dash: {fileID: 3441230321980424680}
+--- !u!114 &2470234422445426739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae96f76db8979244afd2e688e650773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Healthbar
+  <CurrentHealth>k__BackingField: 0
+  <MaxHealth>k__BackingField: 100
+--- !u!114 &3499401484581962967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45321246f18d063499e339a1f2143ab4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShieldSystem
+  _settings: {fileID: 11400000, guid: ed24f265d96090a40829f71798e57d4f, type: 2}
+  <CurrentShield>k__BackingField: 0
+  <IsBroken>k__BackingField: 0
 --- !u!114 &4293993604866519486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +482,22 @@ MonoBehaviour:
   _input: {fileID: 4293993604866519486}
   _aimController: {fileID: 1993322130270300342}
   _cameraController: {fileID: 8946386472445388545}
+--- !u!114 &8879478622747076826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2608f5d42a167884ca4da2b295636393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombatState
+  _hipFireDuration: 1.5
+  _shoot: {fileID: 4666485014060152066}
+  _playerCameraController: {fileID: 8946386472445388545}
+  _dash: {fileID: 3441230321980424680}
 --- !u!114 &3441230321980424680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,35 +527,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageReceiver
   _health: {fileID: 2470234422445426739}
   _shield: {fileID: 3499401484581962967}
---- !u!114 &3499401484581962967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2335441713561965772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45321246f18d063499e339a1f2143ab4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShieldSystem
-  _settings: {fileID: 11400000, guid: ed24f265d96090a40829f71798e57d4f, type: 2}
-  <CurrentShield>k__BackingField: 0
-  <IsBroken>k__BackingField: 0
---- !u!114 &2470234422445426739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2335441713561965772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ae96f76db8979244afd2e688e650773, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Healthbar
-  <CurrentHealth>k__BackingField: 0
-  <MaxHealth>k__BackingField: 100
 --- !u!1 &3005668390539063271
 GameObject:
   m_ObjectHideFlags: 0
@@ -1415,8 +1433,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.0000000032519187, z: 0, w: 1}
-  m_LocalPosition: {x: -0.65734994, y: 1.5284399, z: -10.1053095}
+  m_LocalRotation: {x: -0, y: -0.000000001626119, z: -0, w: 1}
+  m_LocalPosition: {x: -0.6565764, y: 1.4480809, z: -11.05351}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
