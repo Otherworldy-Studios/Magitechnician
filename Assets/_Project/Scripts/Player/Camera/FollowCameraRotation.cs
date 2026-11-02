@@ -33,7 +33,7 @@ public class FollowCameraRotation : MonoBehaviour
     {
         if (_dash.IsDashing)
         {
-            SetRollingRotation();
+           FollowRotation(_rollingRotationSpeed);
         }
         else if (_cameraController.IsAiming ||
                  _combatState.CurrentCombatState == PlayerCombatStates.HipFire)
@@ -56,12 +56,5 @@ public class FollowCameraRotation : MonoBehaviour
         Quaternion targetRotation = Quaternion.Euler(0, targetY, 0);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-    }
-
-    private void SetRollingRotation()
-    {
-        Quaternion targetRotation = Quaternion.LookRotation(_dash.DashDirection);
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rollingRotationSpeed * Time.deltaTime);
     }
 }

@@ -47,12 +47,7 @@ public class Dash : MonoBehaviour
     /// </summary>
     public Vector3 GetDashVelocity()
     {
-        float progress = Mathf.Clamp01(_dashTimer / _settings.DashDuration);
-
-        // Fast at the beginning gradually slows down
-        float speedMultiplier = 2f * (1f - progress);
-
-        float dashSpeed = (_settings.DashDistance / _settings.DashDuration) * speedMultiplier;
+        float dashSpeed = _settings.DashDistance / _settings.DashDuration;
 
         return DashDirection * dashSpeed;
     }

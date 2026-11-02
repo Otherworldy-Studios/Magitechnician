@@ -20,10 +20,11 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private PlayerCombatState _combatState;
 
     // Animator parameter names
-    private static readonly int IsSprinting = Animator.StringToHash("IsSprinting");
     private static readonly int MoveX = Animator.StringToHash("MoveX");
     private static readonly int MoveY = Animator.StringToHash("MoveY");
-    private static readonly int LocomotionSpeed = Animator.StringToHash("LocomotionSpeed");
+    private static readonly int DashX = Animator.StringToHash("DashX");
+    private static readonly int DashY = Animator.StringToHash("DashY");
+    private static readonly int DashTrigger = Animator.StringToHash("Dash");
     private static readonly int Jump = Animator.StringToHash("Jump");
     private static readonly int IsRising = Animator.StringToHash("IsRising");
     private static readonly int IsFalling = Animator.StringToHash("IsFalling");
@@ -37,7 +38,7 @@ public class PlayerAnimator : MonoBehaviour
     private void OnEnable()
     {
         _playerMovement.OnJump += JumpAnimation;
-        _playerDash.OnDashed += DashAnimation;
+        _playerDash.OnDashed += HandleDashAnimation;
         _cameraController.OnAimChanged += AimingAnimation;
         _shoot.OnFire += FireAnimation;
     }
@@ -45,7 +46,7 @@ public class PlayerAnimator : MonoBehaviour
     private void OnDisable()
     {
         _playerMovement.OnJump -= JumpAnimation;
-        _playerDash.OnDashed -= DashAnimation;
+        _playerDash.OnDashed -= HandleDashAnimation;
         _cameraController.OnAimChanged -= AimingAnimation;
         _shoot.OnFire -= FireAnimation;
     }
@@ -81,16 +82,6 @@ public class PlayerAnimator : MonoBehaviour
 
         bool isMoving = moveInput.sqrMagnitude > 0.01f;
 
-        float speedMultiplier;
-        if (_playerMovement.IsSprinting && isMoving)
-            speedMultiplier = _sprintAnimationMultiplier;
-        else if (!isMoving)
-            speedMultiplier = _idleAnimationMultiplier;
-        else
-            speedMultiplier = 1f;
-        
-        _animator.SetFloat(LocomotionSpeed, speedMultiplier);
-        _animator.SetBool(IsSprinting, isMoving && _input.IsSprinting);
         _animator.SetFloat(MoveX, moveInput.x, _dampTime, Time.deltaTime);
         _animator.SetFloat(MoveY, moveInput.y, _dampTime, Time.deltaTime);
         _animator.SetBool(IsRising, _playerMovement.IsRising);
@@ -99,9 +90,18 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetFloat(AimPitch, _cameraTargetController.AimPitch);
         _animator.SetInteger(CombatState, (int)_combatState.CurrentCombatState);
     }
+    
+    private void HandleDashAnimation()
+    {
+        Vector3 localDirection = transform.InverseTransformDirection(_playerDash.DashDirection);
+
+        _animator.SetFloat(DashX, localDirection.x);
+        _animator.SetFloat(DashY, localDirection.z);
+
+        _animator.SetTrigger(DashTrigger);
+    }
 
     private void JumpAnimation() => _animator.SetTrigger(Jump);
     private void AimingAnimation(bool aiming) => _animator.SetBool(IsAiming, aiming);
-    private void DashAnimation() => _animator.SetTrigger(Dash);
     private void FireAnimation() => _animator.SetTrigger(Fire);
 }

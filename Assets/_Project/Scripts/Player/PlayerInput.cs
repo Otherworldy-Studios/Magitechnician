@@ -9,7 +9,6 @@ public class PlayerInput : MonoBehaviour
     
     public Vector3 Move => _input.Player.Move.ReadValue<Vector2>();
     public Vector3 Look => _input.Player.Look.ReadValue<Vector2>();
-    public bool IsSprinting => _input.Player.Sprint.IsPressed();
     public bool IsAiming => _input.Player.Aim.IsPressed();
     public bool IsFiring => _input.Player.Fire.IsPressed();
     
