@@ -7,7 +7,7 @@ public class PlayerAimController : MonoBehaviour
     [SerializeField] private Transform _muzzle;
     [SerializeField] private PlayerCameraController _cameraController;
     [SerializeField] private RectTransform _impactDot;
-    [SerializeField] private PlayerCombatStates _combatStates;
+    [SerializeField] private PlayerCombatState _combatState;
 
     [Header("Settings")]
     [SerializeField] private float _maxDistance = 100f;
@@ -19,12 +19,26 @@ public class PlayerAimController : MonoBehaviour
     public Vector3 AimPoint { get; private set; }
     public Vector3 ShotDirection { get; private set; }
 
+    private void Awake()
+    {
+        if(!_combatState)
+            _combatState = FindFirstObjectByType<PlayerCombatState>();
+    }
+
     private void LateUpdate()
     {
         CalculateAim();
         CalculateImpactPoint();
-        if(_combatStates != PlayerCombatStates.Relaxed)
+        
+        if (_combatState.CurrentCombatState != PlayerCombatStates.Relaxed)
+        {
             UpdateCrosshair();
+        }
+        else
+        {
+            _impactDot.position = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        }
+            
     }
 
     /// <summary>

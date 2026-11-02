@@ -17,6 +17,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private CameraTargetController _cameraTargetController;
     [SerializeField] private Dash _playerDash;
     [SerializeField] private Shoot _shoot;
+    [SerializeField] private PlayerCombatState _combatState;
 
     // Animator parameter names
     private static readonly int IsSprinting = Animator.StringToHash("IsSprinting");
@@ -24,7 +25,6 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int MoveY = Animator.StringToHash("MoveY");
     private static readonly int LocomotionSpeed = Animator.StringToHash("LocomotionSpeed");
     private static readonly int Jump = Animator.StringToHash("Jump");
-    private static readonly int IsMoving = Animator.StringToHash("IsMoving");
     private static readonly int IsRising = Animator.StringToHash("IsRising");
     private static readonly int IsFalling = Animator.StringToHash("IsFalling");
     private static readonly int IsGrounded = Animator.StringToHash("IsGrounded");
@@ -32,6 +32,7 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int AimPitch = Animator.StringToHash("AimPitch");
     private static readonly int Dash = Animator.StringToHash("Dash");
     private static readonly int Fire = Animator.StringToHash("Fire");
+    private static readonly int CombatState = Animator.StringToHash("CombatState");
 
     private void OnEnable()
     {
@@ -61,8 +62,10 @@ public class PlayerAnimator : MonoBehaviour
             _cameraTargetController = FindFirstObjectByType<CameraTargetController>();
         if (!_playerDash)
             _playerDash = FindFirstObjectByType<Dash>();
-        if (_shoot)
+        if (!_shoot)
             _shoot = FindFirstObjectByType<Shoot>();
+        if (!_combatState)
+            _combatState = FindFirstObjectByType<PlayerCombatState>();
     }
 
     /// <summary>
@@ -85,16 +88,16 @@ public class PlayerAnimator : MonoBehaviour
             speedMultiplier = _idleAnimationMultiplier;
         else
             speedMultiplier = 1f;
-
+        
         _animator.SetFloat(LocomotionSpeed, speedMultiplier);
         _animator.SetBool(IsSprinting, isMoving && _input.IsSprinting);
-        _animator.SetBool(IsMoving, isMoving);
         _animator.SetFloat(MoveX, moveInput.x, _dampTime, Time.deltaTime);
         _animator.SetFloat(MoveY, moveInput.y, _dampTime, Time.deltaTime);
         _animator.SetBool(IsRising, _playerMovement.IsRising);
         _animator.SetBool(IsFalling, _playerMovement.IsFalling);
         _animator.SetBool(IsGrounded, _playerMovement.IsGrounded);
         _animator.SetFloat(AimPitch, _cameraTargetController.AimPitch);
+        _animator.SetInteger(CombatState, (int)_combatState.CurrentCombatState);
     }
 
     private void JumpAnimation() => _animator.SetTrigger(Jump);
