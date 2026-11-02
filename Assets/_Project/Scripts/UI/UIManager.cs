@@ -44,11 +44,9 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
-<<<<<<< HEAD
-        //GameManager.OnGameStateChanged += HandleStateChanged;
-=======
+        //GameManager.OnGameStateChanged += HandleStateChanged; COMMENTED FOR DEBUG ///TEMPORARY
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
->>>>>>> main
+
     }
     
     private void ChangeState(UIStates state)
@@ -105,12 +103,14 @@ public class UIManager : MonoBehaviour
 
     private void GameOver()
     {
-        
+        HideAllScreens();
+        ShowScreen(deathScreen);
     }
 
     private void GameWin()
     {
-        //show gamewin screen
+        HideAllScreens();
+        ShowScreen(winScreen);
     }
 
     /// <summary>

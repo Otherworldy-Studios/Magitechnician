@@ -1,16 +1,21 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class WinScreen : UIScreen
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Button hubButton;
+    [SerializeField] private TMP_Text runTimeText;
+    [SerializeField] private Image winImage;
+
+
+    protected override void OnShown()
     {
-        
+        runTimeText.text = $"Run Time: {CollectEndTime()}";
     }
 
-    // Update is called once per frame
-    void Update()
+    private float CollectEndTime()
     {
-        
+        return GameManager.Instance.EndTime;
     }
 }
