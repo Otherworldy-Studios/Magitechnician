@@ -1,0 +1,1667 @@
+-------------------
+Folder Name: Props
+-------------------
+Prefab Name: SM_Prop_Archway_01
+    Mesh Name: SM_Prop_Archway_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Chair_01
+    Mesh Name: SM_Prop_Chair_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Crystal_01
+    Mesh Name: SM_Prop_Crystal_01
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Crystal_02
+    Mesh Name: SM_Prop_Crystal_02
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Crystal_03
+    Mesh Name: SM_Prop_Crystal_03
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Crystal_04
+    Mesh Name: SM_Prop_Crystal_04
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+
+Prefab Name: SM_Prop_Crystal_05
+    Mesh Name: SM_Prop_Crystal_05
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Crystal_06
+    Mesh Name: SM_Prop_Crystal_06
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Crystal_07
+    Mesh Name: SM_Prop_Crystal_07
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Crystal_08
+    Mesh Name: SM_Prop_Crystal_08
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Geode_01
+    Mesh Name: SM_Prop_Geode_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+
+Prefab Name: SM_Prop_Geode_02
+    Mesh Name: SM_Prop_Geode_02
+        Slot: Synty_Crystal
+            _Base_Albedo: IceWall_01 copy.png (_Base_Albedo)
+            _Base_Normal: Crystal_Normals.png (_Base_Normal)
+            _Refraction_Texture: caustic_height.png (_Refraction_Texture)
+            _Refraction_Height: caustic_height.png (_Refraction_Height)
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Lantern_01
+    Mesh Name: SM_Prop_Lantern_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Prop_Lantern_01_Glass
+        Slot: Glass_Mat_01
+            No textures assigned
+
+Prefab Name: SM_Prop_Lantern_Stand_01
+    Mesh Name: SM_Prop_Lantern_Stand_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Lantern_Stand_02
+    Mesh Name: SM_Prop_Lantern_Stand_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Lantern_Stand_03
+    Mesh Name: SM_Prop_Lantern_Stand_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Portal_01
+    Mesh Name: SM_Prop_Portal_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Ruins_01
+    Mesh Name: SM_Prop_Ruins_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_04_C
+            Albedo: PolygonNatureBiomesS2_Texture_04_C.png (_Albedo_Map)
+            Emission: PolygonNatureBiomesS2_Emissive_04_C.png (_Emission_Map)
+
+Prefab Name: SM_Prop_Ruins_02
+    Mesh Name: SM_Prop_Ruins_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_04_C
+            Albedo: PolygonNatureBiomesS2_Texture_04_C.png (_Albedo_Map)
+            Emission: PolygonNatureBiomesS2_Emissive_04_C.png (_Emission_Map)
+
+Prefab Name: SM_Prop_Ruins_03
+    Mesh Name: SM_Prop_Ruins_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_04_C
+            Albedo: PolygonNatureBiomesS2_Texture_04_C.png (_Albedo_Map)
+            Emission: PolygonNatureBiomesS2_Emissive_04_C.png (_Emission_Map)
+
+Prefab Name: SM_Prop_Ruins_04
+    Mesh Name: SM_Prop_Ruins_04
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Prop_Table_01
+    Mesh Name: SM_Prop_Table_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+-------------------
+Folder Name: Prefabs
+-------------------
+Prefab Name: SM_Env_Background_Trees_01
+    Mesh Name: SM_Env_Background_Trees_01
+        Slot: EnchantedTree_Medium_01_Card
+            _Leaf_Texture: TreeMedium_01.tga (_Leaf_Texture)
+            _Leaf_Normal: TreeMedium_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: TreeMedium_01.tga (_Trunk_Texture)
+            _Trunk_Normal: TreeMedium_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Branch_01
+    Mesh Name: SM_Env_Branch_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Branch_02
+    Mesh Name: SM_Env_Branch_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Branch_03
+    Mesh Name: SM_Env_Branch_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Branch_04
+    Mesh Name: SM_Env_Branch_04
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Dirt_Cliff_01
+    Mesh Name: SM_Env_Dirt_Cliff_01
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_02
+    Mesh Name: SM_Env_Dirt_Cliff_02
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_03
+    Mesh Name: SM_Env_Dirt_Cliff_03
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_04
+    Mesh Name: SM_Env_Dirt_Cliff_04
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_05
+    Mesh Name: SM_Env_Dirt_Cliff_05
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_06
+    Mesh Name: SM_Env_Dirt_Cliff_06
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_07
+    Mesh Name: SM_Env_Dirt_Cliff_07
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_08
+    Mesh Name: SM_Env_Dirt_Cliff_08
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_09
+    Mesh Name: SM_Env_Dirt_Cliff_09
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_10
+    Mesh Name: SM_Env_Dirt_Cliff_10
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_11
+    Mesh Name: SM_Env_Dirt_Cliff_11
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Dirt_Cliff_12
+    Mesh Name: SM_Env_Dirt_Cliff_12
+        Slot: Dirt_Leaves_Triplanar_01
+            _Triplanar_Texture_Top: Leaves_Multicoloured_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Mud_Enchanted_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Mud_Enchanted_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Leaves_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Mud_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Fern_01
+    Mesh Name: SM_Env_Fern_01_LOD0
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+    Mesh Name: SM_Env_Fern_01_LOD1
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+    Mesh Name: SM_Env_Fern_01_LOD2
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Fern_02
+    Mesh Name: SM_Env_Fern_02_LOD0
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+    Mesh Name: SM_Env_Fern_02_LOD1
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+    Mesh Name: SM_Env_Fern_02_LOD2
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Fern_03
+    Mesh Name: SM_Env_Fern_03_LOD0
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+    Mesh Name: SM_Env_Fern_03_LOD1
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+    Mesh Name: SM_Env_Fern_03_LOD2
+        Slot: Fern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Fern_Koru_01
+    Mesh Name: SM_Env_Fern_Koru_01_LOD0
+        Slot: Koru_Mat_01
+            _Leaf_Texture: PolygonNatureBiomesS2_Texture_01.png (_Leaf_Texture)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Koru_01_LOD1
+        Slot: Koru_Mat_01
+            _Leaf_Texture: PolygonNatureBiomesS2_Texture_01.png (_Leaf_Texture)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+
+Prefab Name: SM_Env_Fern_Koru_02
+    Mesh Name: SM_Env_Fern_Koru_02_LOD0
+        Slot: Koru_Mat_01
+            _Leaf_Texture: PolygonNatureBiomesS2_Texture_01.png (_Leaf_Texture)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Koru_02_LOD1
+        Slot: Koru_Mat_01
+            _Leaf_Texture: PolygonNatureBiomesS2_Texture_01.png (_Leaf_Texture)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+
+Prefab Name: SM_Env_Fern_Tree_01
+    Mesh Name: SM_Env_Fern_Tree_01_LOD0
+        Slot: TreeFern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Tree_01_LOD1
+        Slot: TreeFern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Tree_01_LOD2
+        Slot: TreeFern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Tree_01_LOD3
+        Slot: TreeFern_01_Card
+            _Leaf_Texture: TreeFern_01.tga (_Leaf_Texture)
+            _Leaf_Normal: TreeFern_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: TreeFern_01.tga (_Trunk_Texture)
+            _Trunk_Normal: TreeFern_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Fern_Tree_02
+    Mesh Name: SM_Env_Fern_Tree_02_LOD0
+        Slot: TreeFern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Tree_02_LOD1
+        Slot: TreeFern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Tree_02_LOD2
+        Slot: TreeFern_Mat_02
+            _Leaf_Texture: Fern_2_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Fern_2_Normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Fern_Tree_02_LOD3
+        Slot: TreeFern_01_Card
+            _Leaf_Texture: TreeFern_01.tga (_Leaf_Texture)
+            _Leaf_Normal: TreeFern_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: TreeFern_01.tga (_Trunk_Texture)
+            _Trunk_Normal: TreeFern_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Ground_Grass_01
+    Mesh Name: SM_Env_Ground_Grass_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Ground_Grass_Flat_01
+    Mesh Name: SM_Env_Ground_Grass_Flat_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Ground_Grass_Round_01
+    Mesh Name: SM_Env_Ground_Grass_Round_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Leaves_01
+    Mesh Name: SM_Env_Leaves_01_LOD0
+        Slot: Leaves
+            _Leaf_Texture: Leaves_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Leaves1_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Leaves_02
+    Mesh Name: SM_Env_Leaves_02_LOD0
+        Slot: Leaves
+            _Leaf_Texture: Leaves_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Leaves1_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Leaves_03
+    Mesh Name: SM_Env_Leaves_03_LOD0
+        Slot: Leaves
+            _Leaf_Texture: Leaves_TGA.tga (_Leaf_Texture)
+            _Leaf_Normal: Leaves1_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Log_01
+    Mesh Name: SM_Env_Log_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Log_02
+    Mesh Name: SM_Env_Log_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Log_03
+    Mesh Name: SM_Env_Log_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Log_04
+    Mesh Name: SM_Env_Log_04
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Moss_Lumps_01
+    Mesh Name: SM_Env_Moss_Lumps_01
+        Slot: Moss_Enchanted_Triplanar_01
+            _Triplanar_Texture_Top: Moss_Enchanted_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Moss_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Moss_Lumps_02
+    Mesh Name: SM_Env_Moss_Lumps_02
+        Slot: Moss_Enchanted_Triplanar_01
+            _Triplanar_Texture_Top: Moss_Enchanted_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Moss_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Moss_Lumps_03
+    Mesh Name: SM_Env_Moss_Lumps_03
+        Slot: Moss_Enchanted_Triplanar_01
+            _Triplanar_Texture_Top: Moss_Enchanted_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Moss_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Moss_Lumps_04
+    Mesh Name: SM_Env_Moss_Lumps_04
+        Slot: Moss_Enchanted_Triplanar_01
+            _Triplanar_Texture_Top: Moss_Enchanted_Texture_01.png (_Triplanar_Texture_Top)
+            _Triplanar_Texture_Bottom: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Bottom)
+            _Triplanar_Texture_Side: Rock_Enchanted_Texture_01.png (_Triplanar_Texture_Side)
+            _Triplanar_Normal_Texture_Top: Moss_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Top)
+            _Triplanar_Normal_Texture_Bottom: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Bottom)
+            _Triplanar_Normal_Texture_Side: Rock_Enchanted_Normals_01.png (_Triplanar_Normal_Texture_Side)
+
+Prefab Name: SM_Env_Mushroom_01
+    Mesh Name: SM_Env_Mushroom_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_02
+    Mesh Name: SM_Env_Mushroom_02_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_02_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_02_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_03
+    Mesh Name: SM_Env_Mushroom_03_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_03_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_03_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_04
+    Mesh Name: SM_Env_Mushroom_04_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_04_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_04_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_05
+    Mesh Name: SM_Env_Mushroom_05_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_05_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_05_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Cap_01
+    Mesh Name: SM_Env_Mushroom_Cap_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Cap_02
+    Mesh Name: SM_Env_Mushroom_Cap_02_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_02_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_02_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Cap_03
+    Mesh Name: SM_Env_Mushroom_Cap_03_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_03_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_03_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Cap_04
+    Mesh Name: SM_Env_Mushroom_Cap_04_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_04_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Cap_04_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_01
+    Mesh Name: SM_Env_Mushroom_Small_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_02
+    Mesh Name: SM_Env_Mushroom_Small_02_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_02_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_02_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_03
+    Mesh Name: SM_Env_Mushroom_Small_03_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_03_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_03_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_04
+    Mesh Name: SM_Env_Mushroom_Small_04_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_04_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_04_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_04_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_04_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_04_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_04_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_05
+    Mesh Name: SM_Env_Mushroom_Small_05_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_05_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_05_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_05_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_05_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_05_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_05_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_06
+    Mesh Name: SM_Env_Mushroom_Small_06_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_06_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_06_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_06_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_06_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_06_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_06_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_07
+    Mesh Name: SM_Env_Mushroom_Small_07_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_07_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_07_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_07_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_07_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_07_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_07_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_08
+    Mesh Name: SM_Env_Mushroom_Small_08_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_08_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_08_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_08_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_08_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_08_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_08_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_09
+    Mesh Name: SM_Env_Mushroom_Small_09_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_09_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_09_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_09_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_09_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_09_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_09_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_10
+    Mesh Name: SM_Env_Mushroom_Small_10_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_10_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_10_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_10_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_10_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_10_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_10_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_01
+    Mesh Name: SM_Env_Mushroom_Small_Group_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_02
+    Mesh Name: SM_Env_Mushroom_Small_Group_02_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_02_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_02_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_03
+    Mesh Name: SM_Env_Mushroom_Small_Group_03_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_03_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_03_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_03_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_Group_03_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_03_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_03_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_04
+    Mesh Name: SM_Env_Mushroom_Small_Group_04_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_04_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_04_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_04_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_Group_04_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_04_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_04_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_05
+    Mesh Name: SM_Env_Mushroom_Small_Group_05_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_05_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_05_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_05_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_Group_05_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_05_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_05_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_06
+    Mesh Name: SM_Env_Mushroom_Small_Group_06_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_06_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_06_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Mushroom_Small_Group_06_Alt_01
+    Mesh Name: SM_Env_Mushroom_Small_Group_06_Alt_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_06_Alt_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Mushroom_Small_Group_06_Alt_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Rock_Pebbles_01
+    Mesh Name: SM_Env_Rock_Pebbles_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Rock_Pebbles_02
+    Mesh Name: SM_Env_Rock_Pebbles_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Rock_Pebbles_03
+    Mesh Name: SM_Env_Rock_Pebbles_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Rock_Pebbles_04
+    Mesh Name: SM_Env_Rock_Pebbles_04
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Rock_Pebbles_05
+    Mesh Name: SM_Env_Rock_Pebbles_05
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Rock_Pebbles_06
+    Mesh Name: SM_Env_Rock_Pebbles_06
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_01
+    Mesh Name: SM_Env_Roots_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_02
+    Mesh Name: SM_Env_Roots_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_03
+    Mesh Name: SM_Env_Roots_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_04
+    Mesh Name: SM_Env_Roots_04
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_05
+    Mesh Name: SM_Env_Roots_05
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_06
+    Mesh Name: SM_Env_Roots_06
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Cluster_01
+    Mesh Name: SM_Env_Roots_Cluster_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Cluster_02
+    Mesh Name: SM_Env_Roots_Cluster_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Cluster_03
+    Mesh Name: SM_Env_Roots_Cluster_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Large_01
+    Mesh Name: SM_Env_Roots_Large_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Roots_Large_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Roots_Large_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Low_01
+    Mesh Name: SM_Env_Roots_Low_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Low_02
+    Mesh Name: SM_Env_Roots_Low_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Small_01
+    Mesh Name: SM_Env_Roots_Small_01
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Small_02
+    Mesh Name: SM_Env_Roots_Small_02
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Small_03
+    Mesh Name: SM_Env_Roots_Small_03
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Roots_Small_04
+    Mesh Name: SM_Env_Roots_Small_04
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Tree_Giant_01
+    Mesh Name: SM_Env_Tree_Giant_01_Branches_LOD0
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_01_Branches_LOD1
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_01_Branches_LOD2
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_01_LOD0
+        Slot: EnchantedTree_Mat_02
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_01_LOD1
+        Slot: EnchantedTree_Mat_02
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_01_LOD2
+        Slot: EnchantedTree_Mat_02
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_01_LOD3
+        Slot: EnchantedTree_Giant_01_Card
+            _Leaf_Texture: treeGiant_01.tga (_Leaf_Texture)
+            _Leaf_Normal: treeGiant_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: treeGiant_01.tga (_Trunk_Texture)
+            _Trunk_Normal: treeGiant_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Giant_02
+    Mesh Name: SM_Env_Tree_Giant_02_Branches_LOD0
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_02_Branches_LOD1
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_02_Branches_LOD2
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_02_LOD0
+        Slot: EnchantedTree_Mat_02
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_02_LOD1
+        Slot: EnchantedTree_Mat_02
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_02_LOD2
+        Slot: EnchantedTree_Mat_02
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Giant_02_LOD3
+        Slot: EnchantedTree_Giant_02_Card
+            _Leaf_Texture: treeGiant_02.tga (_Leaf_Texture)
+            _Leaf_Normal: treeGiant_02_normals.png (_Leaf_Normal)
+            _Trunk_Texture: treeGiant_02.tga (_Trunk_Texture)
+            _Trunk_Normal: treeGiant_02_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_House_01
+    Mesh Name: SM_Env_Tree_House_01_Branches_LOD0
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Branches_LOD1
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Branches_LOD2
+        Slot: Branches_Mat_01
+            _Leaf_Texture: Branches_01.tga (_Leaf_Texture)
+            _Trunk_Texture: Branches_01.tga (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Building_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Building_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Building_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Building_LOD3
+        Slot: EnchantedTree_House_01_Card
+            _Leaf_Texture: treeHouse_01.tga (_Leaf_Texture)
+            _Leaf_Normal: treeHouse_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: treeHouse_01.tga (_Trunk_Texture)
+            _Trunk_Normal: treeHouse_01_normals.png (_Trunk_Normal)
+    Mesh Name: SM_Env_Tree_House_01_Door_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Door_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Door_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_House_01_Door_LOD3
+        Slot: EnchantedTree_House_01_Card
+            _Leaf_Texture: treeHouse_01.tga (_Leaf_Texture)
+            _Leaf_Normal: treeHouse_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: treeHouse_01.tga (_Trunk_Texture)
+            _Trunk_Normal: treeHouse_01_normals.png (_Trunk_Normal)
+    Mesh Name: SM_Env_Tree_House_01_LOD0
+        Slot: EnchantedWillow_Mat_01
+            _Leaf_Texture: Leaves_Willow_01.tga (_Leaf_Texture)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+            _Emissive_Mask: Leaves_Willow_01.tga (_Emissive_Mask)
+            _Emissive_2_Mask: Gradient 1.png (_Emissive_2_Mask)
+    Mesh Name: SM_Env_Tree_House_01_LOD1
+        Slot: EnchantedWillow_Mat_01
+            _Leaf_Texture: Leaves_Willow_01.tga (_Leaf_Texture)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+            _Emissive_Mask: Leaves_Willow_01.tga (_Emissive_Mask)
+            _Emissive_2_Mask: Gradient 1.png (_Emissive_2_Mask)
+    Mesh Name: SM_Env_Tree_House_01_LOD2
+        Slot: EnchantedWillow_Mat_01
+            _Leaf_Texture: Leaves_Willow_01.tga (_Leaf_Texture)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+            _Emissive_Mask: Leaves_Willow_01.tga (_Emissive_Mask)
+            _Emissive_2_Mask: Gradient 1.png (_Emissive_2_Mask)
+    Mesh Name: SM_Env_Tree_House_01_LOD3
+        Slot: EnchantedTree_House_01_Card
+            _Leaf_Texture: treeHouse_01.tga (_Leaf_Texture)
+            _Leaf_Normal: treeHouse_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: treeHouse_01.tga (_Trunk_Texture)
+            _Trunk_Normal: treeHouse_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Large_01
+    Mesh Name: SM_Env_Tree_Large_01_LOD0
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Large_01_LOD1
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Large_01_LOD2
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Large_01_LOD3
+        Slot: EnchantedTree_Large_01_Card
+            _Leaf_Texture: TreeLarge_01.tga (_Leaf_Texture)
+            _Leaf_Normal: TreeLarge_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: TreeLarge_01.tga (_Trunk_Texture)
+            _Trunk_Normal: TreeLarge_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Large_02
+    Mesh Name: SM_Env_Tree_Large_02_LOD0
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Large_02_LOD1
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Large_02_LOD2
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Large_02_LOD3
+        Slot: EnchantedTree_Large_02_Card
+            _Leaf_Texture: TreeLarge_02.tga (_Leaf_Texture)
+            _Leaf_Normal: TreeLarge_02_normals.png (_Leaf_Normal)
+            _Trunk_Texture: TreeLarge_02.tga (_Trunk_Texture)
+            _Trunk_Normal: TreeLarge_02_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Medium_01
+    Mesh Name: SM_Env_Tree_Medium_01_LOD0
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Medium_01_LOD1
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Medium_01_LOD2
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Medium_01_LOD3
+        Slot: EnchantedTree_Medium_01_Card
+            _Leaf_Texture: TreeMedium_01.tga (_Leaf_Texture)
+            _Leaf_Normal: TreeMedium_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: TreeMedium_01.tga (_Trunk_Texture)
+            _Trunk_Normal: TreeMedium_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Medium_02
+    Mesh Name: SM_Env_Tree_Medium_02_LOD0
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Medium_02_LOD1
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Medium_02_LOD2
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Medium_02_LOD3
+        Slot: EnchantedTree_Medium_02_Card
+            _Leaf_Texture: TreeMedium_02.tga (_Leaf_Texture)
+            _Leaf_Normal: TreeMedium_02_normals.png (_Leaf_Normal)
+            _Trunk_Texture: TreeMedium_02.tga (_Trunk_Texture)
+            _Trunk_Normal: TreeMedium_02_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Portal_01
+    Mesh Name: SM_Env_Tree_Portal_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_Portal_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Tree_Small_01
+    Mesh Name: SM_Env_Tree_Small_01_LOD0
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Small_01_LOD1
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Small_01_LOD2
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Small_01_LOD3
+        Slot: EnchantedTree_Small_01_Card
+            _Leaf_Texture: treeSmall_01.tga (_Leaf_Texture)
+            _Leaf_Normal: treeSmall_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: treeSmall_01.tga (_Trunk_Texture)
+            _Trunk_Normal: treeSmall_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Small_02
+    Mesh Name: SM_Env_Tree_Small_02_LOD0
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Small_02_LOD1
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Small_02_LOD2
+        Slot: EnchantedTree_Mat_01a
+            _Leaf_Texture: enchantedLeaves_01.tga (_Leaf_Texture)
+            _Leaf_Normal: EnchantedLeaves_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: PolygonNatureBiomesS2_Texture_01.png (_Trunk_Texture)
+    Mesh Name: SM_Env_Tree_Small_02_LOD3
+        Slot: EnchantedTree_Small_02_Card
+            _Leaf_Texture: treeSmall_02.tga (_Leaf_Texture)
+            _Leaf_Normal: treeSmall_02_normals.png (_Leaf_Normal)
+            _Trunk_Texture: treeSmall_02.tga (_Trunk_Texture)
+            _Trunk_Normal: treeSmall_02_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Tree_Trunk_01
+    Mesh Name: SM_Env_Tree_Trunk_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_Trunk_01_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_Trunk_01_LOD2
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Tree_Trunk_02
+    Mesh Name: SM_Env_Tree_Trunk_02_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Tree_Trunk_02_LOD1
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+
+Prefab Name: SM_Env_Undergrowth_Fern_01
+    Mesh Name: SM_Env_Undergrowth_Fern_01_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_02
+    Mesh Name: SM_Env_Undergrowth_Fern_02_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_03
+    Mesh Name: SM_Env_Undergrowth_Fern_03_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_04
+    Mesh Name: SM_Env_Undergrowth_Fern_04_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_05
+    Mesh Name: SM_Env_Undergrowth_Fern_05_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_06
+    Mesh Name: SM_Env_Undergrowth_Fern_06_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_07
+    Mesh Name: SM_Env_Undergrowth_Fern_07_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_08
+    Mesh Name: SM_Env_Undergrowth_Fern_08_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_09
+    Mesh Name: SM_Env_Undergrowth_Fern_09_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Undergrowth_Fern_10
+    Mesh Name: SM_Env_Undergrowth_Fern_10_LOD0
+        Slot: Undergrowth_Mat
+            _Leaf_Texture: Undergrowth.tga (_Leaf_Texture)
+            _Leaf_Normal: undergrowth_normals.png (_Leaf_Normal)
+
+Prefab Name: SM_Env_Vines_01
+    Mesh Name: SM_Env_Vines_01_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Vines_01_LOD1
+        Slot: Vines_01
+            _Leaf_Texture: Vines_01.tga (_Leaf_Texture)
+            _Leaf_Normal: Vines_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: Vines_01.tga (_Trunk_Texture)
+            _Trunk_Normal: Vines_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Vines_02
+    Mesh Name: SM_Env_Vines_02_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Vines_02_LOD1
+        Slot: Vines_01
+            _Leaf_Texture: Vines_01.tga (_Leaf_Texture)
+            _Leaf_Normal: Vines_01_normals.png (_Leaf_Normal)
+            _Trunk_Texture: Vines_01.tga (_Trunk_Texture)
+            _Trunk_Normal: Vines_01_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Vines_03
+    Mesh Name: SM_Env_Vines_03_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Vines_03_LOD1
+        Slot: Vines_02
+            _Leaf_Texture: Vines_02.tga (_Leaf_Texture)
+            _Leaf_Normal: Vines_02_normals.png (_Leaf_Normal)
+            _Trunk_Texture: Vines_02.tga (_Trunk_Texture)
+            _Trunk_Normal: Vines_02_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Vines_03_Alt
+    Mesh Name: SM_Env_Vines_03_Alt_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Vines_03_Alt_LOD1
+        Slot: Vines_03
+            _Leaf_Texture: Vines_03.tga (_Leaf_Texture)
+            _Leaf_Normal: Vines_03_normals.png (_Leaf_Normal)
+            _Trunk_Texture: Vines_03.tga (_Trunk_Texture)
+            _Trunk_Normal: Vines_03_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Vines_04
+    Mesh Name: SM_Env_Vines_04_LOD0
+        Slot: PolygonNatureBiomes_EnchantedForest_Mat_01_A
+            Albedo: PolygonNatureBiomesS2_Texture_01.png (_Base_Texture)
+            _Emission_Texture: PolygonNatureBiomesS2_Emissive_01_A.png (_Emission_Texture)
+    Mesh Name: SM_Env_Vines_04_LOD1
+        Slot: Vines_02
+            _Leaf_Texture: Vines_02.tga (_Leaf_Texture)
+            _Leaf_Normal: Vines_02_normals.png (_Leaf_Normal)
+            _Trunk_Texture: Vines_02.tga (_Trunk_Texture)
+            _Trunk_Normal: Vines_02_normals.png (_Trunk_Normal)
+
+Prefab Name: SM_Env_Water_Plane_01
+    Mesh Name: SM_Env_Water_Plane_01
+        Slot: Water_Enchanted _Scrolling
+            _Shore_Foam_Noise_Texture: Noise_Small.png (_Shore_Foam_Noise_Texture)
+            _Normal_Texture: WaterNormals_01.png (_Normal_Texture)
+            _Scrolling_Texture: Water_Texture_02.png (_Scrolling_Texture)
+            _Noise_Texture: Noise_Small.png (_Noise_Texture)
+            _SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D: CausticsFlipBook.png (_SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D)
+
+Prefab Name: SM_Env_Water_Plane_02
+    Mesh Name: SM_Env_Water_Plane_02
+        Slot: Water_Enchanted _Scrolling
+            _Shore_Foam_Noise_Texture: Noise_Small.png (_Shore_Foam_Noise_Texture)
+            _Normal_Texture: WaterNormals_01.png (_Normal_Texture)
+            _Scrolling_Texture: Water_Texture_02.png (_Scrolling_Texture)
+            _Noise_Texture: Noise_Small.png (_Noise_Texture)
+            _SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D: CausticsFlipBook.png (_SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D)
+
+Prefab Name: SM_Env_Water_Plane_03
+    Mesh Name: SM_Env_Water_Plane_03
+        Slot: Water_Enchanted _Scrolling
+            _Shore_Foam_Noise_Texture: Noise_Small.png (_Shore_Foam_Noise_Texture)
+            _Normal_Texture: WaterNormals_01.png (_Normal_Texture)
+            _Scrolling_Texture: Water_Texture_02.png (_Scrolling_Texture)
+            _Noise_Texture: Noise_Small.png (_Noise_Texture)
+            _SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D: CausticsFlipBook.png (_SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D)
+
+Prefab Name: SM_Env_Water_Plane_Square_01
+    Mesh Name: SM_Env_Water_Plane_Square_01
+        Slot: Water_Enchanted
+            _Shore_Foam_Noise_Texture: Noise_Small.png (_Shore_Foam_Noise_Texture)
+            _Normal_Texture: WaterNormals_01.png (_Normal_Texture)
+            _Scrolling_Texture: LODNoise.png (_Scrolling_Texture)
+            _Noise_Texture: Noise_Small.png (_Noise_Texture)
+            _SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D: CausticsFlipBook.png (_SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D)
+

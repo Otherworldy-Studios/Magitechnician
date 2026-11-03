@@ -1,0 +1,63 @@
+-------------------
+Folder Name: Prefabs
+-------------------
+Prefab Name: FX_Rain_01
+    Mesh Name: FX_Rain_01
+        Slot: Circle_Transparent_Mat_01
+            Albedo: FX_Circle.png (_Albedo_Map)
+
+Prefab Name: FX_Rain_Splash_01
+    Mesh Name: FX_Rain_Splash_01
+        Slot: Circle_Transparent_Mat_01
+            Albedo: FX_Circle.png (_Albedo_Map)
+
+Prefab Name: FX_Snow_01
+    Mesh Name: FX_Snow_01
+        Slot: Circle_Cutout_Mat
+            Albedo: FX_Circle.png (_Albedo_Map)
+
+Prefab Name: SM_Env_Cloud_Ring_01
+    Mesh Name: SM_Env_Cloud_Ring_01
+        Slot: Cloud_Mat_01
+            No textures assigned
+
+Prefab Name: SM_Env_Cloud_Ring_02
+    Mesh Name: SM_Env_Cloud_Ring_02
+        Slot: Cloud_Mat_01
+            No textures assigned
+
+Prefab Name: SM_Env_Fog_Ring_01
+    Mesh Name: SM_Env_Fog_Ring_01
+        Slot: Fog_01
+            Albedo: Gradient_Fog.png (_Albedo_Map)
+
+Prefab Name: SM_Env_Grass_01
+    Mesh Name: SM_Env_Grass_01_LOD0
+        Slot: Grass_Mat_01
+            _Leaf_Texture: Grass_01.tga (_Leaf_Texture)
+            _Leaf_Normal: Grass_01_Normals.tga (_Leaf_Normal)
+    Mesh Name: SM_Env_Grass_01_LOD1
+        Slot: Grass_Mat_01
+            _Leaf_Texture: Grass_01.tga (_Leaf_Texture)
+            _Leaf_Normal: Grass_01_Normals.tga (_Leaf_Normal)
+    Mesh Name: SM_Env_Grass_01_LOD2
+        Slot: Grass_Mat_01
+            _Leaf_Texture: Grass_01.tga (_Leaf_Texture)
+            _Leaf_Normal: Grass_01_Normals.tga (_Leaf_Normal)
+
+Prefab Name: SM_Env_Skydome_01
+    Mesh Name: SM_Env_Skydome_01
+        Slot: Skybox_Mat_01
+            No textures assigned
+
+Prefab Name: SM_Env_Water_Plane_01
+    Mesh Name: SM_Env_Water_Plane_01
+        Slot: Water_Mat_Basic
+            _Shore_Foam_Noise_Texture: Noise_Small.png (_Shore_Foam_Noise_Texture)
+            _Normal_Texture: WaterNormals_01.png (_Normal_Texture)
+            _Scrolling_Texture: LODNoise.png (_Scrolling_Texture)
+            _Noise_Texture: Noise_Small.png (_Noise_Texture)
+            _SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D: CausticsFlipBook.png (_SampleTexture2D_c5bda943a6134644bb954c2c5ced7db4_Texture_1_Texture2D)
+
+Prefab Name: WeatherControl
+
