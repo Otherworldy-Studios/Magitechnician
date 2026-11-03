@@ -33,8 +33,9 @@ public class PlayerCombatState : MonoBehaviour
 
     private void Update()
     {
-        if (_dash.IsDashing)
+        if (_dash.IsDashing && !_playerCameraController.IsAiming)
         {
+            _lastShotTime = float.NegativeInfinity;
             CurrentCombatState = PlayerCombatStates.Relaxed;
             return;
         }

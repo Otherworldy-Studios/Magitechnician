@@ -7,7 +7,7 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField] private CinemachineCamera _mainCamera;
     [SerializeField] private CinemachineCamera _aimCamera;
     [SerializeField] private PlayerInput _input;
-    [SerializeField] private Dash _playerDash;
+    [SerializeField] private Dash _playerDash; // Delete after testing
 
     public bool IsAiming { get; private set; }
     public event Action<bool> OnAimChanged;
@@ -20,16 +20,11 @@ public class PlayerCameraController : MonoBehaviour
         _aimCamera.Priority = 0;
 
         if(!_playerDash)
-            _playerDash = FindFirstObjectByType<Dash>();
+            _playerDash = FindFirstObjectByType<Dash>(); // Delete after testing
     }
 
     private void Update()
     {
-        if (_playerDash.IsDashing)
-        {
-            SetAiming(false);
-            return;
-        }
 
         SetAiming(_input.IsAiming);
     }

@@ -108,6 +108,7 @@ MonoBehaviour:
   _cameraTargetController: {fileID: 6469339263041004998}
   _playerDash: {fileID: 3441230321980424680}
   _shoot: {fileID: 4666485014060152066}
+  _combatState: {fileID: 0}
 --- !u!114 &497038342731012847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1436,7 +1437,7 @@ Transform:
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.0000000032519187, z: 0, w: 1}
-  m_LocalPosition: {x: 0.82249004, y: 0.80271995, z: -0.34881}
+  m_LocalPosition: {x: -0.65734994, y: 1.5284399, z: -10.1053095}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2177,9 +2178,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 5.045
       objectReference: {fileID: 0}
+    - target: {fileID: -6962273437043352547, guid: 7f02786a931935342a82da56c40ebdb3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7f02786a931935342a82da56c40ebdb3, type: 3}
       propertyPath: m_Name
       value: ProtoGun15
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f02786a931935342a82da56c40ebdb3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
