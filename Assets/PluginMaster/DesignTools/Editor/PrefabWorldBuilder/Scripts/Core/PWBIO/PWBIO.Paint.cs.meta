@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7796317c8d0c3cd45a7fc8c6660b6ac5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Core/PWBIO/PWBIO.Paint.cs
+  uploadId: 989014
