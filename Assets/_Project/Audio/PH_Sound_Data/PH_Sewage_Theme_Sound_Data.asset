@@ -28,8 +28,8 @@ MonoBehaviour:
   ID: 0
   AudioGroup: {fileID: 0}
   RecycleAudioSource: {fileID: 0}
-  Loop: 0
-  Persistent: 0
+  Loop: 1
+  Persistent: 1
   DoNotPlayIfClipAlreadyPlaying: 0
   MaximumConcurrentInstances: -1
   StopSoundOnFeedbackStop: 0
