@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 1691c5a0379cc3041a8fa6dd43f8d197
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Block/Modes/DrawModes/Line/BrushstrokeManager.BlockLine.cs
+  uploadId: 989014
