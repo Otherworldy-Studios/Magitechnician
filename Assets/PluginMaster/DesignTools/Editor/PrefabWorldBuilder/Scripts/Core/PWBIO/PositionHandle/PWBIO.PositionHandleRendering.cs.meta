@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7e44ea236e9b78f4287b72fb4c2db45e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Core/PWBIO/PositionHandle/PWBIO.PositionHandleRendering.cs
+  uploadId: 989014

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e28754390a346964cb39d5c7e9c5fa60
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Block/Modes/Select/BrushSelect/PWBIO.BlockBrushSelectBlock.cs
+  uploadId: 989014

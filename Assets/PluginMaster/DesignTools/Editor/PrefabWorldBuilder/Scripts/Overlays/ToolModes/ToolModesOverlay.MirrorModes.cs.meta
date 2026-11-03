@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e09f7ab97a836c841b351566e657fb3e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Overlays/ToolModes/ToolModesOverlay.MirrorModes.cs
+  uploadId: 989014
