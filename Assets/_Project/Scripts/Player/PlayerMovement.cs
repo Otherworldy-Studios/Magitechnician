@@ -10,8 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public enum MovementStates
     {
         Idle,
-        Walking,
-        Sprinting,
+        Locomotion,
         Airborne,
         Dashing,
         Aiming
@@ -31,8 +30,7 @@ public class PlayerMovement : MonoBehaviour
     public bool IsRising => _isRising;
     public bool IsFalling => _isFalling;
     public bool IsGrounded => _controller.isGrounded;
-    public bool IsSprinting => CurrentState == MovementStates.Sprinting;
-    public float MaxSpeed => _settings.SprintSpeed;
+    public float MaxSpeed => _settings.LocomotionSpeed;
 
     public event Action OnJump;
 
@@ -161,10 +159,8 @@ public class PlayerMovement : MonoBehaviour
             CurrentState = MovementStates.Airborne;
         else if (_cameraController.IsAiming)
             CurrentState = MovementStates.Aiming;
-        else if (_input.IsSprinting && _moveInput.y > 0f)
-            CurrentState = MovementStates.Sprinting;
         else if (_moveInput.sqrMagnitude > 0.01f)
-            CurrentState = MovementStates.Walking;
+            CurrentState = MovementStates.Locomotion;
         else
             CurrentState = MovementStates.Idle;
     }
@@ -179,14 +175,9 @@ public class PlayerMovement : MonoBehaviour
 
         switch (CurrentState)
         {
-            case MovementStates.Sprinting:
-                currentAcceleration = _settings.SprintAcceleration;
-                _currentMaxSpeed = _settings.SprintSpeed;
-                break;
-
-            case MovementStates.Walking:
-                currentAcceleration = _settings.WalkAcceleration;
-                _currentMaxSpeed = _settings.WalkSpeed;
+            case MovementStates.Locomotion:
+                currentAcceleration = _settings.LocomotionAcceleration;
+                _currentMaxSpeed = _settings.LocomotionSpeed;
                 break;
 
             case MovementStates.Aiming:
