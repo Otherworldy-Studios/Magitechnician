@@ -8,7 +8,16 @@ public class DeathScreen : UIScreen
     [SerializeField] private TMP_Text runTimeText;
     [SerializeField] private Image deathImage;
 
-
+    private void Awake()
+    {
+        hubButton.onClick.AddListener(OnHub);
+    }
+    
+    private void OnHub()
+    {
+        Debug.Log("On Hub");
+        UIManager.instance.ResetButtonPressed();
+    }
     protected override void OnShown()
     {
         runTimeText.text = $"Run Time: {CollectEndTime()}";

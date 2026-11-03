@@ -8,10 +8,21 @@ public class WinScreen : UIScreen
     [SerializeField] private TMP_Text runTimeText;
     [SerializeField] private Image winImage;
 
-
+    
+    private void Awake()
+    {
+        hubButton.onClick.AddListener(OnHub);
+    }
+    
     protected override void OnShown()
     {
         runTimeText.text = $"Run Time: {CollectEndTime()}";
+    }
+    
+    private void OnHub()
+    {
+        Debug.Log("On Hub");
+        UIManager.instance.ResetButtonPressed();
     }
 
     private float CollectEndTime()

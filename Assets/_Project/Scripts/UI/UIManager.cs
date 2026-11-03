@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
@@ -47,6 +48,21 @@ public class UIManager : MonoBehaviour
         //GameManager.OnGameStateChanged += HandleStateChanged; COMMENTED FOR DEBUG ///TEMPORARY
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
 
+    }
+
+    private void Update()
+    {
+        //DEBUG
+        #if UNITY_EDITOR
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            GameOver();
+        }
+        else if (Keyboard.current.mKey.wasPressedThisFrame)
+        {
+            GameWin();
+        }
+        #endif
     }
     
     private void ChangeState(UIStates state)

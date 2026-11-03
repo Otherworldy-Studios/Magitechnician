@@ -31,6 +31,7 @@ public class PauseScreen : UIScreen
 
     private void OnHub()
     {
+        Debug.Log("On Hub");
         UIManager.instance.ResetButtonPressed();
     }
 
