@@ -1332,8 +1332,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Dungeon.Room
   _roomType: 1
   _lootPool: {fileID: 11400000, guid: ff1199e589b64ee40ac2b0b89f92b51e, type: 2}
+  _playerSpawn: {fileID: 1781328338033815731}
   _id: 
   _complete: 0
+  _portal: {fileID: 0}
   _north: {fileID: 0}
   _south: {fileID: 0}
   _east: {fileID: 0}

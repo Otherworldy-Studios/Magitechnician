@@ -26,6 +26,9 @@ namespace _Project.Scripts.Dungeon
         
         [SerializeField]
         private RoomCompletionLootPool _lootPool;
+        
+        [SerializeField]
+        private GameObject _playerSpawn; // This needs to be set in the editor
 
         [Header("Debug (Do not edit)")] 
         [SerializeField]
@@ -42,6 +45,8 @@ namespace _Project.Scripts.Dungeon
         [SerializeField] 
         private Room _north;
 
+        public Vector3 PlayerSpawnPos { get { return _playerSpawn.transform.position; } }
+        
         public Room North
         {
             get => _north;

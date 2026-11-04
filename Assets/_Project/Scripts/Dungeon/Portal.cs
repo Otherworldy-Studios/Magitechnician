@@ -26,9 +26,13 @@ namespace _Project.Scripts.Dungeon
         //[SerializeField] If there's only one portal in each room, this isn't really needed
         //private LevelGenerator.Direction _direction;
         
+        [SerializeField]
+        private BoxCollider _collider;
+        
         void Start()
         {
             _active = false;
+            _collider = GetComponent<BoxCollider>();
         }
         
         void Update()
@@ -53,7 +57,7 @@ namespace _Project.Scripts.Dungeon
                 Gizmos.DrawLine(gameObject.transform.position, destination);
             }
 
-        Vector3 boxSize = new Vector3(1f, 1f, 1f);
+            Vector3 boxSize = new Vector3(1f, 1f, 1f);
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(transform.position, boxSize);
         }
