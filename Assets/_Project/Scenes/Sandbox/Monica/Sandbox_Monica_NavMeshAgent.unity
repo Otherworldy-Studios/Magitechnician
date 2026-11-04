@@ -455,6 +455,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113645505}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &126895679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 126895680}
+  m_Layer: 0
+  m_Name: Eyes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &126895680
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126895679}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 4.1564336, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1422954577}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &159728086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1287622597427531618, guid: f7529fa31f785364580e94043da7fd01, type: 3}
@@ -2779,6 +2810,7 @@ GameObject:
   - component: {fileID: 1422954578}
   - component: {fileID: 1422954579}
   - component: {fileID: 1422954580}
+  - component: {fileID: 1422954581}
   m_Layer: 0
   m_Name: Enemy_Capsule
   m_TagString: Untagged
@@ -2940,7 +2972,8 @@ Transform:
   m_LocalPosition: {x: 2.24, y: 0.82426, z: -9.96}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 126895680}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1422954578
@@ -2988,7 +3021,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8529adc018e4e46109a02a0e71463f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyLineOfSight
-  eyeHeight: 5
+  _eyes: {fileID: 126895680}
+  _blockingLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &1422954580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3002,6 +3038,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRange
   stats: {fileID: 11400000, guid: 48dcf74f58c8d4759a6443df836798d5, type: 2}
+--- !u!114 &1422954581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422954569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a24ba5c5cd9044019a7be902c907bfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StunDebug
+  enemy: {fileID: 0}
 --- !u!1 &1712109515
 GameObject:
   m_ObjectHideFlags: 0
