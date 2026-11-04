@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
     public event Action OnStartRequested;
     public event Action OnResetRequested;
     public event Action OnMenuRequested; //NEW EVENT, SEND TO MENU NEEDED IN GM
+    public event Action OnExitRequested; //NEW EVENT, Applicaiton.Quit() needed in GM
     
     private UIScreen _activeScreen;
     private bool _cursorVisible;
@@ -52,7 +53,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        //DEBUG
+        //DEBUG i could make this a switch at this point but idc its debug
         #if UNITY_EDITOR
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
@@ -61,6 +62,10 @@ public class UIManager : MonoBehaviour
         else if (Keyboard.current.mKey.wasPressedThisFrame)
         {
             GameWin();
+        }
+        else if (Keyboard.current.gKey.wasPressedThisFrame)
+        {
+            ChangeState(UIStates.StartMenu);
         }
         #endif
     }
@@ -71,7 +76,7 @@ public class UIManager : MonoBehaviour
         {
             case UIStates.StartMenu:
                 HideAllScreens();
-                //ShowScreen(Menu);
+                ShowScreen(menuScreen);
                 break;
             case UIStates.PauseMenu:
                 HideAllScreens();
@@ -98,6 +103,11 @@ public class UIManager : MonoBehaviour
     public void MenuButtonPressed()
     {
         OnMenuRequested?.Invoke();
+    }
+
+    public void QuitButtonPressed()
+    {
+        OnExitRequested?.Invoke();
     }
     
     /// <summary>
