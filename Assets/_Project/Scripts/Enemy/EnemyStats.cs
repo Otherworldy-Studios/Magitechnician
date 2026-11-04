@@ -14,4 +14,8 @@ public class EnemyStats : ScriptableObject
     public float DetectionRange => _detectionRange;
     public float GoldilocksRangeMin => _goldilocksRangeMin;
     public float GoldilocksRangeMax => _goldilocksRangeMax;
+    public float MoveSpeed => _moveSpeed;
+    public float AttackWindUpTime => _attackWindUpTime;
+    public float AttackCooldownTime => _attackCooldownTime;
+    public float Health => _health;
 }

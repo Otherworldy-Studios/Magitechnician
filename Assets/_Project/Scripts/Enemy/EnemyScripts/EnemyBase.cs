@@ -1,4 +1,4 @@
-
+using System;
 using UnityEngine;
 
 /// Summary - 
@@ -17,6 +17,7 @@ public class EnemyBase : MonoBehaviour
 
     public EnemyMovement Movement { get; private set; }
     public Healthbar Health { get; private set; }
+    public EnemyStats Stats => stats;
     public IEnemyRange Range { get; private set; }
     public IEnemyLineOfSight LineOfSight { get; private set; }
 
@@ -37,7 +38,8 @@ public class EnemyBase : MonoBehaviour
     public IEnemyState RepositionState { get; private set; }
     public IEnemyState AttackState { get; private set; }
     public IEnemyState DeadState { get; private set; }
-
+    public StunnedState StunnedState { get; private set; }
+    public event Action<EnemyBase> OnEnemyKilled;
     private IEnemyState currentState;
     private bool isLockedOn;
     private bool isDead;
@@ -59,6 +61,7 @@ public class EnemyBase : MonoBehaviour
         RepositionState = new RepositionState(this);
         AttackState = new AttackState(this);
         DeadState = new DeadState(this);
+        StunnedState = new StunnedState(this);
     }
 
     // Subscribes to Healthbar's death event.
@@ -105,7 +108,7 @@ public class EnemyBase : MonoBehaviour
             isLockedOn = false;
         }
 
-        if(!HasTarget && currentState != IdleState)
+        if(!HasTarget && currentState != IdleState && currentState != StunnedState)
             ChangeState(IdleState);
 
         currentState?.Tick(Time.deltaTime);
@@ -141,7 +144,15 @@ public class EnemyBase : MonoBehaviour
         currentState = newState;
         currentState.Enter();
     }
-
+    // Called by melee parry/combat systems to interupt the current fighting state.
+    public void Stun(float duration)
+    {
+        if(isDead || duration <= 0f || !HasTarget)
+            return;
+        
+        StunnedState.SetDuration(duration);
+        ChangeState(StunnedState);
+    }
     // Marks the enemy as dead and enters the terminal DeadState.
     public void Die()
     {
@@ -150,6 +161,7 @@ public class EnemyBase : MonoBehaviour
 
         isDead = true;
         ChangeState(DeadState);
+        OnEnemyKilled?.Invoke(this);
     }
 
     // Visualizes the detection radius in Unity's Scene view.

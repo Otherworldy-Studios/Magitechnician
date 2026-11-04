@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 
 [RequireComponent(typeof(EnemyBase))]
-public class EnemyRange : MonoBehaviour, IEnemyRange
+public class GoldilocksRange : MonoBehaviour, IEnemyRange
 {
     [SerializeField] private EnemyStats stats;
 
