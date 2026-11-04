@@ -40,10 +40,14 @@ namespace _Project.Scripts.Dungeon
             
         }
 
-        void OnTriggerEnter(Collider other)
+        private void OnControllerColliderHit(ControllerColliderHit hit)
         {
-            // Ok I got no clue how we're detecting the player
+            if (hit.gameObject.CompareTag("Player")) // Player needs the Player tag
+            {
+                hit.gameObject.transform.position = Connected.PlayerSpawnPos;
+            }
         }
+
 
         private void OnDrawGizmos()
         {
