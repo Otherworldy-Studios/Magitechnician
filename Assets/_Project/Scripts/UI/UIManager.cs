@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
         GameManager.OnPauseToggle += HandlePause;
         //GameManager.OnGameStateChanged += HandleStateChanged; COMMENTED FOR DEBUG ///TEMPORARY
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
+        //GameManager.Instance.OnRoomClear += HandleRewards;
 
     }
 
@@ -137,6 +138,11 @@ public class UIManager : MonoBehaviour
     {
         HideAllScreens();
         ShowScreen(winScreen);
+    }
+
+    private void HandleRewards()
+    {
+        
     }
 
     /// <summary>
