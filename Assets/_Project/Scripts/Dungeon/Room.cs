@@ -30,6 +30,11 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private GameObject _playerSpawn; // This needs to be set in the editor
 
+        [SerializeField]
+        private BoxCollider _boundingBox;
+
+        public BoxCollider BoundingBox { get => _boundingBox; }
+        
         [Header("Debug (Do not edit)")] 
         [SerializeField]
         private string _id;

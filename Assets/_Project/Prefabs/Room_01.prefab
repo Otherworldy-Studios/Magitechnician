@@ -737,6 +737,7 @@ MonoBehaviour:
   _roomType: 0
   _lootPool: {fileID: 11400000, guid: ff1199e589b64ee40ac2b0b89f92b51e, type: 2}
   _playerSpawn: {fileID: 6120090104822718171}
+  _boundingBox: {fileID: 2291427971378458056}
   _id: 
   _complete: 0
   _portal: {fileID: 0}

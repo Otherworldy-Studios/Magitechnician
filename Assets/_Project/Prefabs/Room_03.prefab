@@ -1002,6 +1002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8575794972025657491}
   - component: {fileID: 3422235425607117657}
+  - component: {fileID: 5742280595549163710}
   m_Layer: 0
   m_Name: Room_03
   m_TagString: Untagged
@@ -1035,8 +1036,8 @@ Transform:
   - {fileID: 2734778282563890677}
   - {fileID: 8161323705128304819}
   - {fileID: 6033437644264857870}
-  - {fileID: 6356834028485341382}
   - {fileID: 3589241342974107843}
+  - {fileID: 6356834028485341382}
   - {fileID: 1890575750987829006}
   - {fileID: 6324865442227031528}
   - {fileID: 8035721977597374303}
@@ -1059,6 +1060,7 @@ MonoBehaviour:
   _roomType: 2
   _lootPool: {fileID: 11400000, guid: ff1199e589b64ee40ac2b0b89f92b51e, type: 2}
   _playerSpawn: {fileID: 4553829080173427901}
+  _boundingBox: {fileID: 3542941119671589981}
   _id: 
   _complete: 0
   _portal: {fileID: 0}
@@ -1066,6 +1068,27 @@ MonoBehaviour:
   _south: {fileID: 0}
   _east: {fileID: 0}
   _west: {fileID: 0}
+--- !u!65 &5742280595549163710
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6973962588301492292}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7277661203668929595
 GameObject:
   m_ObjectHideFlags: 0

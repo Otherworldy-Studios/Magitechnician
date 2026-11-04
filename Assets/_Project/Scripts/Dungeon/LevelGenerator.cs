@@ -217,7 +217,7 @@ namespace _Project.Scripts.Dungeon
                         Room selected = GetRandomCombatRoom(roomRandom.Next());
                         Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity);
                         nextRoom.transform.position = room.gameObject.transform.position + (_directions[direction] *
-                            nextRoom.gameObject.GetComponent<Collider>().bounds.size.magnitude);
+                            nextRoom.BoundingBox.bounds.size.magnitude);
                         
                         nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
@@ -288,7 +288,7 @@ namespace _Project.Scripts.Dungeon
             Room selected = GetRandomEndRoom(seed);
             Room end = Instantiate(selected, farthest.transform.position, Quaternion.identity);
             end.transform.position = farthest.gameObject.transform.position +
-                                     (dir * end.gameObject.GetComponent<Collider>().bounds.size.magnitude);
+                                     (dir * end.BoundingBox.bounds.size.magnitude);
             
             end.Id = $"End{(end != null ? 1 : 0)}";
             

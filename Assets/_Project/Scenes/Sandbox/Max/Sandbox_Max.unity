@@ -297,13 +297,13 @@ MonoBehaviour:
   _baseGenerationChance: 100
   _generationChanceDelta: -10
   _startRooms:
-  - _room: {fileID: 6095790962355764772, guid: 41975cac0aaafd9469956e35e9a9d6e3, type: 3}
+  - _room: {fileID: 3258258008276050672, guid: 7d52a0f428bdfab4e925b4ee99841a98, type: 3}
     _weight: 1
   _combatRooms:
-  - _room: {fileID: 1458581775930988942, guid: 8834285ee8a3d314191add714955a75c, type: 3}
+  - _room: {fileID: 3875272336616324006, guid: a7dd220bd15f22e45a88bdef6e629c0f, type: 3}
     _weight: 1
   _endRooms:
-  - _room: {fileID: 4285176508233607939, guid: fec2bed7108327f45882f05fd1e40275, type: 3}
+  - _room: {fileID: 3422235425607117657, guid: c72dffbb52b6ef840b4e86bab3a86e18, type: 3}
     _weight: 1
   _startRoom: {fileID: 0}
   _generatedCombatRooms: []
