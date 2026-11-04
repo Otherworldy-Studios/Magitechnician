@@ -246,6 +246,9 @@ namespace _Project.Scripts.Dungeon
                                 Debug.LogError("[LevelGenerator] Error: Invalid direction");
                                 break;
                         }
+
+                        if (room.Portal != null)
+                            room.Portal.Connected = nextRoom;
                         
                         if(_generatedCombatRooms.Count >= _minCombatRooms)
                             _generationChance += _generationChanceDelta;
@@ -308,6 +311,8 @@ namespace _Project.Scripts.Dungeon
                     end.East = farthest;
                     break;
             }
+            
+            farthest.Portal.Connected = end;
             
             _endRoom = end;
             OnMapGenerated?.Invoke(); // We are done generating the map

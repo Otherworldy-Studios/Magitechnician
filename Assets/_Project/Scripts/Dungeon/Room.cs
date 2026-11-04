@@ -33,6 +33,11 @@ namespace _Project.Scripts.Dungeon
 
         [SerializeField]
         private bool _complete;
+
+        [SerializeField]
+        private Portal _portal;
+        
+        public Portal Portal { get => _portal; }
         
         [SerializeField] 
         private Room _north;
@@ -77,6 +82,12 @@ namespace _Project.Scripts.Dungeon
 
         void Start()
         {
+            _portal = GetComponentInChildren<Portal>();
+
+            if (_portal == null)
+                Debug.Log($"{_id} has no exit portal");
+            else
+                _portal.Parent = this;
         }
 
         void Update()
