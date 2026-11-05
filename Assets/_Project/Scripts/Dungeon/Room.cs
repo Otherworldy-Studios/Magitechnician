@@ -27,6 +27,8 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private RoomCompletionLootPool _lootPool;
         
+        public RoomCompletionLootPool  LootPool { get => _lootPool; }
+        
         [SerializeField]
         private GameObject _playerSpawn; // This needs to be set in the editor
 
@@ -120,7 +122,8 @@ namespace _Project.Scripts.Dungeon
             #endif
         }
 
-        public void OnComplete(bool force = false)
+        // This should suffice for getting room completion rewards
+        public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
             _complete = true;
 
@@ -140,7 +143,10 @@ namespace _Project.Scripts.Dungeon
                 }
                 
                 rewardOptions = rewards;
+                return rewards;
             }
+
+            return null;
         }
 
         // This should probably be temporary
