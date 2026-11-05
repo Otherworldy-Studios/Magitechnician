@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f2f12e53c7e68694b8b8a6656b88d4be
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Block/Modes/DrawModes/Block/PWBIO.BlockByBlockDelete.cs
+  uploadId: 989014

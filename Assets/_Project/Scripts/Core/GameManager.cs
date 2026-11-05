@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     public Room CurrentRoom { get; private set; }
     
     [SerializeField] private GameState currentState; //serialized for viewing in editor
-    [SerializeField] private Healthbar _playerHealthbar;
+    [SerializeField] private Health _playerHealthbar;
     [SerializeField] private GameObject player;
     [SerializeField] private PH_WaveManager waveManager; //wave manager responsible for spawning in enemies?
     [SerializeField] private Room[,] currentDungeon;
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
        
         if(_playerHealthbar == null)
         {
-            _playerHealthbar = player.GetComponentInChildren<Healthbar>(); //TODO move to load function
+            _playerHealthbar = player.GetComponentInChildren<Health>(); //TODO move to load function
         }
         PH_UIManager.OnPauseRequested += TogglePause;
         PH_UIManager.OnResetRequested += ResetGame;
@@ -76,10 +76,18 @@ public class GameManager : MonoBehaviour
         _playerHealthbar.OnDied += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
         PH_WaveManager.OnRoomCleared += RoomCleared;
+
+        
     }
 
     private void Update()
     {
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            TogglePause();
+        }
+
         DEBUGInitializeRun();
     }
 
@@ -268,11 +276,30 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
             _isPaused = false;
+
+            player.GetComponentInChildren<PlayerMovement>().enabled = true;
+            player.GetComponentInChildren<PlayerInput>().enabled = true;
+            player.GetComponentInChildren<Camera>().enabled = true;
+            player.GetComponentInChildren<Shoot>().enabled = true;
+            player.GetComponentInChildren<Dash>().enabled = true;
+
+            Debug.Log("This is unpaused");
         }
         else
         {
             Time.timeScale = 0;
             _isPaused = true;
+
+                player.GetComponentInChildren<PlayerMovement>().enabled = false;
+                player.GetComponentInChildren<PlayerInput>().enabled = false;
+                player.GetComponentInChildren<Camera>().enabled = false;
+                player.GetComponentInChildren<Shoot>().enabled = false;
+                player.GetComponentInChildren<Dash>().enabled = false;
+
+
+
+            Debug.Log("This is paused");
+
         }
         OnPauseToggle?.Invoke(_isPaused);
     }

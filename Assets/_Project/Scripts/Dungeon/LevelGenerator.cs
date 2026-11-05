@@ -46,8 +46,6 @@ namespace _Project.Scripts.Dungeon
         public Room StartRoom => _startRoom;
 
         [Header("Generator Settings")] 
-        [SerializeField] private int _roomOffset; //this should not be hard-coded - Lee
-        
         [SerializeField] private int _roomGridWidth;
         [SerializeField] private int _roomGridHeight;
 
@@ -139,6 +137,12 @@ namespace _Project.Scripts.Dungeon
                     ResetMap();
                     GenerateMap();
                 }
+                
+                if (Keyboard.current.leftCtrlKey.wasPressedThisFrame)
+                {
+                    Debug.Log("Rolling debug");
+                    _startRoom.OnComplete(true);
+                }
             }
             #endif
         }
@@ -149,8 +153,9 @@ namespace _Project.Scripts.Dungeon
         private void GenerateMap()
         {
             Debug.Log($"Seed: {_seed}");
+            LinearCongruentialGenerator roomRandom = new LinearCongruentialGenerator(_seed);
             
-            Room startRoom = Instantiate(GetRandomStartRoom(), 
+            Room startRoom = Instantiate(GetRandomStartRoom(roomRandom.Next()), 
                 gameObject.transform.position, Quaternion.identity);
             startRoom.Id = $"Start{(startRoom != null ? 1 : 0)}";
             
@@ -170,7 +175,7 @@ namespace _Project.Scripts.Dungeon
                 PriorityQueue<Direction> priorityQueue = new PriorityQueue<Direction>();
                 
                 foreach(Direction dir in Enum.GetValues(typeof(Direction)))
-                    priorityQueue.Enqueue(dir, _random.Next());
+                    priorityQueue.Enqueue(dir, _random.Next(-int.MaxValue, int.MaxValue));
                 
                 while(priorityQueue.Count > 0)
                 {
@@ -199,7 +204,7 @@ namespace _Project.Scripts.Dungeon
                         break;
 
                     if (added.x < 0 || added.y < 0 ||
-                        added.x >= _roomGridWidth || added.y >= _roomGridHeight)
+                        added.x >= _roomGridHeight || added.y >= _roomGridWidth)
                     {
                         continue;
                     }
@@ -208,10 +213,12 @@ namespace _Project.Scripts.Dungeon
                     {
                         if (_roomGrid[added.x, added.y] != null)
                             continue;
+
+                        Room selected = GetRandomCombatRoom(roomRandom.Next());
+                        Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity);
+                        nextRoom.transform.position = room.gameObject.transform.position + (_directions[direction] *
+                            nextRoom.gameObject.GetComponent<Collider>().bounds.size.magnitude);
                         
-                        Room nextRoom = Instantiate(GetRandomCombatRoom(),
-                            room.gameObject.transform.position + (_directions[direction] * _roomOffset),
-                            Quaternion.identity);
                         nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
                         _roomGrid[added.x, added.y] = nextRoom;
@@ -249,13 +256,13 @@ namespace _Project.Scripts.Dungeon
                 }
             }
             
-            PlaceEndRoom();
+            PlaceEndRoom(roomRandom.Next());
         }
 
         /// <summary>
         /// Places the ending boss room
         /// </summary>
-        private void PlaceEndRoom()
+        private void PlaceEndRoom(long seed)
         {
             Room farthest = GetFarthest();
 
@@ -274,10 +281,11 @@ namespace _Project.Scripts.Dungeon
                 direction = Direction.West;
             
             Vector3 dir = _directions[direction];
-            
-            Room end = Instantiate(GetRandomEndRoom(),
-                farthest.gameObject.transform.position + (dir * _roomOffset),
-                Quaternion.identity);
+
+            Room selected = GetRandomEndRoom(seed);
+            Room end = Instantiate(selected, farthest.transform.position, Quaternion.identity);
+            end.transform.position = farthest.gameObject.transform.position +
+                                     (dir * end.gameObject.GetComponent<Collider>().bounds.size.magnitude);
             
             end.Id = $"End{(end != null ? 1 : 0)}";
             
@@ -301,6 +309,7 @@ namespace _Project.Scripts.Dungeon
                     break;
             }
             
+            _endRoom = end;
             OnMapGenerated?.Invoke(); // We are done generating the map
         }
 
@@ -317,14 +326,13 @@ namespace _Project.Scripts.Dungeon
             HashSet<Room> visited = new HashSet<Room>();
 
             rooms.Enqueue(_startRoom);
+            Room last = null;
             
             while (rooms.Count > 0)
             {
                 Room room = rooms.Dequeue();
+                last = room;
                 visited.Add(room);
-
-                if (rooms.Count == 1)
-                    return room;
 
                 if (room.North != null && !visited.Contains(room.North))
                     rooms.Enqueue(room.North);
@@ -336,7 +344,7 @@ namespace _Project.Scripts.Dungeon
                     rooms.Enqueue(room.West);
             }
 
-            return null;
+            return last;
         }
 
         /// <summary>
@@ -353,9 +361,12 @@ namespace _Project.Scripts.Dungeon
             _endRoom = null;
             _generatedCombatRooms.Clear();
             _generationChance = _baseGenerationChance;
+            _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
             
             if (_generateSeed)
                 _seed = Random.Range(-int.MaxValue, int.MaxValue);
+
+            _random = new LinearCongruentialGenerator(_seed);
         }
 
         /// <summary>
@@ -386,9 +397,9 @@ namespace _Project.Scripts.Dungeon
         /// <returns>
         /// A random room
         /// </returns>
-        private Room GetRandomCombatRoom()
+        private Room GetRandomCombatRoom(long seed)
         {
-            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
+            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
             
             foreach (WeightedRoom room in _combatRooms)
                 roomSelector.AddItem(room, room.Weight);
@@ -402,9 +413,9 @@ namespace _Project.Scripts.Dungeon
         /// <returns>
         /// A random start room
         /// </returns>
-        private Room GetRandomStartRoom()
+        private Room GetRandomStartRoom(long seed)
         {
-            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
+            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
             
             foreach (WeightedRoom room in _startRooms)
                 roomSelector.AddItem(room, room.Weight);
@@ -418,9 +429,9 @@ namespace _Project.Scripts.Dungeon
         /// <returns>
         /// A random end room
         /// </returns>
-        private Room GetRandomEndRoom()
+        private Room GetRandomEndRoom(long seed)
         {
-            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>();
+            ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
             
             foreach (WeightedRoom room in _endRooms)
                 roomSelector.AddItem(room, room.Weight);

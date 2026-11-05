@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 90858489236cd014b9dc980e025daee6
+ComputeShaderImporter:
+  externalObjects: {}
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/Common/Resources/Shaders/MeshRayIntersect.compute
+  uploadId: 989014

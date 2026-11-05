@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 75f130ef4cd6832499132455732950e5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Resources/Materials/Grid64.mat
+  uploadId: 989014

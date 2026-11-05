@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e1fe47a5b172cb46a44d84c033ab000, type: 3}
   m_Name: SO_DefaultDashSettings
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableSettings.DashSettings
-  <DashDistance>k__BackingField: 6
-  <DashDuration>k__BackingField: 1
+  <DashDistance>k__BackingField: 4
+  <DashDuration>k__BackingField: 0.25
   <DashCooldown>k__BackingField: 0.6
+  <InvincibilityStart>k__BackingField: 0.1
+  <InvincibilityDuration>k__BackingField: 0.1
+  <InvincibilityEnabled>k__BackingField: 1

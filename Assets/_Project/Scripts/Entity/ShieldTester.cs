@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class ShieldTester : MonoBehaviour
 {
     public ShieldSystem shield;
-    public Healthbar health;
+    public Health health;
 
     void OnEnable()
     {
@@ -33,11 +33,11 @@ public class ShieldTester : MonoBehaviour
             Debug.Log("Hitting shield for 20 damage");
 
             DamageInfo info = new DamageInfo();
-            info.DamageAmount = 20f;
+            info.DamageAmount = 20;
 
             if (shield != null)
             {
-                float overflow = shield.AbsorbDamageAndReturnOverflow(info);
+                int overflow = shield.AbsorbDamageAndReturnOverflow(info);
 
                 if (overflow > 0f && health != null)
                 {
