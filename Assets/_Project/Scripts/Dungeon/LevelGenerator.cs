@@ -104,6 +104,8 @@ namespace _Project.Scripts.Dungeon
             _generationChance = _baseGenerationChance;
             
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
+
+            OnMapGenerated += SpawnPlayer; // Todo: Replace with spawning in the GameManager
         }
 
         private void OnEnable()
@@ -114,6 +116,8 @@ namespace _Project.Scripts.Dungeon
         private void OnDisable()
         {
             GameManager.OnGenerateRequested -= ReceiveGeneration;
+            
+            OnMapGenerated -= SpawnPlayer; // Todo: Replace with spawning in the GameManager
         }
 
         private void ReceiveGeneration() //rocco: changed it generating on start and now relies on GM event
@@ -270,7 +274,10 @@ namespace _Project.Scripts.Dungeon
             Room farthest = GetFarthest();
 
             if (farthest == null)
+            {
+                Debug.LogError("[LevelGenerator] Error: No farthest room found");
                 return;
+            }
 
             Direction direction = Direction.North;
 
@@ -312,9 +319,9 @@ namespace _Project.Scripts.Dungeon
                     break;
             }
             
-            farthest.Portal.Connected = end;
-            
             _endRoom = end;
+            farthest.Portal.Connected = _endRoom;
+            
             OnMapGenerated?.Invoke(); // We are done generating the map
         }
 
@@ -442,6 +449,17 @@ namespace _Project.Scripts.Dungeon
                 roomSelector.AddItem(room, room.Weight);
             
             return roomSelector.Roll().Room;
+        }
+
+        // Todo: THIS IS TEMPORARY AND SHOULD BE REPLACED WITH SPAWNING FROM THE GameManager
+        private GameObject player;
+        
+        private void SpawnPlayer()
+        {
+            player = GameObject.Find("Player");
+            
+            if(player != null)
+                player.transform.position = _startRoom.PlayerSpawnPos;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,7 +53,7 @@ namespace _Project.Scripts.Dungeon
         [SerializeField] 
         private Room _north;
 
-        public Vector3 PlayerSpawnPos { get { return _playerSpawn.transform.position; } }
+        public Vector3 PlayerSpawnPos { get { return _playerSpawn.transform.position + new Vector3(0, 9.5f, 0); } }
         
         public Room North
         {
@@ -92,7 +93,7 @@ namespace _Project.Scripts.Dungeon
         // This should possibly be temporary
         private List<WeightedReward<GunPart>> rewardOptions = new();
 
-        void Start()
+        private void Awake()
         {
             _portal = GetComponentInChildren<Portal>();
 
@@ -101,7 +102,7 @@ namespace _Project.Scripts.Dungeon
             else
                 _portal.Parent = this;
         }
-
+        
         void Update()
         {
             // Temporary, get rid of this later
