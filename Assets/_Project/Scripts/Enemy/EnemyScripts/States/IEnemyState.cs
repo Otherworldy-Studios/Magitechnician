@@ -5,6 +5,6 @@
 public interface IEnemyState
 {
     void Enter();
-    void Update();
+    void Tick(float dt);
     void Exit();
 }

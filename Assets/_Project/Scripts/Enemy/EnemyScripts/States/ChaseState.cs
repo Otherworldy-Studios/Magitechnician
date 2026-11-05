@@ -20,7 +20,7 @@ public class ChaseState : IEnemyState
         enemy.Movement.ResumeMoving();
     }
     // Evaluates target distance and visibility to select the next behavior.
-    public void Update()
+    public void Tick(float dt)
     {
         if (!enemy.HasTarget)
         {
