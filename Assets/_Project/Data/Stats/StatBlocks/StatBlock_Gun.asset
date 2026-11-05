@@ -12,4 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d136a1dca31844fb5835259ef0f67902, type: 3}
   m_Name: StatBlock_Gun
   m_EditorClassIdentifier: Assembly-CSharp::StatBlock
-  Entries: []
+  Entries:
+  - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
+    BaseValue: 15
+  - Stat: {fileID: 11400000, guid: 1273e247e399148f4b50c9746f98b743, type: 2}
+    BaseValue: 20
+  - Stat: {fileID: 11400000, guid: 9a1aa751653564c1eb77b30e5ff5fed0, type: 2}
+    BaseValue: 100
+  - Stat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}
+    BaseValue: 12
+  - Stat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}
+    BaseValue: 150

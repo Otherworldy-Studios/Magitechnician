@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.InputSystem;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 // This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final 
 // stat values based on base values and applied modifiers.
@@ -10,17 +13,37 @@ public class Stats : MonoBehaviour
     [SerializeField] private List<StatModifier> _modifiers;
     [SerializeField] private Dictionary<StatDefinition, float> _finalValues;
     public event Action<StatDefinition, float> OnStatChanged;
+    public StatDefinition testStat; 
 
-    // This method is called when the script instance is being loaded. It initializes the final values of the stats based on the
-    // base values defined in the StatBlock.
+    public StatModifier TestModifier;
+    public bool debug = true;
+
+    public void DebugMod()
+    {
+#if UNITY_EDITOR
+        if (Keyboard.current.mKey.wasPressedThisFrame && debug == true)
+        {
+            AddModifier(TestModifier);
+            
+        }
+        if (Keyboard.current.nKey.wasPressedThisFrame && debug == true)
+        {
+            GetValue(testStat);
+        }
+#endif
+    }
+
+    // This method retrieves the final value of a specific stat. If the stat is not present in the final values dictionary, it logs an error and returns 0.
     public float GetValue(StatDefinition stat)
     {
-        if (_finalValues.ContainsKey(stat))
+        if (HasStat(stat))
         {
+            Debug.Log($"Stat {stat.name} has a final value of {_finalValues[stat]}.");
             return _finalValues[stat];
         }
         else
         {
+            Debug.LogWarning($"Stat {stat.name} isn't assigned to this StatBlock. Please check the StatBlock assigned to {gameObject.name}.");
             return 0f;
         }
     }
@@ -31,7 +54,7 @@ public class Stats : MonoBehaviour
         return _finalValues.ContainsKey(stat);
     }
 
-    // This method is called every frame. It updates the duration of each modifier and removes any that have expired.
+    // This method adds a new modifier to the list and recalculates the affected stat to reflect the change in its final value.
     public void AddModifier(StatModifier modifier)
     {
         _modifiers.Add(modifier);
@@ -114,10 +137,35 @@ public class Stats : MonoBehaviour
                     multiplicativeValue *= _modifiers[i].Value;
                 }
 
-                float finalValue = (baseValue + additiveValue) * multiplicativeValue;
-                finalValue = stat.Clamp(finalValue);
-                _finalValues[stat] = finalValue;
             }
+            float finalValue = (baseValue + additiveValue) * multiplicativeValue;
+            finalValue = stat.Clamp(finalValue);
+            _finalValues[stat] = finalValue;
+            OnStatChanged?.Invoke(_statBlock.Entries[i].Stat, _finalValues[_statBlock.Entries[i].Stat]);
+            Debug.Log($"Final value for {stat.name} recalculated: {finalValue}");
         }
+    }
+
+    // This method initializes the final values dictionary by iterating through the stat entries in the stat block and calculating their final values.
+    private void InitializeStats()
+    {
+        _finalValues = new Dictionary<StatDefinition, float>();
+        _modifiers = new List<StatModifier>();
+        for (int i = 0; i < _statBlock.Entries.Count; i++)
+        {
+            _finalValues[_statBlock.Entries[i].Stat] = _statBlock.Entries[i].BaseValue;
+            Recalculate(_statBlock.Entries[i].Stat);
+        }
+    }
+
+    // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
+    private void Awake()
+    {
+        InitializeStats();
+    }
+
+    private void Update()
+    {
+        DebugMod();
     }
 }

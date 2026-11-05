@@ -37,6 +37,11 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
+    public bool Warp(Vector3 position)
+    {
+        return agent.isOnNavMesh && agent.Warp(position);
+    }
+
     public bool HasReachedDestination()
     {
         if (!agent.isOnNavMesh || agent.pathPending)
