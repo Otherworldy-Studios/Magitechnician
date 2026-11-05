@@ -2,10 +2,10 @@ using UnityEngine;
 
 public interface IInventoryItem 
 {
-    public string DisplayName { get; set; }
-    public string Description { get; set; }
-    public Sprite Icon { get; set; }
-    public ItemCategory Category { get; set; }
+    public string DisplayName { get; }
+    public string Description { get; }
+    public Sprite Icon { get;}
+    public ItemCategory Category { get; }
 }
 
 public enum ItemCategory

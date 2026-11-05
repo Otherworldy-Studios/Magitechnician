@@ -22,7 +22,7 @@ public class AttackState : IEnemyState
     }
 
     // Checks whether the enemy should leave AttackState.
-    public void Update()
+    public void Tick(float dt)
     {
         if (!enemy.HasTarget)
         {

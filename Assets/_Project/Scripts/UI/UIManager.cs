@@ -2,12 +2,14 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
 public class UIManager : MonoBehaviour
 {
 
+    public static UIManager instance {get; private set;}
     private enum UIStates
     {
         StartMenu,
@@ -21,16 +23,19 @@ public class UIManager : MonoBehaviour
     [SerializeField] private SettingsScreen settingsScreen;
     [SerializeField] private DeathScreen deathScreen;
     [SerializeField] private WinScreen winScreen;
+    [SerializeField] private PauseScreen pauseScreen;
 
     public event Action OnPauseRequested;
     public event Action OnStartRequested;
     public event Action OnResetRequested;
+    public event Action OnMenuRequested; //NEW EVENT, SEND TO MENU NEEDED IN GM
     
     private UIScreen _activeScreen;
     private bool _cursorVisible;
 
     private void Awake()
     {
+        instance = this;
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
     }
@@ -40,7 +45,24 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
+        //GameManager.OnGameStateChanged += HandleStateChanged; COMMENTED FOR DEBUG ///TEMPORARY
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
+
+    }
+
+    private void Update()
+    {
+        //DEBUG
+        #if UNITY_EDITOR
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            GameOver();
+        }
+        else if (Keyboard.current.mKey.wasPressedThisFrame)
+        {
+            GameWin();
+        }
+        #endif
     }
     
     private void ChangeState(UIStates state)
@@ -63,19 +85,33 @@ public class UIManager : MonoBehaviour
 
     #region ButtonHandlers
 
-    private void PauseButtonPressed()
+    public void PauseButtonPressed()
     {
         OnPauseRequested?.Invoke();
     }
     
-    private void StartButtonPressed()
+    public void StartButtonPressed()
     {
         OnStartRequested?.Invoke();
     }
+
+    public void MenuButtonPressed()
+    {
+        OnMenuRequested?.Invoke();
+    }
     
-    private void ResetButtonPressed()
+    /// <summary>
+    /// To hub
+    /// </summary>
+    public void ResetButtonPressed()
     { 
         OnResetRequested?.Invoke();
+    }
+
+    public void SettingsButtonPressed()
+    {
+        HideAllScreens();
+        ShowScreen(settingsScreen);
     }
     
     #endregion
@@ -83,12 +119,14 @@ public class UIManager : MonoBehaviour
 
     private void GameOver()
     {
-        
+        HideAllScreens();
+        ShowScreen(deathScreen);
     }
 
     private void GameWin()
     {
-        //show gamewin screen
+        HideAllScreens();
+        ShowScreen(winScreen);
     }
 
     /// <summary>
