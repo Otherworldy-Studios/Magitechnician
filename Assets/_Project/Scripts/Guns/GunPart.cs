@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // Base class for all gun parts
@@ -17,4 +18,5 @@ public abstract class GunPart : ScriptableObject , IInventoryItem
     public string Description => _description;
     public Sprite Icon => _icon;
     public ItemCategory Category => _category;
+    public List<StatModifier> statModifiers = new();
 }
