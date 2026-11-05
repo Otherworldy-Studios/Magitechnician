@@ -126,6 +126,7 @@ namespace _Project.Scripts.Dungeon
         public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
             _complete = true;
+            _portal.Active = true;
 
             if (_roomType == RoomType.Combat || force)
             {

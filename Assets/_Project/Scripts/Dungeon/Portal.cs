@@ -42,13 +42,13 @@ namespace _Project.Scripts.Dungeon
 
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
+            if (!_active)
+                return;
+            
             if (hit.gameObject.CompareTag("Player")) // Player needs the Player tag
-            {
                 hit.gameObject.transform.position = Connected.PlayerSpawnPos;
-            }
         }
-
-
+        
         private void OnDrawGizmos()
         {
             // Draws the portal gizmo
