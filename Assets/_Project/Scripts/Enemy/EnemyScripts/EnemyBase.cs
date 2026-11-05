@@ -16,7 +16,7 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private EnemyStats stats;
 
     public EnemyMovement Movement { get; private set; }
-    public Healthbar Health { get; private set; }
+  
     public EnemyStats Stats => stats;
     public Health Health { get; private set; }
 
