@@ -54,7 +54,15 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        currentState = GameState.Menu;
+        
+        UIManager.OnPauseRequested += TogglePause;
+        UIManager.OnResetRequested += ResetGame;
+        UIManager.OnStartRequested += StartHub;
+        UIManager.OnMenuRequested += MainMenu;
+        UIManager.OnExitRequested += ExitGame;
+        //LevelGenerator.Instance.OnMapGenerated += StartRun;
+        PH_Boss.OnBossDefeated += BossDefeated;
+        PH_WaveManager.OnRoomCleared += RoomCleared;
     }
 
     private void Start() 
@@ -69,24 +77,29 @@ public class GameManager : MonoBehaviour
         {
             _playerHealthbar = player.GetComponentInChildren<Health>(); //TODO move to load function
         }
-        PH_UIManager.OnPauseRequested += TogglePause;
-        PH_UIManager.OnResetRequested += ResetGame;
-        PH_UIManager.OnStartRequested += StartHub;
-        LevelGenerator.Instance.OnMapGenerated += StartRun;
-        _playerHealthbar.OnDied += PlayerDied;
-        PH_Boss.OnBossDefeated += BossDefeated;
-        PH_WaveManager.OnRoomCleared += RoomCleared;
-
         
+        _playerHealthbar.OnDied += PlayerDied;
+
+        ChangeState(GameState.Menu); 
     }
 
+    
     private void Update()
     {
 
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (Keyboard.current.escapeKey.wasPressedThisFrame) //maybe put this in a bigger control thing? 
         {
             TogglePause();
         }
+        
+        #if UNITY_EDITOR
+
+        if (Keyboard.current.slashKey.wasPressedThisFrame) //DEBUG FOR TESTING PLAYING STATE REQUIREMENTS
+        {
+            ChangeState(GameState.Playing);
+        }
+        
+        #endif
 
         DEBUGInitializeRun();
     }
@@ -132,6 +145,10 @@ public class GameManager : MonoBehaviour
     
     #region EventHandlers
 
+    private void ExitGame()
+    {
+        Application.Quit();
+    }
     private void PlayerDied(GameObject player)  
     {
         RequestGameEnd(RunResult.Lose);
@@ -140,6 +157,11 @@ public class GameManager : MonoBehaviour
     private void StartHub()
     {
         ChangeState(GameState.Hub);
+    }
+
+    private void MainMenu()
+    {
+        ChangeState(GameState.Menu);
     }
     
     /// <summary>
@@ -279,11 +301,9 @@ public class GameManager : MonoBehaviour
 
             player.GetComponentInChildren<PlayerMovement>().enabled = true;
             player.GetComponentInChildren<PlayerInput>().enabled = true;
-            player.GetComponentInChildren<Camera>().enabled = true;
             player.GetComponentInChildren<Shoot>().enabled = true;
             player.GetComponentInChildren<Dash>().enabled = true;
-
-            Debug.Log("This is unpaused");
+            
         }
         else
         {
@@ -292,24 +312,18 @@ public class GameManager : MonoBehaviour
 
                 player.GetComponentInChildren<PlayerMovement>().enabled = false;
                 player.GetComponentInChildren<PlayerInput>().enabled = false;
-                player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<Shoot>().enabled = false;
                 player.GetComponentInChildren<Dash>().enabled = false;
 
-
-
-            Debug.Log("This is paused");
+                
 
         }
         OnPauseToggle?.Invoke(_isPaused);
     }
     
-    private void ResetGame()
+    private void ResetGame() //used to have a call that prevents unless state was win or loss, didnt work with pause or main menu so uhh removed it, hope that wasnt for any reason :^ )
     {
-        if (currentState == GameState.Win || currentState == GameState.Dead) //only allow the reset request to work on win/loss
-        {
-            ChangeState(GameState.Hub); 
-        }
+        ChangeState(GameState.Hub); 
     }
     
     #endregion
@@ -335,42 +349,6 @@ public class GameManager : MonoBehaviour
 }
 
 #region PLACEHOLDERS
-
-public class PH_UIManager : MonoBehaviour
-{
-    public static event Action OnPauseRequested;
-    public static event Action OnStartRequested;
-    public static event Action OnResetRequested;
-
-    
-    private void Start()
-    {
-        GameManager.OnGameOver += GameOver;
-        GameManager.OnGameWin += GameWin;
-    }
-    
-    
-    private void PauseButtonPressed()
-    {
-        OnPauseRequested?.Invoke();
-    }
-
-    public void StartButtonPressed()
-    {
-        OnStartRequested?.Invoke();
-    }
-
-    private void GameOver()
-    {
-        
-    }
-
-    private void GameWin()
-    {
-        
-    }
-    
-}
 
 
 public class PH_Boss : MonoBehaviour
