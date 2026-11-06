@@ -47,6 +47,8 @@ public class Gun : MonoBehaviour
                 {
                     continue;
                 }
+                
+                Debug.Log("Starting to equip parts");
 
                 EquipPart(part);
             }
