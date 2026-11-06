@@ -11,24 +11,49 @@ public class Stats : MonoBehaviour
 {
     [SerializeField] private StatBlock _statBlock;
     [SerializeField] private List<StatModifier> _modifiers;
-    [SerializeField] private Dictionary<StatDefinition, float> _finalValues;
+    private Dictionary<StatDefinition, float> _finalValues;
     public event Action<StatDefinition, float> OnStatChanged;
-    public StatDefinition testStat; 
+    public StatDefinition testStat;
 
     public StatModifier TestModifier;
     public bool debug = true;
+
+
+    // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
+    private void Awake()
+    {
+        InitializeStats();
+    }
+
+    private void Update()
+    {
+        DebugMod();
+        RemoveExpiredModifiers();
+    }
 
     public void DebugMod()
     {
 #if UNITY_EDITOR
         if (Keyboard.current.mKey.wasPressedThisFrame && debug == true)
         {
+            Debug.Log($"Adding modifier {TestModifier} to {gameObject.name}.");
             AddModifier(TestModifier);
-            
+
+        }
+        if (Keyboard.current.rKey.wasPressedThisFrame && debug == true)
+        {
+            RemoveModifier(TestModifier);
         }
         if (Keyboard.current.nKey.wasPressedThisFrame && debug == true)
         {
             GetValue(testStat);
+        }
+        if (Keyboard.current.tKey.wasPressedThisFrame && debug == true)
+        {
+            foreach (StatDefinition stat in _finalValues.Keys)
+            {
+                Debug.Log($"Stat {stat.name} has a final value of {_finalValues[stat]}.");
+            } 
         }
 #endif
     }
@@ -47,6 +72,11 @@ public class Stats : MonoBehaviour
             return 0f;
         }
     }
+    // This method returns the list of modifiers currently applied to the stats.
+    public List<StatModifier> GetModifiers()
+    {
+        return _modifiers;
+    }
 
     // This method checks if a specific stat is present in the final values dictionary.
     public bool HasStat(StatDefinition stat)
@@ -64,8 +94,16 @@ public class Stats : MonoBehaviour
     // This method removes a specific modifier from the list and recalculates the affected stat.
     public void RemoveModifier(StatModifier modifier)
     {
-        _modifiers.Remove(modifier);
-        Recalculate(modifier.Stat);
+        if (!_modifiers.Contains(modifier))
+        {
+            Debug.LogWarning($"Modifier {modifier} not found in the list of modifiers for {gameObject.name}. Cannot remove.");
+        }
+        else
+        {
+            _modifiers.Remove(modifier);
+            Recalculate(modifier.Stat);
+            Debug.Log($"Modifier {modifier} removed from {gameObject.name}. Recalculated stat {modifier.Stat.name}.");
+        }
     }
 
     // This method removes all modifiers that originate from a specific source and recalculates the affected stats.
@@ -82,7 +120,7 @@ public class Stats : MonoBehaviour
 
         for (int i = 0; i < modifiersToRemove.Count; i++)
         {
-            _modifiers.Remove(modifiersToRemove[i]);
+            RemoveModifier(modifiersToRemove[i]);
             Recalculate(modifiersToRemove[i].Stat);
         }
     }
@@ -94,15 +132,19 @@ public class Stats : MonoBehaviour
         List<StatModifier> expiredModifiers = new List<StatModifier>();
         for (int i = 0; i < _modifiers.Count; i++)
         {
-            if (_modifiers[i].Duration <= 0f)
+            if (!_modifiers[i].Permanent && _modifiers[i].Duration <= 0f)
             {
                 expiredModifiers.Add(_modifiers[i]);
+            }
+            else
+            {
+                _modifiers[i].Duration -= Time.deltaTime;
             }
         }
 
         for (int i = 0; i < expiredModifiers.Count; i++)
         {
-            _modifiers.Remove(expiredModifiers[i]);
+            RemoveModifier(expiredModifiers[i]);
             Recalculate(expiredModifiers[i].Stat);
         }
     }
@@ -156,16 +198,5 @@ public class Stats : MonoBehaviour
             _finalValues[_statBlock.Entries[i].Stat] = _statBlock.Entries[i].BaseValue;
             Recalculate(_statBlock.Entries[i].Stat);
         }
-    }
-
-    // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
-    private void Awake()
-    {
-        InitializeStats();
-    }
-
-    private void Update()
-    {
-        DebugMod();
     }
 }
