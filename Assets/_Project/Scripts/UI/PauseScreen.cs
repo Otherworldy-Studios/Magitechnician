@@ -8,6 +8,7 @@ public class PauseScreen : UIScreen
     [SerializeField] private Button menuButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button hubButton;
+    [SerializeField] private Image pauseImage;
     
     
     private void Awake()
@@ -21,7 +22,7 @@ public class PauseScreen : UIScreen
 
     private void OnResume()
     {
-        UIManager.instance.PauseButtonPressed(); //OR pressing escape again but this should be implicit from the GM
+        UIManager.instance.ResumeButtonPressed(); //OR pressing escape again but this should be implicit from the GM
     }
 
     private void OnMenu()
@@ -37,6 +38,6 @@ public class PauseScreen : UIScreen
 
     private void OnSettings()
     {
-        UIManager.instance.PauseButtonPressed();
+        UIManager.instance.SettingsButtonPressed();
     }
 }
