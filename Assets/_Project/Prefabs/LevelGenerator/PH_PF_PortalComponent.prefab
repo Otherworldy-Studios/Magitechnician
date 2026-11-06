@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5453544471454937514}
   - component: {fileID: 4484805974338162057}
   - component: {fileID: 3548287564262360582}
+  - component: {fileID: 8965858162524634825}
   m_Layer: 0
   m_Name: PH_PF_PortalComponent
   m_TagString: Untagged
@@ -107,6 +108,7 @@ MonoBehaviour:
   _parent: {fileID: 0}
   _connected: {fileID: 0}
   _active: 0
+  _collider: {fileID: 0}
 --- !u!65 &3548287564262360582
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128,3 +130,30 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &8965858162524634825
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3556058719540103895}
+  serializedVersion: 5
+  m_Mass: 0.0000001
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

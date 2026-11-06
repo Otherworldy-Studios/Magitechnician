@@ -53,7 +53,10 @@ namespace _Project.Scripts.Dungeon
         [SerializeField] 
         private Room _north;
 
-        public Vector3 PlayerSpawnPos { get { return _playerSpawn.transform.position + new Vector3(0, 9.5f, 0); } }
+        public Vector3 PlayerSpawnPos
+        {
+            get { return _playerSpawn.transform.position + new Vector3(0f, 20f, 0f); }
+        }
         
         public Room North
         {

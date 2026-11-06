@@ -40,13 +40,16 @@ namespace _Project.Scripts.Dungeon
             
         }
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
+        private void OnTriggerEnter(Collider other)
         {
             if (!_active)
                 return;
-            
-            if (hit.gameObject.CompareTag("Player")) // Player needs the Player tag
-                hit.gameObject.transform.position = Connected.PlayerSpawnPos;
+
+            if (other.gameObject.GetComponentInChildren<PlayerCameraController>() != null)
+            {
+                Debug.Log("Player has entered the portal");
+                other.gameObject.transform.position = Connected.PlayerSpawnPos;
+            }
         }
         
         private void OnDrawGizmos()
