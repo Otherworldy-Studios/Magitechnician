@@ -2025,6 +2025,7 @@ MonoBehaviour:
   deathScreen: {fileID: 1612898197}
   winScreen: {fileID: 972776201}
   pauseScreen: {fileID: 1746301773}
+  currentState: 2
 --- !u!4 &1254839710
 Transform:
   m_ObjectHideFlags: 0
@@ -3224,6 +3225,7 @@ MonoBehaviour:
   menuButton: {fileID: 484862769}
   settingsButton: {fileID: 1638522337}
   hubButton: {fileID: 1879233646}
+  pauseImage: {fileID: 0}
 --- !u!1 &1879233642
 GameObject:
   m_ObjectHideFlags: 0

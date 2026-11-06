@@ -29,8 +29,8 @@ public class UIManager : MonoBehaviour
     public static event Action OnPauseRequested;
     public static event Action OnStartRequested;
     public static event Action OnResetRequested;
-    public static event Action OnMenuRequested; //NEW EVENT, SEND TO MENU NEEDED IN GM
-    public static event Action OnExitRequested; //NEW EVENT, Applicaiton.Quit() needed in GM
+    public static event Action OnMenuRequested; 
+    public static event Action OnExitRequested; 
     
     private UIScreen _activeScreen;
     private bool _cursorVisible;
@@ -40,15 +40,11 @@ public class UIManager : MonoBehaviour
         instance = this;
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
-    }
-
-    private void Start()
-    {
+        
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
-
     }
 
     private void Update()
@@ -78,7 +74,6 @@ public class UIManager : MonoBehaviour
             case UIStates.StartMenu:
                 HideAllScreens();
                 ShowScreen(menuScreen);
-                Debug.Log("showing menu");
                 break;
             case UIStates.PauseMenu:
                 HideAllScreens();
@@ -86,7 +81,7 @@ public class UIManager : MonoBehaviour
                 break;
             case UIStates.Gameplay:
                 HideAllScreens();
-                ToggleCursor(true);
+                ToggleCursor(false);
                 //connecting player UI and the UI manager here might cause issues with not showing it
                 break;
         }
@@ -215,7 +210,6 @@ public class UIManager : MonoBehaviour
 
     private void HandleStateChanged(GameManager.GameState newState)
     {
-        Debug.Log(" game state change called, changing ui state");
         switch (newState)
         {
             case GameManager.GameState.Menu:

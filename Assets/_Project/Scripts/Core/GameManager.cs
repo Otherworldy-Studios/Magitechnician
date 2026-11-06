@@ -54,6 +54,15 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        UIManager.OnPauseRequested += TogglePause;
+        UIManager.OnResetRequested += ResetGame;
+        UIManager.OnStartRequested += StartHub;
+        UIManager.OnMenuRequested += MainMenu;
+        UIManager.OnExitRequested += ExitGame;
+        //LevelGenerator.Instance.OnMapGenerated += StartRun;
+        PH_Boss.OnBossDefeated += BossDefeated;
+        PH_WaveManager.OnRoomCleared += RoomCleared;
     }
 
     private void Start() 
@@ -68,18 +77,13 @@ public class GameManager : MonoBehaviour
         {
             _playerHealthbar = player.GetComponentInChildren<Health>(); //TODO move to load function
         }
-        UIManager.OnPauseRequested += TogglePause;
-        UIManager.OnResetRequested += ResetGame;
-        UIManager.OnStartRequested += StartHub;
-        UIManager.OnMenuRequested += MainMenu;
-        //LevelGenerator.Instance.OnMapGenerated += StartRun;
+        
         _playerHealthbar.OnDied += PlayerDied;
-        PH_Boss.OnBossDefeated += BossDefeated;
-        PH_WaveManager.OnRoomCleared += RoomCleared;
 
         ChangeState(GameState.Menu); 
     }
 
+    
     private void Update()
     {
 
@@ -141,6 +145,10 @@ public class GameManager : MonoBehaviour
     
     #region EventHandlers
 
+    private void ExitGame()
+    {
+        Application.Quit();
+    }
     private void PlayerDied(GameObject player)  
     {
         RequestGameEnd(RunResult.Lose);
@@ -242,7 +250,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
         OnGameStateChanged?.Invoke(currentState); 
-        Debug.Log("game state changed invoked");
     }
     
     private void EnterPlaying()
@@ -296,8 +303,7 @@ public class GameManager : MonoBehaviour
             player.GetComponentInChildren<PlayerInput>().enabled = true;
             player.GetComponentInChildren<Shoot>().enabled = true;
             player.GetComponentInChildren<Dash>().enabled = true;
-
-            Debug.Log("This is unpaused");
+            
         }
         else
         {
@@ -309,9 +315,7 @@ public class GameManager : MonoBehaviour
                 player.GetComponentInChildren<Shoot>().enabled = false;
                 player.GetComponentInChildren<Dash>().enabled = false;
 
-
-
-            Debug.Log("This is paused");
+                
 
         }
         OnPauseToggle?.Invoke(_isPaused);
