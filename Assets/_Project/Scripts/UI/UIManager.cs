@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private DeathScreen deathScreen;
     [SerializeField] private WinScreen winScreen;
     [SerializeField] private PauseScreen pauseScreen;
+    [SerializeField] private UIStates currentState;
 
     public static event Action OnPauseRequested;
     public static event Action OnStartRequested;
@@ -46,7 +47,6 @@ public class UIManager : MonoBehaviour
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
-        //GameManager.OnGameStateChanged += HandleStateChanged; COMMENTED FOR DEBUG ///TEMPORARY
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
 
     }
@@ -72,13 +72,13 @@ public class UIManager : MonoBehaviour
     
     private void ChangeState(UIStates state)
     {
-
         currentState = state;
         switch (state)
         {
             case UIStates.StartMenu:
                 HideAllScreens();
                 ShowScreen(menuScreen);
+                Debug.Log("showing menu");
                 break;
             case UIStates.PauseMenu:
                 HideAllScreens();
@@ -215,6 +215,7 @@ public class UIManager : MonoBehaviour
 
     private void HandleStateChanged(GameManager.GameState newState)
     {
+        Debug.Log(" game state change called, changing ui state");
         switch (newState)
         {
             case GameManager.GameState.Menu:

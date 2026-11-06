@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         UIManager.OnResetRequested += ResetGame;
         UIManager.OnStartRequested += StartHub;
         UIManager.OnMenuRequested += MainMenu;
-        LevelGenerator.Instance.OnMapGenerated += StartRun;
+        //LevelGenerator.Instance.OnMapGenerated += StartRun;
         _playerHealthbar.OnDied += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
         PH_WaveManager.OnRoomCleared += RoomCleared;
@@ -242,6 +242,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
         OnGameStateChanged?.Invoke(currentState); 
+        Debug.Log("game state changed invoked");
     }
     
     private void EnterPlaying()
@@ -293,7 +294,6 @@ public class GameManager : MonoBehaviour
 
             player.GetComponentInChildren<PlayerMovement>().enabled = true;
             player.GetComponentInChildren<PlayerInput>().enabled = true;
-            player.GetComponentInChildren<Camera>().enabled = true;
             player.GetComponentInChildren<Shoot>().enabled = true;
             player.GetComponentInChildren<Dash>().enabled = true;
 
@@ -306,7 +306,6 @@ public class GameManager : MonoBehaviour
 
                 player.GetComponentInChildren<PlayerMovement>().enabled = false;
                 player.GetComponentInChildren<PlayerInput>().enabled = false;
-                player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<Shoot>().enabled = false;
                 player.GetComponentInChildren<Dash>().enabled = false;
 
