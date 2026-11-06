@@ -1,21 +1,26 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GunBody))]
 public class Gun : MonoBehaviour
 {
-    [SerializeField] private GunFrame _defaultFrame;
     [SerializeField] private GunPart[] _gunParts;
 
-    private GunBody _gunBody;
     private Dictionary<GunPartType, GunSocket> _gunSockets;
     private Dictionary<GunPartType, GameObject> _partModels;
     private Dictionary<GunPartType, GunPart> _equippedParts;
-
+    
+    // Fire Mode (_fireMode)
+    // Projectile Pool (_pool)
+    
+    public Stats Stats;
+    public Transform Muzzle;
+    public event Action OnFired;
+    public event Action<DamageInfo> OnDamageDealt;
+    public event Action OnPartsChanged;
+    
     private void Awake()
     {
-        _gunBody = GetComponent<GunBody>();
-
         _gunSockets = new Dictionary<GunPartType, GunSocket>();
         _partModels = new Dictionary<GunPartType, GameObject>();
         _equippedParts = new Dictionary<GunPartType, GunPart>();
@@ -28,21 +33,10 @@ public class Gun : MonoBehaviour
     {
         ClearGun();
 
-        if (!_defaultFrame)
-        {
-            return;
-        }
-
-        _gunBody.SetFrame(_defaultFrame);
-        _equippedParts[GunPartType.Frame] = _defaultFrame;
-
         // Only allows one socket per type to be registered
-        foreach (GunSocket socket in _gunBody.GetComponentsInChildren<GunSocket>(true))
-        {
-            if (_gunBody.GetSocket(socket.SocketType, out GunSocket activeSocket) && activeSocket == socket)
-            {
-                _gunSockets.TryAdd(socket.SocketType, socket);
-            }
+        foreach (GunSocket socket in GetComponentsInChildren<GunSocket>(true))
+        { 
+            _gunSockets.TryAdd(socket.SocketType, socket);
         }
 
         if (_gunParts != null)
@@ -95,6 +89,8 @@ public class Gun : MonoBehaviour
         
         // ToDo: Put Recalculate Stats method here using equipped parts
         
+        OnPartsChanged?.Invoke();
+        
         return true;
     }
     
@@ -111,6 +107,14 @@ public class Gun : MonoBehaviour
         
         // ToDo: Put Recalculate Stats method here using equipped parts
         
+        OnPartsChanged?.Invoke();
+        
+        return true;
+    }
+
+    public bool TryFire(Vector3 direction)
+    {
+        // ToDo: Complete
         return true;
     }
     
