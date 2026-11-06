@@ -11,13 +11,14 @@ public class Stats : MonoBehaviour
 {
     [SerializeField] private StatBlock _statBlock;
     [SerializeField] private List<StatModifier> _modifiers;
-    [SerializeField] private Dictionary<StatDefinition, float> _finalValues;
+    private Dictionary<StatDefinition, float> _finalValues;
     public event Action<StatDefinition, float> OnStatChanged;
-    public StatDefinition testStat; 
+    public StatDefinition testStat;
 
     public StatModifier TestModifier;
     public bool debug = true;
-    
+
+
     // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
     private void Awake()
     {
@@ -46,6 +47,13 @@ public class Stats : MonoBehaviour
         if (Keyboard.current.nKey.wasPressedThisFrame && debug == true)
         {
             GetValue(testStat);
+        }
+        if (Keyboard.current.tKey.wasPressedThisFrame && debug == true)
+        {
+            foreach (StatDefinition stat in _finalValues.Keys)
+            {
+                Debug.Log($"Stat {stat.name} has a final value of {_finalValues[stat]}.");
+            } 
         }
 #endif
     }
