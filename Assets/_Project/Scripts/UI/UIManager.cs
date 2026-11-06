@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private DeathScreen deathScreen;
     [SerializeField] private WinScreen winScreen;
     [SerializeField] private PauseScreen pauseScreen;
-
+    [SerializeField] private UIStates currentState; //seriaized for viewing
     public static event Action OnPauseRequested;
     public static event Action OnStartRequested;
     public static event Action OnResetRequested;
@@ -67,6 +67,8 @@ public class UIManager : MonoBehaviour
     
     private void ChangeState(UIStates state)
     {
+
+        currentState = state;
         switch (state)
         {
             case UIStates.StartMenu:
@@ -79,6 +81,7 @@ public class UIManager : MonoBehaviour
                 break;
             case UIStates.Gameplay:
                 HideAllScreens();
+                ToggleCursor(true);
                 //connecting player UI and the UI manager here might cause issues with not showing it
                 break;
         }
@@ -86,9 +89,10 @@ public class UIManager : MonoBehaviour
 
     #region ButtonHandlers
 
-    public void PauseButtonPressed()
+    public void ResumeButtonPressed()
     {
-        OnPauseRequested?.Invoke();
+        ChangeState(UIStates.Gameplay);
+        OnPauseRequested?.Invoke(); //toggle bug is possible however it SHOULD be handled by the GM
     }
     
     public void StartButtonPressed()
@@ -189,6 +193,7 @@ public class UIManager : MonoBehaviour
             else
             {
                 ChangeState(UIStates.Gameplay);
+                ToggleCursor(false);
             }
             
         }

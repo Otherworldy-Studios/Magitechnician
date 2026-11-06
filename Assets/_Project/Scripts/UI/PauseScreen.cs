@@ -22,7 +22,7 @@ public class PauseScreen : UIScreen
 
     private void OnResume()
     {
-        UIManager.instance.PauseButtonPressed(); //OR pressing escape again but this should be implicit from the GM
+        UIManager.instance.ResumeButtonPressed(); //OR pressing escape again but this should be implicit from the GM
     }
 
     private void OnMenu()
