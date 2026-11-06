@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// Summary - 
@@ -14,6 +15,7 @@ public class EnemyBase : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform target;
     [SerializeField] private EnemyStats stats;
+    [SerializeField] private EnemyAttack[] attacks;
 
     public EnemyMovement Movement { get; private set; }
   
@@ -22,6 +24,7 @@ public class EnemyBase : MonoBehaviour
 
     public IEnemyRange Range { get; private set; }
     public IEnemyLineOfSight LineOfSight { get; private set; }
+    public IReadOnlyList<EnemyAttack> Attacks => attacks;
 
     public Transform Target => target;
     public bool HasTarget => isLockedOn && target != null;
@@ -64,6 +67,21 @@ public class EnemyBase : MonoBehaviour
         AttackState = new AttackState(this);
         DeadState = new DeadState(this);
         StunnedState = new StunnedState(this);
+
+        // Find all attack components attached to this enemy
+        if(attacks == null || attacks.Length == 0)
+        {
+            attacks = GetComponentsInChildren<EnemyAttack>();
+        }
+
+        // Tell each attack which enemy owns it
+        foreach (EnemyAttack attack in attacks)
+        {
+            if (attack != null)
+            {
+                attack.Initialize(this);
+            }
+        }
     }
 
     // Subscribes to Healthbar's death event.
