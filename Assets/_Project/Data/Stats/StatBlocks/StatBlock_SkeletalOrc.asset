@@ -12,4 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d136a1dca31844fb5835259ef0f67902, type: 3}
   m_Name: StatBlock_SkeletalOrc
   m_EditorClassIdentifier: Assembly-CSharp::StatBlock
-  Entries: []
+  Entries:
+  - Stat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}
+    BaseValue: 8
+  - Stat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
+    BaseValue: 200
+  - Stat: {fileID: 11400000, guid: c1772fa5754ba41ebae3eef31d1b7545, type: 2}
+    BaseValue: 20
+  - Stat: {fileID: 11400000, guid: f6cb34bdd7f2447a9802d51ff5e9fb28, type: 2}
+    BaseValue: 40
+  - Stat: {fileID: 11400000, guid: a8ef90889625b4f2bbeb6bab4c7f9bfa, type: 2}
+    BaseValue: 0
+  - Stat: {fileID: 11400000, guid: 5e5166892305a40f48c67793c8f852b3, type: 2}
+    BaseValue: 3
+  - Stat: {fileID: 11400000, guid: 6f3fdb3b58095443cb0a7b50b5d8b16e, type: 2}
+    BaseValue: 0.8
+  - Stat: {fileID: 11400000, guid: f2a0d37eb6232464abefec183d060a57, type: 2}
+    BaseValue: 1.5

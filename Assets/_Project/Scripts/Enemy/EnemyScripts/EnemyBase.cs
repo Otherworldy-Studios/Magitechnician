@@ -1,4 +1,4 @@
-
+using System;
 using UnityEngine;
 
 /// Summary - 
@@ -13,12 +13,11 @@ public class EnemyBase : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform target;
-
-    [Header("Detection")]
-    [SerializeField, Min(0f)]
-    private float detectionRange = 10f;
+    [SerializeField] private EnemyStats stats;
 
     public EnemyMovement Movement { get; private set; }
+  
+    public EnemyStats Stats => stats;
     public Health Health { get; private set; }
 
     public IEnemyRange Range { get; private set; }
@@ -28,9 +27,8 @@ public class EnemyBase : MonoBehaviour
     public bool HasTarget => isLockedOn && target != null;
     public bool IsDead => isDead;
 
-    // Temporary fallback until the LOS system is implemented.
     public bool HasLineOfSight =>
-        LineOfSight?.HasLineOfSight() ?? true;
+        LineOfSight?.HasLineOfSight() ?? false;
     // Uses the Goldilocks interface to determine preferred distance.
     public RangeStatus CurrentRange =>
         HasTarget && Range != null
@@ -42,7 +40,8 @@ public class EnemyBase : MonoBehaviour
     public IEnemyState RepositionState { get; private set; }
     public IEnemyState AttackState { get; private set; }
     public IEnemyState DeadState { get; private set; }
-
+    public StunnedState StunnedState { get; private set; }
+    public event Action<EnemyBase> OnEnemyKilled;
     private IEnemyState currentState;
     private bool isLockedOn;
     private bool isDead;
@@ -53,10 +52,8 @@ public class EnemyBase : MonoBehaviour
         Movement = GetComponent<EnemyMovement>();
         Health = GetComponent<Health>();
 
-        // TODO: Connect Goldilocks component.
         Range = GetComponent(typeof(IEnemyRange)) as IEnemyRange;
 
-        // TODO: Connect line-of-sight component.
         LineOfSight =
             GetComponent(typeof(IEnemyLineOfSight))
             as IEnemyLineOfSight;
@@ -66,6 +63,7 @@ public class EnemyBase : MonoBehaviour
         RepositionState = new RepositionState(this);
         AttackState = new AttackState(this);
         DeadState = new DeadState(this);
+        StunnedState = new StunnedState(this);
     }
 
     // Subscribes to Healthbar's death event.
@@ -77,6 +75,12 @@ public class EnemyBase : MonoBehaviour
     // Sets the enemy's initial state based on its health.
     private void Start()
     {
+        if (target == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+                target = player.transform;
+        }
         if (Health.CurrentHealth <= 0f)
             Die();
         else
@@ -89,18 +93,27 @@ public class EnemyBase : MonoBehaviour
         if (isDead)
             return;
 
-        if (!isLockedOn && target != null)
+        if (target != null)
         {
             float distance = Vector3.Distance(
                 transform.position,
                 target.position
             );
 
-            if (distance <= detectionRange)
-                isLockedOn = true;
+            bool inRange = distance <= stats.DetectionRange;
+            bool canSeePlayer = inRange && HasLineOfSight;
+
+            isLockedOn = canSeePlayer;
+        }
+        else
+        {
+            isLockedOn = false;
         }
 
-        currentState?.Update();
+        if(!HasTarget && currentState != IdleState && currentState != StunnedState)
+            ChangeState(IdleState);
+
+        currentState?.Tick(Time.deltaTime);
     }
 
     // Unsubscribes from Healthbar's death event when disabled.
@@ -133,7 +146,15 @@ public class EnemyBase : MonoBehaviour
         currentState = newState;
         currentState.Enter();
     }
-
+    // Called by melee parry/combat systems to interupt the current fighting state.
+    public void Stun(float duration)
+    {
+        if(isDead || duration <= 0f || !HasTarget)
+            return;
+        
+        StunnedState.SetDuration(duration);
+        ChangeState(StunnedState);
+    }
     // Marks the enemy as dead and enters the terminal DeadState.
     public void Die()
     {
@@ -142,15 +163,19 @@ public class EnemyBase : MonoBehaviour
 
         isDead = true;
         ChangeState(DeadState);
+        OnEnemyKilled?.Invoke(this);
     }
 
     // Visualizes the detection radius in Unity's Scene view.
     private void OnDrawGizmosSelected()
     {
+        if (stats == null)
+            return;
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(
             transform.position,
-            detectionRange
+            stats.DetectionRange
         );
     }
 }

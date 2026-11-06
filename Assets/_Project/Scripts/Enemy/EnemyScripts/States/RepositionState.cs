@@ -26,7 +26,7 @@ public class RepositionState : IEnemyState
         enemy.Movement.StopMoving();
     }
     // Checks the preferred range and calculates a new NavMesh destination.
-    public void Update()
+    public void Tick(float dt)
     {
         if (!enemy.HasTarget)
         {
