@@ -24,11 +24,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private DeathScreen deathScreen;
     [SerializeField] private WinScreen winScreen;
     [SerializeField] private PauseScreen pauseScreen;
+    [SerializeField] private UIStates currentState;
 
-    public event Action OnPauseRequested;
-    public event Action OnStartRequested;
-    public event Action OnResetRequested;
-    public event Action OnMenuRequested; //NEW EVENT, SEND TO MENU NEEDED IN GM
+    public static event Action OnPauseRequested;
+    public static event Action OnStartRequested;
+    public static event Action OnResetRequested;
+    public static event Action OnMenuRequested; 
+    public static event Action OnExitRequested; 
     
     private UIScreen _activeScreen;
     private bool _cursorVisible;
@@ -38,23 +40,18 @@ public class UIManager : MonoBehaviour
         instance = this;
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
-    }
-
-    private void Start()
-    {
+        
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
-        //GameManager.OnGameStateChanged += HandleStateChanged; COMMENTED FOR DEBUG ///TEMPORARY
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
-
     }
 
     private void Update()
     {
-        //DEBUG
+        //DEBUG i could make this a switch at this point but idc its debug
         #if UNITY_EDITOR
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current.jKey.wasPressedThisFrame)
         {
             GameOver();
         }
@@ -62,32 +59,40 @@ public class UIManager : MonoBehaviour
         {
             GameWin();
         }
+        else if (Keyboard.current.gKey.wasPressedThisFrame)
+        {
+            ChangeState(UIStates.StartMenu);
+        }
         #endif
     }
     
     private void ChangeState(UIStates state)
     {
+        currentState = state;
         switch (state)
         {
             case UIStates.StartMenu:
                 HideAllScreens();
-                //ShowScreen(Menu);
+                ShowScreen(menuScreen);
                 break;
             case UIStates.PauseMenu:
                 HideAllScreens();
-                //ShowScreen(Pause);
+                ShowScreen(pauseScreen);
                 break;
             case UIStates.Gameplay:
                 HideAllScreens();
+                ToggleCursor(false);
+                //connecting player UI and the UI manager here might cause issues with not showing it
                 break;
         }
     }
 
     #region ButtonHandlers
 
-    public void PauseButtonPressed()
+    public void ResumeButtonPressed()
     {
-        OnPauseRequested?.Invoke();
+        ChangeState(UIStates.Gameplay);
+        OnPauseRequested?.Invoke(); //toggle bug is possible however it SHOULD be handled by the GM
     }
     
     public void StartButtonPressed()
@@ -98,6 +103,11 @@ public class UIManager : MonoBehaviour
     public void MenuButtonPressed()
     {
         OnMenuRequested?.Invoke();
+    }
+
+    public void QuitButtonPressed()
+    {
+        OnExitRequested?.Invoke();
     }
     
     /// <summary>
@@ -188,6 +198,7 @@ public class UIManager : MonoBehaviour
             else
             {
                 ChangeState(UIStates.Gameplay);
+                ToggleCursor(false);
             }
             
         }

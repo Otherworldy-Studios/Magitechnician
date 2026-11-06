@@ -7,6 +7,8 @@ public class ItemSlotUI : MonoBehaviour
 {
     private Image _icon;
     private TMP_Text _name;
+    [SerializeField] private int maxCount;
+    [SerializeField] private int currentCount;
 
     [SerializeField] ItemCategory _assignedCategory;
 

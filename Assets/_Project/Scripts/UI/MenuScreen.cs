@@ -1,11 +1,29 @@
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuScreen : UIScreen
 {
 
-    public override void Show()
+    [SerializeField] private Image menuImage;
+    [SerializeField] private Button exitButton;
+    [SerializeField] private Button startButton;
+
+    private void Awake()
     {
-        base.Show();
+        exitButton.onClick.AddListener(OnExit);
+        startButton.onClick.AddListener(OnStart);
     }
-    
+
+    private void OnExit()
+    {
+        UIManager.instance.QuitButtonPressed();
+    }
+
+    private void OnStart()
+    {
+        
+        UIManager.instance.StartButtonPressed();
+    }
 }
