@@ -25,10 +25,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private WinScreen winScreen;
     [SerializeField] private PauseScreen pauseScreen;
 
-    public event Action OnPauseRequested;
-    public event Action OnStartRequested;
-    public event Action OnResetRequested;
-    public event Action OnMenuRequested; //NEW EVENT, SEND TO MENU NEEDED IN GM
+    public static event Action OnPauseRequested;
+    public static event Action OnStartRequested;
+    public static event Action OnResetRequested;
+    public static event Action OnMenuRequested; //NEW EVENT, SEND TO MENU NEEDED IN GM
     
     private UIScreen _activeScreen;
     private bool _cursorVisible;
@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
     {
         //DEBUG
         #if UNITY_EDITOR
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current.jKey.wasPressedThisFrame)
         {
             GameOver();
         }
@@ -75,10 +75,11 @@ public class UIManager : MonoBehaviour
                 break;
             case UIStates.PauseMenu:
                 HideAllScreens();
-                //ShowScreen(Pause);
+                ShowScreen(pauseScreen);
                 break;
             case UIStates.Gameplay:
                 HideAllScreens();
+                //connecting player UI and the UI manager here might cause issues with not showing it
                 break;
         }
     }

@@ -69,9 +69,9 @@ public class GameManager : MonoBehaviour
         {
             _playerHealthbar = player.GetComponentInChildren<Health>(); //TODO move to load function
         }
-        PH_UIManager.OnPauseRequested += TogglePause;
-        PH_UIManager.OnResetRequested += ResetGame;
-        PH_UIManager.OnStartRequested += StartHub;
+        UIManager.OnPauseRequested += TogglePause;
+        UIManager.OnResetRequested += ResetGame;
+        UIManager.OnStartRequested += StartHub;
         LevelGenerator.Instance.OnMapGenerated += StartRun;
         _playerHealthbar.OnDied += PlayerDied;
         PH_Boss.OnBossDefeated += BossDefeated;
@@ -336,18 +336,11 @@ public class GameManager : MonoBehaviour
 
 #region PLACEHOLDERS
 
-public class PH_UIManager : MonoBehaviour
+/*public class PH_UIManager : MonoBehaviour
 {
     public static event Action OnPauseRequested;
     public static event Action OnStartRequested;
     public static event Action OnResetRequested;
-
-    
-    private void Start()
-    {
-        GameManager.OnGameOver += GameOver;
-        GameManager.OnGameWin += GameWin;
-    }
     
     
     private void PauseButtonPressed()
@@ -370,7 +363,7 @@ public class PH_UIManager : MonoBehaviour
         
     }
     
-}
+}*/
 
 
 public class PH_Boss : MonoBehaviour
