@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
         PauseMenu,
         Gameplay
     }
-
+    
     [SerializeField] private List<UIScreen> screenList;
     [SerializeField] private MenuScreen menuScreen;
     [SerializeField] private RewardScreen rewardScreen;
@@ -122,6 +122,11 @@ public class UIManager : MonoBehaviour
     {
         HideAllScreens();
         ShowScreen(settingsScreen);
+    }
+
+    public void BackButtonPressed()
+    {
+        ChangeState(currentState);
     }
     
     #endregion
