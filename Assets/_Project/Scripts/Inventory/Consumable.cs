@@ -16,6 +16,8 @@ public class Consumable : ScriptableObject, IInventoryItem
     public float duration = 0f;
     public int instantHeal = 0;
 
+    
+
     public void Use(GameObject player)
     {
         if(player.GetComponentInChildren<Stats>() != null)
