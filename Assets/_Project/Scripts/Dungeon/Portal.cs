@@ -47,10 +47,16 @@ namespace _Project.Scripts.Dungeon
             
             //Debug.Log($"{other.gameObject.name} collided with the portal");
 
-            if (other.gameObject.GetComponentInChildren<PlayerCameraController>() != null)
+            if (other.gameObject.GetComponentInChildren<CharacterController>() != null)
             {
+                CharacterController controller = other.gameObject.GetComponentInChildren<CharacterController>();
                 Debug.Log("Player has entered the portal");
-                other.gameObject.transform.position = Connected.PlayerSpawnPos;
+
+                controller.enabled = false;
+                controller.gameObject.transform.position = _connected.PlayerSpawnPos;
+                
+                Physics.SyncTransforms();
+                controller.enabled = true;
             }
         }
         

@@ -55,7 +55,7 @@ namespace _Project.Scripts.Dungeon
 
         public Vector3 PlayerSpawnPos
         {
-            get { return _playerSpawn.transform.position + new Vector3(0f, 20f, 0f); }
+            get { return _playerSpawn.transform.position; }
         }
         
         public Room North

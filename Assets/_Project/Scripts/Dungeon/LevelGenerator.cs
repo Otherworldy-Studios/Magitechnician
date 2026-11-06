@@ -457,9 +457,16 @@ namespace _Project.Scripts.Dungeon
         private void SpawnPlayer()
         {
             player = GameObject.Find("Player");
-            
-            if(player != null)
-                player.transform.position = _startRoom.PlayerSpawnPos;
+
+            if (player != null)
+            {
+                CharacterController controller = player.GetComponentInChildren<CharacterController>();
+                controller.enabled = false;
+                controller.gameObject.transform.position = _startRoom.PlayerSpawnPos;
+
+                Physics.SyncTransforms();
+                controller.enabled = true;
+            }
         }
     }
 }
