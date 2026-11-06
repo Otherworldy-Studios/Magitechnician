@@ -227,7 +227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 493245082204613377}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 8879478622747076826}
   - component: {fileID: 3441230321980424680}
   - component: {fileID: 5614074075523072044}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Player Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +466,6 @@ MonoBehaviour:
   _mainCamera: {fileID: 2481911090293613847}
   _aimCamera: {fileID: 6390469021700361696}
   _input: {fileID: 4293993604866519486}
-  _playerDash: {fileID: 3441230321980424680}
 --- !u!114 &4666485014060152066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,7 +539,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6447360018707385085}
   - component: {fileID: 7812177592832386689}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: ShieldBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -792,7 +791,7 @@ GameObject:
   - component: {fileID: 3617950425623483312}
   - component: {fileID: 7556483348931429896}
   - component: {fileID: 8811363360253662176}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: ImpactDot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,7 +866,7 @@ GameObject:
   - component: {fileID: 5153175674984601193}
   - component: {fileID: 288655265626543336}
   - component: {fileID: 1396916736821920517}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: DashFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1019,7 +1018,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 142250176150280095}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: TopLeftHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1208,7 +1207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7004038971309116067}
   - component: {fileID: 4766113622327905791}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: DashCooldown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1382,7 +1381,7 @@ GameObject:
   - component: {fileID: 7713606321753362845}
   - component: {fileID: 8371845749499720155}
   - component: {fileID: 7434612830536545403}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: DashBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1475,7 +1474,7 @@ Transform:
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.0000000032519187, z: 0, w: 1}
-  m_LocalPosition: {x: -0.65734994, y: 1.5284399, z: -10.1053095}
+  m_LocalPosition: {x: 0.82249004, y: 0.80271995, z: -0.34881}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1628,7 +1627,7 @@ GameObject:
   - component: {fileID: 8420701193295144745}
   - component: {fileID: 2338053798421570365}
   - component: {fileID: 6834627575364428940}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1730,7 +1729,7 @@ GameObject:
   - component: {fileID: 2981731475449608962}
   - component: {fileID: 4894688409922185630}
   - component: {fileID: 6306268168688509669}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: HealthCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1865,7 +1864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4285462192350137379}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1900,7 +1899,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1631733198232315303}
   - component: {fileID: 3644618225072095445}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: HUDScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1952,7 +1951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 883276403224547752}
   - component: {fileID: 228193353579605080}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2040,7 +2039,7 @@ GameObject:
   - component: {fileID: 6931872629582033499}
   - component: {fileID: 7089215320038692326}
   - component: {fileID: 20222118961713681}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: ShieldCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}

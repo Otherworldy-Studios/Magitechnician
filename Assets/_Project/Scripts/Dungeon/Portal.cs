@@ -44,6 +44,8 @@ namespace _Project.Scripts.Dungeon
         {
             if (!_active)
                 return;
+            
+            //Debug.Log($"{other.gameObject.name} collided with the portal");
 
             if (other.gameObject.GetComponentInChildren<PlayerCameraController>() != null)
             {
