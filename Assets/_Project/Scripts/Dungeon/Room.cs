@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -26,17 +27,37 @@ namespace _Project.Scripts.Dungeon
         
         [SerializeField]
         private RoomCompletionLootPool _lootPool;
+        
+        public RoomCompletionLootPool  LootPool { get => _lootPool; }
+        
+        [SerializeField]
+        private GameObject _playerSpawn; // This needs to be set in the editor
 
+        [SerializeField]
+        private BoxCollider _boundingBox;
+
+        public BoxCollider BoundingBox { get => _boundingBox; }
+        
         [Header("Debug (Do not edit)")] 
         [SerializeField]
         private string _id;
 
         [SerializeField]
         private bool _complete;
+
+        [SerializeField]
+        private Portal _portal;
+        
+        public Portal Portal { get => _portal; }
         
         [SerializeField] 
         private Room _north;
 
+        public Vector3 PlayerSpawnPos
+        {
+            get { return _playerSpawn.transform.position; }
+        }
+        
         public Room North
         {
             get => _north;
@@ -75,10 +96,16 @@ namespace _Project.Scripts.Dungeon
         // This should possibly be temporary
         private List<WeightedReward<GunPart>> rewardOptions = new();
 
-        void Start()
+        private void Awake()
         {
-        }
+            _portal = GetComponentInChildren<Portal>();
 
+            if (_portal == null)
+                Debug.Log($"{_id} has no exit portal");
+            else
+                _portal.Parent = this;
+        }
+        
         void Update()
         {
             // Temporary, get rid of this later
@@ -99,9 +126,11 @@ namespace _Project.Scripts.Dungeon
             #endif
         }
 
-        public void OnComplete(bool force = false)
+        // This should suffice for getting room completion rewards
+        public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
             _complete = true;
+            _portal.Active = true;
 
             if (_roomType == RoomType.Combat || force)
             {
@@ -119,7 +148,10 @@ namespace _Project.Scripts.Dungeon
                 }
                 
                 rewardOptions = rewards;
+                return rewards;
             }
+
+            return null;
         }
 
         // This should probably be temporary

@@ -104,6 +104,8 @@ namespace _Project.Scripts.Dungeon
             _generationChance = _baseGenerationChance;
             
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
+
+            OnMapGenerated += SpawnPlayer; // Todo: Replace with spawning in the GameManager
         }
 
         private void OnEnable()
@@ -114,6 +116,8 @@ namespace _Project.Scripts.Dungeon
         private void OnDisable()
         {
             GameManager.OnGenerateRequested -= ReceiveGeneration;
+            
+            OnMapGenerated -= SpawnPlayer; // Todo: Replace with spawning in the GameManager
         }
 
         private void ReceiveGeneration() //rocco: changed it generating on start and now relies on GM event
@@ -217,7 +221,7 @@ namespace _Project.Scripts.Dungeon
                         Room selected = GetRandomCombatRoom(roomRandom.Next());
                         Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity);
                         nextRoom.transform.position = room.gameObject.transform.position + (_directions[direction] *
-                            nextRoom.gameObject.GetComponent<Collider>().bounds.size.magnitude);
+                            nextRoom.BoundingBox.bounds.size.magnitude);
                         
                         nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
@@ -246,6 +250,9 @@ namespace _Project.Scripts.Dungeon
                                 Debug.LogError("[LevelGenerator] Error: Invalid direction");
                                 break;
                         }
+
+                        if (room.Portal != null)
+                            room.Portal.Connected = nextRoom;
                         
                         if(_generatedCombatRooms.Count >= _minCombatRooms)
                             _generationChance += _generationChanceDelta;
@@ -267,7 +274,10 @@ namespace _Project.Scripts.Dungeon
             Room farthest = GetFarthest();
 
             if (farthest == null)
+            {
+                Debug.LogError("[LevelGenerator] Error: No farthest room found");
                 return;
+            }
 
             Direction direction = Direction.North;
 
@@ -285,7 +295,7 @@ namespace _Project.Scripts.Dungeon
             Room selected = GetRandomEndRoom(seed);
             Room end = Instantiate(selected, farthest.transform.position, Quaternion.identity);
             end.transform.position = farthest.gameObject.transform.position +
-                                     (dir * end.gameObject.GetComponent<Collider>().bounds.size.magnitude);
+                                     (dir * end.BoundingBox.bounds.size.magnitude);
             
             end.Id = $"End{(end != null ? 1 : 0)}";
             
@@ -310,6 +320,8 @@ namespace _Project.Scripts.Dungeon
             }
             
             _endRoom = end;
+            farthest.Portal.Connected = _endRoom;
+            
             OnMapGenerated?.Invoke(); // We are done generating the map
         }
 
@@ -437,6 +449,24 @@ namespace _Project.Scripts.Dungeon
                 roomSelector.AddItem(room, room.Weight);
             
             return roomSelector.Roll().Room;
+        }
+
+        // Todo: THIS IS TEMPORARY AND SHOULD BE REPLACED WITH SPAWNING FROM THE GameManager
+        private GameObject player;
+        
+        private void SpawnPlayer()
+        {
+            player = GameObject.Find("Player");
+
+            if (player != null)
+            {
+                CharacterController controller = player.GetComponentInChildren<CharacterController>();
+                controller.enabled = false;
+                controller.gameObject.transform.position = _startRoom.PlayerSpawnPos;
+
+                Physics.SyncTransforms();
+                controller.enabled = true;
+            }
         }
     }
 }

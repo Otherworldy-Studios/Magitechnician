@@ -12,15 +12,27 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private Room _parent;
         
-        [SerializeField]
-        private Portal _connected;
+        public Room Parent {  get { return _parent; } set { _parent = value; } }
         
         [SerializeField]
-        private LevelGenerator.Direction _direction;
+        private Room _connected;
+        
+        public Room Connected { get { return _connected; } set { _connected = value; } }
+
+        [SerializeField]
+        private bool _active;
+        public bool Active { get { return _active; } set { _active = value; } }
+        
+        //[SerializeField] If there's only one portal in each room, this isn't really needed
+        //private LevelGenerator.Direction _direction;
+        
+        [SerializeField]
+        private BoxCollider _collider;
         
         void Start()
         {
-            
+            _active = false;
+            _collider = GetComponent<BoxCollider>();
         }
         
         void Update()
@@ -28,30 +40,38 @@ namespace _Project.Scripts.Dungeon
             
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!_active)
+                return;
+            
+            //Debug.Log($"{other.gameObject.name} collided with the portal");
+
+            if (other.gameObject.GetComponentInChildren<CharacterController>() != null)
+            {
+                CharacterController controller = other.gameObject.GetComponentInChildren<CharacterController>();
+                Debug.Log("Player has entered the portal");
+
+                controller.enabled = false;
+                controller.gameObject.transform.position = _connected.PlayerSpawnPos;
+                
+                Physics.SyncTransforms();
+                controller.enabled = true;
+            }
+        }
+        
         private void OnDrawGizmos()
         {
             // Draws the portal gizmo
-            Gizmos.color = Color.cyan;
-            Vector3 destination = gameObject.transform.position;
-
-            switch (_direction)
+            if (Connected != null) 
             {
-                case LevelGenerator.Direction.North:
-                    destination += new Vector3(0, 0, 2);
-                    break;
-                case LevelGenerator.Direction.South:
-                    destination += new Vector3(0, 0, -2);
-                    break;
-                case LevelGenerator.Direction.East:
-                    destination += new Vector3(2, 0, 0);
-                    break;
-                case LevelGenerator.Direction.West:
-                    destination += new Vector3(-2, 0, 0);
-                    break;
+                Gizmos.color = Color.cyan;
+                Vector3 destination = gameObject.transform.position;
+
+                destination += (Connected.transform.position - gameObject.transform.position).normalized;
+                Gizmos.DrawLine(gameObject.transform.position, destination);
             }
-            
-            Gizmos.DrawLine(gameObject.transform.position, destination);
-            
+
             Vector3 boxSize = new Vector3(1f, 1f, 1f);
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(transform.position, boxSize);
