@@ -52,7 +52,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c3ae75ab618248bca7903996a738d99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gun
-  _gunParts: []
+  _gunParts:
+  - {fileID: 11400000, guid: 104430a6f9c7a41d4b7152ef34a9a035, type: 2}
+  - {fileID: 11400000, guid: 60637fbe961404da6968720aa6c71ae4, type: 2}
+  - {fileID: 11400000, guid: 159998589347c4f87b3cf294ec8ebcb3, type: 2}
+  - {fileID: 11400000, guid: 8879ff21c14c24a8d8b36da80b650e42, type: 2}
+  - {fileID: 11400000, guid: 0f2e017156cba415780f67fb1d639728, type: 2}
   Stats: {fileID: 6665533326396814276}
   Muzzle: {fileID: 7083117123293746370}
 --- !u!114 &6665533326396814276
