@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerRoot : MonoBehaviour
 {
@@ -14,6 +15,16 @@ public class PlayerRoot : MonoBehaviour
         if (!_health)
         {
             _health = GetComponentInChildren<Health>();
+        }
+
+        if (!shield)
+        {
+            shield = GetComponentInChildren<ShieldSystem>();
+        }
+
+        if (!dash)
+        {
+            dash = GetComponentInChildren<Dash>();
         }
     }
 

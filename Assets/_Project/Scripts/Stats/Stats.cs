@@ -1,10 +1,8 @@
-using JetBrains.Annotations;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 // This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final 
 // stat values based on base values and applied modifiers.
@@ -18,7 +16,7 @@ public class Stats : MonoBehaviour
     public StatDefinition testStat;
 
     public StatModifier TestModifier;
-    public bool debug = true;
+  
 
 
     // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.

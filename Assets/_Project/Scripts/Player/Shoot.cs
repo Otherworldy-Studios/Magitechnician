@@ -5,7 +5,7 @@ public class Shoot : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private InputManager _input;
+     private InputManager _input;
     [SerializeField] private PlayerAimController _aimController;
     [SerializeField] private PlayerCameraController _cameraController;
     

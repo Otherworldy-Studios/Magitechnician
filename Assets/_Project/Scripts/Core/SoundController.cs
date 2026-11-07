@@ -27,10 +27,8 @@ public class SoundController : MGR<SoundController>
     [SerializeField] private Sound[] musicTracks;
     [SerializeField] private Sound[] uiSounds;
 
-    // Instance of SounController class, ensures class remains as singleton
-    private static SoundController _instance;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         if (Instance != this)

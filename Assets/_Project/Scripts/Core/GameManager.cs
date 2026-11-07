@@ -83,7 +83,8 @@ public class GameManager : MGR<GameManager>
         {
             return;
         }
-        ChangeState(GameState.Menu, force: true); 
+        ChangeState(GameState.Menu, force: true);
+        InputManager.Instance.PausePressed += TogglePause;
     }
 
     private void OnEnable()
@@ -92,7 +93,7 @@ public class GameManager : MGR<GameManager>
         {
             _playerHealthbar.OnDied += PlayerDied;
         }
-        InputManager.Instance.PausePressed += TogglePause;
+       
     }
 
     private void InitReferences(Scene scene, LoadSceneMode mode)
@@ -190,7 +191,7 @@ public class GameManager : MGR<GameManager>
         Time.timeScale = 1f;
         OnPauseToggle?.Invoke(false);
 
-        // InputManager.Instance.SetMode(InputMode.Disabled);   // Add in phase 2.
+        InputManager.Instance.SetMode(InputMode.Disabled);   
         // UIManager.Instance.ShowLoading(true);                // Add in phase 5.
 
         SceneManager.LoadSceneAsync(buildIndex);
@@ -401,6 +402,10 @@ public class GameManager : MGR<GameManager>
 
     private void OnDisable()
     {
+        if (InputManager.HasInstance)
+        {
+            InputManager.Instance.PausePressed -= TogglePause;
+        }
         if (_playerHealthbar != null)                             
         {
             _playerHealthbar.OnDied -= PlayerDied;
