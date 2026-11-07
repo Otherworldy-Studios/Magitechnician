@@ -12,7 +12,7 @@ public class PlayerAnimator : MonoBehaviour
     [Header("References")]
     [SerializeField] private Animator _animator;
     [SerializeField] private PlayerMovement _playerMovement;
-    [SerializeField] private PlayerInput _input;
+    [SerializeField] private InputManager _input;
     [SerializeField] private PlayerCameraController _cameraController;
     [SerializeField] private CameraTargetController _cameraTargetController;
     [SerializeField] private Dash _playerDash;

@@ -1,9 +1,10 @@
-using UnityEngine;
-using System.Collections.Generic;
-using System;
-using UnityEngine.InputSystem;
-using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Sirenix.OdinInspector;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 // This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final 
 // stat values based on base values and applied modifiers.
@@ -11,6 +12,7 @@ public class Stats : MonoBehaviour
 {
     [SerializeField] private StatBlock _statBlock;
     [SerializeField] private List<StatModifier> _modifiers;
+    [ShowInInspector, ReadOnly]
     private Dictionary<StatDefinition, float> _finalValues;
     public event Action<StatDefinition, float> OnStatChanged;
     public StatDefinition testStat;
@@ -27,36 +29,28 @@ public class Stats : MonoBehaviour
 
     private void Update()
     {
-        DebugMod();
+        
         RemoveExpiredModifiers();
     }
 
-    public void DebugMod()
+    [Button, DisableInEditorMode]
+    private void AddTestModifier()
     {
-#if UNITY_EDITOR
-        if (Keyboard.current.tKey.wasPressedThisFrame && debug == true)
-        {
-            Debug.Log($"Adding modifier {TestModifier} to {gameObject.name}.");
-            AddModifier(TestModifier);
-
-        }
-        if (Keyboard.current.rKey.wasPressedThisFrame && debug == true)
-        {
-            RemoveModifier(TestModifier);
-        }
-        if (Keyboard.current.nKey.wasPressedThisFrame && debug == true)
-        {
-            GetValue(testStat);
-        }
-        if (Keyboard.current.tKey.wasPressedThisFrame && debug == true)
-        {
-            foreach (StatDefinition stat in _finalValues.Keys)
-            {
-                Debug.Log($"Stat {stat.name} has a final value of {_finalValues[stat]}.");
-            } 
-        }
-#endif
+        Debug.Log($"Adding modifier {TestModifier} to {gameObject.name}.");
+        AddModifier(TestModifier);
     }
+    [Button, DisableInEditorMode]
+    private void RemoveTestModifier()
+    {
+        RemoveModifier(TestModifier);
+    }
+    [Button, DisableInEditorMode]
+    private void GetTestStatValue()
+    {
+        GetValue(testStat);
+    }
+
+    
 
     // This method retrieves the final value of a specific stat. If the stat is not present in the final values dictionary, it logs an error and returns 0.
     public float GetValue(StatDefinition stat)

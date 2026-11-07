@@ -9,30 +9,52 @@ public class DashCooldownIcon : MonoBehaviour
 
     private void Awake()
     {
-        if(!_dash)
-            Debug.LogError("DashCooldownIcon needs a Dash component");
+        GameManager.Instance.OnPlayerRegistered += HandlePlayerRegistered;
     }
 
     private void Start()
     {
+        // If a player registered before this existed, connect to it now.
+        if (GameManager.Instance.Player != null)
+        {
+            HandlePlayerRegistered(GameManager.Instance.Player.GetComponent<PlayerRoot>());
+        }
         _icon.fillAmount = 0f;
     }
 
-    void OnEnable()
+    private void OnDestroy()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnPlayerRegistered -= HandlePlayerRegistered;
+        }
+        Unbind();
+    }
+
+    private void HandlePlayerRegistered(PlayerRoot player)
+    {
+        Unbind();
+
+        _dash = player.PlayerDash;
+        if (_dash == null)
+            return;
+
         _dash.OnDashed += HandleDashed;
     }
 
-    void OnDisable()
+    private void Unbind()
     {
-        _dash.OnDashed -= HandleDashed;
+        if (_dash != null)
+        {
+            _dash.OnDashed -= HandleDashed;
+        }
+        _dash = null;
     }
 
     private void Update()
     {
-        if (Mathf.Approximately(_icon.fillAmount, 1f))
-            return;
-        
+        if (_dash == null || Mathf.Approximately(_icon.fillAmount, 1f)) return;
+
         _icon.fillAmount =  Mathf.MoveTowards(
             _icon.fillAmount,
             1f,

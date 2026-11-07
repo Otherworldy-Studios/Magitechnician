@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class DamageReceiver : MonoBehaviour, IDamageable
@@ -101,4 +102,35 @@ public class DamageReceiver : MonoBehaviour, IDamageable
         _damageAccumulator = 0f;
         _currentDamageOverTime = damageInfo;
     }
+
+    #region Debug
+    [Button, DisableInEditorMode]
+    private void DebugDamage(int amount = 25)
+    {
+        TakeDamage(DebugDamageInfo(amount));
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugDamageOverTime(int amount = 50, float seconds = 10f)
+    {
+        TakeDamageOverTime(DebugDamageInfo(amount), seconds);
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugStopDamageOverTime()
+    {
+        _damageTimer = 0f;
+    }
+
+    private DamageInfo DebugDamageInfo(int amount)
+    {
+        return new DamageInfo
+        {
+            DamageAmount = amount,
+            DamageSource = gameObject,
+            DamageDirection = transform.forward,
+            DamageType = DamageType.Physical,
+        };
+    }
+    #endregion
 }

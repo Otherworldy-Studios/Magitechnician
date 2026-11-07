@@ -18,13 +18,13 @@ public class Inventory : SerializedMonoBehaviour
     private List<Consumable> _consumables = new();
 
     [ShowInInspector, OdinSerialize, ReadOnly]
-    private IReadOnlyList<Charm> OwnedCharms => _ownedCharms;
+    public IReadOnlyList<Charm> OwnedCharms => _ownedCharms;
 
     [ShowInInspector, OdinSerialize, ReadOnly]
-    private IReadOnlyList<Charm> EquippedCharms => _equippedCharms;
+    public IReadOnlyList<Charm> EquippedCharms => _equippedCharms;
 
     [ShowInInspector, OdinSerialize, ReadOnly]
-    private IReadOnlyList<Consumable> Consumables => _consumables;
+    public IReadOnlyList<Consumable> Consumables => _consumables;
 
     public event Action<int> OnCrystalsChanged;
     public event Action OnInventoryChanged;
@@ -66,6 +66,23 @@ public class Inventory : SerializedMonoBehaviour
         return _ownedCharms
             .Cast<IInventoryItem>()
             .Concat(_consumables.Cast<IInventoryItem>());
+    }
+
+    public void ClearCharms()
+    {
+        foreach (Charm charm in _equippedCharms)
+        {
+            stats.RemoveAllFromSource(charm);
+        }
+        _equippedCharms.Clear();
+        _ownedCharms.Clear();
+        OnInventoryChanged?.Invoke();
+    }
+
+    public void ClearConsumables()
+    {
+        _consumables.Clear();
+        OnInventoryChanged?.Invoke();
     }
 
     public void AddCrystals(int amount)

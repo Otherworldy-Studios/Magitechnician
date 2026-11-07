@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,6 +67,7 @@ public class Gun : MonoBehaviour
     }
 
     // Equips a part if the socket exists
+    [Button, DisableInEditorMode]
     public bool EquipPart(GunPart part)
     {
         if (!part)
@@ -93,7 +95,9 @@ public class Gun : MonoBehaviour
         
         return true;
     }
-    
+
+
+    [Button, DisableInEditorMode]
     public bool RemovePart(GunPartType type)
     {
         if (!_equippedParts.TryGetValue(type, out GunPart part))

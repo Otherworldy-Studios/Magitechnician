@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ public class Health : MonoBehaviour
 
     // Tokens allow multiple sources of invincibility to work independently.
     private readonly HashSet<Object> _invincibilityTokens = new();
+
+    private object _debugInvincibilityToken;
 
     private bool _isInvincible => _invincibilityTokens.Count > 0;
 
@@ -144,4 +147,38 @@ public class Health : MonoBehaviour
 
         StopInvincibility(token);
     }
+
+    #region Debug
+    [Button, DisableInEditorMode]
+    private void DebugHeal(int amount = 25)
+    {
+        RegenHealth(amount);
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugHealOverTime(int amount = 50, float seconds = 10f)
+    {
+        RegenHealthOverTime(amount, seconds);
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugStopHealOverTime()
+    {
+        _healTimer = 0f;
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugToggleInvincibility()
+    {
+        if (_debugInvincibilityToken == null)
+        {
+            _debugInvincibilityToken = StartInvincibility();
+        }
+        else
+        {
+            StopInvincibility(_debugInvincibilityToken);
+            _debugInvincibilityToken = null;
+        }
+    }
+    #endregion
 }

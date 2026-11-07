@@ -5,7 +5,7 @@ public class Shoot : MonoBehaviour
 {
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private GameObject _bulletPrefab;
-    [SerializeField] private PlayerInput _input;
+    [SerializeField] private InputManager _input;
     [SerializeField] private PlayerAimController _aimController;
     [SerializeField] private PlayerCameraController _cameraController;
     
@@ -14,7 +14,7 @@ public class Shoot : MonoBehaviour
     private void Awake()
     {
         if(!_input) 
-            _input = FindFirstObjectByType<PlayerInput>();
+            _input = InputManager.Instance;
         if(!_aimController)
             _aimController = FindFirstObjectByType<PlayerAimController>();
         if(!_cameraController)

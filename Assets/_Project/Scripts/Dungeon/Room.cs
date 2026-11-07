@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -106,27 +107,9 @@ namespace _Project.Scripts.Dungeon
                 _portal.Parent = this;
         }
         
-        void Update()
-        {
-            // Temporary, get rid of this later
-            #if UNITY_EDITOR
-            if (Keyboard.current != null)
-            {
-                if (Keyboard.current.zKey.wasPressedThisFrame)
-                    OnComplete();
-                
-                // Really truly terrible reward pick logic
-                if(Keyboard.current.digit1Key.wasPressedThisFrame)
-                    PickReward(0);
-                if(Keyboard.current.digit2Key.wasPressedThisFrame) 
-                    PickReward(1);
-                if(Keyboard.current.digit3Key.wasPressedThisFrame)
-                    PickReward(2);
-            }
-            #endif
-        }
+    
+        [Button, DisableInEditorMode]
 
-        // This should suffice for getting room completion rewards
         public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
             _complete = true;
@@ -157,6 +140,7 @@ namespace _Project.Scripts.Dungeon
         // This should probably be temporary
         // Picks the reward at an index of options
         // This needs to just be a player pickup thing
+        [Button, DisableInEditorMode]
         void PickReward(int reward)
         {
             if (rewardOptions == null || reward >= rewardOptions.Count)

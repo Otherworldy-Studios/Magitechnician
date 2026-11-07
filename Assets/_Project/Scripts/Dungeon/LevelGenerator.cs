@@ -1,7 +1,8 @@
-using System;
-using System.Collections.Generic;
 using _Project.Scripts.Dungeon.Utility;
 using _Project.Scripts.Dungeon.Utility.System.Collections.Generic;
+using Sirenix.OdinInspector;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -126,24 +127,18 @@ namespace _Project.Scripts.Dungeon
             GenerateMap();
         }
 
-        void Update()
+    
+        [Button, DisableInEditorMode]
+        private void DEBUGRegenerate()
         {
-            #if UNITY_EDITOR
-            if (Keyboard.current != null)
-            {
-                if (Keyboard.current.iKey.wasPressedThisFrame)
-                {
-                    ResetMap();
-                    GenerateMap();
-                }
-                
-                if (Keyboard.current.leftCtrlKey.wasPressedThisFrame)
-                {
-                    Debug.Log("Rolling debug");
-                    _startRoom.OnComplete(true);
-                }
-            }
-            #endif
+            ResetMap();
+            GenerateMap();
+        }
+
+        [Button, DisableInEditorMode]
+        private void DEBUGCompleteStartRoom()
+        {
+            _startRoom.OnComplete(true);
         }
 
         /// <summary>

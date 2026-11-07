@@ -947,7 +947,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6091092363425046936
 Transform:
   m_ObjectHideFlags: 0
@@ -1717,7 +1717,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4095
 --- !u!1 &6617797612613433208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,6 +1864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4285462192350137379}
+  - component: {fileID: 4765447663455402449}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1889,6 +1890,21 @@ Transform:
   - {fileID: 493245082204613377}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4765447663455402449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7357744756683246077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50da7ac67a55fcc4988f585f6f7e3da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRoot
+  _health: {fileID: 2470234422445426739}
+  shield: {fileID: 3499401484581962967}
+  dash: {fileID: 3441230321980424680}
 --- !u!1 &7783155384471538471
 GameObject:
   m_ObjectHideFlags: 0

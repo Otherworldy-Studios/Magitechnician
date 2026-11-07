@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 
 public class GameManager : MGR<GameManager>
@@ -33,22 +34,28 @@ public class GameManager : MGR<GameManager>
     public static event Action OnRunStart;
     public static event Action<bool> OnPauseToggle;
     public event Action<GameState> OnGameStateChanged;
+    public event Action<PlayerRoot> OnPlayerRegistered;
 
     public float StartTime { get; private set; }
     public float EndTime { get; private set; }
     public float RunTime => Time.time - StartTime;
 
     public Room CurrentRoom { get; private set; }
+    public GameState CurrentState => currentState;
+    public GameObject Player => player;
 
     [SerializeField] private GameState currentState; //serialized for viewing in editor
     [SerializeField] private Health _playerHealthbar;
     [SerializeField] private GameObject player;
     [SerializeField] private PH_WaveManager waveManager; //wave manager responsible for spawning in enemies?
     [SerializeField] private Room[,] currentDungeon;
-    
-    
+
+
     private bool _isPaused;
     private float _runTime;
+    private bool _isLoading;
+    private GameState _stateAfterLoad;                           
+    //private PlayerSpawner _playerSpawner;                         
     //should rooms carry their own timer? i think so 
     LevelGenerator generator;
     
@@ -72,7 +79,10 @@ public class GameManager : MGR<GameManager>
 
     private void Start() 
     {
-      
+        if (Instance != this)
+        {
+            return;
+        }
         ChangeState(GameState.Menu, force: true); 
     }
 
@@ -82,70 +92,66 @@ public class GameManager : MGR<GameManager>
         {
             _playerHealthbar.OnDied += PlayerDied;
         }
+        InputManager.Instance.PausePressed += TogglePause;
     }
 
     private void InitReferences(Scene scene, LoadSceneMode mode)
     {
-        if(scene.buildIndex != Scenes.MainMenu) //Scenes struct is on line 370 to avoid magic numbers
+        _isLoading = false;
+
+        if(scene.buildIndex == Scenes.Level)
         {
-            if (player == null)
-            {
-                player = GameObject.Find("Player"); //TODO: move this to a load function
-            }
+            generator = LevelGenerator.Instance;
+            return;
+        }
 
-            if (player != null)
-            {
-                Health newHealth = player.GetComponentInChildren<Health>();
-                if (newHealth != _playerHealthbar)
-                {
-                    if (_playerHealthbar != null)
-                    {
-                        _playerHealthbar.OnDied -= PlayerDied;
-                    }
-                    _playerHealthbar = newHealth;
-                    if (_playerHealthbar != null)
-                    {
-                        _playerHealthbar.OnDied += PlayerDied;
-                    }
-                }
-            }
+     
+        // UIManager.Instance.ShowLoading(false);               // Add in phase 5.
+        ChangeState(_stateAfterLoad);
+    }
 
-            if (scene.buildIndex == Scenes.Dungeon)
+    public void RegisterPlayer(PlayerRoot newPlayer)
+    {
+        player = newPlayer.gameObject;
+
+       
+        Health newHealth = newPlayer.PlayerHealth;
+        if (newHealth != _playerHealthbar)
+        {
+            if (_playerHealthbar != null)
             {
-                generator = LevelGenerator.Instance;
+                _playerHealthbar.OnDied -= PlayerDied;
             }
-           
+            _playerHealthbar = newHealth;
+            if (_playerHealthbar != null)
+            {
+                _playerHealthbar.OnDied += PlayerDied;
+            }
+        }
+
+        // Progress.LoadInto(newPlayer.Inventory);                 // turn on in phase 15
+        OnPlayerRegistered?.Invoke(newPlayer);
+
+        if (SceneManager.GetActiveScene().buildIndex == Scenes.Level)
+        {
+           // _playerSpawner = newPlayer.GetComponent<PlayerSpawner>();
+           // _playerSpawner.OnPlayerSpawned += StartRun;   // Start listening.
+            generator.OnMapGenerated += StartRun;   // Temporary until PlayerSpawner exists 
+            OnGenerateRequested?.Invoke();                // Build the dungeon, which fires the signal.
         }
     }
 
 
     private void Update()
     {
-
-        if (Keyboard.current.escapeKey.wasPressedThisFrame) //maybe put this in a bigger control thing? 
+        if (Instance != this)
         {
-            TogglePause();
+            return;
         }
-        
-        #if UNITY_EDITOR
-
-        if (Keyboard.current.slashKey.wasPressedThisFrame) //DEBUG FOR TESTING PLAYING STATE REQUIREMENTS
-        {
-            ChangeState(GameState.Playing);
-        }
-        
-        #endif
-
-        DEBUGInitializeRun();
+       
     }
 
-    private void DEBUGInitializeRun()
-    {
-        if (currentState == GameState.Hub && Keyboard.current.kKey.wasPressedThisFrame) //updated to use new input system
-        {
-            InitializeRun();
-        }
-    }
+   
     public void ChangeRoom(Room newRoom)
     {
         CurrentRoom = newRoom;
@@ -173,9 +179,21 @@ public class GameManager : MGR<GameManager>
         }
     }
 
-    public void GoTo(int sceneIndex)
+    public void LoadScene(int buildIndex, GameState stateAfterLoad)
     {
-        SceneManager.LoadScene(sceneIndex);
+        if (_isLoading) return;
+        _isLoading = true;
+        _stateAfterLoad = stateAfterLoad;
+
+        // Clear the pause without running TogglePause, which turns the old player's components back on.
+        _isPaused = false;
+        Time.timeScale = 1f;
+        OnPauseToggle?.Invoke(false);
+
+        // InputManager.Instance.SetMode(InputMode.Disabled);   // Add in phase 2.
+        // UIManager.Instance.ShowLoading(true);                // Add in phase 5.
+
+        SceneManager.LoadSceneAsync(buildIndex);
     }
     
     #region EventHandlers
@@ -191,12 +209,12 @@ public class GameManager : MGR<GameManager>
     
     private void StartHub()
     {
-        ChangeState(GameState.Hub);
+        LoadScene(Scenes.Hub, GameState.Hub);
     }
 
     private void MainMenu()
     {
-        ChangeState(GameState.Menu);
+        LoadScene(Scenes.MainMenu, GameState.Menu);
     }
     
     /// <summary>
@@ -207,10 +225,13 @@ public class GameManager : MGR<GameManager>
     /// <param name="generator">The level generator object that contains the dungeon</param>
     private void StartRun() 
     {
+        //_playerSpawner.OnPlayerSpawned -= StartRun;
+        generator.OnMapGenerated -= StartRun;   // Temporary until PlayerSpawner exists.
         currentDungeon = generator.RoomGrid;
         Room startRoom = generator.StartRoom;
         CurrentRoom = startRoom;
-        
+
+        // UIManager.Instance.ShowLoading(false); 
         ChangeState(GameState.Playing);
         StartTime = Time.time; //start time is now the "0" that other times will be equalized to
         //TODO: teleport player function should be its own script maybe? reusable for the enemy spawns maybe?
@@ -233,9 +254,9 @@ public class GameManager : MGR<GameManager>
     /// <summary>
     /// Starts the request process for starting a run 
     /// </summary>
-    private void InitializeRun() //TODO: triggered by hub system in whatever way, be it UI or hub portal
+    public void InitializeRun() //TODO: triggered by hub system in whatever way, be it UI or hub portal
     {
-        OnGenerateRequested?.Invoke(); 
+        LoadScene(Scenes.Level, GameState.Playing);
     }
 
     #endregion
@@ -291,75 +312,72 @@ public class GameManager : MGR<GameManager>
     private void EnterPlaying()
     {
         //TODO: give player full control over their character n such, systems all working
+        InputManager.Instance.SetMode(InputMode.Gameplay);
     }
     private void EnterMenu()
     {
         //probably some code here about spawning back in the menu and despawning everything
+        InputManager.Instance.SetMode(InputMode.UI);
     }
     
     private void EnterHub()
     {
-            
+        InputManager.Instance.SetMode(InputMode.Gameplay);
     }
     
     private void EnterDead()
     {
         CaptureTime();
+        InputManager.Instance.SetMode(InputMode.UI);
         OnGameOver?.Invoke();
     }
     
     private void EnterWin()
     {
         CaptureTime();
+        InputManager.Instance.SetMode(InputMode.UI);
         OnGameWin?.Invoke();
     }
 
     private void EnterStore()
     {
-        
+        InputManager.Instance.SetMode(InputMode.UI);
     }
 
     #endregion
-    
+
     #region Misc
-    
+
+    [Button, DisableInEditorMode]
     private void TogglePause()
     {
-        if (currentState != GameState.Playing) 
+ 
+        if (currentState != GameState.Playing && currentState != GameState.Hub)
         {
             return;
         }
-    
+        if (player == null)
+        {
+            return;   // No player registered yet, so there's nothing to freeze.
+        }
         if (_isPaused)
         {
+            InputManager.Instance.SetMode(InputMode.Gameplay);
             Time.timeScale = 1;
             _isPaused = false;
-
-            player.GetComponentInChildren<PlayerMovement>().enabled = true;
-            player.GetComponentInChildren<PlayerInput>().enabled = true;
-            player.GetComponentInChildren<Shoot>().enabled = true;
-            player.GetComponentInChildren<Dash>().enabled = true;
-            
         }
         else
         {
+            InputManager.Instance.SetMode(InputMode.UI);
             Time.timeScale = 0;
             _isPaused = true;
-
-                player.GetComponentInChildren<PlayerMovement>().enabled = false;
-                player.GetComponentInChildren<PlayerInput>().enabled = false;
-                player.GetComponentInChildren<Shoot>().enabled = false;
-                player.GetComponentInChildren<Dash>().enabled = false;
-
-                
-
         }
         OnPauseToggle?.Invoke(_isPaused);
     }
     
     private void ResetGame() //used to have a call that prevents unless state was win or loss, didnt work with pause or main menu so uhh removed it, hope that wasnt for any reason :^ )
     {
-        ChangeState(GameState.Hub); 
+        LoadScene(Scenes.Hub, GameState.Hub);
     }
     
     #endregion
@@ -383,11 +401,55 @@ public class GameManager : MGR<GameManager>
 
     private void OnDisable()
     {
-        _playerHealthbar.OnDied -= PlayerDied;
+        if (_playerHealthbar != null)                             
+        {
+            _playerHealthbar.OnDied -= PlayerDied;
+        }
+        //if (_playerSpawner != null)                               
+        //{
+        //    _playerSpawner.OnPlayerSpawned -= StartRun;
+        //}
+
+        if (generator != null)                 // Temporary until PlayerSpawner exists.
+        {
+            generator.OnMapGenerated -= StartRun;
+        }
         SceneManager.sceneLoaded -= InitReferences;
     }
 
+    #region Debug
+    [Button, DisableInEditorMode]
+    private void ForcePlaying()
+    {
+        ChangeState(GameState.Playing);
+    }
 
+    // Replaces K. Add the attributes to the method you already have.
+    [Button, DisableInEditorMode]
+    public void DEBUGInitializeRun()
+    {
+        LoadScene(Scenes.Level, GameState.Playing);
+    }
+
+   
+    [Button, DisableInEditorMode]
+    private void PauseTime()
+    {
+        Time.timeScale = 0f;
+    }
+
+    [Button, DisableInEditorMode]
+    private void SlowMotion(float scale = 0.2f)
+    {
+        Time.timeScale = scale;
+    }
+
+    [Button, DisableInEditorMode]
+    private void NormalSpeed()
+    {
+        Time.timeScale = 1f;
+    }
+    #endregion
 
 }
 
@@ -395,7 +457,7 @@ public struct Scenes
 {
     public const int MainMenu = 0;
     public const int Hub = 1;
-    public const int Dungeon = 2;
+    public const int Level = 2;
 }
 
 

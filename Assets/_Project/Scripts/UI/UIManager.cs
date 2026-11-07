@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,23 +53,10 @@ public class UIManager : MGR<UIManager>
        
     }
 
-    private void Update()
+    [Button, DisableInEditorMode]
+    private void DEBUGChangeUIState(UIStates state)
     {
-        //DEBUG i could make this a switch at this point but idc its debug
-        #if UNITY_EDITOR
-        if (Keyboard.current.jKey.wasPressedThisFrame)
-        {
-            GameOver();
-        }
-        else if (Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            GameWin();
-        }
-        else if (Keyboard.current.gKey.wasPressedThisFrame)
-        {
-            ChangeState(UIStates.StartMenu);
-        }
-        #endif
+        ChangeState(state);
     }
     
     private void ChangeState(UIStates state)
@@ -128,16 +116,17 @@ public class UIManager : MGR<UIManager>
         HideAllScreens();
         ShowScreen(settingsScreen);
     }
-    
-    #endregion
-    
 
+    #endregion
+
+    [Button, DisableInEditorMode]
     private void GameOver()
     {
         HideAllScreens();
         ShowScreen(deathScreen);
     }
 
+    [Button, DisableInEditorMode]
     private void GameWin()
     {
         HideAllScreens();
@@ -242,7 +231,7 @@ public class UIManager : MGR<UIManager>
         GameManager.OnGameOver -= GameOver;
         GameManager.OnGameWin -= GameWin;
         GameManager.OnPauseToggle -= HandlePause;
-        if (GameManager.Instance != null)
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
         }
