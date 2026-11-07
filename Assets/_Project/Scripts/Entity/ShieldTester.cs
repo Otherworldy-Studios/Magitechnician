@@ -28,7 +28,7 @@ public class ShieldTester : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.leftBracketKey.wasPressedThisFrame)
         {
             Debug.Log("Hitting shield for 20 damage");
 

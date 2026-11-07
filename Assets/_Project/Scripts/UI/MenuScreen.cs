@@ -7,8 +7,8 @@ public class MenuScreen : UIScreen
 {
 
     [SerializeField] private Image menuImage;
-    [SerializeField] private Button exitButton;
     [SerializeField] private Button startButton;
+    [SerializeField] private Button exitButton;
 
     private void Awake()
     {
@@ -18,12 +18,12 @@ public class MenuScreen : UIScreen
 
     private void OnExit()
     {
-        UIManager.instance.QuitButtonPressed();
+        UIManager.Instance.QuitButtonPressed();
     }
 
     private void OnStart()
     {
         
-        UIManager.instance.StartButtonPressed();
+        UIManager.Instance.StartButtonPressed();
     }
 }

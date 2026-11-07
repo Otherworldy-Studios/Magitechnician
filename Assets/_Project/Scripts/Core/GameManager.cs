@@ -8,14 +8,14 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 
-public class GameManager : MonoBehaviour
+public class GameManager : MGR<GameManager>
 {
     public enum GameState
     {
         Menu, //menu on bootup
         Hub, //pre-run area
         Playing, //playing game
-        Store, 
+        Store,
         Dead, //game over
         Win
     }
@@ -25,36 +25,41 @@ public class GameManager : MonoBehaviour
         Victory,
         Lose,
     }
-    public static GameManager Instance { get; private set; } 
-    
+
+
     public static event Action OnGameOver;
     public static event Action OnGameWin;
-    public static event Action OnGenerateRequested; 
+    public static event Action OnGenerateRequested;
     public static event Action OnRunStart;
     public static event Action<bool> OnPauseToggle;
-    public event Action<GameState> OnGameStateChanged; 
-    
-    public float StartTime { get; private set; } 
+    public event Action<GameState> OnGameStateChanged;
+
+    public float StartTime { get; private set; }
     public float EndTime { get; private set; }
-    public float RunTime => Time.time - StartTime; 
-    
+    public float RunTime => Time.time - StartTime;
+
     public Room CurrentRoom { get; private set; }
-    
+
     [SerializeField] private GameState currentState; //serialized for viewing in editor
     [SerializeField] private Health _playerHealthbar;
     [SerializeField] private GameObject player;
     [SerializeField] private PH_WaveManager waveManager; //wave manager responsible for spawning in enemies?
     [SerializeField] private Room[,] currentDungeon;
+    
+    
     private bool _isPaused;
     private float _runTime;
     //should rooms carry their own timer? i think so 
     LevelGenerator generator;
     
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        
+        base.Awake();
+        if (Instance != this)
+        {
+            return;
+        }
+        SceneManager.sceneLoaded += InitReferences; //init references after scene load
         UIManager.OnPauseRequested += TogglePause;
         UIManager.OnResetRequested += ResetGame;
         UIManager.OnStartRequested += StartHub;
@@ -67,23 +72,53 @@ public class GameManager : MonoBehaviour
 
     private void Start() 
     {
-        generator = LevelGenerator.Instance;
-        if(player == null)
-        {
-            player = GameObject.Find("Player"); //TODO: move this to a load function
-        }
-       
-        if(_playerHealthbar == null)
-        {
-            _playerHealthbar = player.GetComponentInChildren<Health>(); //TODO move to load function
-        }
-        
-        _playerHealthbar.OnDied += PlayerDied;
-
-        ChangeState(GameState.Menu); 
+      
+        ChangeState(GameState.Menu, force: true); 
     }
 
-    
+    private void OnEnable()
+    {
+        if(_playerHealthbar != null)
+        {
+            _playerHealthbar.OnDied += PlayerDied;
+        }
+    }
+
+    private void InitReferences(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.buildIndex != Scenes.MainMenu) //Scenes struct is on line 370 to avoid magic numbers
+        {
+            if (player == null)
+            {
+                player = GameObject.Find("Player"); //TODO: move this to a load function
+            }
+
+            if (player != null)
+            {
+                Health newHealth = player.GetComponentInChildren<Health>();
+                if (newHealth != _playerHealthbar)
+                {
+                    if (_playerHealthbar != null)
+                    {
+                        _playerHealthbar.OnDied -= PlayerDied;
+                    }
+                    _playerHealthbar = newHealth;
+                    if (_playerHealthbar != null)
+                    {
+                        _playerHealthbar.OnDied += PlayerDied;
+                    }
+                }
+            }
+
+            if (scene.buildIndex == Scenes.Dungeon)
+            {
+                generator = LevelGenerator.Instance;
+            }
+           
+        }
+    }
+
+
     private void Update()
     {
 
@@ -214,9 +249,10 @@ public class GameManager : MonoBehaviour
     /// switches and calls enter(state) functions
     /// </summary>
     /// <param name="newState">The state to transition into.</param>
-    private void ChangeState(GameState newState)
+    /// <param name="force">Whether to force the state transition.</param>
+    private void ChangeState(GameState newState, bool force = false)
     {
-        if (currentState == newState)
+        if (currentState == newState && !force)
         {
             return; 
         }
@@ -338,15 +374,30 @@ public class GameManager : MonoBehaviour
         EndTime = Time.time - StartTime;
         //TODO: some extra time adding up all the room times? do this when the rooms are up
     }
-    
+
     //EnemiesKilled
     //DamageTaken
 
-    
+
     #endregion
-    
-    
+
+    private void OnDisable()
+    {
+        _playerHealthbar.OnDied -= PlayerDied;
+        SceneManager.sceneLoaded -= InitReferences;
+    }
+
+
+
 }
+
+public struct Scenes
+{
+    public const int MainMenu = 0;
+    public const int Hub = 1;
+    public const int Dungeon = 2;
+}
+
 
 #region PLACEHOLDERS
 

@@ -22,7 +22,7 @@ public class WinScreen : UIScreen
     private void OnHub()
     {
         Debug.Log("On Hub");
-        UIManager.instance.ResetButtonPressed();
+        UIManager.Instance.ResetButtonPressed();
     }
 
     private float CollectEndTime()

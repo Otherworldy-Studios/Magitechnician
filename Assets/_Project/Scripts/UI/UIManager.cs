@@ -1,15 +1,15 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
-public class UIManager : MonoBehaviour
+
+
+public class UIManager : MGR<UIManager>
 {
 
-    public static UIManager instance {get; private set;}
+   
     private enum UIStates
     {
         StartMenu,
@@ -35,16 +35,21 @@ public class UIManager : MonoBehaviour
     private UIScreen _activeScreen;
     private bool _cursorVisible;
 
-    private void Awake()
+    protected override void Awake()
     {
-        instance = this;
+        base.Awake();
+        if (Instance != this)
+        {
+            return;
+        }
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
-        
+
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
+       
     }
 
     private void Update()
@@ -55,7 +60,7 @@ public class UIManager : MonoBehaviour
         {
             GameOver();
         }
-        else if (Keyboard.current.mKey.wasPressedThisFrame)
+        else if (Keyboard.current.pKey.wasPressedThisFrame)
         {
             GameWin();
         }
@@ -230,6 +235,17 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-    
+
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameOver -= GameOver;
+        GameManager.OnGameWin -= GameWin;
+        GameManager.OnPauseToggle -= HandlePause;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
+        }
+    }
 
 }

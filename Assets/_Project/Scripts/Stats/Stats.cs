@@ -34,7 +34,7 @@ public class Stats : MonoBehaviour
     public void DebugMod()
     {
 #if UNITY_EDITOR
-        if (Keyboard.current.mKey.wasPressedThisFrame && debug == true)
+        if (Keyboard.current.tKey.wasPressedThisFrame && debug == true)
         {
             Debug.Log($"Adding modifier {TestModifier} to {gameObject.name}.");
             AddModifier(TestModifier);

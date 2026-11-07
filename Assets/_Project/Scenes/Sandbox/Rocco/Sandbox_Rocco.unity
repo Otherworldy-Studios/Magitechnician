@@ -309,17 +309,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4722475882982876466, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.58217657
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722475882982876466, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.36214522
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722475882982876466, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3338695
+      objectReference: {fileID: 0}
+    - target: {fileID: 5619051442264891272, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.61314964
+      objectReference: {fileID: 0}
+    - target: {fileID: 5619051442264891272, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.35244557
+      objectReference: {fileID: 0}
+    - target: {fileID: 5619051442264891272, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.34777868
+      objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.02249
+      value: 0.58217657
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.80272
+      value: 0.36214522
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.29881
+      value: 0.3338695
       objectReference: {fileID: 0}
     - target: {fileID: 7357744756683246077, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_Name
@@ -1180,8 +1204,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MenuScreen
   showsCursor: 1
   menuImage: {fileID: 1910971002}
-  exitButton: {fileID: 1358777288}
   startButton: {fileID: 1321455185}
+  exitButton: {fileID: 1358777288}
 --- !u!4 &565488701
 Transform:
   m_ObjectHideFlags: 0

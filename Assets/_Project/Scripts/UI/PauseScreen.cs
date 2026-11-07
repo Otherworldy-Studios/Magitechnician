@@ -22,22 +22,22 @@ public class PauseScreen : UIScreen
 
     private void OnResume()
     {
-        UIManager.instance.ResumeButtonPressed(); //OR pressing escape again but this should be implicit from the GM
+        UIManager.Instance.ResumeButtonPressed(); //OR pressing escape again but this should be implicit from the GM
     }
 
     private void OnMenu()
     {
-        UIManager.instance.MenuButtonPressed();
+        UIManager.Instance.MenuButtonPressed();
     }
 
     private void OnHub()
     {
         Debug.Log("On Hub");
-        UIManager.instance.ResetButtonPressed();
+        UIManager.Instance.ResetButtonPressed();
     }
 
     private void OnSettings()
     {
-        UIManager.instance.SettingsButtonPressed();
+        UIManager.Instance.SettingsButtonPressed();
     }
 }

@@ -23,7 +23,7 @@ namespace _Project.Scripts.Dungeon
         public int Weight { get { return _weight; } }
     }
     
-    public class LevelGenerator : MonoBehaviour
+    public class LevelGenerator : MGR<LevelGenerator>
     {
         /// <summary>
         /// The four possible generation directions
@@ -78,18 +78,13 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private int _generationChance;
 
-
-        public static LevelGenerator Instance;
-
-        void Awake()
+        protected override void Awake()
         {
-            if (Instance != null && Instance != this)
+            base.Awake();
+            if (Instance != this)
             {
-                Destroy(gameObject);
                 return;
             }
-
-            Instance = this;
             _directions = new Dictionary<Direction, Vector3>();
             _directions[Direction.North] = new Vector3(0, 0, 1);
             _directions[Direction.South] = new Vector3(0, 0, -1);
@@ -136,7 +131,7 @@ namespace _Project.Scripts.Dungeon
             #if UNITY_EDITOR
             if (Keyboard.current != null)
             {
-                if (Keyboard.current.spaceKey.wasPressedThisFrame)
+                if (Keyboard.current.iKey.wasPressedThisFrame)
                 {
                     ResetMap();
                     GenerateMap();
