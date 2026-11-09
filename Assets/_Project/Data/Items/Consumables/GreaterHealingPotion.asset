@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Greater Healing Potion
   _description: Heals 75 health.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: eeb3849eb8d1c0048b0779163dc37786, type: 3}
   _category: 1
   rarity: 2
   statModifiers: []

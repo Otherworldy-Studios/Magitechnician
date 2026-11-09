@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Steady Aim Sigil
   _description: "+10% damage, \u221215% spread."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: ad0afdc9f55435d42b174a2645088bd2, type: 3}
   _category: 0
   rarity: 1
   Price: 100

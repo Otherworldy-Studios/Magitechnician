@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Major Healing Potion
   _description: Heals 50 health.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 065773a296a77a1488eefafc260f9b03, type: 3}
   _category: 1
   rarity: 1
   statModifiers: []

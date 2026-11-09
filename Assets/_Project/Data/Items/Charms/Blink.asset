@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Blink
   _description: +30% dash distance.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 3712ba4d3adb1e94995aa7f33c50aabb, type: 3}
   _category: 0
   rarity: 1
   Price: 100

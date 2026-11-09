@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Minor Healing Potion
   _description: Heals 25 health.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 2283e1e81273ea84d9993d5f48d83a5e, type: 3}
   _category: 1
   rarity: 0
   statModifiers: []

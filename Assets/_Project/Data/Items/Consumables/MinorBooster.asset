@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Minor Booster
   _description: +25% damage for 20 s.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: d7de42bae59d3f74d9b3d8a36c105c5e, type: 3}
   _category: 1
   rarity: 0
   statModifiers:

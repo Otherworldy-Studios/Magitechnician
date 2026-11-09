@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Second Wind
   _description: "\u221225% dash cooldown."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 7e59d80ff57550642b66926b89c74d0b, type: 3}
   _category: 0
   rarity: 1
   Price: 100

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Fortified Plating
   _description: +25 max shield.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 79718231a21aa5d47be7a64cdf40b67b, type: 3}
   _category: 0
   rarity: 0
   Price: 50

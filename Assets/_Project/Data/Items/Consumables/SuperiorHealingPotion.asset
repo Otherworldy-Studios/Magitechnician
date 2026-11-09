@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Superior Healing Potion
   _description: Heals 100 health.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 5257a7e17c63bd24fa5c5cb531c140e3, type: 3}
   _category: 1
   rarity: 3
   statModifiers: []

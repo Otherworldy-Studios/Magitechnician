@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Overclocked Core
   _description: "+15% fire rate, \u221210% max health."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: cac852ab261a3f041ba1c18d40550013, type: 3}
   _category: 0
   rarity: 2
   Price: 150

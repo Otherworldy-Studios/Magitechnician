@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Iron Heart
   _description: +20 max health.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 9d64da30ff08b8643bf0368e6d68ff63, type: 3}
   _category: 0
   rarity: 0
   Price: 50

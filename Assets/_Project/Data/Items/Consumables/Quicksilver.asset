@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Quicksilver
   _description: "+30% move speed, \u221250% dash cooldown for 30 s."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 84da17275be93504ca7c86293e1812b6, type: 3}
   _category: 1
   rarity: 1
   statModifiers:

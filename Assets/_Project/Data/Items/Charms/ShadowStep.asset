@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Shadow Step
   _description: +25% move speed.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 7773fda04c7e40f458148a45ecd2e0e1, type: 3}
   _category: 0
   rarity: 1
   Price: 100

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Glass Sigil
   _description: "+25% damage, \u221225% max shield."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 3f506eb4bf8a0364d92e65e5cb5b80c5, type: 3}
   _category: 0
   rarity: 2
   Price: 150

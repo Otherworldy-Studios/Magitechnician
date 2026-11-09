@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Afterimage
   _description: +0.2 s dash invincibility.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: dbaeaaed192e4704bae5bfc889e180ec, type: 3}
   _category: 0
   rarity: 2
   Price: 150

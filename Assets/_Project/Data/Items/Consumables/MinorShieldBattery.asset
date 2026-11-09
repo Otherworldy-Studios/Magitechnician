@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Minor Shield Battery
   _description: +200% shield regen for 30 s.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 462af9619db32ac4288ec14509a441ae, type: 3}
   _category: 1
   rarity: 1
   statModifiers:

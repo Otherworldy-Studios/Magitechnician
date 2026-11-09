@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Charm
   _displayName: Quick Recovery
   _description: +50% shield regen.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 292b62035ab5469419328d1d248102d0, type: 3}
   _category: 0
   rarity: 0
   Price: 50

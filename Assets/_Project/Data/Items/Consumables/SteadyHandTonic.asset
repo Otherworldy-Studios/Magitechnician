@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Steady Hand Tonic
   _description: "\u221275% spread for 30 s."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 881eedcd1dd35354ab5eb19ea799a3fa, type: 3}
   _category: 1
   rarity: 0
   statModifiers:
