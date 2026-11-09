@@ -17,13 +17,13 @@ public class Inventory : SerializedMonoBehaviour
     private List<Charm> _equippedCharms = new();
     private List<Consumable> _consumables = new();
 
-    [ShowInInspector, OdinSerialize, ReadOnly]
+    [ShowInInspector, ReadOnly]
     public IReadOnlyList<Charm> OwnedCharms => _ownedCharms;
 
-    [ShowInInspector, OdinSerialize, ReadOnly]
+    [ShowInInspector, ReadOnly]
     public IReadOnlyList<Charm> EquippedCharms => _equippedCharms;
 
-    [ShowInInspector, OdinSerialize, ReadOnly]
+    [ShowInInspector, ReadOnly]
     public IReadOnlyList<Consumable> Consumables => _consumables;
 
     public event Action<int> OnCrystalsChanged;

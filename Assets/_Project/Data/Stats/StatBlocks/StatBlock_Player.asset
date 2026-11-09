@@ -27,5 +27,15 @@ MonoBehaviour:
     BaseValue: 50
   - Stat: {fileID: 11400000, guid: 07fd78374c4e44b84a0bd31b118c4a38, type: 2}
     BaseValue: 3
-  - Stat: {fileID: 11400000, guid: 4451832ed886247a79a09f79dac9e392, type: 2}
+  - Stat: {fileID: 11400000, guid: ee42ef04fce3caa40bac6d541f1a6cb1, type: 2}
+    BaseValue: 10
+  - Stat: {fileID: 11400000, guid: b0d609410f8bdf847a8a5edc13dfcc10, type: 2}
+    BaseValue: 20
+  - Stat: {fileID: 11400000, guid: 02a58a434da923544b08a65eeb30b504, type: 2}
+    BaseValue: 0.1
+  - Stat: {fileID: 11400000, guid: ee42ef04fce3caa40bac6d541f1a6cb1, type: 2}
+    BaseValue: 2
+  - Stat: {fileID: 11400000, guid: 2e296ec3cea10574e81970ff06817b46, type: 2}
+    BaseValue: 0.6
+  - Stat: {fileID: 11400000, guid: 966e8bb65ed5dda41a44a39f4ff9d278, type: 2}
     BaseValue: 10

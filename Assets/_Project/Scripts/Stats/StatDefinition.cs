@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StatDefinition", menuName = "StatsRefactor/StatDefinition")]
+[CreateAssetMenu(fileName = "StatDefinition", menuName = "Stats/StatDefinition")]
 
 // This class is a ScriptableObject that defines a stat, including its display name, icon, and min/max values.
 public class StatDefinition : ScriptableObject

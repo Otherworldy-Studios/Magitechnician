@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b656cf5e9d3c9334891a9163618b78c7, type: 3}
+  m_Name: GlassSigil
+  m_EditorClassIdentifier: Assembly-CSharp::Charm
+  _displayName: Glass Sigil
+  _description: "+25% damage, \u221225% max shield."
+  _icon: {fileID: 0}
+  _category: 0
+  rarity: 2
+  Price: 150
+  statModifiers:
+  - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
+    Operation: 1
+    Value: 1.25
+    Duration: 0
+    Permanent: 1
+  - Stat: {fileID: 11400000, guid: 664aed8d8551e41d2afc694a2660efcd, type: 2}
+    Operation: 1
+    Value: 0.75
+    Duration: 0
+    Permanent: 1

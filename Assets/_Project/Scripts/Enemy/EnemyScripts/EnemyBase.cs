@@ -90,12 +90,14 @@ public class EnemyBase : MonoBehaviour
         Health.OnDied += HandleDeath;
     }
 
+ 
+
     // Sets the enemy's initial state based on its health.
     private void Start()
     {
         if (target == null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject player = GameManager.Instance.Player;
             if (player != null)
                 target = player.transform;
         }

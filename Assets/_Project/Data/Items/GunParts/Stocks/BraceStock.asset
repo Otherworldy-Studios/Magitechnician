@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 896fca3b80b3304468a5bcd896dd7a23, type: 3}
+  m_Name: BraceStock
+  m_EditorClassIdentifier: Assembly-CSharp::GunStock
+  _partPrefab: {fileID: 1555894970843842, guid: 590bdba5d7ece8544954b2b0b556e6ae, type: 3}
+  _partName: Brace Stock
+  _description: +20 max shield.
+  _icon: {fileID: 0}
+  rarity: 1
+  statModifiers:
+  - Stat: {fileID: 11400000, guid: 664aed8d8551e41d2afc694a2660efcd, type: 2}
+    Operation: 0
+    Value: 20
+    Duration: 0
+    Permanent: 1

@@ -12,7 +12,7 @@ public class PlayerAnimator : MonoBehaviour
     [Header("References")]
     [SerializeField] private Animator _animator;
     [SerializeField] private PlayerMovement _playerMovement;
-    private InputManager _input;
+   
     [SerializeField] private PlayerCameraController _cameraController;
     [SerializeField] private CameraTargetController _cameraTargetController;
     [SerializeField] private Dash _playerDash;
@@ -75,10 +75,10 @@ public class PlayerAnimator : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (!_animator || !_input)
+        if (!_animator )
             return;
 
-        Vector2 moveInput = _input.Move;
+        Vector2 moveInput = InputManager.Instance.Move;
 
         bool isMoving = moveInput.sqrMagnitude > 0.01f;
 

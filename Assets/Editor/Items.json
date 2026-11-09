@@ -1,0 +1,273 @@
+{
+  "gunParts": [
+    {
+      "id": "LightStock",
+      "name": "Light Stock",
+      "type": "Stock",
+      "rarity": "Common",
+      "description": "+10% move speed, −15% dash cooldown.",
+      "prefab": "PH_LightStock",
+      "modifiers": [
+        { "stat": "Stat_Speed", "op": "Multiply", "value": 1.1 },
+        { "stat": "Stat_DashCooldown", "op": "Multiply", "value": 0.85 }
+      ]
+    },
+    {
+      "id": "HeavyStock",
+      "name": "Heavy Stock",
+      "type": "Stock",
+      "rarity": "Common",
+      "description": "−40% spread, −10% move speed.",
+      "prefab": "PH_HeavyStock",
+      "modifiers": [
+        { "stat": "Stat_Spread", "op": "Multiply", "value": 0.6 },
+        { "stat": "Stat_Speed", "op": "Multiply", "value": 0.9 }
+      ]
+    },
+    {
+      "id": "BraceStock",
+      "name": "Brace Stock",
+      "type": "Stock",
+      "rarity": "Uncommon",
+      "description": "+20 max shield.",
+      "prefab": "PH_BraceStock",
+      "modifiers": [
+        { "stat": "Stat_MaxShield", "op": "Add", "value": 20 }
+      ]
+    },
+    {
+      "id": "SprinterStock",
+      "name": "Sprinter Stock",
+      "type": "Stock",
+      "rarity": "Uncommon",
+      "description": "+15% move speed, +15% spread.",
+      "prefab": "PH_SprinterStock",
+      "modifiers": [
+        { "stat": "Stat_Speed", "op": "Multiply", "value": 1.15 },
+        { "stat": "Stat_Spread", "op": "Multiply", "value": 1.15 }
+      ]
+    },
+    {
+      "id": "GuardianStock",
+      "name": "Guardian Stock",
+      "type": "Stock",
+      "rarity": "Rare",
+      "description": "+15 max health, −5% move speed.",
+      "prefab": "PH_GuardianStock",
+      "modifiers": [
+        { "stat": "Stat_MaxHealth", "op": "Add", "value": 15 },
+        { "stat": "Stat_Speed", "op": "Multiply", "value": 0.95 }
+      ]
+    }
+  ],
+  "charms": [
+    {
+      "id": "FortifiedPlating",
+      "name": "Fortified Plating",
+      "rarity": "Common",
+      "description": "+25 max shield.",
+      "price": 50,
+      "modifiers": [
+        { "stat": "Stat_MaxShield", "op": "Add", "value": 25 }
+      ]
+    },
+    {
+      "id": "IronHeart",
+      "name": "Iron Heart",
+      "rarity": "Common",
+      "description": "+20 max health.",
+      "price": 50,
+      "modifiers": [
+        { "stat": "Stat_MaxHealth", "op": "Add", "value": 20 }
+      ]
+    },
+    {
+      "id": "LongArm",
+      "name": "Long Arm",
+      "rarity": "Common",
+      "description": "+25% range, +20% bullet speed.",
+      "price": 50,
+      "modifiers": [
+        { "stat": "Stat_Range", "op": "Multiply", "value": 1.25 },
+        { "stat": "Stat_BulletSpeed", "op": "Multiply", "value": 1.2 }
+      ]
+    },
+    {
+      "id": "QuickRecovery",
+      "name": "Quick Recovery",
+      "rarity": "Common",
+      "description": "+50% shield regen.",
+      "price": 50,
+      "modifiers": [
+        { "stat": "Stat_ShieldRegenRate", "op": "Multiply", "value": 1.5 }
+      ]
+    },
+    {
+      "id": "Blink",
+      "name": "Blink",
+      "rarity": "Uncommon",
+      "description": "+30% dash distance.",
+      "price": 100,
+      "modifiers": [
+        { "stat": "Stat_DashDistance", "op": "Multiply", "value": 1.3 }
+      ]
+    },
+    {
+      "id": "SecondWind",
+      "name": "Second Wind",
+      "rarity": "Uncommon",
+      "description": "−25% dash cooldown.",
+      "price": 100,
+      "modifiers": [
+        { "stat": "Stat_DashCooldown", "op": "Multiply", "value": 0.75 }
+      ]
+    },
+    {
+      "id": "ShadowStep",
+      "name": "Shadow Step",
+      "rarity": "Uncommon",
+      "description": "+25% move speed.",
+      "price": 100,
+      "modifiers": [
+        { "stat": "Stat_Speed", "op": "Multiply", "value": 1.25 }
+      ]
+    },
+    {
+      "id": "SteadyAimSigil",
+      "name": "Steady Aim Sigil",
+      "rarity": "Uncommon",
+      "description": "+10% damage, −15% spread.",
+      "price": 100,
+      "modifiers": [
+        { "stat": "Stat_Damage", "op": "Multiply", "value": 1.1 },
+        { "stat": "Stat_Spread", "op": "Multiply", "value": 0.85 }
+      ]
+    },
+    {
+      "id": "Afterimage",
+      "name": "Afterimage",
+      "rarity": "Rare",
+      "description": "+0.2 s dash invincibility.",
+      "price": 150,
+      "modifiers": [
+        { "stat": "Stat_DashInvincibility", "op": "Add", "value": 0.2 }
+      ]
+    },
+    {
+      "id": "GlassSigil",
+      "name": "Glass Sigil",
+      "rarity": "Rare",
+      "description": "+25% damage, −25% max shield.",
+      "price": 150,
+      "modifiers": [
+        { "stat": "Stat_Damage", "op": "Multiply", "value": 1.25 },
+        { "stat": "Stat_MaxShield", "op": "Multiply", "value": 0.75 }
+      ]
+    },
+    {
+      "id": "OverclockedCore",
+      "name": "Overclocked Core",
+      "rarity": "Rare",
+      "description": "+15% fire rate, −10% max health.",
+      "price": 150,
+      "modifiers": [
+        { "stat": "Stat_FireRate", "op": "Multiply", "value": 1.15 },
+        { "stat": "Stat_MaxHealth", "op": "Multiply", "value": 0.9 }
+      ]
+    }
+  ],
+  "consumables": [
+    {
+      "id": "MinorBooster",
+      "name": "Minor Booster",
+      "rarity": "Common",
+      "description": "+25% damage for 20 s.",
+      "duration": 20,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_Damage", "op": "Multiply", "value": 1.25 }
+      ]
+    },
+    {
+      "id": "OverchargeCell",
+      "name": "Overcharge Cell",
+      "rarity": "Common",
+      "description": "+50% fire rate for 20 s.",
+      "duration": 20,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_FireRate", "op": "Multiply", "value": 1.5 }
+      ]
+    },
+    {
+      "id": "ShieldBooster",
+      "name": "Shield Booster",
+      "rarity": "Common",
+      "description": "+50 max shield for 30 s.",
+      "duration": 30,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_MaxShield", "op": "Add", "value": 50 }
+      ]
+    },
+    {
+      "id": "SteadyHandTonic",
+      "name": "Steady Hand Tonic",
+      "rarity": "Common",
+      "description": "−75% spread for 30 s.",
+      "duration": 30,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_Spread", "op": "Multiply", "value": 0.25 }
+      ]
+    },
+    {
+      "id": "Berserker",
+      "name": "Berserker",
+      "rarity": "Uncommon",
+      "description": "+20% move speed, +50% spread, +100% max shield for 30 s.",
+      "duration": 30,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_Speed", "op": "Multiply", "value": 1.2 },
+        { "stat": "Stat_Spread", "op": "Multiply", "value": 1.5 },
+        { "stat": "Stat_MaxShield", "op": "Multiply", "value": 2 }
+      ]
+    },
+    {
+      "id": "MinorShieldBattery",
+      "name": "Minor Shield Battery",
+      "rarity": "Uncommon",
+      "description": "+200% shield regen for 30 s.",
+      "duration": 30,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_ShieldRegenRate", "op": "Multiply", "value": 3 }
+      ]
+    },
+    {
+      "id": "Quicksilver",
+      "name": "Quicksilver",
+      "rarity": "Uncommon",
+      "description": "+30% move speed, −50% dash cooldown for 30 s.",
+      "duration": 30,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_Speed", "op": "Multiply", "value": 1.3 },
+        { "stat": "Stat_DashCooldown", "op": "Multiply", "value": 0.5 }
+      ]
+    },
+    {
+      "id": "GlassCanon",
+      "name": "Glass Canon",
+      "rarity": "Rare",
+      "description": "+35% damage, −50% max health for 60 s.",
+      "duration": 60,
+      "instantHeal": 0,
+      "modifiers": [
+        { "stat": "Stat_Damage", "op": "Multiply", "value": 1.35 },
+        { "stat": "Stat_MaxHealth", "op": "Multiply", "value": 0.5 }
+      ]
+    }
+  ]
+}

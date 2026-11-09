@@ -2875,7 +2875,6 @@ GameObject:
   - component: {fileID: 1422954572}
   - component: {fileID: 1422954571}
   - component: {fileID: 1422954570}
-  - component: {fileID: 1422954578}
   - component: {fileID: 1422954579}
   - component: {fileID: 1422954580}
   - component: {fileID: 1422954581}
@@ -2900,7 +2899,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   target: {fileID: 159728086}
   stats: {fileID: 11400000, guid: 48dcf74f58c8d4759a6443df836798d5, type: 2}
-  attacks: []
+  attacks:
+  - {fileID: 1422954581}
 --- !u!114 &1422954571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3047,40 +3047,6 @@ Transform:
   - {fileID: 2018897021}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -0.183, y: -0.234, z: 0.556}
---- !u!114 &1422954578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422954569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87dfd8eaa3da1ae48b1581edd6f9b436, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthDebug
-  _heal: 0
-  _damage: 0
-  _healOverTime: 0
-  _healTimer: 0
-  _damageOverTime: 30
-  _damageTimer: 2
-  _invincibilityEnabled: 0
-  _apply: 1
-  _health: {fileID: 0}
-  _damageReceiver: {fileID: 0}
-  _playerMovement: {fileID: 0}
-  _instructions: 'F1 | Heal 25 HP
-
-    F2 | Deal 25 damage
-
-    F3 | Toggle damage
-    over time (50 damage / 10s)
-
-    F4 | Toggle heal over time (50 HP / 10s)
-
-    F5
-    | Toggle Invincibility(doesn''t need apply)'
 --- !u!114 &1422954579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3291,15 +3257,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.02249
+      value: 0.9924898
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.80272007
+      value: 0.7750001
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.29881
+      value: -1.6549997
       objectReference: {fileID: 0}
     - target: {fileID: 7357744756683246077, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_Name

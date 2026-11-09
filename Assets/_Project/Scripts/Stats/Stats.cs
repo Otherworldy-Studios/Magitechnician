@@ -149,34 +149,49 @@ public class Stats : MonoBehaviour
         float baseValue = 0f;
         float additiveValue = 0f;
         float multiplicativeValue = 1f;
+        bool hasSet = false;
+        float setValue = 0f;
 
-        for (int i = 0; i < _statBlock.Entries.Count; i++)
+        foreach (StatEntry entry in _statBlock.Entries)
         {
-            if (_statBlock.Entries[i].Stat == stat)
+            if (entry.Stat == stat)
             {
-                baseValue = _statBlock.Entries[i].BaseValue;
+                baseValue = entry.BaseValue;
             }
         }
 
-        for (int i = 0; i < _modifiers.Count; i++)
+        foreach (StatModifier modifier in _modifiers)
         {
-            if (_modifiers[i].Stat == stat)
+            if (modifier.Stat != stat)
             {
-                if (_modifiers[i].Operation == ModifierOperation.Add)
-                {
-                    additiveValue += _modifiers[i].Value;
-                }
-                else
-                {
-                    multiplicativeValue *= _modifiers[i].Value;
-                }
-
+                continue;
             }
-            float finalValue = (baseValue + additiveValue) * multiplicativeValue;
-            finalValue = stat.Clamp(finalValue);
-            _finalValues[stat] = finalValue;
-            OnStatChanged?.Invoke(_statBlock.Entries[i].Stat, _finalValues[_statBlock.Entries[i].Stat]);
-            Debug.Log($"Final value for {stat.name} recalculated: {finalValue}");
+
+            switch (modifier.Operation)
+            {
+                case ModifierOperation.Add:
+                    additiveValue += modifier.Value;
+                    break;
+                case ModifierOperation.Multiply:
+                    multiplicativeValue *= modifier.Value;
+                    break;
+                case ModifierOperation.Set:
+                    // The most recently added Set wins.
+                    hasSet = true;
+                    setValue = modifier.Value;
+                    break;
+            }
+        }
+
+        float finalValue = hasSet ? setValue : (baseValue + additiveValue) * multiplicativeValue;
+        finalValue = stat.Clamp(finalValue);
+
+        _finalValues.TryGetValue(stat, out float oldValue);
+        _finalValues[stat] = finalValue;
+
+        if (!Mathf.Approximately(oldValue, finalValue))
+        {
+            OnStatChanged?.Invoke(stat, finalValue);
         }
     }
 

@@ -1,0 +1,42 @@
+{
+  "gunParts": [],
+  "charms": [],
+  "consumables": [
+    {
+      "id": "MinorHealingPotion",
+      "name": "Minor Healing Potion",
+      "rarity": "Common",
+      "description": "Heals 25 health.",
+      "duration": 0,
+      "instantHeal": 25,
+      "modifiers": []
+    },
+    {
+      "id": "MajorHealingPotion",
+      "name": "Major Healing Potion",
+      "rarity": "Uncommon",
+      "description": "Heals 50 health.",
+      "duration": 0,
+      "instantHeal": 50,
+      "modifiers": []
+    },
+    {
+      "id": "GreaterHealingPotion",
+      "name": "Greater Healing Potion",
+      "rarity": "Rare",
+      "description": "Heals 75 health.",
+      "duration": 0,
+      "instantHeal": 75,
+      "modifiers": []
+    },
+    {
+      "id": "SuperiorHealingPotion",
+      "name": "Superior Healing Potion",
+      "rarity": "Epic",
+      "description": "Heals 100 health.",
+      "duration": 0,
+      "instantHeal": 100,
+      "modifiers": []
+    }
+  ]
+}

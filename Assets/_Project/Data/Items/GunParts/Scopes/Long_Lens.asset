@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0df14922fae22964280e047045b25cb9, type: 3}
+  m_Name: Long_Lens
+  m_EditorClassIdentifier: Assembly-CSharp::GunScope
+  _partPrefab: {fileID: 1607512650001360, guid: 9ec622eef3cec5242a6b4e8d7985fe11, type: 3}
+  _partName: Long Lens
+  _description: +50% range, +25% bullet speed.
+  _icon: {fileID: 0}
+  rarity: 1
+  statModifiers:
+  - Stat: {fileID: 11400000, guid: 1273e247e399148f4b50c9746f98b743, type: 2}
+    Operation: 1
+    Value: 1.5
+    Duration: 0
+    Permanent: 1
+  - Stat: {fileID: 11400000, guid: 9a1aa751653564c1eb77b30e5ff5fed0, type: 2}
+    Operation: 1
+    Value: 1.25
+    Duration: 0
+    Permanent: 1
+  Zoom: 0
