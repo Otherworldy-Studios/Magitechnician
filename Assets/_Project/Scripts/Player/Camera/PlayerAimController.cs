@@ -1,5 +1,10 @@
 using UnityEngine;
 
+/// <summary>
+/// Works out the shot direction from the muzzle toward the crosshair, and moves the impact dot to where it lands.
+/// </summary>
+// INTEGRATION: no longer used. Shoot now aims with CrossHairAim, and CrosshairDot draws the dot. Kept so scenes that
+// still have this component don't lose their settings; safe to remove from the player prefab and delete.
 public class PlayerAimController : MonoBehaviour
 {
     [Header("References")]
@@ -10,21 +15,27 @@ public class PlayerAimController : MonoBehaviour
     [SerializeField] private PlayerCombatState _combatState;
 
     [Header("Settings")]
-    [SerializeField] private float _maxDistance = 100f;
-    [SerializeField, Range(0f, 90f)] private float _maxAimAngle = 20f;
+    [SerializeField] private float _maxDistance = 100f; // How far the aim and impact rays reach.
+    [SerializeField, Range(0f, 90f)] private float _maxAimAngle = 20f; // Most the shot may turn away from the barrel.
     [SerializeField] private LayerMask _hitMask;
 
+    /// <summary>Where a shot from the muzzle lands.</summary>
     public Vector3 ImpactPoint { get; private set; }
 
+    /// <summary>The point under the crosshair.</summary>
     public Vector3 AimPoint { get; private set; }
+
+    /// <summary>The shot's direction from the muzzle.</summary>
     public Vector3 ShotDirection { get; private set; }
 
+    /// <summary>Finds the combat state if empty.</summary>
     private void Awake()
     {
-        if(!_combatState)
+        if (!_combatState)
             _combatState = FindFirstObjectByType<PlayerCombatState>();
     }
 
+    /// <summary>Works out the aim and places the dot: on the impact point in combat, at the screen center when relaxed.</summary>
     private void LateUpdate()
     {
         CalculateAim();
@@ -38,7 +49,6 @@ public class PlayerAimController : MonoBehaviour
         {
             _impactDot.position = new Vector2(Screen.width / 2f, Screen.height / 2f);
         }
-            
     }
 
     /// <summary>

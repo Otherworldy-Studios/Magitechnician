@@ -7,13 +7,18 @@ using UnityEngine.Serialization;
 using UnityEditor;
 #endif
 
-// One asset that lists every item in the game, grouped by category.
-// Each category is a tab, and each item can be expanded to edit it in place,
-// so you can find and change items without opening each asset.
+/// <summary>
+/// One asset that lists every item in the game, grouped by category. Each category is a tab, and each item
+/// can be expanded to edit it in place, so items can be found and changed without opening each asset.
+/// An editor tool: nothing reads it during play.
+/// </summary>
+// INTEGRATION: new script, made by Lee. The Find All Items In Project button fills the lists from every item asset,
+// including the ones the JSON importer creates.
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Database/ItemDatabase")]
 public class ItemDatabase : ScriptableObject
 {
-  
+    // One list per item type. Odin draws each as a searchable tab with every item expandable in place.
+    // FormerlySerializedAs keeps the values from when the lists were named AllCharms, AllConsumables, and so on.
 
     [TabGroup("Items", "Charms")]
     [Searchable, InlineEditor(InlineEditorObjectFieldModes.Foldout)]
@@ -51,8 +56,6 @@ public class ItemDatabase : ScriptableObject
     [FormerlySerializedAs("AllStocks")]
     [SerializeField] private List<GunStock> _stocks = new();
 
-   
-
     public IReadOnlyList<Charm> Charms => _charms;
     public IReadOnlyList<Consumable> Consumables => _consumables;
     public IReadOnlyList<GunBarrel> Barrels => _barrels;
@@ -60,29 +63,30 @@ public class ItemDatabase : ScriptableObject
     public IReadOnlyList<GunScope> Scopes => _scopes;
     public IReadOnlyList<GunStock> Stocks => _stocks;
 
-    // Every gun part in one list
+    /// <summary>Every barrel, magazine, scope, and stock in one sequence.</summary>
     public IEnumerable<GunPart> AllGunParts =>
         _barrels.Cast<GunPart>().Concat(_magazines).Concat(_scopes).Concat(_stocks);
 
-    // Every item of any kind.
+    /// <summary>Every charm, consumable, and gun part in one sequence.</summary>
     public IEnumerable<IInventoryItem> AllItems =>
         _charms.Cast<IInventoryItem>().Concat(_consumables).Concat(AllGunParts);
 
-    // Returns the item with this display name
+    /// <summary>Returns the first item with this display name, or null if none has it.</summary>
     public IInventoryItem FindByName(string displayName)
     {
         return AllItems.FirstOrDefault(item => item != null && item.DisplayName == displayName);
     }
 
-    // Returns every item of one rarity
+    /// <summary>Returns every item of one rarity.</summary>
     public IEnumerable<IInventoryItem> GetByRarity(ItemRarity rarity)
     {
         return AllItems.Where(item => item != null && item.Rarity == rarity);
     }
 
 #if UNITY_EDITOR
-  
+    // Editor-only buttons. They use AssetDatabase, which doesn't exist in a build.
 
+    /// <summary>Fills every list with every asset of its type in the project, sorted by file name, and saves.</summary>
     [PropertyOrder(-1)]
     [InfoBox("$Summary")]
     [Button("Find All Items In Project", ButtonSizes.Medium), DisableInPlayMode]
@@ -99,6 +103,7 @@ public class ItemDatabase : ScriptableObject
         AssetDatabase.SaveAssets();
     }
 
+    /// <summary>Removes empty entries, such as items that were deleted.</summary>
     [PropertyOrder(-1)]
     [Button("Remove Empty Slots"), DisableInPlayMode]
     private void RemoveEmptySlots()
@@ -113,12 +118,12 @@ public class ItemDatabase : ScriptableObject
         EditorUtility.SetDirty(this);
     }
 
-   
+    // The item counts shown in the info box above the buttons.
     private string Summary =>
         $"{_charms.Count} charms, {_consumables.Count} consumables, " +
         $"{_barrels.Count} barrels, {_magazines.Count} magazines, {_scopes.Count} scopes, {_stocks.Count} stocks";
 
-    // Finds every asset of a type in the project, sorted by file name.
+    /// <summary>Finds every asset of a type in the project, sorted by file name.</summary>
     private static List<T> FindAll<T>() where T : ScriptableObject
     {
         return AssetDatabase.FindAssets($"t:{typeof(T).Name}")

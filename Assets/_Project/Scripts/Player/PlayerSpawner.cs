@@ -11,6 +11,8 @@ using UnityEngine;
 ///
 /// Portal calls TeleportToRoom to move the player between rooms.
 /// </summary>
+// INTEGRATION: new. Replaces Portal moving the CharacterController itself, and the player starting wherever the prefab
+// was placed. Room.PlayerSpawnRotation (new) gives the facing, and CameraTargetController.SetYawPitch (new) turns the camera.
 public class PlayerSpawner : MonoBehaviour
 {
     [Tooltip("The player's CharacterController. Found in children if empty.")]
@@ -25,8 +27,9 @@ public class PlayerSpawner : MonoBehaviour
     /// <summary>Fires after the player is placed in the Start room of a new map.</summary>
     public event Action OnPlayerSpawned;
 
-    private LevelGenerator _generator;
+    private LevelGenerator _generator; // The generator being waited on. Null when not waiting.
 
+    /// <summary>Finds the CharacterController and the camera target in children if empty.</summary>
     private void Awake()
     {
         if (_controller == null)
@@ -36,6 +39,7 @@ public class PlayerSpawner : MonoBehaviour
             _cameraTarget = GetComponentInChildren<CameraTargetController>();
     }
 
+    /// <summary>Searches the scene for the camera target if it wasn't in the player prefab.</summary>
     private void Start()
     {
         // The camera target may sit outside the player prefab.
@@ -86,7 +90,7 @@ public class PlayerSpawner : MonoBehaviour
         _controller.enabled = false;
 
         body.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
-        Physics.SyncTransforms();
+        Physics.SyncTransforms(); // Moves the colliders now, so overlap checks this frame see the new position.
 
         _controller.enabled = wasEnabled;
 
@@ -94,6 +98,7 @@ public class PlayerSpawner : MonoBehaviour
             _cameraTarget.SetYawPitch(yaw, _pitchAfterTeleport);
     }
 
+    /// <summary>Runs on LevelGenerator.OnMapGenerated. Moves the player to the Start room and fires OnPlayerSpawned.</summary>
     private void HandleMapGenerated()
     {
         Room startRoom = _generator != null ? _generator.StartRoom : null;
@@ -109,6 +114,7 @@ public class PlayerSpawner : MonoBehaviour
         OnPlayerSpawned?.Invoke();
     }
 
+    /// <summary>Stops waiting on the generator.</summary>
     private void StopListening()
     {
         if (_generator != null)
@@ -117,6 +123,7 @@ public class PlayerSpawner : MonoBehaviour
         _generator = null;
     }
 
+    /// <summary>Stops waiting on the generator, so it doesn't call a destroyed spawner.</summary>
     private void OnDestroy()
     {
         StopListening();

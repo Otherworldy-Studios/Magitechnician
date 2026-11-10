@@ -1,16 +1,5 @@
-using UnityEngine;
-
+/// <summary>The settings screen. UIManager.SettingsButtonPressed opens it. Placeholder: nothing is built yet.</summary>
+// The empty Start and Update from Unity's script template were removed, so Unity doesn't call them every frame.
 public class SettingsScreen : UIScreen
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
