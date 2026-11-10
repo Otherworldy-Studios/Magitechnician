@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -53,7 +54,6 @@ namespace _Project.Scripts.Dungeon
         public List<Spawnpoint> Spawnpoints { get => _spawnpoints; }
 
         [SerializeField]
-        private Portal _portal;
         private Portal _portal; // The exit. Found in children in Awake.
 
         public Portal Portal { get => _portal; }

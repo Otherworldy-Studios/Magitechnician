@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.Dungeon;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WaveManager : MGR<WaveManager>
 {
@@ -33,17 +35,73 @@ public class WaveManager : MGR<WaveManager>
     override protected void Awake()
     {
         base.Awake();
-        LevelGenerator.Instance.OnMapGenerated += SubscribeToRoomEvents;
+        
+        LevelGenerator.Instance.OnMapGenerated += HandleMapGenerated;
         _currentWave = 0;
+        OnWaveCompleted += StartWave;
     }
 
-    void SubscribeToRoomEvents()
+    public void HandleMapGenerated()
     {
+        foreach (Room room in LevelGenerator.Instance.RoomGrid)
+        {
+            if (room != null)
+                room.OnRoomEntered += HandlePlayerEntered;
+        }
+    }
 
+    private void HandlePlayerEntered(Room room)
+    {
+        SetActiveRoom(room);
+        StartCoroutine(RunWave(_currentRoom, 0));
+    }
+
+    IEnumerator RunWave(Room room, int currentWave)
+    {
+        Wave wave = _waves[currentWave];
+
+        yield return new WaitForSeconds(wave.StartDelay);
+
+        while (_alive.Count < _maxAlive && _alive.Count <= wave.EnemiesPerWave)
+        {
+            SpawnEnemy(wave.Entries[Random.Range(0, wave.Entries.Count)].Enemy, 
+                room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+            
+            yield return new WaitForSeconds(wave.SpawnInterval);
+        }
+    }
+
+    void SpawnEnemy(EnemyBase enemy, Spawnpoint point)
+    {
+        EnemyBase alive = Instantiate(enemy, point.transform.position, point.transform.rotation);
+        _alive.Add(alive);
+        alive.OnEnemyKilled += HandleEnemyKilled;
+    }
+
+    void HandleEnemyKilled(EnemyBase enemy)
+    {
+        _alive.Remove(enemy);
+        
+        if (_alive.Count == 0)
+        {
+            _currentWave++;
+            
+            if (_currentWave >= _waves.Count)
+                _currentRoom.OnComplete();
+            
+            OnWaveCompleted?.Invoke(_currentWave);
+        }
+    }
+
+    void StartWave(int currentWave)
+    {
+        if(currentWave < _waves.Count)
+            StartCoroutine(RunWave(_currentRoom, currentWave));
     }
 
     void SetActiveRoom(Room room)
     {
         _currentRoom = room;
+        _currentWave = 0;
     }
 }
