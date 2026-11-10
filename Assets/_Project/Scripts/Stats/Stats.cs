@@ -1,54 +1,71 @@
-using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-
-// This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final
-// stat values based on base values and applied modifiers.
+/// <summary>
+/// Holds one object's stats: reads the base values from a StatBlock, keeps copies of the modifiers added to it,
+/// and works out each stat's final value. Scripts read values with GetValue and react to OnStatChanged.
+/// The player and the gun each have their own Stats. Items add modifiers through PlayerRoot or Inventory,
+/// which send each one to whichever Stats has its stat.
+/// </summary>
 public class Stats : MonoBehaviour
 {
+    [Tooltip("The stats this object has and their base values.")]
     [SerializeField] private StatBlock _statBlock;
+    [Tooltip("The modifiers currently applied. Filled at run time.")]
     [SerializeField] private List<StatModifier> _modifiers;
+
+    // Final value of every stat in the StatBlock, after modifiers. Shown read-only in the Inspector.
     [ShowInInspector, ReadOnly]
     private Dictionary<StatDefinition, float> _finalValues;
+
+    /// <summary>Fires when a stat's final value changes, with the stat and its new value.</summary>
     public event Action<StatDefinition, float> OnStatChanged;
-    public StatDefinition testStat;
 
-    public StatModifier TestModifier;
+    // Test fields for the debug buttons below. Still to remove in cleanup.
+    [SerializeField, FormerlySerializedAs("testStat")] private StatDefinition _testStat;        
+    [SerializeField, FormerlySerializedAs("TestModifier")] private StatModifier _testModifier;  
 
-
-
-    // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
+    /// <summary>Reads the StatBlock and works out the starting values. Runs before any other script reads a stat in Start.</summary>
     private void Awake()
     {
         InitializeStats();
     }
 
+    /// <summary>Counts down timed modifiers every frame.</summary>
     private void Update()
     {
-
         RemoveExpiredModifiers();
     }
 
+    // INTEGRATION: the T, R, and N debug keys became these Inspector buttons. They use this component as the
+    // modifier's source, so Remove Test Modifier removes exactly what Add Test Modifier added.
+
+    /// <summary>Debug: adds the test modifier.</summary>
     [Button, DisableInEditorMode]
     private void AddTestModifier()
     {
-        Debug.Log($"Adding modifier {TestModifier} to {gameObject.name}.");
-        AddModifier(TestModifier, this); 
+        Debug.Log($"Adding modifier {_testModifier} to {gameObject.name}.");
+        AddModifier(_testModifier, this);
     }
+
+    /// <summary>Debug: removes what Add Test Modifier added.</summary>
     [Button, DisableInEditorMode]
     private void RemoveTestModifier()
     {
-        RemoveAllFromSource(this); 
+        RemoveAllFromSource(this);
     }
+
+    /// <summary>Debug: reads the test stat.</summary>
     [Button, DisableInEditorMode]
     private void GetTestStatValue()
     {
-        GetValue(testStat);
+        GetValue(_testStat);
     }
 
-   
+    /// <summary>Removes every modifier and returns each stat to its base value.</summary>
     [Button, DisableInEditorMode]
     public void ClearAllModifiers()
     {
@@ -59,15 +76,16 @@ public class Stats : MonoBehaviour
         }
     }
 
-
-
-    // This method retrieves the final value of a specific stat. If the stat is not present in the final values dictionary, it logs an error and returns 0.
+    /// <summary>
+    /// Returns a stat's final value. Logs a warning and returns 0 for a stat this object's StatBlock doesn't list,
+    /// so check HasStat first when a stat might be missing.
+    /// </summary>
+    /// <param name="stat">The stat to read.</param>
     public float GetValue(StatDefinition stat)
     {
         if (HasStat(stat))
         {
-            
-            return _finalValues[stat];
+            return _finalValues[stat]; // INTEGRATION: no longer logs on every read.
         }
         else
         {
@@ -75,52 +93,55 @@ public class Stats : MonoBehaviour
             return 0f;
         }
     }
-    // This method returns the list of modifiers currently applied to the stats.
+
+    /// <summary>Returns the list of modifiers currently applied.</summary>
     public List<StatModifier> GetModifiers()
     {
         return _modifiers;
     }
 
-    // This method checks if a specific stat is present in the final values dictionary.
+    /// <summary>
+    /// True when this object's StatBlock lists the stat. PlayerRoot and Inventory use it to send each modifier
+    /// to the player's Stats or the gun's. Every script's ReadStat helper uses it to fall back to a default.
+    /// </summary>
+    /// <param name="stat">The stat to look for.</param>
     public bool HasStat(StatDefinition stat)
     {
-        return stat != null && _finalValues.ContainsKey(stat); // CHANGED: a null stat returns false instead of throwing
+        return stat != null && _finalValues.ContainsKey(stat); // INTEGRATION: a null stat returns false instead of throwing.
     }
 
-    // CHANGED: AddModifier now takes the object that added the modifier (a gun part, charm, or consumable).
-    // It stores a copy of the modifier with Source set, so the asset's own modifier is never changed,
-    // and RemoveAllFromSource(source) can find it later. It returns the copy.
-    // source is optional so existing calls still compile, but without it RemoveAllFromSource can't find the modifier.
+    /// <summary>
+    /// Adds a copy of a modifier, with the object that added it as its source, and recalculates its stat.
+    /// The item asset's own modifier is never stored or changed. Returns the stored copy, or null if the modifier
+    /// is empty or its stat isn't in this StatBlock.
+    /// </summary>
+    /// <param name="modifier">The modifier from an item asset.</param>
+    /// <param name="source">The item adding it. RemoveAllFromSource(source) removes it later. Optional, but without it nothing can remove the modifier by source.</param>
+    // INTEGRATION: takes a source, stores a copy, refuses empty modifiers and missing stats, and returns the copy.
+    // Before, it stored the asset's own modifier, so a timed modifier used up the asset's duration for good.
     public StatModifier AddModifier(StatModifier modifier, object source = null)
     {
-        if (modifier == null || modifier.Stat == null)                                  
-        {                                                                               
-            Debug.LogWarning($"Tried to add an empty modifier to {gameObject.name}.");  
-            return null;                                                                
-        }                                                                              
+        if (modifier == null || modifier.Stat == null)
+        {
+            Debug.LogWarning($"Tried to add an empty modifier to {gameObject.name}.");
+            return null;
+        }
 
-        if (!HasStat(modifier.Stat))                                                    
-        {                                                                               
-            Debug.LogWarning($"{modifier.Stat.name} isn't in the StatBlock on {gameObject.name}. Modifier not added."); 
-            return null;                                                                
-        }                                                                              
+        if (!HasStat(modifier.Stat))
+        {
+            Debug.LogWarning($"{modifier.Stat.name} isn't in the StatBlock on {gameObject.name}. Modifier not added.");
+            return null;
+        }
 
-        StatModifier copy = new StatModifier                                            
-        {                                                                               
-            Stat = modifier.Stat,                                                       
-            Operation = modifier.Operation,                                             
-            Value = modifier.Value,                                                     
-            Duration = modifier.Duration,                                               
-            Permanent = modifier.Permanent,                                             
-            Source = source                                                             
-        };                                                                              
+        StatModifier copy = modifier.CopyWithSource(source);
 
-        _modifiers.Add(copy);                                                          
+        _modifiers.Add(copy);
         Recalculate(copy.Stat);
-        return copy;                                                                    
+        return copy;
     }
 
-    
+    /// <summary>Removes one stored modifier and recalculates its stat. Pass the copy AddModifier returned.</summary>
+    /// <param name="modifier">The stored copy to remove.</param>
     public void RemoveModifier(StatModifier modifier)
     {
         if (!_modifiers.Contains(modifier))
@@ -131,51 +152,54 @@ public class Stats : MonoBehaviour
         {
             _modifiers.Remove(modifier);
             Recalculate(modifier.Stat);
-            Debug.Log($"Modifier {modifier} removed from {gameObject.name}. Recalculated stat {modifier.Stat.name}.");
+            Debug.Log($"Modifier {modifier} removed from {gameObject.name}. Recalculated stat {modifier.Stat.name}."); // Still to remove in cleanup.
         }
     }
 
-    // This method removes all modifiers that originate from a specific source and recalculates the affected stats.
+    /// <summary>
+    /// Removes every modifier from one source and recalculates each affected stat. PlayerRoot.RemoveModifiers and
+    /// Inventory call this when an item comes off.
+    /// </summary>
+    /// <param name="source">The item or object that added the modifiers.</param>
+    // INTEGRATION: walks the list backward and removes in place, instead of collecting a second list and recalculating twice.
     public void RemoveAllFromSource(object source)
     {
-        if (source == null) return; 
+        if (source == null) return;
 
-       
         for (int i = _modifiers.Count - 1; i >= 0; i--)
         {
-            StatModifier modifier = _modifiers[i];      
-            if (modifier.Source != source) continue;   
+            StatModifier modifier = _modifiers[i];
+            if (modifier.Source != source) continue;
 
-            _modifiers.RemoveAt(i);                     
-            Recalculate(modifier.Stat);                 
+            _modifiers.RemoveAt(i);
+            Recalculate(modifier.Stat);
         }
     }
 
-    // This method updates the duration of each modifier based on the time elapsed since the last frame and removes any that have
-    // expired.
+    /// <summary>Counts down every timed modifier and removes the ones that ran out.</summary>
+    // INTEGRATION: counts down the stored copies only, and recalculates each expired stat once.
     private void RemoveExpiredModifiers()
     {
-        
-        // Each expired modifier recalculates once instead of twice.
         for (int i = _modifiers.Count - 1; i >= 0; i--)
         {
-            StatModifier modifier = _modifiers[i];      
-            if (modifier.Permanent) continue;           
+            StatModifier modifier = _modifiers[i];
+            if (!modifier.Tick(Time.deltaTime)) continue;
 
-            modifier.Duration -= Time.deltaTime;        
-            if (modifier.Duration > 0f) continue;       
-
-            _modifiers.RemoveAt(i);                   
-            Recalculate(modifier.Stat);               
+            _modifiers.RemoveAt(i);
+            Recalculate(modifier.Stat);
         }
     }
 
-    // This method recalculates the final value of a specific stat based on its base value and any applied modifiers. It takes
-    // into account both additive and multiplicative modifiers and clamps the final value within the defined min/max range for
-    // the stat.
+    /// <summary>
+    /// Works out one stat's final value: (base + every Add) × every Multiply, or the latest Set if there is one,
+    /// then clamps it to the stat's range. Fires OnStatChanged only if the value changed.
+    /// </summary>
+    /// <param name="stat">The stat to recalculate.</param>
+    // INTEGRATION: rewritten. The old version worked out the value inside the modifier loop, reported the wrong stat in
+    // OnStatChanged, and kept the boosted value after the last modifier was removed. Also handles the new Set operation.
     private void Recalculate(StatDefinition stat)
     {
-        if (!HasStat(stat)) return; 
+        if (!HasStat(stat)) return;
 
         float baseValue = 0f;
         float additiveValue = 0f;
@@ -226,7 +250,7 @@ public class Stats : MonoBehaviour
         }
     }
 
-    // This method initializes the final values dictionary by iterating through the stat entries in the stat block and calculating their final values.
+    /// <summary>Fills the final values from the StatBlock's base values and starts with no modifiers.</summary>
     private void InitializeStats()
     {
         _finalValues = new Dictionary<StatDefinition, float>();

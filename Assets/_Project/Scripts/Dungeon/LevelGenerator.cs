@@ -5,14 +5,13 @@ using System;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Dungeon
 {
     /// <summary>
-    /// Represents a room and the weight it will hold in the
-    /// level generator's weighted randomizer
+    /// A room prefab and how likely it is to be picked. Higher weights are picked more often.
     /// </summary>
     [Serializable]
     struct WeightedRoom
@@ -25,6 +24,14 @@ namespace _Project.Scripts.Dungeon
         public int Weight { get { return _weight; } }
     }
 
+    /// <summary>
+    /// Builds the dungeon in the Level scene when GameManager raises OnGenerateRequested: places a start room, grows
+    /// combat rooms out from it on a grid using a seed, links neighbors and portals, puts the End room next to the
+    /// farthest room, completes the start room when it has no enemies, bakes the NavMesh, and fires OnMapGenerated.
+    /// PlayerSpawner and GameManager start the run from that event.
+    /// </summary>
+    // INTEGRATION: now inherits MGR<LevelGenerator> (shouldPersist off, Level scene only). Generation waits for
+    // GameManager.OnGenerateRequested, which RegisterPlayer raises once the Level player exists.
     public class LevelGenerator : MGR<LevelGenerator>
     {
         /// <summary>
@@ -37,30 +44,46 @@ namespace _Project.Scripts.Dungeon
             East,
             West
         }
-        [SerializeField] private NavMeshSurface navMeshSurface;
-        private LinearCongruentialGenerator _random;
-        private Dictionary<Direction, Vector3> _directions;
-        private Room[,] _roomGrid;
-        public event Action OnMapGenerated; // This is for the game manager to know when the map is generated
+        // INTEGRATION: new. Baked in BakeNavMesh after every room is placed. Set its Use Geometry to Physics Colliders,
+        // because baking Render Meshes in a build needs Read/Write on every model.
+        [Tooltip("The surface to bake once the rooms are placed.")]
+        [SerializeField, FormerlySerializedAs("navMeshSurface")] private NavMeshSurface _navMeshSurface;
+        private LinearCongruentialGenerator _random;          // Seeded random numbers for the generation chances and direction order.
+        private Dictionary<Direction, Vector3> _directions;   // World direction for each grid direction.
+        private Room[,] _roomGrid;                             // The map layout. Each cell holds a room or null.
 
-        // The 2D array representing the map layout
+        /// <summary>
+        /// Fires after the map is built, the start room is handled, and the NavMesh is baked.
+        /// PlayerSpawner places the player from it, and that starts the run.
+        /// </summary>
+        public event Action OnMapGenerated;
+
+        /// <summary>The map layout. Each cell holds a room or null. GameManager copies it when the run starts.</summary>
         public Room[,] RoomGrid { get { return _roomGrid; } }
+        /// <summary>The room the player starts in.</summary>
         public Room StartRoom => _startRoom;
 
         [Header("Generator Settings")]
+        [Tooltip("Grid size. The start room is in the middle.")]
         [SerializeField] private int _roomGridWidth;
         [SerializeField] private int _roomGridHeight;
 
+        [Tooltip("Combat rooms always generated before chance decides.")]
         [SerializeField] private int _minCombatRooms;
 
+        [Tooltip("Generation stops at this many combat rooms.")]
         [SerializeField] private int _maxCombatRooms;
 
+        [Tooltip("The same seed builds the same map.")]
         [SerializeField] private int _seed;
 
+        [Tooltip("Picks a random seed each time instead of using the one above.")]
         [SerializeField] private bool _generateSeed;
 
+        [Tooltip("Percent chance to add a room in a direction, once the minimum is reached.")]
         [SerializeField][Range(0, 100)] private int _baseGenerationChance;
 
+        [Tooltip("Added to the chance after each room past the minimum.")]
         [SerializeField] private int _generationChanceDelta;
 
         [Header("Room Prefabs")]
@@ -71,15 +94,16 @@ namespace _Project.Scripts.Dungeon
         [SerializeField] private WeightedRoom[] _endRooms;
 
         [Header("Debug (Do not edit)")]
-        [SerializeField] public Room _startRoom;
+        [SerializeField] private Room _startRoom;
 
         [SerializeField] private List<Room> _generatedCombatRooms;
 
         [SerializeField] private Room _endRoom;
 
         [SerializeField]
-        private int _generationChance;
+        private int _generationChance; // The current chance, which grows with each room past the minimum.
 
+        /// <summary>Sets up the directions, the seed, and an empty grid. Generation waits for OnGenerateRequested.</summary>
         protected override void Awake()
         {
             base.Awake();
@@ -101,27 +125,32 @@ namespace _Project.Scripts.Dungeon
             _generationChance = _baseGenerationChance;
 
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
-          
+            // INTEGRATION: removed navMeshSurface.BuildNavMesh(), which ran before any room existed. FinishGeneration bakes now.
+            // INTEGRATION: removed "OnMapGenerated += SpawnPlayer". PlayerSpawner places the player now.
         }
 
+        /// <summary>Listens for GameManager's generation request.</summary>
         private void OnEnable()
         {
             GameManager.OnGenerateRequested += ReceiveGeneration;
         }
 
+        /// <summary>Stops listening for the generation request.</summary>
         private void OnDisable()
         {
             GameManager.OnGenerateRequested -= ReceiveGeneration;
-           
         }
 
-        
+        // INTEGRATION: new. Rooms are created under this transform. When the NavMeshSurface collects only its children,
+        // the rooms have to be its children to be baked. With Collect Objects set to All or Volume, rooms stay at the scene root.
         private Transform RoomParent =>
-            navMeshSurface != null && navMeshSurface.collectObjects == CollectObjects.Children
-                ? navMeshSurface.transform
+            _navMeshSurface != null && _navMeshSurface.collectObjects == CollectObjects.Children
+                ? _navMeshSurface.transform
                 : null;
 
-        private void ReceiveGeneration() //rocco: changed it generating on start and now relies on GM event
+        /// <summary>Checks the settings and builds the map. Runs when GameManager raises OnGenerateRequested.</summary>
+        // Rocco: changed from generating on Start to waiting for GameManager's event.
+        private void ReceiveGeneration()
         {
             if (!Validate())
             {
@@ -132,14 +161,15 @@ namespace _Project.Scripts.Dungeon
             GenerateMap();
         }
 
-
+        /// <summary>Debug: destroys the map and builds a new one, then moves the player to the new start room.</summary>
+        // INTEGRATION: the I debug key became this Inspector button.
         [Button, DisableInEditorMode]
         private void DEBUGRegenerate()
         {
             ResetMap();
             GenerateMap();
 
-            // CHANGED: the PlayerSpawner only listens to the first generation, so move the player here.
+            // INTEGRATION: PlayerSpawner only reacts to the first OnMapGenerated, so move the player here.
             GameObject player = GameManager.HasInstance ? GameManager.Instance.Player : null;
             PlayerSpawner spawner = player != null ? player.GetComponentInChildren<PlayerSpawner>() : null;
             if (spawner != null && _startRoom != null)
@@ -149,6 +179,8 @@ namespace _Project.Scripts.Dungeon
             }
         }
 
+        /// <summary>Debug: completes the start room and rolls its rewards.</summary>
+        // INTEGRATION: the Left Ctrl debug key became this Inspector button.
         [Button, DisableInEditorMode]
         private void DEBUGCompleteStartRoom()
         {
@@ -156,7 +188,9 @@ namespace _Project.Scripts.Dungeon
         }
 
         /// <summary>
-        /// Generates the entire map except for the end room
+        /// Builds the map except for the End room: places a start room in the middle of the grid, then grows combat rooms
+        /// outward, room by room, trying each direction in a random order. A room is added when the chance roll succeeds
+        /// or the minimum isn't reached yet, and each new room links back to the room it grew from.
         /// </summary>
         private void GenerateMap()
         {
@@ -164,7 +198,7 @@ namespace _Project.Scripts.Dungeon
             LinearCongruentialGenerator roomRandom = new LinearCongruentialGenerator(_seed);
 
             Room startRoom = Instantiate(GetRandomStartRoom(roomRandom.Next()),
-                gameObject.transform.position, Quaternion.identity, RoomParent); // CHANGED: added RoomParent
+                gameObject.transform.position, Quaternion.identity, RoomParent); // INTEGRATION: created under RoomParent, so the NavMesh bake includes it.
             startRoom.Id = $"Start{(startRoom != null ? 1 : 0)}";
 
             _startRoom = startRoom;
@@ -179,7 +213,7 @@ namespace _Project.Scripts.Dungeon
             {
                 (Room room, Vector2Int currentPos) = rooms.Dequeue();
 
-                // This randomizes the directions we will generate in
+                // Shuffle the four directions by giving each a random priority.
                 PriorityQueue<Direction> priorityQueue = new PriorityQueue<Direction>();
 
                 foreach (Direction dir in Enum.GetValues(typeof(Direction)))
@@ -223,7 +257,8 @@ namespace _Project.Scripts.Dungeon
                             continue;
 
                         Room selected = GetRandomCombatRoom(roomRandom.Next());
-                        Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity, RoomParent); // CHANGED: added RoomParent
+                        Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity, RoomParent); // INTEGRATION: created under RoomParent for the bake.
+                        // Spaced by the room's bounding box diagonal. Still to change to the room prefab standard's size (task 3).
                         nextRoom.transform.position = room.gameObject.transform.position + (_directions[direction] *
                             nextRoom.BoundingBox.bounds.size.magnitude);
 
@@ -231,7 +266,7 @@ namespace _Project.Scripts.Dungeon
 
                         _roomGrid[added.x, added.y] = nextRoom;
 
-                        // Linking rooms
+                        // Link the two rooms as neighbors.
                         switch (direction)
                         {
                             case Direction.North:
@@ -255,6 +290,7 @@ namespace _Project.Scripts.Dungeon
                                 break;
                         }
 
+                        // Each room has one portal, so a room that grows two children only leads to the last one (task 3 makes generation linear).
                         if (room.Portal != null)
                             room.Portal.Connected = nextRoom;
 
@@ -271,7 +307,9 @@ namespace _Project.Scripts.Dungeon
         }
 
         /// <summary>
-        /// Places the ending boss room
+        /// Places the End room next to the room farthest from the start, on the first free side, links the two,
+        /// and points the farthest room's portal at it. Then finishes generation.
+        /// The End room isn't added to the grid yet, so it can overlap another room (task 3).
         /// </summary>
         private void PlaceEndRoom(long seed)
         {
@@ -326,10 +364,16 @@ namespace _Project.Scripts.Dungeon
             _endRoom = end;
             farthest.Portal.Connected = _endRoom;
 
-            FinishGeneration(); 
+            FinishGeneration(); // INTEGRATION: was "OnMapGenerated?.Invoke()". The event now fires after the bake.
         }
 
-
+        /// <summary>
+        /// Runs once every room is placed:
+        /// 1. Completes the start room if it has no RoomEncounter, which opens its portal. A start room with a
+        ///    RoomEncounter has enemies and clears like a combat room instead.
+        /// 2. Bakes the NavMesh over the placed rooms.
+        /// 3. Fires OnMapGenerated, so PlayerSpawner places the player in a finished, baked map.
+        /// </summary>
         private void FinishGeneration()
         {
             if (_startRoom != null && _startRoom.GetComponent<RoomEncounter>() == null)
@@ -340,26 +384,23 @@ namespace _Project.Scripts.Dungeon
             OnMapGenerated?.Invoke(); // We are done generating the map
         }
 
-        // CHANGED: new.
+        /// <summary>Bakes the NavMesh over the placed rooms. Enemies can only move once this has run.</summary>
+        // INTEGRATION: new. Replaces the bake in Awake, which ran before any room existed, so enemies had no NavMesh.
         private void BakeNavMesh()
         {
-            if (navMeshSurface == null)
+            if (_navMeshSurface == null)
             {
                 Debug.LogWarning("[LevelGenerator] No NavMeshSurface assigned. Enemies won't be able to move.", this);
                 return;
             }
 
-            Physics.SyncTransforms(); // the rooms were moved this frame, so update their colliders before baking
-            navMeshSurface.BuildNavMesh();
+            Physics.SyncTransforms(); // The rooms were moved this frame, so update their colliders before baking.
+            _navMeshSurface.BuildNavMesh();
         }
 
         /// <summary>
-        /// Finds the "farthest" room using
-        /// BFS
+        /// Finds the room farthest from the start by walking the neighbor links breadth first. The last room visited is the farthest.
         /// </summary>
-        /// <returns>
-        /// The farthest room
-        /// </returns>
         private Room GetFarthest()
         {
             Queue<Room> rooms = new Queue<Room>();
@@ -387,16 +428,14 @@ namespace _Project.Scripts.Dungeon
             return last;
         }
 
-        /// <summary>
-        /// Wipes the entire map
-        /// </summary>
+        /// <summary>Destroys every room and resets the grid, the chance, and the seed.</summary>
         private void ResetMap()
         {
             Room[] rooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
 
             foreach (Room room in rooms)
             {
-                room.gameObject.SetActive(false);
+                room.gameObject.SetActive(false); // INTEGRATION: Destroy waits until the end of the frame, and the bake skips inactive objects.
                 Destroy(room.gameObject);
             }
 
@@ -412,11 +451,7 @@ namespace _Project.Scripts.Dungeon
             _random = new LinearCongruentialGenerator(_seed);
         }
 
-        /// <summary>
-        /// Basic validation checks to make sure
-        ///  the generator has valid information
-        /// </summary>
-        /// <returns></returns>
+        /// <summary>Returns false if the settings can't build a map: the minimum is over the maximum, or a room list is empty.</summary>
         private bool Validate()
         {
             if (_maxCombatRooms < _minCombatRooms)
@@ -434,12 +469,7 @@ namespace _Project.Scripts.Dungeon
             return true;
         }
 
-        /// <summary>
-        /// Gets a random room from the room pool
-        /// </summary>
-        /// <returns>
-        /// A random room
-        /// </returns>
+        /// <summary>Picks a combat room prefab by weight.</summary>
         private Room GetRandomCombatRoom(long seed)
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
@@ -450,12 +480,7 @@ namespace _Project.Scripts.Dungeon
             return roomSelector.Roll().Room;
         }
 
-        /// <summary>
-        /// Gets a random start room (if we have more than one)
-        /// </summary>
-        /// <returns>
-        /// A random start room
-        /// </returns>
+        /// <summary>Picks a start room prefab by weight.</summary>
         private Room GetRandomStartRoom(long seed)
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
@@ -466,12 +491,7 @@ namespace _Project.Scripts.Dungeon
             return roomSelector.Roll().Room;
         }
 
-        /// <summary>
-        /// Gets a random end room (if we have more than one)
-        /// </summary>
-        /// <returns>
-        /// A random end room
-        /// </returns>
+        /// <summary>Picks an End room prefab by weight.</summary>
         private Room GetRandomEndRoom(long seed)
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
@@ -482,6 +502,7 @@ namespace _Project.Scripts.Dungeon
             return roomSelector.Roll().Room;
         }
 
-      
+        // INTEGRATION: removed the temporary player field and SpawnPlayer, which used GameObject.Find("Player").
+        // PlayerSpawner.SpawnWhenMapReady places the player now.
     }
 }

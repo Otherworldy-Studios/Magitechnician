@@ -2,35 +2,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Handles collision detection for an enemy's melee attack.
-/// While a swing is active, checks the box every physics step and damages the enemy's target once per swing.
-///
-/// CHANGED: no longer uses OnTriggerEnter. A CharacterController only sends trigger events while it moves,
-/// so a player standing still inside the box was never hit. The BoxCollider sets the shape and is
-/// turned on during a swing so it's visible in the Scene view.
+/// Finds hits for an enemy's melee attack. While a swing is active, checks the box every physics step and damages
+/// the enemy's target once per swing. The BoxCollider sets the shape, and is turned on during a swing so it shows in
+/// the Scene view.
 /// </summary>
-
+// INTEGRATION: no longer uses OnTriggerEnter. A CharacterController only sends trigger events while it moves, so a
+// player standing still inside the box was never hit, and damage only landed when the player walked out. MeleeAttack
+// still calls Activate and Deactivate as before.
 [RequireComponent(typeof(BoxCollider))]
 public class EnemyMeleeHitbox : MonoBehaviour
 {
-    [SerializeField] private EnemyBase _owner;
-    [SerializeField] private BoxCollider _trigger;
+    [SerializeField] private EnemyBase _owner;      // Found in parents if empty.
+    [SerializeField] private BoxCollider _trigger;  // The box's shape. Found on this object if empty.
 
+    // INTEGRATION: new. Used by the overlap check that replaced OnTriggerEnter.
     [Tooltip("Layers the swing can hit. Set to the Player layer to skip the floor, walls and other enemies.")]
-    [SerializeField] private LayerMask _hitLayers = ~0; 
+    [SerializeField] private LayerMask _hitLayers = ~0;
 
-    private DamageInfo _damageInfo;
-    private readonly HashSet<IDamageable> _alreadyHit = new(); 
-    private readonly Collider[] _overlaps = new Collider[16];  
+    private DamageInfo _damageInfo; // The damage for the current swing, from MeleeAttack.
+
+    // Targets already damaged this swing, so each is hit only once.
+    // INTEGRATION: holds IDamageable instead of Transform, to match the new target check in CheckOverlaps.
+    private readonly HashSet<IDamageable> _alreadyHit = new();
+
+    private readonly Collider[] _overlaps = new Collider[16]; // INTEGRATION: new. Buffer for OverlapBoxNonAlloc.
+
+    /// <summary>True during a swing.</summary>
     public bool IsActive { get; private set; }
 
+    /// <summary>Finds the owner and the box, and starts with the box off.</summary>
     private void Awake()
     {
-        // Gets the owning enemy if not already assigned
         if (_owner == null)
             _owner = GetComponentInParent<EnemyBase>();
 
-        // Gets the hitbox's collider if not already assigned
         if (_trigger == null)
             _trigger = GetComponent<BoxCollider>();
 
@@ -39,42 +44,45 @@ public class EnemyMeleeHitbox : MonoBehaviour
         _trigger.enabled = false;
     }
 
-    // Called by MeleeAttack when the wind-up finishes
+    /// <summary>Starts a swing with the given damage. MeleeAttack calls this when the wind-up finishes.</summary>
     public void Activate(DamageInfo info)
     {
-        // Save the damage info for this attack
         _damageInfo = info;
 
-        // Clear previous hits so a new swing can hit again
+        // Clear previous hits so a new swing can hit again.
         _alreadyHit.Clear();
 
         IsActive = true;
         _trigger.enabled = true;
 
-        
+        // INTEGRATION: new. Checks right away, so a player already in the box is hit this frame. SyncTransforms makes
+        // the overlap use positions moved since the last physics step.
         Physics.SyncTransforms();
         CheckOverlaps();
     }
 
+    /// <summary>Ends the swing. MeleeAttack calls this when the active time ends or the attack is canceled.</summary>
     public void Deactivate()
     {
-        // Stop registering damaging hits
         IsActive = false;
 
         _trigger.enabled = false;
 
-        // Clear the list of targets hit
         _alreadyHit.Clear();
     }
 
-   
+    /// <summary>Checks for hits every physics step during a swing.</summary>
+    // INTEGRATION: new. Replaces OnTriggerEnter.
     private void FixedUpdate()
     {
         if (IsActive)
             CheckOverlaps();
     }
 
-    
+    /// <summary>
+    /// Damages the owner's target if one of its colliders is inside the box and it hasn't been hit this swing.
+    /// </summary>
+    // INTEGRATION: new. Replaces OnTriggerEnter.
     private void CheckOverlaps()
     {
         if (_owner == null || _owner.Target == null)
@@ -84,6 +92,7 @@ public class EnemyMeleeHitbox : MonoBehaviour
         if (target == null || _alreadyHit.Contains(target))
             return;
 
+        // The box in world space, including the object's scale.
         Vector3 center = _trigger.transform.TransformPoint(_trigger.center);
         Vector3 scale = _trigger.transform.lossyScale;
         Vector3 halfExtents = Vector3.Scale(
@@ -97,12 +106,13 @@ public class EnemyMeleeHitbox : MonoBehaviour
         {
             Collider other = _overlaps[i];
 
-            // Ignore our own hitbox and the enemy's own colliders.
+            // Ignore this hitbox and the enemy's own colliders.
             if (other == _trigger || other.transform.IsChildOf(_owner.transform))
                 continue;
 
-            // CHANGED: matches by IDamageable instead of by transform, so any of the target's colliders counts,
-            // whichever object of the player it's on.
+            // INTEGRATION: matches by IDamageable instead of by transform, so any of the target's colliders counts,
+            // whichever object of the player it's on. EnemyBase targets the CharacterController, while Health is on
+            // the player root.
             if (other.GetComponentInParent<IDamageable>() != target)
                 continue;
 
@@ -112,7 +122,7 @@ public class EnemyMeleeHitbox : MonoBehaviour
         }
     }
 
-  
+    /// <summary>The IDamageable on the owner's target, searched in its parents, then its children.</summary>
     private IDamageable FindTargetDamageable()
     {
         Transform target = _owner.Target;
@@ -120,7 +130,7 @@ public class EnemyMeleeHitbox : MonoBehaviour
         return damageable ?? target.GetComponentInChildren<IDamageable>();
     }
 
-    // CHANGED: new. Shows the hitbox, red while a swing is active.
+    /// <summary>Draws the hitbox in the Scene view: red during a swing, orange otherwise.</summary>
     private void OnDrawGizmosSelected()
     {
         BoxCollider box = _trigger != null ? _trigger : GetComponent<BoxCollider>();

@@ -5,23 +5,28 @@ using Random = UnityEngine.Random;
 namespace _Project.Scripts.Dungeon.Utility
 {
     /// <summary>
-    /// A weighted random selector
+    /// Picks items at random, where each item's chance is its weight divided by the total weight.
+    /// RoomCompletionLootPool uses it to roll gun parts by rarity.
     /// </summary>
     /// <typeparam name="T">
     /// The type of item that will be selected
     /// </typeparam>
     class ItemSelector<T> where T : notnull
     {
-        private readonly LinearCongruentialGenerator _random;
-        private readonly Dictionary<T, long> _entries;
-        private long _totalWeight;
+        private readonly LinearCongruentialGenerator _random; // Source of the random numbers for Roll.
+        private readonly Dictionary<T, long> _entries;        // Each item and its weight.
+        private long _totalWeight;                            // Sum of every weight in _entries.
 
+        /// <summary>Sum of every item's weight.</summary>
         public long TotalWeight { get { return _totalWeight; } }
 
+        /// <summary>How many items can be rolled.</summary>
         public int Size { get { return _entries.Count; } }
 
+        /// <summary>True when there's nothing to roll.</summary>
         public bool Empty { get { return Size == 0; } }
 
+        /// <summary>Creates an empty selector with a random seed.</summary>
         public ItemSelector()
         {
             _entries = new Dictionary<T, long>();
@@ -29,6 +34,7 @@ namespace _Project.Scripts.Dungeon.Utility
             _random = new LinearCongruentialGenerator(Random.Range(1, int.MaxValue));
         }
         
+        /// <summary>Creates an empty selector with a fixed seed, so the same rolls repeat.</summary>
         public ItemSelector(long seed)
         {
             _entries = new Dictionary<T, long>();
@@ -145,8 +151,8 @@ namespace _Project.Scripts.Dungeon.Utility
                 return default(T);
 
             long value = _random.Next(_totalWeight);
-            //Debug.Log($"Rolling value: {value}");
 
+            // Walks the items, taking each weight off the rolled value. The item that takes it to 0 or below wins.
             foreach (var item in _entries.Keys)
             {
                 long weight = _entries[item];
@@ -171,7 +177,6 @@ namespace _Project.Scripts.Dungeon.Utility
         {
             T item = Roll();
             RemoveItem(item);
-            //Debug.Log($"Total Weight after removal: {_totalWeight}");
             return item;
         }
 
