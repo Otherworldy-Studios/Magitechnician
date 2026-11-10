@@ -1,10 +1,34 @@
-﻿using _Project.Scripts.Dungeon;
+﻿using System;
+using System.Collections.Generic;
+using _Project.Scripts.Dungeon;
 using UnityEngine;
 
 public class WaveManager : MGR<WaveManager>
 {
+    [Header("Wave Manager Fields")]
+    [SerializeField]
+    private List<Wave> _waves;
+    
+    [SerializeField]
+    private Room _currentRoom;
+    
     [SerializeField] 
     private int _currentWave;
+
+    [SerializeField]
+    private int _maxAlive;
+
+    [SerializeField]
+    private float minSpawnDistance;
+
+    [Header("Debug (Do not edit)")]
+    [SerializeField]
+    private List<EnemyBase> _alive;
+
+    private event Action<int, int> OnWaveStarted;
+    private event Action<int> OnEnemiesRemaningChanged;
+    private event Action<int> OnWaveCompleted;
+    private event Action<Room> OnBossSpawned;
     
     override protected void Awake()
     {
@@ -15,15 +39,11 @@ public class WaveManager : MGR<WaveManager>
 
     void SubscribeToRoomEvents()
     {
-        foreach (Room room in LevelGenerator.Instance.RoomGrid)
-        {
-            if (room != null && room.Type != Room.RoomType.Start)
-                room.OnRoomEntered += StartWave;
-        }
+
     }
 
-    void StartWave(Room room)
+    void SetActiveRoom(Room room)
     {
-        
+        _currentRoom = room;
     }
 }
