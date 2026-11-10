@@ -6,7 +6,7 @@ using UnityEngine;
 public class MeleeAttack : EnemyAttack
 {
     [SerializeField] private EnemyMeleeHitbox _hitbox;
-    [SerializeField] private int _damage = 10;
+  
     [SerializeField] private float _activeTime = 0.25f;
 
     protected override float AttackDuration => _activeTime;
@@ -18,7 +18,7 @@ public class MeleeAttack : EnemyAttack
 
         DamageInfo info = new DamageInfo
         {
-            DamageAmount = _damage,
+            DamageAmount = Mathf.RoundToInt(Owner.AttackDamage),
             DamageSource = Owner.gameObject,
             DamageDirection = Owner.transform.forward,
             DamageType = DamageType.Physical

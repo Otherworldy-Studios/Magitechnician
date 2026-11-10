@@ -7,7 +7,7 @@ using UnityEngine;
 /// Handles wind-up, cooldown, and cancellation.
 /// </Summary>
 
-public abstract class EnemyAttack: MonoBehaviour
+public abstract class EnemyAttack : MonoBehaviour
 {
     protected EnemyBase Owner;
     public bool CanAttack => !IsAttacking && Time.time >= nextAttackTime;
@@ -15,15 +15,15 @@ public abstract class EnemyAttack: MonoBehaviour
     public event Action OnAttackWindUp;
     private float nextAttackTime;
     private Coroutine attackRoutine;
-    
+
     public void Initialize(EnemyBase owner)
     {
-        Owner = owner; 
+        Owner = owner;
     }
 
     public void StartAttack()
     {
-        if(!CanAttack || Owner == null || Owner.IsDead)
+        if (!CanAttack || Owner == null || Owner.IsDead)
             return;
 
         attackRoutine = StartCoroutine(AttackRoutine());
@@ -36,7 +36,7 @@ public abstract class EnemyAttack: MonoBehaviour
         // Announce the wind-up phase
         OnAttackWindUp?.Invoke();
 
-        yield return new WaitForSeconds(Owner.Stats.AttackWindUpTime);
+        yield return new WaitForSeconds(Owner.WindUpTime); 
         PerformAttack();
 
         // Keep attack active for its attack duration
@@ -45,7 +45,7 @@ public abstract class EnemyAttack: MonoBehaviour
 
         IsAttacking = false;
 
-        nextAttackTime = Time.time + Owner.Stats.AttackCooldownTime;
+        nextAttackTime = Time.time + Owner.CooldownTime; 
 
         attackRoutine = null;
     }
@@ -55,20 +55,20 @@ public abstract class EnemyAttack: MonoBehaviour
         if (!IsAttacking)
             return;
 
-        if(attackRoutine != null)
+        if (attackRoutine != null)
             StopCoroutine(attackRoutine);
-        
+
         attackRoutine = null;
         FinishAttack();
 
         IsAttacking = false;
-        nextAttackTime = Time.time + Owner.Stats.AttackCooldownTime;
+        nextAttackTime = Time.time + Owner.CooldownTime; 
     }
 
     // Each attack decides how to execute its damage.
     protected abstract void PerformAttack();
     protected virtual float AttackDuration => 0f;
-    protected virtual void FinishAttack(){}
+    protected virtual void FinishAttack() { }
     protected virtual void OnDisable()
     {
         CancelAttack();
