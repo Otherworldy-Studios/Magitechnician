@@ -26,9 +26,7 @@ public class WaveManager : MGR<WaveManager>
     [Header("Debug (Do not edit)")]
     [SerializeField]
     private List<EnemyBase> _alive;
-
-    private event Action<int, int> OnWaveStarted;
-    private event Action<int> OnEnemiesRemaningChanged;
+    
     private event Action<int> OnWaveCompleted;
     private event Action<Room> OnBossSpawned;
     
