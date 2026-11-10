@@ -22,15 +22,15 @@ namespace _Project.Scripts.Dungeon
             End
         }
 
-        [Header("Room Settings")] 
+        [Header("Room Settings")]
         [SerializeField]
         private RoomType _roomType;
-        
+
         [SerializeField]
         private RoomCompletionLootPool _lootPool;
-        
-        public RoomCompletionLootPool  LootPool { get => _lootPool; }
-        
+
+        public RoomCompletionLootPool LootPool { get => _lootPool; }
+
         [SerializeField]
         private GameObject _playerSpawn; // This needs to be set in the editor
 
@@ -38,8 +38,8 @@ namespace _Project.Scripts.Dungeon
         private BoxCollider _boundingBox;
 
         public BoxCollider BoundingBox { get => _boundingBox; }
-        
-        [Header("Debug (Do not edit)")] 
+
+        [Header("Debug (Do not edit)")]
         [SerializeField]
         private string _id;
 
@@ -48,17 +48,27 @@ namespace _Project.Scripts.Dungeon
 
         [SerializeField]
         private Portal _portal;
-        
+
         public Portal Portal { get => _portal; }
-        
-        [SerializeField] 
+
+        [SerializeField]
         private Room _north;
 
         public Vector3 PlayerSpawnPos
         {
             get { return _playerSpawn.transform.position; }
         }
-        
+
+        // CHANGED: new. The player faces the spawn point's blue (Z) axis after a teleport.
+        public Quaternion PlayerSpawnRotation => _playerSpawn.transform.rotation;
+
+        public RoomType Type => _roomType; // CHANGED: new
+
+        // CHANGED: new. EnterRoom fires OnRoomEntered. OnComplete fires OnRoomCleared once.
+        // RoomEncounter listens to OnRoomEntered. Room rewards can listen to OnRoomCleared later.
+        public event Action<Room> OnRoomEntered;
+        public event Action<Room> OnRoomCleared;
+
         public Room North
         {
             get => _north;
@@ -88,12 +98,12 @@ namespace _Project.Scripts.Dungeon
             get => _west;
             set => _west = value;
         }
-        
+
         // A unique ID for the GameManager (?)
         public string Id { get => _id; set => _id = value; }
-        
+
         public bool Complete { get => _complete; }
-        
+
         // This should possibly be temporary
         private List<WeightedReward<GunPart>> rewardOptions = new();
 
@@ -102,34 +112,50 @@ namespace _Project.Scripts.Dungeon
             _portal = GetComponentInChildren<Portal>();
 
             if (_portal == null)
-                Debug.Log($"{_id} has no exit portal");
+                Debug.Log($"{name} has no exit portal"); 
             else
                 _portal.Parent = this;
         }
-        
-    
+
+      
+        public void EnterRoom()
+        {
+            if (GameManager.HasInstance)
+                GameManager.Instance.ChangeRoom(this);
+
+            OnRoomEntered?.Invoke(this);
+        }
+
+
         [Button, DisableInEditorMode]
 
         public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
+            bool wasComplete = _complete; // CHANGED
             _complete = true;
-            _portal.Active = true;
 
-            if (_roomType == RoomType.Combat || force)
+          
+            if (_portal != null && _portal.Connected != null)
+                _portal.Active = true;
+
+            if (!wasComplete)                    // CHANGED
+                OnRoomCleared?.Invoke(this);     // CHANGED
+
+            if ((_roomType == RoomType.Combat || force) && _lootPool != null) 
             {
                 List<WeightedReward<GunPart>> rewards = _lootPool.PickThree();
-                
+
                 //Debug.Log($"Rolled: {rewards.Count}");
 
                 for (int i = 0; i < rewards.Count; i++)
                 {
                     if (rewards[i].Item == null)
                         continue;
-                    
+
                     Debug.Log($"{_id} Completion Reward {i + 1}:" +
                               $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
                 }
-                
+
                 rewardOptions = rewards;
                 return rewards;
             }

@@ -11,12 +11,12 @@ namespace _Project.Scripts.Dungeon
         [Header("Debug (Do not edit)")]
         [SerializeField]
         private Room _parent;
-        
-        public Room Parent {  get { return _parent; } set { _parent = value; } }
-        
+
+        public Room Parent { get { return _parent; } set { _parent = value; } }
+
         [SerializeField]
         private Room _connected;
-        
+
         public Room Connected { get { return _connected; } set { _connected = value; } }
 
         [SerializeField]
@@ -24,55 +24,43 @@ namespace _Project.Scripts.Dungeon
         public bool Active { get { return _active; } set { _active = value; } }
 
         [SerializeField] public GameObject vfx;
+
         
-        //[SerializeField] If there's only one portal in each room, this isn't really needed
-        //private LevelGenerator.Direction _direction;
-        
+
         [SerializeField]
         private BoxCollider _collider;
-        
+
         void Start()
         {
-            _active = false;
+            //
             _collider = GetComponent<BoxCollider>();
         }
-        
+
         void Update()
         {
-            if(Active)
-            {
-                vfx.SetActive(true);
-            }
-            else
-            {
-                vfx.SetActive(false);
-            }
+            // CHANGED: null check. Without a vfx assigned, this threw every frame.
+            if (vfx != null && vfx.activeSelf != Active)
+                vfx.SetActive(Active);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!_active)
+            if (!_active || _connected == null) 
                 return;
-            
-            //Debug.Log($"{other.gameObject.name} collided with the portal");
 
-            if (other.gameObject.GetComponentInChildren<CharacterController>() != null)
-            {
-                CharacterController controller = other.gameObject.GetComponentInChildren<CharacterController>();
-                Debug.Log("Player has entered the portal");
-
-                controller.enabled = false;
-                controller.gameObject.transform.position = _connected.PlayerSpawnPos;
-                
-                Physics.SyncTransforms();
-                controller.enabled = true;
-            }
-        }
         
+            PlayerSpawner spawner = other.GetComponentInParent<PlayerSpawner>();
+            if (spawner == null)
+                return;
+
+            spawner.TeleportToRoom(_connected); 
+            _connected.EnterRoom();           
+        }
+
         private void OnDrawGizmos()
         {
             // Draws the portal gizmo
-            if (Connected != null) 
+            if (Connected != null)
             {
                 Gizmos.color = Color.cyan;
                 Vector3 destination = gameObject.transform.position;

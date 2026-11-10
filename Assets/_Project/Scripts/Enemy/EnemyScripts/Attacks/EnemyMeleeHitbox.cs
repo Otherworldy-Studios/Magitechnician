@@ -3,7 +3,11 @@ using UnityEngine;
 
 /// <summary>
 /// Handles collision detection for an enemy's melee attack.
-/// The hitbox only registers hits while an attack is active.
+/// While a swing is active, checks the box every physics step and damages the enemy's target once per swing.
+///
+/// CHANGED: no longer uses OnTriggerEnter. A CharacterController only sends trigger events while it moves,
+/// so a player standing still inside the box was never hit. The BoxCollider sets the shape and is
+/// turned on during a swing so it's visible in the Scene view.
 /// </summary>
 
 [RequireComponent(typeof(BoxCollider))]
@@ -11,10 +15,15 @@ public class EnemyMeleeHitbox : MonoBehaviour
 {
     [SerializeField] private EnemyBase _owner;
     [SerializeField] private BoxCollider _trigger;
+
+    [Tooltip("Layers the swing can hit. Set to the Player layer to skip the floor, walls and other enemies.")]
+    [SerializeField] private LayerMask _hitLayers = ~0; 
+
     private DamageInfo _damageInfo;
-    private HashSet<Collider> _alreadyHit = new();
+    private readonly HashSet<IDamageable> _alreadyHit = new(); 
+    private readonly Collider[] _overlaps = new Collider[16];  
     public bool IsActive { get; private set; }
-    
+
     private void Awake()
     {
         // Gets the owning enemy if not already assigned
@@ -24,7 +33,7 @@ public class EnemyMeleeHitbox : MonoBehaviour
         // Gets the hitbox's collider if not already assigned
         if (_trigger == null)
             _trigger = GetComponent<BoxCollider>();
-        
+
         _trigger.isTrigger = true;
         IsActive = false;
         _trigger.enabled = false;
@@ -42,40 +51,9 @@ public class EnemyMeleeHitbox : MonoBehaviour
         IsActive = true;
         _trigger.enabled = true;
 
-        BoxCollider box = _trigger;
-
-        if (box == null)
-        {
-            Debug.LogError("EnemyMeleeHitbox requires a BoxCollider.");
-            Deactivate();
-            return;
-        }
-
-        Physics.SyncTransforms();
-
-        Vector3 center = box.transform.TransformPoint(box.center);
-        Vector3 scale = box.transform.lossyScale;
-        Vector3 halfExtents = Vector3.Scale(
-            box.size * 0.5f,
-            new Vector3(
-                Mathf.Abs(scale.x),
-                Mathf.Abs(scale.y),
-                Mathf.Abs(scale.z)
-            )
-            );
         
-        Collider[] overlaps = Physics.OverlapBox(center, halfExtents, box.transform.rotation, ~0, QueryTriggerInteraction.Collide);
-
-        foreach (Collider other in overlaps)
-        {
-
-            // Ignore our own hitbox.
-            if (other == _trigger)
-                continue;
-
-            // Reuse our existing damage logic.
-            OnTriggerEnter(other);
-        }
+        Physics.SyncTransforms();
+        CheckOverlaps();
     }
 
     public void Deactivate()
@@ -85,30 +63,71 @@ public class EnemyMeleeHitbox : MonoBehaviour
 
         _trigger.enabled = false;
 
-        // Clear the list of colliders hit
+        // Clear the list of targets hit
         _alreadyHit.Clear();
-        
     }
-    // Unity calls this when another collider enters the hitbox
-    private void OnTriggerEnter(Collider other)
+
+   
+    private void FixedUpdate()
     {
-        IDamageable damageable = other.GetComponentInParent<IDamageable>();
+        if (IsActive)
+            CheckOverlaps();
+    }
 
-        // Only register hits during the melee attack
-        if (!IsActive || _owner == null || _owner.Target == null)
-            return;
-        
-        // Ignore antything that isn't the enemy's target
-        if(other.transform != _owner.Target && !other.transform.IsChildOf(_owner.Target))
-            return;
-        
-        // Ignore objects that cannot receive damage.
-        if (damageable == null)
+    
+    private void CheckOverlaps()
+    {
+        if (_owner == null || _owner.Target == null)
             return;
 
-        if (!_alreadyHit.Add(other))
-                return;
+        IDamageable target = FindTargetDamageable();
+        if (target == null || _alreadyHit.Contains(target))
+            return;
 
-        damageable.TakeDamage(_damageInfo);
+        Vector3 center = _trigger.transform.TransformPoint(_trigger.center);
+        Vector3 scale = _trigger.transform.lossyScale;
+        Vector3 halfExtents = Vector3.Scale(
+            _trigger.size * 0.5f,
+            new Vector3(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z)));
+
+        int count = Physics.OverlapBoxNonAlloc(
+            center, halfExtents, _overlaps, _trigger.transform.rotation, _hitLayers, QueryTriggerInteraction.Collide);
+
+        for (int i = 0; i < count; i++)
+        {
+            Collider other = _overlaps[i];
+
+            // Ignore our own hitbox and the enemy's own colliders.
+            if (other == _trigger || other.transform.IsChildOf(_owner.transform))
+                continue;
+
+            // CHANGED: matches by IDamageable instead of by transform, so any of the target's colliders counts,
+            // whichever object of the player it's on.
+            if (other.GetComponentInParent<IDamageable>() != target)
+                continue;
+
+            _alreadyHit.Add(target);
+            target.TakeDamage(_damageInfo);
+            return;
+        }
+    }
+
+  
+    private IDamageable FindTargetDamageable()
+    {
+        Transform target = _owner.Target;
+        IDamageable damageable = target.GetComponentInParent<IDamageable>();
+        return damageable ?? target.GetComponentInChildren<IDamageable>();
+    }
+
+    // CHANGED: new. Shows the hitbox, red while a swing is active.
+    private void OnDrawGizmosSelected()
+    {
+        BoxCollider box = _trigger != null ? _trigger : GetComponent<BoxCollider>();
+        if (box == null) return;
+
+        Gizmos.color = IsActive ? Color.red : new Color(1f, 0.5f, 0f, 0.6f);
+        Gizmos.matrix = box.transform.localToWorldMatrix;
+        Gizmos.DrawWireCube(box.center, box.size);
     }
 }

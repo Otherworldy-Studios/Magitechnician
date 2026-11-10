@@ -121,10 +121,13 @@ public class EnemyBase : MonoBehaviour
         {
             GameObject player = GameManager.Instance.Player;
             if (player != null)
-                target = player.transform;
+            {
+                CharacterController controller = player.GetComponentInChildren<CharacterController>();
+                target = controller != null ? controller.transform : player.transform;
+            }
         }
 
-      
+        
         ChangeState(IdleState);
     }
 

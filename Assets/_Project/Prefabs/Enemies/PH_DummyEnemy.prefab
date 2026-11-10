@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7457937927566481084}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3831103220269663931}
   - component: {fileID: 1914874612807217142}
   - component: {fileID: 9115397984595920350}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MeleeHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,6 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMeleeHitbox
   _owner: {fileID: 4502985333982301059}
   _trigger: {fileID: 1914874612807217142}
+  _hitLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &7545158071347281333
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +114,7 @@ GameObject:
   - component: {fileID: 6877758697728066966}
   - component: {fileID: 5109295930032282090}
   - component: {fileID: 5439493729985087926}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +233,9 @@ GameObject:
   - component: {fileID: 353641459842352553}
   - component: {fileID: 7450745597639901657}
   - component: {fileID: 8400924792802622432}
-  m_Layer: 0
+  - component: {fileID: 4683124428716512331}
+  - component: {fileID: 2231532804726716707}
+  m_Layer: 8
   m_Name: PH_DummyEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,6 +388,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Healthbar
   <CurrentHealth>k__BackingField: 100
   <MaxHealth>k__BackingField: 100
+  _stats: {fileID: 4683124428716512331}
+  _maxHealthStat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
 --- !u!114 &4502985333982301059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,9 +403,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   target: {fileID: 0}
-  stats: {fileID: 11400000, guid: 48dcf74f58c8d4759a6443df836798d5, type: 2}
+  stats: {fileID: 4683124428716512331}
   attacks:
   - {fileID: 8400924792802622432}
+  _detectionRangeStat: {fileID: 11400000, guid: f6cb34bdd7f2447a9802d51ff5e9fb28, type: 2}
+  _minRangeStat: {fileID: 11400000, guid: a8ef90889625b4f2bbeb6bab4c7f9bfa, type: 2}
+  _maxRangeStat: {fileID: 11400000, guid: 5e5166892305a40f48c67793c8f852b3, type: 2}
+  _moveSpeedStat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}
+  _attackDamageStat: {fileID: 11400000, guid: 4f02e9989fb945e4db6d74c819705d40, type: 2}
+  _windUpTimeStat: {fileID: 11400000, guid: 6f3fdb3b58095443cb0a7b50b5d8b16e, type: 2}
+  _cooldownTimeStat: {fileID: 11400000, guid: f2a0d37eb6232464abefec183d060a57, type: 2}
 --- !u!114 &353641459842352553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,7 +428,12 @@ MonoBehaviour:
   _eyes: {fileID: 7457937927566481084}
   _blockingLayers:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 2871
+  _viewAngle: 120
+  _trackOnceSpotted: 1
+  _fallbackTargetHeight: 1
+  _coneColor: {r: 1, g: 0.85, b: 0, a: 1}
+  _arcSegments: 24
 --- !u!114 &7450745597639901657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,7 +446,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514194331d2c44857a97002e5d570aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRange
-  stats: {fileID: 11400000, guid: 48dcf74f58c8d4759a6443df836798d5, type: 2}
 --- !u!114 &8400924792802622432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,5 +459,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeAttack
   _hitbox: {fileID: 9115397984595920350}
-  _damage: 10
   _activeTime: 0.25
+--- !u!114 &4683124428716512331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803869307301584834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1290efa99f69c4ad89bc06dd3f95d16a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stats
+  _statBlock: {fileID: 11400000, guid: 65b257c254f41486e98ab997bae3b26e, type: 2}
+  _modifiers: []
+  testStat: {fileID: 0}
+  TestModifier:
+    Stat: {fileID: 0}
+    Operation: 0
+    Value: 0
+    Duration: 0
+    Permanent: 0
+--- !u!114 &2231532804726716707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7803869307301584834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b0a1fc3d847b7445a1362024c07b007, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageReceiver
+  _health: {fileID: 8005415382955130048}
+  _shield: {fileID: 0}

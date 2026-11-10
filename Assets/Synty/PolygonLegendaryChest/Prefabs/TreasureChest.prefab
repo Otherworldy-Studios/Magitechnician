@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8662165733033770057}
   - component: {fileID: 7762360067430358705}
-  m_Layer: 0
+  - component: {fileID: 936629045255304559}
+  m_Layer: 12
   m_Name: TriggerCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,6 +54,41 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.2802043, y: 1.0464334, z: 2.1895638}
   m_Center: {x: 0.05531192, y: 0.5415044, z: -0.5947822}
+--- !u!114 &936629045255304559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814657672714029023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ff7abc036489f641afe04633a6465d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TreasureChest
+  _promptText: Open chest
+  _crystalRange: {x: 5, y: 15}
+  _consumableChance: 1
+  _possibleConsumables:
+  - {fileID: 11400000, guid: 15bdcd2cf94484f4cb013d4ebfe67cb0, type: 2}
+  - {fileID: 11400000, guid: f1e169030acdf5947a589c4b61eef8f4, type: 2}
+  - {fileID: 11400000, guid: ba5d7764c2241284f84135db7d9e8ec5, type: 2}
+  - {fileID: 11400000, guid: d08fb71a79921334abb3f88c3f584976, type: 2}
+  - {fileID: 11400000, guid: 17231a678ed745842b8772e8d782173f, type: 2}
+  - {fileID: 11400000, guid: 6a6a4a5e3603a7044a908c0694323ba0, type: 2}
+  - {fileID: 11400000, guid: 89b0593792fa7f443b12d119a17ff322, type: 2}
+  - {fileID: 11400000, guid: 309b7d778144c80498cbad2a8efeeffa, type: 2}
+  - {fileID: 11400000, guid: 57af02102fb7ad649857f0280c99b438, type: 2}
+  - {fileID: 11400000, guid: c4ce11eb466c448459fa4e1ecda0647c, type: 2}
+  - {fileID: 11400000, guid: 68afb630c6dffbf4da233fee1eb54dcb, type: 2}
+  - {fileID: 11400000, guid: cdb04cc649509014f9ba17ec51360bb1, type: 2}
+  _animator: {fileID: 0}
+  _openTrigger: Open
+  _closedVisual: {fileID: 0}
+  _openVisual: {fileID: 0}
+  OnOpened:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7952847965316827973
 GameObject:
   m_ObjectHideFlags: 0

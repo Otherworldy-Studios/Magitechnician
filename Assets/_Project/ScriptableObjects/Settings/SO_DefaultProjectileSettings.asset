@@ -15,5 +15,5 @@ MonoBehaviour:
   <Radius>k__BackingField: 0.01
   <BulletCollisionLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 769
   <Prefab>k__BackingField: {fileID: 8822410932414643581, guid: 503d231ab675f8045b20d2148539669c, type: 3}

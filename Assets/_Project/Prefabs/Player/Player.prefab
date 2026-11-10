@@ -127,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 176046610135820121}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.177, y: -0.159, z: -0.005}
+  m_LocalPosition: {x: 0.933, y: 0.076, z: -0.038}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 5614074075523072044}
   - component: {fileID: 2538457442136657555}
   - component: {fileID: 2233296635478493348}
+  - component: {fileID: 3692322850074084798}
   m_Layer: 7
   m_Name: Player Controller
   m_TagString: Player
@@ -661,11 +662,29 @@ MonoBehaviour:
     SerializationNodes: []
   Crystals: 0
   EquippedCharmSlots: 0
-  TotalCharmSlots: 0
-  MaxConsumbables: 0
+  TotalCharmSlots: 5
+  MaxConsumbables: 3
   _playerStats: {fileID: 2538457442136657555}
   _gunStats: {fileID: 0}
   _health: {fileID: 2470234422445426739}
+--- !u!114 &3692322850074084798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71adca93a151061469770558d2cc6786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionDetector
+  _player: {fileID: 4765447663455402449}
+  _origin: {fileID: 1287622597427531618}
+  _radius: 3.23
+  _interactableLayers:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &3005668390539063271
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,7 +768,7 @@ Transform:
   m_GameObject: {fileID: 3346735939129070630}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.00000056212525, z: 0, w: 1}
-  m_LocalPosition: {x: 0.477, y: 0.39099884, z: -0.7049999}
+  m_LocalPosition: {x: 1.6330001, y: 0.62599945, z: -0.73800004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -811,7 +830,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
   Damping: {x: 0, y: 0, z: 0}
-  ShoulderOffset: {x: 0.3, y: 0.15, z: 0}
+  ShoulderOffset: {x: 0.7, y: 0.15, z: 0}
   VerticalArmLength: 0.4
   CameraSide: 1
   CameraDistance: 0.7
@@ -1463,7 +1482,7 @@ Transform:
   m_GameObject: {fileID: 6124366050051757803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.0000000514953, z: 0, w: 1}
-  m_LocalPosition: {x: 0.64699996, y: 0.39099884, z: -1.6550007}
+  m_LocalPosition: {x: 1.403, y: 0.62599945, z: -1.6879998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1660,7 +1679,7 @@ Transform:
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.0000000514953, z: 0, w: 1}
-  m_LocalPosition: {x: 0.64699996, y: 0.39099884, z: -1.655}
+  m_LocalPosition: {x: 1.633, y: 0.6259999, z: -0.738}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2066,7 +2085,7 @@ Transform:
   m_GameObject: {fileID: 6733289914950100863}
   serializedVersion: 2
   m_LocalRotation: {x: -0.092316024, y: 0.66386, z: -0.73666364, w: -0.08996945}
-  m_LocalPosition: {x: 0.20699982, y: 0.037999928, z: -0.15300001}
+  m_LocalPosition: {x: 0.187, y: 0.037, z: -0.162}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2088,6 +2107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4285462192350137379}
   - component: {fileID: 4765447663455402449}
+  - component: {fileID: 8713052468444065285}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -2132,7 +2152,22 @@ MonoBehaviour:
   _inventory: {fileID: 2233296635478493348}
   _playerStats: {fileID: 2538457442136657555}
   _playerMovement: {fileID: 2796982883176742587}
-  _gun: {fileID: 0}
+  _gun: {fileID: 521992841820949502}
+--- !u!114 &8713052468444065285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7357744756683246077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab78537b57e76b04ea20b127404361e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawner
+  _controller: {fileID: 5571396932141888879}
+  _cameraTarget: {fileID: 6469339263041004998}
+  _pitchAfterTeleport: 0
 --- !u!1 &7765213929413278480
 GameObject:
   m_ObjectHideFlags: 0
@@ -3032,7 +3067,7 @@ PrefabInstance:
     - target: {fileID: 95302532908535740, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 8837d8e6ed40700449babd4ecca1a111, type: 2}
+      objectReference: {fileID: 9100000, guid: 98aa2417fa7899342a23ac5e203aaaf4, type: 2}
     - target: {fileID: 95302532908535740, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}
       propertyPath: m_WarningMessage
       value: 

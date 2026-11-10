@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-// CHANGED: removed the unused "using Sirenix.Serialization;" and "using UnityEngine.InputSystem;"
+using System.Collections;
 
 public class Inventory : SerializedMonoBehaviour
 {
@@ -34,8 +34,11 @@ public class Inventory : SerializedMonoBehaviour
 
     
     [SerializeField] private Stats _gunStats;  
-    [SerializeField] private Health _health;   
+    [SerializeField] private Health _health;
+    [Tooltip("Only use consumables during a run. Off allows them in the Hub too.")]
+    [SerializeField] private bool _onlyDuringRun = true;                     
 
+    private bool _subscribed; 
     public void SetStats(Stats playerStats)
     {
         if (_playerStats == null)
@@ -45,6 +48,43 @@ public class Inventory : SerializedMonoBehaviour
     }
 
   
+    private void OnEnable()
+    {
+        SubscribeToInput();
+    }
+
+    private void Start()
+    {
+        SubscribeToInput();
+    }
+
+    private void OnDisable()
+    {
+        if (_subscribed && InputManager.HasInstance)
+            InputManager.Instance.ConsumablePressed -= HandleConsumablePressed;
+
+        _subscribed = false;
+    }
+
+    
+    private void SubscribeToInput()
+    {
+        if (_subscribed || !InputManager.HasInstance) return;
+
+        InputManager.Instance.ConsumablePressed += HandleConsumablePressed;
+        _subscribed = true;
+    }
+
+   
+    private void HandleConsumablePressed(int slot)
+    {
+        if (_onlyDuringRun && GameManager.HasInstance &&
+            GameManager.Instance.CurrentState != GameManager.GameState.Playing)
+            return;
+
+        UseConsumable(slot);
+    }
+
     public void SetGunStats(Stats gunStats)
     {
         _gunStats = gunStats;
@@ -140,28 +180,55 @@ public class Inventory : SerializedMonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-   
+
     public void UseConsumable(int index)
     {
         if (index < 0 || index >= _consumables.Count) return;
 
         Consumable consumable = _consumables[index];
 
+        
+        object source = consumable.duration > 0f ? new object() : consumable;
+
         foreach (StatModifier mod in consumable.statModifiers)
         {
-            ApplyModifier(mod, consumable); 
+            ApplyModifier(mod, source); 
         }
 
-        if (consumable.instantHeal > 0 && _health != null)
+        Health health = ResolveHealth(); 
+        if (consumable.instantHeal > 0 && health != null)
         {
-            _health.RegenHealth(consumable.instantHeal);
+            health.RegenHealth(consumable.instantHeal);
         }
+
+        
+        if (consumable.duration > 0f && consumable.statModifiers.Count > 0)
+            StartCoroutine(RemoveAfter(source, consumable.duration));
 
         _consumables.RemoveAt(index);
         OnInventoryChanged?.Invoke();
     }
 
    
+    private IEnumerator RemoveAfter(object source, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        RemoveModifiers(source);
+    }
+
+   
+    private Health ResolveHealth()
+    {
+        if (_health == null)
+        {
+            PlayerRoot root = GetComponentInParent<PlayerRoot>();
+            _health = root != null ? root.PlayerHealth : GetComponentInParent<Health>();
+        }
+
+        return _health;
+    }
+
+
     private void ApplyModifier(StatModifier mod, object source)
     {
         if (mod == null || mod.Stat == null) return;
@@ -178,5 +245,19 @@ public class Inventory : SerializedMonoBehaviour
     {
         if (_playerStats != null) _playerStats.RemoveAllFromSource(source);
         if (_gunStats != null) _gunStats.RemoveAllFromSource(source);
+    }
+
+    [Button, DisableInEditorMode]
+    private void DEBUGAddItem(ScriptableObject item)
+    {
+        if (item is not IInventoryItem inventoryItem)
+        {
+            Debug.LogWarning($"{(item != null ? item.name : "null")} isn't an IInventoryItem.", this);
+            return;
+        }
+
+        bool added = TryAddItem(inventoryItem);
+        Debug.Log($"Add {inventoryItem.DisplayName} ({inventoryItem.Category}): {(added ? "added" : "refused")}. " +
+                  $"Consumables {Consumables.Count}/{MaxConsumbables}, charms {OwnedCharms.Count}/{TotalCharmSlots}.", this);
     }
 }
