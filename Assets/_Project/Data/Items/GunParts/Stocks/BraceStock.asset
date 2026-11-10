@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1555894970843842, guid: 590bdba5d7ece8544954b2b0b556e6ae, type: 3}
   _partName: Brace Stock
   _description: +20 max shield.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 5400c9ea30daa854dac7e909ae18df03, type: 3}
   rarity: 1
   statModifiers:
   - Stat: {fileID: 11400000, guid: 664aed8d8551e41d2afc694a2660efcd, type: 2}

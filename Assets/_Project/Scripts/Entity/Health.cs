@@ -10,7 +10,7 @@ public class Health : MonoBehaviour
     [field: SerializeField] public int CurrentHealth { get; private set; }
 
     [field: SerializeField] public int MaxHealth { get; private set; } = 100;
-
+    
     public event Action<int, GameObject> OnDamaged;
     public event Action<int, GameObject> OnHealed;
     public event Action<GameObject> OnDied;
@@ -27,8 +27,25 @@ public class Health : MonoBehaviour
 
     private bool _isInvincible => _invincibilityTokens.Count > 0;
 
-    private void Awake()
+    [SerializeField] private Stats _stats;
+    [SerializeField] private StatDefinition _maxHealthStat;
+
+    public void SetStats(Stats playerStats)
     {
+        if (_stats == null)
+        {
+            _stats = playerStats;
+        }
+    }
+
+    private void Start()
+    {
+        if (_stats != null && _maxHealthStat != null)
+        {
+            MaxHealth = Mathf.RoundToInt(_stats.GetValue(_maxHealthStat));
+            _stats.OnStatChanged += HandleStatChanged;
+        }
+
         CurrentHealth = MaxHealth;
     }
 
@@ -146,6 +163,20 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(invincibleTimeSeconds);
 
         StopInvincibility(token);
+    }
+
+    // Runs when a charm, stock, or consumable changes max health.
+    private void HandleStatChanged(StatDefinition stat, float value)
+    {
+        if (stat != _maxHealthStat) return;
+
+        int newMax = Mathf.RoundToInt(value);
+        int difference = newMax - MaxHealth;
+        MaxHealth = newMax;
+
+        // Gaining max health also adds it to current health. Losing it only lowers current health if it's now over the max.
+        if (difference > 0) CurrentHealth += difference;
+        CurrentHealth = Mathf.Min(CurrentHealth, MaxHealth);
     }
 
     #region Debug

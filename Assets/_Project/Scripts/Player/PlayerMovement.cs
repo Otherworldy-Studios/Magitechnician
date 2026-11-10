@@ -1,8 +1,7 @@
 using System;
-using System.Timers;
 using ScriptableSettings;
-using UnityEditor;
 using UnityEngine;
+
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -30,7 +29,10 @@ public class PlayerMovement : MonoBehaviour
     public bool IsRising => _isRising;
     public bool IsFalling => _isFalling;
     public bool IsGrounded => _controller.isGrounded;
-    public float MaxSpeed => _settings.LocomotionSpeed;
+    public float MaxSpeed => MoveSpeed; // CHANGED: reads the stat
+
+    
+    public float MoveSpeed => ReadStat(_moveSpeedStat, _settings.LocomotionSpeed); 
 
     public event Action OnJump;
 
@@ -46,16 +48,26 @@ public class PlayerMovement : MonoBehaviour
     private float _jumpBufferTimer;
     private float _coyoteTimeTimer;
     private bool _jumpHold;
+    [SerializeField] private Stats _playerStats;
+    [SerializeField] private StatDefinition _moveSpeedStat; 
 
+    public void SetStats(Stats playerStats)
+    {
+        if(_playerStats == null)
+        {
+            _playerStats = playerStats;
+        }
+      
+    }
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
 
-        if(!_input)
-            _input =  GetComponent<PlayerInput>();
-        if(!_cameraController)
+        if (!_input)
+            _input = GetComponent<PlayerInput>();
+        if (!_cameraController)
             _cameraController = FindFirstObjectByType<PlayerCameraController>();
-        if(!_dash)
+        if (!_dash)
             _dash = GetComponent<Dash>();
     }
 
@@ -177,12 +189,12 @@ public class PlayerMovement : MonoBehaviour
         {
             case MovementStates.Locomotion:
                 currentAcceleration = _settings.LocomotionAcceleration;
-                _currentMaxSpeed = _settings.LocomotionSpeed;
+                _currentMaxSpeed = MoveSpeed; // CHANGED: reads the stat
                 break;
 
             case MovementStates.Aiming:
-                currentAcceleration = _settings.AimingAcceleration;
-                _currentMaxSpeed = _settings.AimSpeed;
+                currentAcceleration = _settings.LocomotionAcceleration; 
+                _currentMaxSpeed = MoveSpeed;                          
                 break;
 
             case MovementStates.Idle:
@@ -195,8 +207,8 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        _currentSpeed = Mathf.MoveTowards(_currentSpeed, 
-            _currentMaxSpeed, 
+        _currentSpeed = Mathf.MoveTowards(_currentSpeed,
+            _currentMaxSpeed,
             currentAcceleration * Time.deltaTime);
 
         return _currentSpeed;
@@ -226,7 +238,7 @@ public class PlayerMovement : MonoBehaviour
     private void JumpTimers()
     {
         // Coyote timer
-        if(_controller.isGrounded) 
+        if (_controller.isGrounded)
             _coyoteTimeTimer = _settings.CoyoteTime;
         else
             _coyoteTimeTimer = Mathf.Max(0f, _coyoteTimeTimer - Time.deltaTime);
@@ -244,7 +256,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpPressed()
     {
-        if(_dash.IsDashing)
+        if (_dash.IsDashing)
             return;
 
         _jumpHold = true;
@@ -256,4 +268,13 @@ public class PlayerMovement : MonoBehaviour
         _jumpHold = false;
     }
     private void IntendToDash() => _dash.IntendToDash();
+
+    
+    private float ReadStat(StatDefinition stat, float fallback)
+    {
+        if (_playerStats == null || stat == null || !_playerStats.HasStat(stat))
+            return fallback;
+
+        return _playerStats.GetValue(stat);
+    }
 }

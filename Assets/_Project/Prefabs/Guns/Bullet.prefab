@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1803103689533566808}
   - component: {fileID: 1894092790888193658}
   - component: {fileID: 1368368900164891563}
+  - component: {fileID: 96595193664342919}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -90,3 +91,16 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &96595193664342919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822410932414643581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0587a6b4278f142840c032c0ef37e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  _settings: {fileID: 11400000, guid: 988a32414bc52444a9d7b94b01bff673, type: 2}

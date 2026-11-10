@@ -15,6 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1541624270710880, guid: e3ae350f7ac55364fa5a6e26dbd34ea0, type: 3}
   _partName: Default Scope
   _description: 
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 9f0d9206351b516498cdebd71dd4b0b4, type: 3}
+  rarity: 0
   statModifiers: []
   Zoom: 3

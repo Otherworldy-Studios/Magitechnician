@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1423658251559156, guid: 9bcd9a76fc49e204d8330f55d34414b1, type: 3}
   _partName: Light Rounds
   _description: "+40% bullet speed, +10% fire rate, \u221210% damage."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 49d905d0dcf7d16428b4c6d944e05792, type: 3}
   rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}

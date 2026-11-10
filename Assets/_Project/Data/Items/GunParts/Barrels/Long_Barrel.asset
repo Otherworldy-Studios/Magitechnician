@@ -16,7 +16,8 @@ MonoBehaviour:
   _partName: Long Barrel
   _description: "+20% damage, \u221250% spread, +100% bullet speed, \u221225% fire
     rate."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: bcf955c089f94e94b99f6ed30beabf7e, type: 3}
+  rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
     Operation: 1

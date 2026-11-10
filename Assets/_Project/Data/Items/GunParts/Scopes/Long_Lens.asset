@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1607512650001360, guid: 9ec622eef3cec5242a6b4e8d7985fe11, type: 3}
   _partName: Long Lens
   _description: +50% range, +25% bullet speed.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 896af5a5c6928a54a94bb32e53ce53b6, type: 3}
   rarity: 1
   statModifiers:
   - Stat: {fileID: 11400000, guid: 1273e247e399148f4b50c9746f98b743, type: 2}

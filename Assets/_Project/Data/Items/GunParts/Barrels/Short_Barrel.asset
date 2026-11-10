@@ -16,7 +16,8 @@ MonoBehaviour:
   _partName: Short Barrel
   _description: "\u221210% damage, +15% spread, \u221225% bullet speed, +30% fire
     rate."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 897de66bc68a45a49ace12f20c6281ad, type: 3}
+  rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
     Operation: 1

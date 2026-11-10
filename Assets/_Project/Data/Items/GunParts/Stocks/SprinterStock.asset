@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 896fca3b80b3304468a5bcd896dd7a23, type: 3}
   m_Name: SprinterStock
   m_EditorClassIdentifier: Assembly-CSharp::GunStock
-  _partPrefab: {fileID: 0}
+  _partPrefab: {fileID: 1324227005787114, guid: 3e413793ddd9c414b9ad5b0a45d09850, type: 3}
   _partName: Sprinter Stock
   _description: +15% move speed, +15% spread.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 1838e2a7224da034aaafe856b2232099, type: 3}
   rarity: 1
   statModifiers:
   - Stat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}

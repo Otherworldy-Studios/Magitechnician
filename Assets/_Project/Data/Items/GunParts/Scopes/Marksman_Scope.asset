@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1849258591584746, guid: 15cf2af5302f48249a71a58035b6fbfb, type: 3}
   _partName: Marksman
   _description: "+15% damage, +25% range, \u221210% fire rate."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 857fe018d4c9aac4790f480b984d3906, type: 3}
   rarity: 1
   statModifiers:
   - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}

@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1964451269433506, guid: 24d10800f787670459be0a9ed0eeb1c0, type: 3}
   _partName: Drum Magazine
   _description: "+30% fire rate, \u221210% damage."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 6ae4dc0dab0a1b5419d309f924c6dde3, type: 3}
   rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}

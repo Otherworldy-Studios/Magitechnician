@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1628033882285812, guid: 095ca1c7933643b428dfe76fb8ae64fb, type: 3}
   _partName: Heavy Rounds
   _description: "+40% damage, \u221230% fire rate, \u221220% bullet speed."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 81e009bbaf9d4484bae406d4564a59c4, type: 3}
   rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}

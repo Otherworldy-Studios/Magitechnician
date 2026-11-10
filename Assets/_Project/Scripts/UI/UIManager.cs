@@ -154,11 +154,14 @@ public class UIManager : MGR<UIManager>
     }
 
     
-    public void HideAllScreens()
+    public void HideAllScreens(bool hideHUD = false)
     {
         foreach (UIScreen screen in screenList)
         {
-            screen.Hide();
+            if (hideHUD || screen is not HUDScreen)
+            {
+                screen.Hide();
+            }
         }
     }
 

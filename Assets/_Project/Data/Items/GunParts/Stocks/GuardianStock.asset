@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 0}
   _partName: Guardian Stock
   _description: "+15 max health, \u22125% move speed."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 00e3de160ce7ebc4d873df5dfa581068, type: 3}
   rarity: 2
   statModifiers:
   - Stat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}

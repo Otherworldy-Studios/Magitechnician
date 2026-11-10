@@ -7,6 +7,7 @@ public class PauseScreen : UIScreen
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button menuButton;
     [SerializeField] private Button settingsButton;
+   
     [SerializeField] private Button hubButton;
     [SerializeField] private Image pauseImage;
     

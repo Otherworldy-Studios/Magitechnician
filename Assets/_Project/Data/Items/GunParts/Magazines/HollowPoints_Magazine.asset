@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1892609755830046, guid: 76fac162d877c1f4ba9d8d3d21407f9a, type: 3}
   _partName: Hollow Points
   _description: "+20% damage, \u221225% range."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 03b324662e12f3241b26d545debf8260, type: 3}
   rarity: 1
   statModifiers:
   - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}

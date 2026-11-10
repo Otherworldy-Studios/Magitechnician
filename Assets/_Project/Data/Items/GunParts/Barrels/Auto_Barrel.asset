@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1587890353692718, guid: 8ae350c4d0e488848aaba0a805c34f52, type: 3}
   _partName: Auto Barrel
   _description: "Full-auto, \u221225% damage."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 77ed7096077f7f44c88a8c1e834056bf, type: 3}
   rarity: 1
   statModifiers:
   - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}

@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1309494944748014, guid: 4121fe8750eec1244b106f72c192931c, type: 3}
   _partName: Reflex Sight
   _description: "+10% fire rate, \u221220% spread."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 2938e93a446391c4b8e21a5e34387ba9, type: 3}
   rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}

@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1538160123254078, guid: 295c599fc6d960f41a334d3e8a855edc, type: 3}
   _partName: Machine Gun
   _description: "+100% fire rate, \u221230% damage, +30% spread."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 9defa23630c952547bc1c901fa92c49f, type: 3}
   rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}

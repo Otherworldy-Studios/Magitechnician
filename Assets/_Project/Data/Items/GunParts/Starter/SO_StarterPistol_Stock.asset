@@ -15,5 +15,6 @@ MonoBehaviour:
   _partPrefab: {fileID: 1046775577958346, guid: af61f6a5065c73f4e936371e96ea261c, type: 3}
   _partName: Default Stock
   _description: 
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 1838e2a7224da034aaafe856b2232099, type: 3}
+  rarity: 0
   statModifiers: []

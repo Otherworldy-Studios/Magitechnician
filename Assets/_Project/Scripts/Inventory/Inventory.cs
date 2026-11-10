@@ -1,10 +1,9 @@
 using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
+// CHANGED: removed the unused "using Sirenix.Serialization;" and "using UnityEngine.InputSystem;"
 
 public class Inventory : SerializedMonoBehaviour
 {
@@ -29,14 +28,34 @@ public class Inventory : SerializedMonoBehaviour
     public event Action<int> OnCrystalsChanged;
     public event Action OnInventoryChanged;
 
-    [SerializeField] private Stats stats;
+
+
+    [SerializeField] private Stats _playerStats;
+
+    
+    [SerializeField] private Stats _gunStats;  
+    [SerializeField] private Health _health;   
+
+    public void SetStats(Stats playerStats)
+    {
+        if (_playerStats == null)
+        {
+            _playerStats = playerStats;
+        }
+    }
+
+  
+    public void SetGunStats(Stats gunStats)
+    {
+        _gunStats = gunStats;
+    }
 
     public bool TryAddItem(IInventoryItem item)
     {
         switch (item)
         {
             case Charm charm:
-                if(_ownedCharms.Count >= TotalCharmSlots)
+                if (_ownedCharms.Count >= TotalCharmSlots)
                 {
                     return false;
                 }
@@ -72,7 +91,7 @@ public class Inventory : SerializedMonoBehaviour
     {
         foreach (Charm charm in _equippedCharms)
         {
-            stats.RemoveAllFromSource(charm);
+            RemoveModifiers(charm);
         }
         _equippedCharms.Clear();
         _ownedCharms.Clear();
@@ -100,10 +119,12 @@ public class Inventory : SerializedMonoBehaviour
     public void EquipCharm(Charm charm)
     {
         if (!_ownedCharms.Contains(charm)) return;
+        if (_equippedCharms.Contains(charm)) return; 
+
         _equippedCharms.Add(charm);
-        foreach(StatModifier mod in charm.statModifiers)
+        foreach (StatModifier mod in charm.statModifiers)
         {
-            stats.AddModifier(mod);
+            ApplyModifier(mod, charm);
         }
 
         OnInventoryChanged?.Invoke();
@@ -112,15 +133,50 @@ public class Inventory : SerializedMonoBehaviour
     public void UnequipCharm(Charm charm)
     {
         if (!_equippedCharms.Contains(charm)) return;
-        
-      stats.RemoveAllFromSource(charm);
-        
+
+        RemoveModifiers(charm); 
+
         _equippedCharms.Remove(charm);
         OnInventoryChanged?.Invoke();
     }
 
+   
     public void UseConsumable(int index)
     {
-        _consumables[index].Use(transform.parent.gameObject);
+        if (index < 0 || index >= _consumables.Count) return;
+
+        Consumable consumable = _consumables[index];
+
+        foreach (StatModifier mod in consumable.statModifiers)
+        {
+            ApplyModifier(mod, consumable); 
+        }
+
+        if (consumable.instantHeal > 0 && _health != null)
+        {
+            _health.RegenHealth(consumable.instantHeal);
+        }
+
+        _consumables.RemoveAt(index);
+        OnInventoryChanged?.Invoke();
+    }
+
+   
+    private void ApplyModifier(StatModifier mod, object source)
+    {
+        if (mod == null || mod.Stat == null) return;
+
+        if (_playerStats != null && _playerStats.HasStat(mod.Stat))
+            _playerStats.AddModifier(mod, source);
+        else if (_gunStats != null && _gunStats.HasStat(mod.Stat))
+            _gunStats.AddModifier(mod, source);
+        else
+            Debug.LogWarning($"{mod.Stat.name} isn't on the player's or the gun's StatBlock. Modifier from {source} skipped.");
+    }
+
+    private void RemoveModifiers(object source)
+    {
+        if (_playerStats != null) _playerStats.RemoveAllFromSource(source);
+        if (_gunStats != null) _gunStats.RemoveAllFromSource(source);
     }
 }

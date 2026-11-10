@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDScreen : MonoBehaviour
+public class HUDScreen : UIScreen
 {
     [Header("References")]
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private ShieldBar _shieldBar;
+    [SerializeField] CurrencyDisplay _currencyDisplay;
     [SerializeField] private DashCooldownIcon _dashCooldown;
+    [SerializeField] private Inventory _inventory;
+    
 
     private void Awake()
     {
@@ -16,6 +19,10 @@ public class HUDScreen : MonoBehaviour
             _shieldBar = GetComponentInChildren<ShieldBar>();
         if (!_dashCooldown)
             _dashCooldown = GetComponentInChildren<DashCooldownIcon>();
+        if(!_currencyDisplay)
+        {
+            _currencyDisplay = GetComponentInChildren<CurrencyDisplay>();
+        }
     }
 
     public void ToggleHUD(bool enable)

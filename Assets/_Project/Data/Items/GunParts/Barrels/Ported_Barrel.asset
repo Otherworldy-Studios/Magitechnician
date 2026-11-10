@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1596290574103568, guid: 05955e5240287f446805f12a90e1a6ef, type: 3}
   _partName: Ported_Barrel
   _description: "\u221230% spread, +10% fire rate, \u221210% damage."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 7db4771156029cf4b89ceea69016f586, type: 3}
   rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}

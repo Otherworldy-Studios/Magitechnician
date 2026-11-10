@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final 
+// This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final
 // stat values based on base values and applied modifiers.
 public class Stats : MonoBehaviour
 {
@@ -16,7 +16,7 @@ public class Stats : MonoBehaviour
     public StatDefinition testStat;
 
     public StatModifier TestModifier;
-  
+
 
 
     // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
@@ -27,7 +27,7 @@ public class Stats : MonoBehaviour
 
     private void Update()
     {
-        
+
         RemoveExpiredModifiers();
     }
 
@@ -35,12 +35,12 @@ public class Stats : MonoBehaviour
     private void AddTestModifier()
     {
         Debug.Log($"Adding modifier {TestModifier} to {gameObject.name}.");
-        AddModifier(TestModifier);
+        AddModifier(TestModifier, this); 
     }
     [Button, DisableInEditorMode]
     private void RemoveTestModifier()
     {
-        RemoveModifier(TestModifier);
+        RemoveAllFromSource(this); 
     }
     [Button, DisableInEditorMode]
     private void GetTestStatValue()
@@ -48,14 +48,25 @@ public class Stats : MonoBehaviour
         GetValue(testStat);
     }
 
-    
+   
+    [Button, DisableInEditorMode]
+    public void ClearAllModifiers()
+    {
+        _modifiers.Clear();
+        for (int i = 0; i < _statBlock.Entries.Count; i++)
+        {
+            Recalculate(_statBlock.Entries[i].Stat);
+        }
+    }
+
+
 
     // This method retrieves the final value of a specific stat. If the stat is not present in the final values dictionary, it logs an error and returns 0.
     public float GetValue(StatDefinition stat)
     {
         if (HasStat(stat))
         {
-            Debug.Log($"Stat {stat.name} has a final value of {_finalValues[stat]}.");
+            
             return _finalValues[stat];
         }
         else
@@ -73,17 +84,43 @@ public class Stats : MonoBehaviour
     // This method checks if a specific stat is present in the final values dictionary.
     public bool HasStat(StatDefinition stat)
     {
-        return _finalValues.ContainsKey(stat);
+        return stat != null && _finalValues.ContainsKey(stat); // CHANGED: a null stat returns false instead of throwing
     }
 
-    // This method adds a new modifier to the list and recalculates the affected stat to reflect the change in its final value.
-    public void AddModifier(StatModifier modifier)
+    // CHANGED: AddModifier now takes the object that added the modifier (a gun part, charm, or consumable).
+    // It stores a copy of the modifier with Source set, so the asset's own modifier is never changed,
+    // and RemoveAllFromSource(source) can find it later. It returns the copy.
+    // source is optional so existing calls still compile, but without it RemoveAllFromSource can't find the modifier.
+    public StatModifier AddModifier(StatModifier modifier, object source = null)
     {
-        _modifiers.Add(modifier);
-        Recalculate(modifier.Stat);
+        if (modifier == null || modifier.Stat == null)                                  
+        {                                                                               
+            Debug.LogWarning($"Tried to add an empty modifier to {gameObject.name}.");  
+            return null;                                                                
+        }                                                                              
+
+        if (!HasStat(modifier.Stat))                                                    
+        {                                                                               
+            Debug.LogWarning($"{modifier.Stat.name} isn't in the StatBlock on {gameObject.name}. Modifier not added."); 
+            return null;                                                                
+        }                                                                              
+
+        StatModifier copy = new StatModifier                                            
+        {                                                                               
+            Stat = modifier.Stat,                                                       
+            Operation = modifier.Operation,                                             
+            Value = modifier.Value,                                                     
+            Duration = modifier.Duration,                                               
+            Permanent = modifier.Permanent,                                             
+            Source = source                                                             
+        };                                                                              
+
+        _modifiers.Add(copy);                                                          
+        Recalculate(copy.Stat);
+        return copy;                                                                    
     }
 
-    // This method removes a specific modifier from the list and recalculates the affected stat.
+    
     public void RemoveModifier(StatModifier modifier)
     {
         if (!_modifiers.Contains(modifier))
@@ -101,51 +138,45 @@ public class Stats : MonoBehaviour
     // This method removes all modifiers that originate from a specific source and recalculates the affected stats.
     public void RemoveAllFromSource(object source)
     {
-        List<StatModifier> modifiersToRemove = new List<StatModifier>();
-        for (int i = 0; i < _modifiers.Count; i++)
-        {
-            if (_modifiers[i].Source == source)
-            {
-                modifiersToRemove.Add(_modifiers[i]);
-            }
-        }
+        if (source == null) return; 
 
-        for (int i = 0; i < modifiersToRemove.Count; i++)
+       
+        for (int i = _modifiers.Count - 1; i >= 0; i--)
         {
-            RemoveModifier(modifiersToRemove[i]);
-            Recalculate(modifiersToRemove[i].Stat);
+            StatModifier modifier = _modifiers[i];      
+            if (modifier.Source != source) continue;   
+
+            _modifiers.RemoveAt(i);                     
+            Recalculate(modifier.Stat);                 
         }
     }
 
-    // This method updates the duration of each modifier based on the time elapsed since the last frame and removes any that have 
+    // This method updates the duration of each modifier based on the time elapsed since the last frame and removes any that have
     // expired.
     private void RemoveExpiredModifiers()
     {
-        List<StatModifier> expiredModifiers = new List<StatModifier>();
-        for (int i = 0; i < _modifiers.Count; i++)
+        
+        // Each expired modifier recalculates once instead of twice.
+        for (int i = _modifiers.Count - 1; i >= 0; i--)
         {
-            if (!_modifiers[i].Permanent && _modifiers[i].Duration <= 0f)
-            {
-                expiredModifiers.Add(_modifiers[i]);
-            }
-            else
-            {
-                _modifiers[i].Duration -= Time.deltaTime;
-            }
-        }
+            StatModifier modifier = _modifiers[i];      
+            if (modifier.Permanent) continue;           
 
-        for (int i = 0; i < expiredModifiers.Count; i++)
-        {
-            RemoveModifier(expiredModifiers[i]);
-            Recalculate(expiredModifiers[i].Stat);
+            modifier.Duration -= Time.deltaTime;        
+            if (modifier.Duration > 0f) continue;       
+
+            _modifiers.RemoveAt(i);                   
+            Recalculate(modifier.Stat);               
         }
     }
 
-    // This method recalculates the final value of a specific stat based on its base value and any applied modifiers. It takes 
-    // into account both additive and multiplicative modifiers and clamps the final value within the defined min/max range for 
+    // This method recalculates the final value of a specific stat based on its base value and any applied modifiers. It takes
+    // into account both additive and multiplicative modifiers and clamps the final value within the defined min/max range for
     // the stat.
     private void Recalculate(StatDefinition stat)
     {
+        if (!HasStat(stat)) return; 
+
         float baseValue = 0f;
         float additiveValue = 0f;
         float multiplicativeValue = 1f;

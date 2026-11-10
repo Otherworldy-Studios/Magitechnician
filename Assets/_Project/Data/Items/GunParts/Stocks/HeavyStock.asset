@@ -15,7 +15,7 @@ MonoBehaviour:
   _partPrefab: {fileID: 1101563714805938, guid: 62619f39336931149acd96a9aff62ccb, type: 3}
   _partName: Heavy Stock
   _description: "\u221240% spread, \u221210% move speed."
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 2fd33e5013c24ea44b52bb55db8a4e9c, type: 3}
   rarity: 0
   statModifiers:
   - Stat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}
