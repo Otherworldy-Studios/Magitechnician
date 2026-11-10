@@ -4,5 +4,6 @@ using UnityEngine;
 public enum ModifierOperation
 {
     Add,
-    Multiply
+    Multiply,
+    Set
 }

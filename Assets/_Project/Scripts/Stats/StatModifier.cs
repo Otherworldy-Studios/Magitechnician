@@ -11,5 +11,5 @@ public class StatModifier
     public float Value;
     public object Source;
     public float Duration;
-
+    public bool Permanent;
 }

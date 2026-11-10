@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb738f89001c144429d2dfe120ee9b94, type: 3}
+  m_Name: Long_Barrel
+  m_EditorClassIdentifier: Assembly-CSharp::GunBarrel
+  _partPrefab: {fileID: 1786843812592164, guid: c57d57bd5e962b94f8a82c768e8845ab, type: 3}
+  _partName: Long Barrel
+  _description: "+20% damage, \u221250% spread, +100% bullet speed, \u221225% fire
+    rate."
+  _icon: {fileID: 21300000, guid: bcf955c089f94e94b99f6ed30beabf7e, type: 3}
+  rarity: 0
+  statModifiers:
+  - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
+    Operation: 1
+    Value: 1.2
+    Duration: 0
+    Permanent: 1
+  - Stat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}
+    Operation: 1
+    Value: 0.5
+    Duration: 0
+    Permanent: 1
+  - Stat: {fileID: 11400000, guid: 9a1aa751653564c1eb77b30e5ff5fed0, type: 2}
+    Operation: 1
+    Value: 2
+    Duration: 0
+    Permanent: 1
+  - Stat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}
+    Operation: 1
+    Value: 0.75
+    Duration: 0
+    Permanent: 1
+  FireMode: 0

@@ -11,47 +11,64 @@ namespace _Project.Scripts.Dungeon
         [Header("Debug (Do not edit)")]
         [SerializeField]
         private Room _parent;
-        
+
+        public Room Parent { get { return _parent; } set { _parent = value; } }
+
         [SerializeField]
-        private Portal _connected;
-        
+        private Room _connected;
+
+        public Room Connected { get { return _connected; } set { _connected = value; } }
+
         [SerializeField]
-        private LevelGenerator.Direction _direction;
+        private bool _active;
+        public bool Active { get { return _active; } set { _active = value; } }
+
+        [SerializeField] public GameObject vfx;
+
         
+
+        [SerializeField]
+        private BoxCollider _collider;
+
         void Start()
         {
-            
+            //
+            _collider = GetComponent<BoxCollider>();
         }
-        
+
         void Update()
         {
-            
+            // CHANGED: null check. Without a vfx assigned, this threw every frame.
+            if (vfx != null && vfx.activeSelf != Active)
+                vfx.SetActive(Active);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!_active || _connected == null) 
+                return;
+
+        
+            PlayerSpawner spawner = other.GetComponentInParent<PlayerSpawner>();
+            if (spawner == null)
+                return;
+
+            spawner.TeleportToRoom(_connected); 
+            _connected.EnterRoom();           
         }
 
         private void OnDrawGizmos()
         {
             // Draws the portal gizmo
-            Gizmos.color = Color.cyan;
-            Vector3 destination = gameObject.transform.position;
-
-            switch (_direction)
+            if (Connected != null)
             {
-                case LevelGenerator.Direction.North:
-                    destination += new Vector3(0, 0, 2);
-                    break;
-                case LevelGenerator.Direction.South:
-                    destination += new Vector3(0, 0, -2);
-                    break;
-                case LevelGenerator.Direction.East:
-                    destination += new Vector3(2, 0, 0);
-                    break;
-                case LevelGenerator.Direction.West:
-                    destination += new Vector3(-2, 0, 0);
-                    break;
+                Gizmos.color = Color.cyan;
+                Vector3 destination = gameObject.transform.position;
+
+                destination += (Connected.transform.position - gameObject.transform.position).normalized;
+                Gizmos.DrawLine(gameObject.transform.position, destination);
             }
-            
-            Gizmos.DrawLine(gameObject.transform.position, destination);
-            
+
             Vector3 boxSize = new Vector3(1f, 1f, 1f);
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(transform.position, boxSize);

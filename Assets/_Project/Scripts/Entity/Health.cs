@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ public class Health : MonoBehaviour
     [field: SerializeField] public int CurrentHealth { get; private set; }
 
     [field: SerializeField] public int MaxHealth { get; private set; } = 100;
-
+    
     public event Action<int, GameObject> OnDamaged;
     public event Action<int, GameObject> OnHealed;
     public event Action<GameObject> OnDied;
@@ -22,10 +23,29 @@ public class Health : MonoBehaviour
     // Tokens allow multiple sources of invincibility to work independently.
     private readonly HashSet<Object> _invincibilityTokens = new();
 
+    private object _debugInvincibilityToken;
+
     private bool _isInvincible => _invincibilityTokens.Count > 0;
 
-    private void Awake()
+    [SerializeField] private Stats _stats;
+    [SerializeField] private StatDefinition _maxHealthStat;
+
+    public void SetStats(Stats playerStats)
     {
+        if (_stats == null)
+        {
+            _stats = playerStats;
+        }
+    }
+
+    private void Start()
+    {
+        if (_stats != null && _maxHealthStat != null)
+        {
+            MaxHealth = Mathf.RoundToInt(_stats.GetValue(_maxHealthStat));
+            _stats.OnStatChanged += HandleStatChanged;
+        }
+
         CurrentHealth = MaxHealth;
     }
 
@@ -144,4 +164,52 @@ public class Health : MonoBehaviour
 
         StopInvincibility(token);
     }
+
+    // Runs when a charm, stock, or consumable changes max health.
+    private void HandleStatChanged(StatDefinition stat, float value)
+    {
+        if (stat != _maxHealthStat) return;
+
+        int newMax = Mathf.RoundToInt(value);
+        int difference = newMax - MaxHealth;
+        MaxHealth = newMax;
+
+        // Gaining max health also adds it to current health. Losing it only lowers current health if it's now over the max.
+        if (difference > 0) CurrentHealth += difference;
+        CurrentHealth = Mathf.Min(CurrentHealth, MaxHealth);
+    }
+
+    #region Debug
+    [Button, DisableInEditorMode]
+    private void DebugHeal(int amount = 25)
+    {
+        RegenHealth(amount);
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugHealOverTime(int amount = 50, float seconds = 10f)
+    {
+        RegenHealthOverTime(amount, seconds);
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugStopHealOverTime()
+    {
+        _healTimer = 0f;
+    }
+
+    [Button, DisableInEditorMode]
+    private void DebugToggleInvincibility()
+    {
+        if (_debugInvincibilityToken == null)
+        {
+            _debugInvincibilityToken = StartInvincibility();
+        }
+        else
+        {
+            StopInvincibility(_debugInvincibilityToken);
+            _debugInvincibilityToken = null;
+        }
+    }
+    #endregion
 }

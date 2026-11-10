@@ -8,7 +8,7 @@ public class FollowCameraRotation : MonoBehaviour
     [SerializeField] private float _rollingRotationSpeed = 10000f;
 
     [Header("References")]
-    [SerializeField] private PlayerInput _playerInput;
+    private InputManager _playerInput;
     [SerializeField] private PlayerCameraController _cameraController;
     [SerializeField] private Dash _dash;
     [SerializeField] private PlayerCombatState _combatState;
@@ -16,7 +16,7 @@ public class FollowCameraRotation : MonoBehaviour
     private void Awake()
     {
         if (!_playerInput)
-            _playerInput = FindFirstObjectByType<PlayerInput>();
+            _playerInput = InputManager.Instance;
         if (!_cameraController)
             _cameraController = FindFirstObjectByType<PlayerCameraController>();
         if (!_dash)

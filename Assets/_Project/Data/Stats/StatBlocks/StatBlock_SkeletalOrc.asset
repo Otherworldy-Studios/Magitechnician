@@ -16,11 +16,11 @@ MonoBehaviour:
   - Stat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}
     BaseValue: 8
   - Stat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
-    BaseValue: 200
+    BaseValue: 50
   - Stat: {fileID: 11400000, guid: c1772fa5754ba41ebae3eef31d1b7545, type: 2}
     BaseValue: 20
   - Stat: {fileID: 11400000, guid: f6cb34bdd7f2447a9802d51ff5e9fb28, type: 2}
-    BaseValue: 40
+    BaseValue: 80
   - Stat: {fileID: 11400000, guid: a8ef90889625b4f2bbeb6bab4c7f9bfa, type: 2}
     BaseValue: 0
   - Stat: {fileID: 11400000, guid: 5e5166892305a40f48c67793c8f852b3, type: 2}

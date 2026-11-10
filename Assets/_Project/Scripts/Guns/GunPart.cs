@@ -8,6 +8,7 @@ public abstract class GunPart : ScriptableObject , IInventoryItem
     [SerializeField] private string _partName;
     [SerializeField] private string _description;
     [SerializeField] private Sprite _icon;
+    [SerializeField] private ItemRarity rarity;
 
     private ItemCategory _category = ItemCategory.Gunpart;
 
@@ -19,4 +20,5 @@ public abstract class GunPart : ScriptableObject , IInventoryItem
     public Sprite Icon => _icon;
     public ItemCategory Category => _category;
     public List<StatModifier> statModifiers = new();
+    public ItemRarity Rarity => rarity;
 }

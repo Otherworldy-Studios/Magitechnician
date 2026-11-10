@@ -1,56 +1,48 @@
 using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
+/// <summary>
+/// The player's view of input. Forwards values and events from InputManager,
+/// so player scripts keep their PlayerInput reference and never touch the actions directly.
+/// </summary>
 public class PlayerInput : MonoBehaviour
 {
-    private InputSystem_Actions _input;
-    
-    public Vector3 Move => _input.Player.Move.ReadValue<Vector2>();
-    public Vector3 Look => _input.Player.Look.ReadValue<Vector2>();
-    public bool IsAiming => _input.Player.Aim.IsPressed();
-    public bool IsFiring => _input.Player.Fire.IsPressed();
-    
+    public Vector2 Move => InputManager.Instance.Move;
+    public Vector2 Look => InputManager.Instance.Look;
+    public bool IsSprinting => InputManager.Instance.IsSprinting;
+    public bool IsAiming => InputManager.Instance.IsAiming;
+    public bool IsFiring => InputManager.Instance.IsFiring;
+
     public event Action JumpPressed;
     public event Action JumpReleased;
     public event Action DashPressed;
     public event Action FirePressed;
 
-    private void Awake()
-    {
-        _input = new InputSystem_Actions();
-    }
-
     private void OnEnable()
     {
-        _input.Player.Jump.performed += OnJumpPressed;
-        _input.Player.Jump.canceled += OnJumpReleased;
-        _input.Player.Dash.performed += OnRoll;
-        _input.Player.Fire.performed += OnFire;
-        
-        _input.Player.Enable();
+        InputManager input = InputManager.Instance;
+        input.JumpPressed += OnJumpPressed;
+        input.JumpReleased += OnJumpReleased;
+        input.DashPressed += OnDashPressed;
+        input.FirePressed += OnFirePressed;
     }
 
     private void OnDisable()
     {
-        _input.Player.Jump.performed -= OnJumpPressed;
-        _input.Player.Jump.canceled -= OnJumpReleased;
-        _input.Player.Dash.performed -= OnRoll;
-        _input.Player.Fire.performed -= OnFire;
-        
-        _input.Player.Disable();
-    }
-    
-    private void OnDestroy()
-    {
-        _input.Dispose();
-    }
-    
-    private void OnJumpPressed(InputAction.CallbackContext context) => JumpPressed?.Invoke();
-    private void OnJumpReleased(InputAction.CallbackContext context) => JumpReleased?.Invoke();
+        if (!InputManager.HasInstance)
+        {
+            return;   
+        }
 
-    private void OnRoll(InputAction.CallbackContext context) => DashPressed?.Invoke();
+        InputManager input = InputManager.Instance;
+        input.JumpPressed -= OnJumpPressed;
+        input.JumpReleased -= OnJumpReleased;
+        input.DashPressed -= OnDashPressed;
+        input.FirePressed -= OnFirePressed;
+    }
 
-    private void OnFire(InputAction.CallbackContext context) => FirePressed?.Invoke();
+    private void OnJumpPressed() => JumpPressed?.Invoke();
+    private void OnJumpReleased() => JumpReleased?.Invoke();
+    private void OnDashPressed() => DashPressed?.Invoke();
+    private void OnFirePressed() => FirePressed?.Invoke();
 }

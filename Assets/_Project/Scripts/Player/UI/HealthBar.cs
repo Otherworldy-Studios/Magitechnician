@@ -20,30 +20,61 @@ public class HealthBar : MonoBehaviour
 
     private void Awake()
     {
-        if(!_health)
-            Debug.LogError("Health was not assigned in HealthBar");
-        /*if(!_ghostFill)
-            Debug.LogError("Ghost Fill was not assigned in HealthBar");*/
-        if(!_fill)
+        if (!_fill)
             Debug.LogError("Fill was not assigned in HealthBar");
+
+        GameManager.Instance.OnPlayerRegistered += HandlePlayerRegistered;
     }
 
     private void Start()
     {
+        // If a player registered before this bar existed, connect to it now.
+        if (GameManager.Instance.Player != null)
+        {
+            HandlePlayerRegistered(GameManager.Instance.Player.GetComponent<PlayerRoot>());
+        }
         _healthCounter.text = _health.CurrentHealth.ToString("F0");
     }
-    
-    private void OnEnable()
+
+    private void OnDestroy()
     {
-        _health.OnDamaged += HandleHealthChange;
-        _health.OnHealed += HandleHealthChange;
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnPlayerRegistered -= HandlePlayerRegistered;
+        }
+        Unbind();
     }
 
-    private void OnDisable()
+    private void HandlePlayerRegistered(PlayerRoot player)
     {
-        _health.OnDamaged -= HandleHealthChange;
-        _health.OnHealed -= HandleHealthChange;
+        Unbind();
+
+        _health = player.PlayerHealth;
+        if (_health == null)
+            return;
+
+        _health.OnDamaged += HandleHealthChange;
+        _health.OnHealed += HandleHealthChange;
+
+        // Snap to the new player's health with no smoothing.
+        _targetHealth = (float)_health.CurrentHealth / _health.MaxHealth;
+        _visualHealth = _targetHealth;
+        _fill.fillAmount = _visualHealth;
+        _healthCounter.text = _health.CurrentHealth.ToString("F0");
     }
+
+    private void Unbind()
+    {
+        if (_health != null)
+        {
+            _health.OnDamaged -= HandleHealthChange;
+            _health.OnHealed -= HandleHealthChange;
+        }
+        _health = null;
+    }
+
+
+   
     
     private void Update()
     {

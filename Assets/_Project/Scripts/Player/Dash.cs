@@ -11,9 +11,23 @@ public class Dash : MonoBehaviour
     [SerializeField] private Transform _orientation;
     [SerializeField] private Health _health;
 
+   
+    [Header("Stats")]                                                  
+    [SerializeField] private StatDefinition _dashDistanceStat;          
+    [SerializeField] private StatDefinition _dashDurationStat;          
+    [SerializeField] private StatDefinition _dashCooldownStat;         
+    [SerializeField] private StatDefinition _dashInvincibilityStat;    
+
     public bool IsDashing { get; private set; }
-    public Vector3 DashDirection {get; private set;}
-    public float DashCooldown {get; private set;}
+    public Vector3 DashDirection { get; private set; }
+
+   
+    public float DashDistance => ReadStat(_dashDistanceStat, _settings.DashDistance);                
+    public float DashDuration => ReadStat(_dashDurationStat, _settings.DashDuration);                
+    public float InvincibilityDuration => ReadStat(_dashInvincibilityStat, _settings.InvincibilityDuration); 
+
+   
+    public float DashCooldown => ReadStat(_dashCooldownStat, _settings.DashCooldown) + DashDuration; 
 
     public event Action OnDashed;
 
@@ -25,15 +39,25 @@ public class Dash : MonoBehaviour
     private object invincibilityToken;
     private bool _wasInvincible = false;
 
+    [SerializeField] private Stats _playerStats;
+
+    public void SetStats(Stats playerStats)
+    {
+        if (_playerStats == null)
+        {
+            _playerStats = playerStats;
+        }
+    }
+
     private void Awake()
     {
-        if(!_orientation)
+        if (!_orientation)
             Debug.LogError($"{nameof(Dash)} requires a {nameof(_orientation)}");
 
         if (!_health)
             _health = GetComponent<Health>();
+
         
-        DashCooldown = _settings.DashCooldown + _settings.DashDuration;
     }
 
     private void OnDisable()
@@ -47,7 +71,7 @@ public class Dash : MonoBehaviour
     /// </summary>
     public Vector3 GetDashVelocity()
     {
-        float dashSpeed = _settings.DashDistance / _settings.DashDuration;
+        float dashSpeed = DashDistance / DashDuration; 
 
         return DashDirection * dashSpeed;
     }
@@ -64,7 +88,7 @@ public class Dash : MonoBehaviour
 
             _dashTimer += Time.deltaTime;
 
-            if (_dashTimer >= _settings.DashDuration)
+            if (_dashTimer >= DashDuration) 
             {
                 CancelDash();
                 IsDashing = false;
@@ -94,7 +118,7 @@ public class Dash : MonoBehaviour
         IsDashing = true;
 
         //Cooldown
-        _nextDashTime = Time.time + _settings.DashDuration + _settings.DashCooldown;
+        _nextDashTime = Time.time + DashCooldown; 
 
         OnDashed?.Invoke();
     }
@@ -118,17 +142,17 @@ public class Dash : MonoBehaviour
     /// </summary>
     private void HandleInvincibility()
     {
-        if(!_health || !_settings.InvincibilityEnabled)
+        if (!_health || !_settings.InvincibilityEnabled)
             return;
 
         bool shouldBeInvincible = IsDashing &&
             _dashTimer >= _settings.InvincibilityStart &&
-            _dashTimer < _settings.InvincibilityStart + _settings.InvincibilityDuration;
+            _dashTimer < _settings.InvincibilityStart + InvincibilityDuration; // CHANGED: reads the stat
 
         if (shouldBeInvincible == _wasInvincible)
             return;
 
-        if(shouldBeInvincible)
+        if (shouldBeInvincible)
             StartDashInvincibility();
         else
             StopDashInvincibility();
@@ -146,7 +170,7 @@ public class Dash : MonoBehaviour
 
     private void StopDashInvincibility()
     {
-        if(!_health || !_settings.InvincibilityEnabled)
+        if (!_health || !_settings.InvincibilityEnabled)
             return;
 
         _health.StopInvincibility(invincibilityToken);
@@ -154,4 +178,13 @@ public class Dash : MonoBehaviour
     }
 
     public void IntendToDash() => _intendToDash = true;
+
+    
+    private float ReadStat(StatDefinition stat, float fallback)
+    {
+        if (_playerStats == null || stat == null || !_playerStats.HasStat(stat))
+            return fallback;
+
+        return _playerStats.GetValue(stat);
+    }
 }

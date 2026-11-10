@@ -18,32 +18,65 @@ public class ShieldBar : MonoBehaviour
 
     private void Awake()
     {
-        if(!_shieldSystem)
-            Debug.LogError("No ShieldSystem found in ShieldBar");
         if(!_fill)
             Debug.LogError("No Fill found in ShieldBar");
+
+        GameManager.Instance.OnPlayerRegistered += HandlePlayerRegistered;
     }
 
     private void Start()
     {
-        _shieldCounter.text = _shieldSystem.CurrentShield.ToString("F0");
+        // If a player registered before this bar existed, connect to it now.
+        if (GameManager.Instance.Player != null)
+        {
+            HandlePlayerRegistered(GameManager.Instance.Player.GetComponent<PlayerRoot>());
+        }
+       
     }
 
-    private void OnEnable()
+    private void OnDestroy()
     {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnPlayerRegistered -= HandlePlayerRegistered;
+        }
+        Unbind();
+    }
+
+
+    private void HandlePlayerRegistered(PlayerRoot player)
+    {
+        Unbind();
+
+        _shieldSystem = player.Shield;
+        if (_shieldSystem == null)
+            return;
+
         _shieldSystem.OnShieldDamaged += HandleShieldDamaged;
         _shieldSystem.OnShieldHealed += HandleShieldHealed;
         _shieldSystem.OnShieldBroken += HandleShieldBroken;
         _shieldSystem.OnShieldRestored += HandleShieldRestored;
+
+        // Snap to the new player's health with no smoothing.
+        _targetShield = _shieldSystem.CurrentShield / _shieldSystem.MaxShield;
+        _visualShield = _targetShield;
+        _fill.fillAmount = _visualShield;
+        _shieldCounter.text = _shieldSystem.CurrentShield.ToString("F0");
     }
 
-    private void OnDisable()
+    private void Unbind()
     {
-        _shieldSystem.OnShieldDamaged -= HandleShieldDamaged;
-        _shieldSystem.OnShieldHealed -= HandleShieldHealed;
-        _shieldSystem.OnShieldBroken -= HandleShieldBroken;
-        _shieldSystem.OnShieldRestored -= HandleShieldRestored;
+        if (_shieldSystem != null)
+        {
+            _shieldSystem.OnShieldDamaged -= HandleShieldDamaged;
+            _shieldSystem.OnShieldHealed -= HandleShieldHealed;
+            _shieldSystem.OnShieldBroken -= HandleShieldBroken;
+            _shieldSystem.OnShieldRestored -= HandleShieldRestored;
+        }
+        _shieldSystem = null;
     }
+
+  
     
     private void Update()
     {

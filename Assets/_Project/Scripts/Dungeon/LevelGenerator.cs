@@ -1,7 +1,9 @@
-using System;
-using System.Collections.Generic;
 using _Project.Scripts.Dungeon.Utility;
 using _Project.Scripts.Dungeon.Utility.System.Collections.Generic;
+using Sirenix.OdinInspector;
+using System;
+using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -16,14 +18,14 @@ namespace _Project.Scripts.Dungeon
     struct WeightedRoom
     {
         [SerializeField] private Room _room;
-        
+
         [SerializeField] private int _weight;
-        
+
         public Room Room { get { return _room; } }
         public int Weight { get { return _weight; } }
     }
-    
-    public class LevelGenerator : MonoBehaviour
+
+    public class LevelGenerator : MGR<LevelGenerator>
     {
         /// <summary>
         /// The four possible generation directions
@@ -35,61 +37,56 @@ namespace _Project.Scripts.Dungeon
             East,
             West
         }
-
+        [SerializeField] private NavMeshSurface navMeshSurface;
         private LinearCongruentialGenerator _random;
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
         public event Action OnMapGenerated; // This is for the game manager to know when the map is generated
 
         // The 2D array representing the map layout
-        public Room[,] RoomGrid  { get  { return _roomGrid; } }
+        public Room[,] RoomGrid { get { return _roomGrid; } }
         public Room StartRoom => _startRoom;
 
-        [Header("Generator Settings")] 
+        [Header("Generator Settings")]
         [SerializeField] private int _roomGridWidth;
         [SerializeField] private int _roomGridHeight;
 
         [SerializeField] private int _minCombatRooms;
-        
+
         [SerializeField] private int _maxCombatRooms;
 
         [SerializeField] private int _seed;
 
         [SerializeField] private bool _generateSeed;
 
-        [SerializeField] [Range(0, 100)] private int _baseGenerationChance;
+        [SerializeField][Range(0, 100)] private int _baseGenerationChance;
 
         [SerializeField] private int _generationChanceDelta;
 
-        [Header("Room Prefabs")] 
+        [Header("Room Prefabs")]
         [SerializeField] private WeightedRoom[] _startRooms;
 
         [SerializeField] private WeightedRoom[] _combatRooms;
 
         [SerializeField] private WeightedRoom[] _endRooms;
 
-        [Header("Debug (Do not edit)")] 
+        [Header("Debug (Do not edit)")]
         [SerializeField] public Room _startRoom;
 
         [SerializeField] private List<Room> _generatedCombatRooms;
 
         [SerializeField] private Room _endRoom;
-        
+
         [SerializeField]
         private int _generationChance;
 
-
-        public static LevelGenerator Instance;
-
-        void Awake()
+        protected override void Awake()
         {
-            if (Instance != null && Instance != this)
+            base.Awake();
+            if (Instance != this)
             {
-                Destroy(gameObject);
                 return;
             }
-
-            Instance = this;
             _directions = new Dictionary<Direction, Vector3>();
             _directions[Direction.North] = new Vector3(0, 0, 1);
             _directions[Direction.South] = new Vector3(0, 0, -1);
@@ -102,8 +99,9 @@ namespace _Project.Scripts.Dungeon
             _random = new LinearCongruentialGenerator(_seed);
 
             _generationChance = _baseGenerationChance;
-            
+
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
+          
         }
 
         private void OnEnable()
@@ -114,7 +112,14 @@ namespace _Project.Scripts.Dungeon
         private void OnDisable()
         {
             GameManager.OnGenerateRequested -= ReceiveGeneration;
+           
         }
+
+        
+        private Transform RoomParent =>
+            navMeshSurface != null && navMeshSurface.collectObjects == CollectObjects.Children
+                ? navMeshSurface.transform
+                : null;
 
         private void ReceiveGeneration() //rocco: changed it generating on start and now relies on GM event
         {
@@ -127,24 +132,27 @@ namespace _Project.Scripts.Dungeon
             GenerateMap();
         }
 
-        void Update()
+
+        [Button, DisableInEditorMode]
+        private void DEBUGRegenerate()
         {
-            #if UNITY_EDITOR
-            if (Keyboard.current != null)
+            ResetMap();
+            GenerateMap();
+
+            // CHANGED: the PlayerSpawner only listens to the first generation, so move the player here.
+            GameObject player = GameManager.HasInstance ? GameManager.Instance.Player : null;
+            PlayerSpawner spawner = player != null ? player.GetComponentInChildren<PlayerSpawner>() : null;
+            if (spawner != null && _startRoom != null)
             {
-                if (Keyboard.current.spaceKey.wasPressedThisFrame)
-                {
-                    ResetMap();
-                    GenerateMap();
-                }
-                
-                if (Keyboard.current.leftCtrlKey.wasPressedThisFrame)
-                {
-                    Debug.Log("Rolling debug");
-                    _startRoom.OnComplete(true);
-                }
+                spawner.TeleportToRoom(_startRoom);
+                _startRoom.EnterRoom();
             }
-            #endif
+        }
+
+        [Button, DisableInEditorMode]
+        private void DEBUGCompleteStartRoom()
+        {
+            _startRoom.OnComplete(true);
         }
 
         /// <summary>
@@ -154,13 +162,13 @@ namespace _Project.Scripts.Dungeon
         {
             Debug.Log($"Seed: {_seed}");
             LinearCongruentialGenerator roomRandom = new LinearCongruentialGenerator(_seed);
-            
-            Room startRoom = Instantiate(GetRandomStartRoom(roomRandom.Next()), 
-                gameObject.transform.position, Quaternion.identity);
+
+            Room startRoom = Instantiate(GetRandomStartRoom(roomRandom.Next()),
+                gameObject.transform.position, Quaternion.identity, RoomParent); // CHANGED: added RoomParent
             startRoom.Id = $"Start{(startRoom != null ? 1 : 0)}";
-            
+
             _startRoom = startRoom;
-            
+
             Vector2Int currentGridPos = new Vector2Int(_roomGridHeight / 2, _roomGridWidth / 2);
             _roomGrid[currentGridPos.x, currentGridPos.y] = startRoom;
 
@@ -170,18 +178,18 @@ namespace _Project.Scripts.Dungeon
             while (rooms.Count > 0 && _generatedCombatRooms.Count < _maxCombatRooms)
             {
                 (Room room, Vector2Int currentPos) = rooms.Dequeue();
-                
+
                 // This randomizes the directions we will generate in
                 PriorityQueue<Direction> priorityQueue = new PriorityQueue<Direction>();
-                
-                foreach(Direction dir in Enum.GetValues(typeof(Direction)))
+
+                foreach (Direction dir in Enum.GetValues(typeof(Direction)))
                     priorityQueue.Enqueue(dir, _random.Next(-int.MaxValue, int.MaxValue));
-                
-                while(priorityQueue.Count > 0)
+
+                while (priorityQueue.Count > 0)
                 {
                     Vector2Int gridDiff = new Vector2Int(0, 0);
                     Direction direction = priorityQueue.Dequeue();
-                    
+
                     switch (direction)
                     {
                         case Direction.North:
@@ -197,7 +205,7 @@ namespace _Project.Scripts.Dungeon
                             gridDiff = new Vector2Int(0, -1);
                             break;
                     }
-                    
+
                     Vector2Int added = currentPos + gridDiff;
 
                     if (_generatedCombatRooms.Count >= _maxCombatRooms)
@@ -215,10 +223,10 @@ namespace _Project.Scripts.Dungeon
                             continue;
 
                         Room selected = GetRandomCombatRoom(roomRandom.Next());
-                        Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity);
+                        Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity, RoomParent); // CHANGED: added RoomParent
                         nextRoom.transform.position = room.gameObject.transform.position + (_directions[direction] *
-                            nextRoom.gameObject.GetComponent<Collider>().bounds.size.magnitude);
-                        
+                            nextRoom.BoundingBox.bounds.size.magnitude);
+
                         nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
                         _roomGrid[added.x, added.y] = nextRoom;
@@ -246,16 +254,19 @@ namespace _Project.Scripts.Dungeon
                                 Debug.LogError("[LevelGenerator] Error: Invalid direction");
                                 break;
                         }
-                        
-                        if(_generatedCombatRooms.Count >= _minCombatRooms)
+
+                        if (room.Portal != null)
+                            room.Portal.Connected = nextRoom;
+
+                        if (_generatedCombatRooms.Count >= _minCombatRooms)
                             _generationChance += _generationChanceDelta;
-                        
+
                         _generatedCombatRooms.Add(nextRoom);
                         rooms.Enqueue((nextRoom, added));
                     }
                 }
             }
-            
+
             PlaceEndRoom(roomRandom.Next());
         }
 
@@ -267,7 +278,10 @@ namespace _Project.Scripts.Dungeon
             Room farthest = GetFarthest();
 
             if (farthest == null)
+            {
+                Debug.LogError("[LevelGenerator] Error: No farthest room found");
                 return;
+            }
 
             Direction direction = Direction.North;
 
@@ -277,18 +291,18 @@ namespace _Project.Scripts.Dungeon
                 direction = Direction.South;
             else if (farthest.East == null)
                 direction = Direction.East;
-            else if(farthest.West == null)
+            else if (farthest.West == null)
                 direction = Direction.West;
-            
+
             Vector3 dir = _directions[direction];
 
             Room selected = GetRandomEndRoom(seed);
-            Room end = Instantiate(selected, farthest.transform.position, Quaternion.identity);
+            Room end = Instantiate(selected, farthest.transform.position, Quaternion.identity, RoomParent);
             end.transform.position = farthest.gameObject.transform.position +
-                                     (dir * end.gameObject.GetComponent<Collider>().bounds.size.magnitude);
-            
+                                     (dir * end.BoundingBox.bounds.size.magnitude);
+
             end.Id = $"End{(end != null ? 1 : 0)}";
-            
+
             switch (direction)
             {
                 case Direction.North:
@@ -308,9 +322,35 @@ namespace _Project.Scripts.Dungeon
                     end.East = farthest;
                     break;
             }
-            
+
             _endRoom = end;
+            farthest.Portal.Connected = _endRoom;
+
+            FinishGeneration(); 
+        }
+
+
+        private void FinishGeneration()
+        {
+            if (_startRoom != null && _startRoom.GetComponent<RoomEncounter>() == null)
+                _startRoom.OnComplete();
+
+            BakeNavMesh();
+
             OnMapGenerated?.Invoke(); // We are done generating the map
+        }
+
+        // CHANGED: new.
+        private void BakeNavMesh()
+        {
+            if (navMeshSurface == null)
+            {
+                Debug.LogWarning("[LevelGenerator] No NavMeshSurface assigned. Enemies won't be able to move.", this);
+                return;
+            }
+
+            Physics.SyncTransforms(); // the rooms were moved this frame, so update their colliders before baking
+            navMeshSurface.BuildNavMesh();
         }
 
         /// <summary>
@@ -327,7 +367,7 @@ namespace _Project.Scripts.Dungeon
 
             rooms.Enqueue(_startRoom);
             Room last = null;
-            
+
             while (rooms.Count > 0)
             {
                 Room room = rooms.Dequeue();
@@ -336,11 +376,11 @@ namespace _Project.Scripts.Dungeon
 
                 if (room.North != null && !visited.Contains(room.North))
                     rooms.Enqueue(room.North);
-                if(room.South != null && !visited.Contains(room.South))
+                if (room.South != null && !visited.Contains(room.South))
                     rooms.Enqueue(room.South);
                 if (room.East != null && !visited.Contains(room.East))
                     rooms.Enqueue(room.East);
-                if(room.West != null && !visited.Contains(room.West))
+                if (room.West != null && !visited.Contains(room.West))
                     rooms.Enqueue(room.West);
             }
 
@@ -353,16 +393,19 @@ namespace _Project.Scripts.Dungeon
         private void ResetMap()
         {
             Room[] rooms = FindObjectsByType<Room>(FindObjectsSortMode.None);
-            
+
             foreach (Room room in rooms)
+            {
+                room.gameObject.SetActive(false);
                 Destroy(room.gameObject);
+            }
 
             _startRoom = null;
             _endRoom = null;
             _generatedCombatRooms.Clear();
             _generationChance = _baseGenerationChance;
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
-            
+
             if (_generateSeed)
                 _seed = Random.Range(-int.MaxValue, int.MaxValue);
 
@@ -378,16 +421,16 @@ namespace _Project.Scripts.Dungeon
         {
             if (_maxCombatRooms < _minCombatRooms)
                 return false;
-            
-            if(_startRooms.Length == 0)
+
+            if (_startRooms.Length == 0)
                 return false;
-                
+
             if (_endRooms.Length == 0)
                 return false;
-                
+
             if (_combatRooms.Length == 0)
                 return false;
-                
+
             return true;
         }
 
@@ -400,10 +443,10 @@ namespace _Project.Scripts.Dungeon
         private Room GetRandomCombatRoom(long seed)
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
-            
+
             foreach (WeightedRoom room in _combatRooms)
                 roomSelector.AddItem(room, room.Weight);
-            
+
             return roomSelector.Roll().Room;
         }
 
@@ -416,10 +459,10 @@ namespace _Project.Scripts.Dungeon
         private Room GetRandomStartRoom(long seed)
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
-            
+
             foreach (WeightedRoom room in _startRooms)
                 roomSelector.AddItem(room, room.Weight);
-            
+
             return roomSelector.Roll().Room;
         }
 
@@ -432,11 +475,13 @@ namespace _Project.Scripts.Dungeon
         private Room GetRandomEndRoom(long seed)
         {
             ItemSelector<WeightedRoom> roomSelector = new ItemSelector<WeightedRoom>(seed);
-            
+
             foreach (WeightedRoom room in _endRooms)
                 roomSelector.AddItem(room, room.Weight);
-            
+
             return roomSelector.Roll().Room;
         }
+
+      
     }
 }

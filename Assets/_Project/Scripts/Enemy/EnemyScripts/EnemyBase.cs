@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-/// Summary - 
+/// Summary -
 /// Controls the enemy's state machine, target detection,
 /// attack timing, and death transitions.
 /// Connects to EnemyMovement, Healthbar, Goldilocks,
@@ -13,15 +14,36 @@ public class EnemyBase : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform target;
-    [SerializeField] private EnemyStats stats;
+    [SerializeField] private Stats stats; 
+    [SerializeField] private EnemyAttack[] attacks;
+
+   
+    [Header("Stats")]                                                 
+    [SerializeField] private StatDefinition _detectionRangeStat;        
+    [SerializeField] private StatDefinition _minRangeStat;              
+    [SerializeField] private StatDefinition _maxRangeStat;              
+    [SerializeField] private StatDefinition _moveSpeedStat;             
+    [SerializeField] private StatDefinition _attackDamageStat;        
+    [SerializeField] private StatDefinition _windUpTimeStat;            
+    [SerializeField] private StatDefinition _cooldownTimeStat;          
 
     public EnemyMovement Movement { get; private set; }
-  
-    public EnemyStats Stats => stats;
+
+    public Stats Stats => stats;
     public Health Health { get; private set; }
+
+    
+    public float DetectionRange => ReadStat(_detectionRangeStat, 10f);  
+    public float MinRange => ReadStat(_minRangeStat, 0f);              
+    public float MaxRange => ReadStat(_maxRangeStat, 1f);              
+    public float MoveSpeed => ReadStat(_moveSpeedStat, 5f);           
+    public float AttackDamage => ReadStat(_attackDamageStat, 10f);    
+    public float WindUpTime => ReadStat(_windUpTimeStat, 2f);         
+    public float CooldownTime => ReadStat(_cooldownTimeStat, 3f);     
 
     public IEnemyRange Range { get; private set; }
     public IEnemyLineOfSight LineOfSight { get; private set; }
+    public IReadOnlyList<EnemyAttack> Attacks => attacks;
 
     public Transform Target => target;
     public bool HasTarget => isLockedOn && target != null;
@@ -52,6 +74,9 @@ public class EnemyBase : MonoBehaviour
         Movement = GetComponent<EnemyMovement>();
         Health = GetComponent<Health>();
 
+        if (!stats) stats = GetComponent<Stats>(); 
+        if (stats) Health.SetStats(stats);        
+
         Range = GetComponent(typeof(IEnemyRange)) as IEnemyRange;
 
         LineOfSight =
@@ -64,6 +89,21 @@ public class EnemyBase : MonoBehaviour
         AttackState = new AttackState(this);
         DeadState = new DeadState(this);
         StunnedState = new StunnedState(this);
+
+        // Find all attack components attached to this enemy
+        if (attacks == null || attacks.Length == 0)
+        {
+            attacks = GetComponentsInChildren<EnemyAttack>();
+        }
+
+        // Tell each attack which enemy owns it
+        foreach (EnemyAttack attack in attacks)
+        {
+            if (attack != null)
+            {
+                attack.Initialize(this);
+            }
+        }
     }
 
     // Subscribes to Healthbar's death event.
@@ -72,19 +112,23 @@ public class EnemyBase : MonoBehaviour
         Health.OnDied += HandleDeath;
     }
 
-    // Sets the enemy's initial state based on its health.
+
+
+    // Sets the enemy's initial state.
     private void Start()
     {
         if (target == null)
         {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject player = GameManager.Instance.Player;
             if (player != null)
-                target = player.transform;
+            {
+                CharacterController controller = player.GetComponentInChildren<CharacterController>();
+                target = controller != null ? controller.transform : player.transform;
+            }
         }
-        if (Health.CurrentHealth <= 0f)
-            Die();
-        else
-            ChangeState(IdleState);
+
+        
+        ChangeState(IdleState);
     }
 
     // Detects the player, maintains lock-on, and updates the active state.
@@ -100,7 +144,7 @@ public class EnemyBase : MonoBehaviour
                 target.position
             );
 
-            bool inRange = distance <= stats.DetectionRange;
+            bool inRange = distance <= DetectionRange; 
             bool canSeePlayer = inRange && HasLineOfSight;
 
             isLockedOn = canSeePlayer;
@@ -110,7 +154,7 @@ public class EnemyBase : MonoBehaviour
             isLockedOn = false;
         }
 
-        if(!HasTarget && currentState != IdleState && currentState != StunnedState)
+        if (!HasTarget && currentState != IdleState && currentState != StunnedState)
             ChangeState(IdleState);
 
         currentState?.Tick(Time.deltaTime);
@@ -149,9 +193,9 @@ public class EnemyBase : MonoBehaviour
     // Called by melee parry/combat systems to interupt the current fighting state.
     public void Stun(float duration)
     {
-        if(isDead || duration <= 0f || !HasTarget)
+        if (isDead || duration <= 0f || !HasTarget)
             return;
-        
+
         StunnedState.SetDuration(duration);
         ChangeState(StunnedState);
     }
@@ -166,16 +210,23 @@ public class EnemyBase : MonoBehaviour
         OnEnemyKilled?.Invoke(this);
     }
 
+  
+    private float ReadStat(StatDefinition stat, float fallback)
+    {
+        if (!Application.isPlaying || stats == null || stat == null || !stats.HasStat(stat))
+            return fallback;
+
+        return stats.GetValue(stat);
+    }
+
     // Visualizes the detection radius in Unity's Scene view.
     private void OnDrawGizmosSelected()
     {
-        if (stats == null)
-            return;
-
+       
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(
             transform.position,
-            stats.DetectionRange
+            DetectionRange
         );
     }
 }

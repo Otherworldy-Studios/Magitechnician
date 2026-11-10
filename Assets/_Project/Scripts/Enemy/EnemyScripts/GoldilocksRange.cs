@@ -1,20 +1,19 @@
-
 using UnityEngine;
 
 /// <summary>
 /// Determines whether the enemy is too close, far, or within
-/// its ideal range of the player using distances from EnemyStats.
+/// its ideal range of the player using the MinRange and MaxRange stats.
 /// </summary>
 
 [RequireComponent(typeof(EnemyBase))]
 public class GoldilocksRange : MonoBehaviour, IEnemyRange
 {
-    [SerializeField] private EnemyStats stats;
+  
 
     private EnemyBase enemy;
 
-    public float MinDistance => stats.GoldilocksRangeMin;
-    public float MaxDistance => stats.GoldilocksRangeMax;
+    public float MinDistance => enemy.MinRange;
+    public float MaxDistance => enemy.MaxRange; 
 
     private void Awake()
     {

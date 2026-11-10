@@ -8,6 +8,7 @@ public class Consumable : ScriptableObject, IInventoryItem
     [SerializeField] private string _description;
     [SerializeField] private Sprite _icon;
     [SerializeField] private ItemCategory _category = ItemCategory.Consumable;
+    [SerializeField] private ItemRarity rarity;
     public string DisplayName => _displayName;
     public string Description => _description;
     public Sprite Icon => _icon;
@@ -15,6 +16,8 @@ public class Consumable : ScriptableObject, IInventoryItem
     public List<StatModifier> statModifiers = new();
     public float duration = 0f;
     public int instantHeal = 0;
+    public ItemRarity Rarity => rarity;
+
 
     public void Use(GameObject player)
     {

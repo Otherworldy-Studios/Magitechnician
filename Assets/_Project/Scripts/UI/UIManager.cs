@@ -1,15 +1,17 @@
-using UnityEngine;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
-public class UIManager : MonoBehaviour
+
+
+public class UIManager : MGR<UIManager>
 {
 
-    public static UIManager instance {get; private set;}
+   
     private enum UIStates
     {
         StartMenu,
@@ -35,35 +37,31 @@ public class UIManager : MonoBehaviour
     private UIScreen _activeScreen;
     private bool _cursorVisible;
 
-    private void Awake()
+    protected override void Awake()
     {
-        instance = this;
+        base.Awake();
+        if (Instance != this)
+        {
+            return;
+        }
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
-        
+        if(SceneManager.GetActiveScene().buildIndex != Scenes.MainMenu)
+        {
+            ChangeState(UIStates.Gameplay);
+            HideAllScreens();
+        }
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
+       
     }
 
-    private void Update()
+    [Button, DisableInEditorMode]
+    private void DEBUGChangeUIState(UIStates state)
     {
-        //DEBUG i could make this a switch at this point but idc its debug
-        #if UNITY_EDITOR
-        if (Keyboard.current.jKey.wasPressedThisFrame)
-        {
-            GameOver();
-        }
-        else if (Keyboard.current.mKey.wasPressedThisFrame)
-        {
-            GameWin();
-        }
-        else if (Keyboard.current.gKey.wasPressedThisFrame)
-        {
-            ChangeState(UIStates.StartMenu);
-        }
-        #endif
+        ChangeState(state);
     }
     
     private void ChangeState(UIStates state)
@@ -128,16 +126,17 @@ public class UIManager : MonoBehaviour
     {
         ChangeState(currentState);
     }
-    
-    #endregion
-    
 
+    #endregion
+
+    [Button, DisableInEditorMode]
     private void GameOver()
     {
         HideAllScreens();
         ShowScreen(deathScreen);
     }
 
+    [Button, DisableInEditorMode]
     private void GameWin()
     {
         HideAllScreens();
@@ -160,11 +159,14 @@ public class UIManager : MonoBehaviour
     }
 
     
-    public void HideAllScreens()
+    public void HideAllScreens(bool hideHUD = false)
     {
         foreach (UIScreen screen in screenList)
         {
-            screen.Hide();
+            if (hideHUD || screen is not HUDScreen)
+            {
+                screen.Hide();
+            }
         }
     }
 
@@ -235,6 +237,17 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-    
+
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameOver -= GameOver;
+        GameManager.OnGameWin -= GameWin;
+        GameManager.OnPauseToggle -= HandlePause;
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
+        }
+    }
 
 }

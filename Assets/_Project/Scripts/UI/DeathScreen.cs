@@ -16,7 +16,7 @@ public class DeathScreen : UIScreen
     private void OnHub()
     {
         Debug.Log("On Hub");
-        UIManager.instance.ResetButtonPressed();
+        UIManager.Instance.ResetButtonPressed();
     }
     protected override void OnShown()
     {

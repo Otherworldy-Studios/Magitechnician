@@ -1,44 +1,72 @@
-using UnityEngine;
-using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using System;
-using UnityEngine.InputSystem;
-using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
+using System.Collections.Generic;
+using UnityEngine;
 
-// This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final 
+
+// This class is a MonoBehaviour that manages a collection of stats and their modifiers, allowing for the calculation of final
 // stat values based on base values and applied modifiers.
 public class Stats : MonoBehaviour
 {
     [SerializeField] private StatBlock _statBlock;
     [SerializeField] private List<StatModifier> _modifiers;
-    [SerializeField] private Dictionary<StatDefinition, float> _finalValues;
+    [ShowInInspector, ReadOnly]
+    private Dictionary<StatDefinition, float> _finalValues;
     public event Action<StatDefinition, float> OnStatChanged;
-    public StatDefinition testStat; 
+    public StatDefinition testStat;
 
     public StatModifier TestModifier;
-    public bool debug = true;
 
-    public void DebugMod()
+
+
+    // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
+    private void Awake()
     {
-#if UNITY_EDITOR
-        if (Keyboard.current.mKey.wasPressedThisFrame && debug == true)
-        {
-            AddModifier(TestModifier);
-            
-        }
-        if (Keyboard.current.nKey.wasPressedThisFrame && debug == true)
-        {
-            GetValue(testStat);
-        }
-#endif
+        InitializeStats();
     }
+
+    private void Update()
+    {
+
+        RemoveExpiredModifiers();
+    }
+
+    [Button, DisableInEditorMode]
+    private void AddTestModifier()
+    {
+        Debug.Log($"Adding modifier {TestModifier} to {gameObject.name}.");
+        AddModifier(TestModifier, this); 
+    }
+    [Button, DisableInEditorMode]
+    private void RemoveTestModifier()
+    {
+        RemoveAllFromSource(this); 
+    }
+    [Button, DisableInEditorMode]
+    private void GetTestStatValue()
+    {
+        GetValue(testStat);
+    }
+
+   
+    [Button, DisableInEditorMode]
+    public void ClearAllModifiers()
+    {
+        _modifiers.Clear();
+        for (int i = 0; i < _statBlock.Entries.Count; i++)
+        {
+            Recalculate(_statBlock.Entries[i].Stat);
+        }
+    }
+
+
 
     // This method retrieves the final value of a specific stat. If the stat is not present in the final values dictionary, it logs an error and returns 0.
     public float GetValue(StatDefinition stat)
     {
         if (HasStat(stat))
         {
-            Debug.Log($"Stat {stat.name} has a final value of {_finalValues[stat]}.");
+            
             return _finalValues[stat];
         }
         else
@@ -47,102 +75,154 @@ public class Stats : MonoBehaviour
             return 0f;
         }
     }
+    // This method returns the list of modifiers currently applied to the stats.
+    public List<StatModifier> GetModifiers()
+    {
+        return _modifiers;
+    }
 
     // This method checks if a specific stat is present in the final values dictionary.
     public bool HasStat(StatDefinition stat)
     {
-        return _finalValues.ContainsKey(stat);
+        return stat != null && _finalValues.ContainsKey(stat); // CHANGED: a null stat returns false instead of throwing
     }
 
-    // This method adds a new modifier to the list and recalculates the affected stat to reflect the change in its final value.
-    public void AddModifier(StatModifier modifier)
+    // CHANGED: AddModifier now takes the object that added the modifier (a gun part, charm, or consumable).
+    // It stores a copy of the modifier with Source set, so the asset's own modifier is never changed,
+    // and RemoveAllFromSource(source) can find it later. It returns the copy.
+    // source is optional so existing calls still compile, but without it RemoveAllFromSource can't find the modifier.
+    public StatModifier AddModifier(StatModifier modifier, object source = null)
     {
-        _modifiers.Add(modifier);
-        Recalculate(modifier.Stat);
+        if (modifier == null || modifier.Stat == null)                                  
+        {                                                                               
+            Debug.LogWarning($"Tried to add an empty modifier to {gameObject.name}.");  
+            return null;                                                                
+        }                                                                              
+
+        if (!HasStat(modifier.Stat))                                                    
+        {                                                                               
+            Debug.LogWarning($"{modifier.Stat.name} isn't in the StatBlock on {gameObject.name}. Modifier not added."); 
+            return null;                                                                
+        }                                                                              
+
+        StatModifier copy = new StatModifier                                            
+        {                                                                               
+            Stat = modifier.Stat,                                                       
+            Operation = modifier.Operation,                                             
+            Value = modifier.Value,                                                     
+            Duration = modifier.Duration,                                               
+            Permanent = modifier.Permanent,                                             
+            Source = source                                                             
+        };                                                                              
+
+        _modifiers.Add(copy);                                                          
+        Recalculate(copy.Stat);
+        return copy;                                                                    
     }
 
-    // This method removes a specific modifier from the list and recalculates the affected stat.
+    
     public void RemoveModifier(StatModifier modifier)
     {
-        _modifiers.Remove(modifier);
-        Recalculate(modifier.Stat);
+        if (!_modifiers.Contains(modifier))
+        {
+            Debug.LogWarning($"Modifier {modifier} not found in the list of modifiers for {gameObject.name}. Cannot remove.");
+        }
+        else
+        {
+            _modifiers.Remove(modifier);
+            Recalculate(modifier.Stat);
+            Debug.Log($"Modifier {modifier} removed from {gameObject.name}. Recalculated stat {modifier.Stat.name}.");
+        }
     }
 
     // This method removes all modifiers that originate from a specific source and recalculates the affected stats.
     public void RemoveAllFromSource(object source)
     {
-        List<StatModifier> modifiersToRemove = new List<StatModifier>();
-        for (int i = 0; i < _modifiers.Count; i++)
-        {
-            if (_modifiers[i].Source == source)
-            {
-                modifiersToRemove.Add(_modifiers[i]);
-            }
-        }
+        if (source == null) return; 
 
-        for (int i = 0; i < modifiersToRemove.Count; i++)
+       
+        for (int i = _modifiers.Count - 1; i >= 0; i--)
         {
-            _modifiers.Remove(modifiersToRemove[i]);
-            Recalculate(modifiersToRemove[i].Stat);
+            StatModifier modifier = _modifiers[i];      
+            if (modifier.Source != source) continue;   
+
+            _modifiers.RemoveAt(i);                     
+            Recalculate(modifier.Stat);                 
         }
     }
 
-    // This method updates the duration of each modifier based on the time elapsed since the last frame and removes any that have 
+    // This method updates the duration of each modifier based on the time elapsed since the last frame and removes any that have
     // expired.
     private void RemoveExpiredModifiers()
     {
-        List<StatModifier> expiredModifiers = new List<StatModifier>();
-        for (int i = 0; i < _modifiers.Count; i++)
+        
+        // Each expired modifier recalculates once instead of twice.
+        for (int i = _modifiers.Count - 1; i >= 0; i--)
         {
-            if (_modifiers[i].Duration <= 0f)
-            {
-                expiredModifiers.Add(_modifiers[i]);
-            }
-        }
+            StatModifier modifier = _modifiers[i];      
+            if (modifier.Permanent) continue;           
 
-        for (int i = 0; i < expiredModifiers.Count; i++)
-        {
-            _modifiers.Remove(expiredModifiers[i]);
-            Recalculate(expiredModifiers[i].Stat);
+            modifier.Duration -= Time.deltaTime;        
+            if (modifier.Duration > 0f) continue;       
+
+            _modifiers.RemoveAt(i);                   
+            Recalculate(modifier.Stat);               
         }
     }
 
-    // This method recalculates the final value of a specific stat based on its base value and any applied modifiers. It takes 
-    // into account both additive and multiplicative modifiers and clamps the final value within the defined min/max range for 
+    // This method recalculates the final value of a specific stat based on its base value and any applied modifiers. It takes
+    // into account both additive and multiplicative modifiers and clamps the final value within the defined min/max range for
     // the stat.
     private void Recalculate(StatDefinition stat)
     {
+        if (!HasStat(stat)) return; 
+
         float baseValue = 0f;
         float additiveValue = 0f;
         float multiplicativeValue = 1f;
+        bool hasSet = false;
+        float setValue = 0f;
 
-        for (int i = 0; i < _statBlock.Entries.Count; i++)
+        foreach (StatEntry entry in _statBlock.Entries)
         {
-            if (_statBlock.Entries[i].Stat == stat)
+            if (entry.Stat == stat)
             {
-                baseValue = _statBlock.Entries[i].BaseValue;
+                baseValue = entry.BaseValue;
             }
         }
 
-        for (int i = 0; i < _modifiers.Count; i++)
+        foreach (StatModifier modifier in _modifiers)
         {
-            if (_modifiers[i].Stat == stat)
+            if (modifier.Stat != stat)
             {
-                if (_modifiers[i].Operation == ModifierOperation.Add)
-                {
-                    additiveValue += _modifiers[i].Value;
-                }
-                else
-                {
-                    multiplicativeValue *= _modifiers[i].Value;
-                }
-
+                continue;
             }
-            float finalValue = (baseValue + additiveValue) * multiplicativeValue;
-            finalValue = stat.Clamp(finalValue);
-            _finalValues[stat] = finalValue;
-            OnStatChanged?.Invoke(_statBlock.Entries[i].Stat, _finalValues[_statBlock.Entries[i].Stat]);
-            Debug.Log($"Final value for {stat.name} recalculated: {finalValue}");
+
+            switch (modifier.Operation)
+            {
+                case ModifierOperation.Add:
+                    additiveValue += modifier.Value;
+                    break;
+                case ModifierOperation.Multiply:
+                    multiplicativeValue *= modifier.Value;
+                    break;
+                case ModifierOperation.Set:
+                    // The most recently added Set wins.
+                    hasSet = true;
+                    setValue = modifier.Value;
+                    break;
+            }
+        }
+
+        float finalValue = hasSet ? setValue : (baseValue + additiveValue) * multiplicativeValue;
+        finalValue = stat.Clamp(finalValue);
+
+        _finalValues.TryGetValue(stat, out float oldValue);
+        _finalValues[stat] = finalValue;
+
+        if (!Mathf.Approximately(oldValue, finalValue))
+        {
+            OnStatChanged?.Invoke(stat, finalValue);
         }
     }
 
@@ -156,16 +236,5 @@ public class Stats : MonoBehaviour
             _finalValues[_statBlock.Entries[i].Stat] = _statBlock.Entries[i].BaseValue;
             Recalculate(_statBlock.Entries[i].Stat);
         }
-    }
-
-    // This method is called when the script instance is being loaded. It initializes the stats by calling the InitializeStats method.
-    private void Awake()
-    {
-        InitializeStats();
-    }
-
-    private void Update()
-    {
-        DebugMod();
     }
 }

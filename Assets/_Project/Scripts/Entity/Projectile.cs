@@ -1,5 +1,6 @@
-using System.Net;
+using System;
 using UnityEngine;
+// CHANGED: removed the unused "using System.Net;"
 
 public class Projectile : MonoBehaviour
 {
@@ -7,26 +8,36 @@ public class Projectile : MonoBehaviour
 
     private Vector3 _direction;
     private float _travelTime;
-    /*DamageInfo _damageInfo;
 
-    private DamageInfo _damageInfo;
-    private bool _initialized;
+  
+    private DamageInfo _damageInfo;        
+    private float _speed;                   
+    private float _range;                    
+    private Action<DamageInfo> _onHit;      
+    private bool _initialized;             
 
-    public void Initialize(GameObject attacker)
+   
+    public float Radius => _settings != null ? _settings.Radius : 0f;
+
+    
+    public void Initialize(DamageInfo damageInfo, float speed, float range, Action<DamageInfo> onHit = null)
     {
-        _damageInfo.attacker = attacker;
-        _damageInfo.Damage = _settings.Damage;
+        _damageInfo = damageInfo;
+        _speed = speed;
+        _range = range;
+        _onHit = onHit;
         _initialized = true;
-    }*/
+    }
 
     private void Start()
     {
-        /*if (!_initialized)
+      
+        if (!_initialized)
         {
             Debug.LogError("Projectile was not initialized!");
             Destroy(gameObject);
             return;
-        }*/
+        }
 
         _direction = transform.forward.normalized;
         Destroy(gameObject, 5f); // Just in case
@@ -40,14 +51,14 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         _travelTime += Time.deltaTime;
-        if (_travelTime * _settings.Speed > _settings.MaxDistance)
+        if (_travelTime * _speed > _range) 
         {
             Destroy(gameObject);
             return;
         }
 
         Vector3 oldPos = transform.position;
-        float step = _settings.Speed * Time.deltaTime;
+        float step = _speed * Time.deltaTime; 
         Vector3 newPos = oldPos + _direction * step;
 
         // start a radius behind so we still catch things we're already brushing
@@ -63,19 +74,20 @@ public class Projectile : MonoBehaviour
                 _settings.BulletCollisionLayer,
                 QueryTriggerInteraction.Collide))
         {
-             /*if (_damageInfo.Owner != null && hit.collider.transform.IsChildOf(_damageInfo.Owner.transform))
-             {
-                 transform.position = newPos;
-                 return;
-             }
+            
+            if (_damageInfo.DamageSource != null && hit.collider.transform.IsChildOf(_damageInfo.DamageSource.transform))
+            {
+                transform.position = newPos;
+                return;
+            }
 
             IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
 
-             if (damageable != null)
-             {
-                 damageable.TakeDamage(_damageInfo);
-                 Debug.Log($"Hit damageable: {hit.collider.name}");
-             }*/
+            if (damageable != null)
+            {
+                damageable.TakeDamage(_damageInfo);
+                _onHit?.Invoke(_damageInfo); // CHANGED: lets the gun fire OnDamageDealt
+            }
 
             Destroy(gameObject);
             return;

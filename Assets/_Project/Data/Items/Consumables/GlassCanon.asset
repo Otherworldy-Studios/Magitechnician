@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43cbbaeb46c873143bbe2988fabbdebb, type: 3}
+  m_Name: GlassCanon
+  m_EditorClassIdentifier: Assembly-CSharp::Consumable
+  _displayName: Glass Canon
+  _description: "+35% damage, \u221250% max health for 60 s."
+  _icon: {fileID: 21300000, guid: 23e34554a39a5db4bb12d83b30fadb70, type: 3}
+  _category: 1
+  rarity: 2
+  statModifiers:
+  - Stat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
+    Operation: 1
+    Value: 1.35
+    Duration: 60
+    Permanent: 0
+  - Stat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
+    Operation: 1
+    Value: 0.5
+    Duration: 60
+    Permanent: 0
+  duration: 60
+  instantHeal: 0

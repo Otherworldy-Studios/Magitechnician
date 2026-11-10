@@ -1,13 +1,14 @@
-using System;
 using MoreMountains.Feedbacks;
+using MoreMountains.Tools;
+using Sirenix.OdinInspector;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
-using MoreMountains.Tools;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.MeshOperations;
 
-public class SoundController : MonoBehaviour
+public class SoundController : MGR<SoundController>
 {
     /// <summary>
     /// Sound Class holds the name and SoundData file of a certain SFX, Song, or UI sound
@@ -26,22 +27,14 @@ public class SoundController : MonoBehaviour
     [SerializeField] private Sound[] musicTracks;
     [SerializeField] private Sound[] uiSounds;
 
-    // Instance of SounController class, ensures class remains as singleton
-    private static SoundController _instance;
 
-    private void Awake()
+    protected override void Awake()
     {
-        // Keep class as singleton
-        if (_instance == null)
-            _instance = this;
-        else
+        base.Awake();
+        if (Instance != this)
         {
-            Destroy(gameObject);
             return;
         }
-
-        DontDestroyOnLoad(gameObject);
-
         // Ensures that on awake, each Sound Data in each Sound of each array is matched to the track it should fall under
         foreach (var sfxSound in  sfxSounds)
         {
@@ -60,28 +53,25 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Used to test out various sounds in Play Mode
-    /// </summary>
-    /// <param name="N Key">Plays UI sound in the same position as Sound Manager</param>
-    /// <param name="M Key">Plays Music track in a distinct position in the scene</param>
-    /// <param name="B Key">Plays randomized SFX in a distinct position in the scene</param>
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-    private void Update()
-    {
-        if (Keyboard.current != null)
-        {
-            if (Keyboard.current.nKey.wasPressedThisFrame)
-                PlayUI("UI Click");
-            if (Keyboard.current.mKey.wasPressedThisFrame)
-                PlayMusic("Sewer Theme", new Vector3(-5f, -5f, 5f));
-            if (Keyboard.current.bKey.wasPressedThisFrame)
-                PlaySFX("Hammer Strike", new Vector3(1, 2, -3));
-        }
-    }
-#endif
 
-    
+    [Button, DisableInEditorMode]
+    public void DEBUGPlaySFX(string soundName)
+    {
+        PlaySFX(soundName, transform.position);
+    }
+
+    [Button, DisableInEditorMode]
+    public void DEBUGPlayMusic(string soundName)
+    {
+        PlayMusic(soundName, transform.position);
+    }
+
+    [Button, DisableInEditorMode]
+    public void DEBUGPlayUI(string soundName)
+    {
+        PlayUI(soundName, transform.position);
+    }
+
     // Plays Sound based on the name for each array. A position can be specified for where in the scene the Sound plays.
     
     public void PlaySFX(string soundName, Vector3 atPosition)
@@ -89,13 +79,13 @@ public class SoundController : MonoBehaviour
         Sound s = Array.Find(sfxSounds, sfxSound => sfxSound.name == soundName);
         PlaySound(s, soundName, atPosition);
     }
-
+    
     public void PlayMusic(string soundName, Vector3 atPosition)
     {
         Sound s = Array.Find(musicTracks, musicTrack => musicTrack.name == soundName);
         PlaySound(s, soundName, atPosition);
     }
-
+   
     public void PlayUI(string soundName, Vector3 atPosition)
     {
         Sound s = Array.Find(uiSounds, uiSound => uiSound.name == soundName);

@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,10 +5,19 @@ using UnityEngine.AI;
 public class EnemyMovement : MonoBehaviour
 {
     private NavMeshAgent agent;
+    private EnemyBase enemy; 
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        enemy = GetComponent<EnemyBase>(); 
+    }
+
+   
+    void Update()
+    {
+        if (enemy != null)
+            agent.speed = enemy.MoveSpeed;
     }
 
     public void MoveTo(Vector3 destination)
