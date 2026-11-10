@@ -66,6 +66,12 @@ public class GameManager : MGR<GameManager>
         {
             return;
         }
+
+        if (SceneManager.GetActiveScene().buildIndex != Scenes.MainMenu)
+        {
+            ChangeState(GameState.Playing, force: true);
+        
+        }
         SceneManager.sceneLoaded += InitReferences; //init references after scene load
         UIManager.OnPauseRequested += TogglePause;
         UIManager.OnResetRequested += ResetGame;
@@ -83,7 +89,11 @@ public class GameManager : MGR<GameManager>
         {
             return;
         }
-        ChangeState(GameState.Menu, force: true);
+        if(SceneManager.GetActiveScene().buildIndex == Scenes.MainMenu)
+        {
+            ChangeState(GameState.Menu, force: true);
+        }
+      
         InputManager.Instance.PausePressed += TogglePause;
     }
 
@@ -261,11 +271,11 @@ public class GameManager : MGR<GameManager>
     }
 
     #endregion
-    
-    
+
+
 
     #region StateManagement
-    
+    [Button, DisableInEditorMode]
     /// <summary>
     /// Checks if the newState is even different and denies otherwise, and handles unpausing for entering certain states for the pause menu
     /// switches and calls enter(state) functions

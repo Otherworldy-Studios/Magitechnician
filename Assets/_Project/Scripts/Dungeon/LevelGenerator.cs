@@ -3,6 +3,7 @@ using _Project.Scripts.Dungeon.Utility.System.Collections.Generic;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -36,7 +37,7 @@ namespace _Project.Scripts.Dungeon
             East,
             West
         }
-
+        [SerializeField] private NavMeshSurface navMeshSurface;
         private LinearCongruentialGenerator _random;
         private Dictionary<Direction, Vector3> _directions;
         private Room[,] _roomGrid;
@@ -100,7 +101,7 @@ namespace _Project.Scripts.Dungeon
             _generationChance = _baseGenerationChance;
             
             _roomGrid = new Room[_roomGridHeight, _roomGridWidth];
-
+            navMeshSurface.BuildNavMesh();
             OnMapGenerated += SpawnPlayer; // Todo: Replace with spawning in the GameManager
         }
 

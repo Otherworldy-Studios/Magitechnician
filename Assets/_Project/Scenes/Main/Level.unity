@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: c5b6d00c31adadd4c92c393e22c37ae1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -119,6 +119,70 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &362465733
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 362465735}
+  - component: {fileID: 362465734}
+  m_Layer: 0
+  m_Name: Navmesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &362465734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362465733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 1716d1fab975fab4aa171602872d52a2, type: 2}
+  m_BuildHeightMesh: 0
+--- !u!4 &362465735
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362465733}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.22317, y: -8.69457, z: -22.82215}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &785517784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -237,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.LevelGenerator.LevelGenerator
   shouldPersist: 0
+  navMeshSurface: {fileID: 362465734}
   _roomGridWidth: 9
   _roomGridHeight: 5
   _minCombatRooms: 4
@@ -246,13 +311,19 @@ MonoBehaviour:
   _baseGenerationChance: 100
   _generationChanceDelta: -10
   _startRooms:
-  - _room: {fileID: 3258258008276050672, guid: 7d52a0f428bdfab4e925b4ee99841a98, type: 3}
+  - _room: {fileID: 4975937645677511727, guid: 27ccac66954532a49acf1569bf1f5fdb, type: 3}
+    _weight: 1
+  - _room: {fileID: 4671426233182814026, guid: de39ef2ea97ec7444976d7b9f0df0729, type: 3}
     _weight: 1
   _combatRooms:
-  - _room: {fileID: 3875272336616324006, guid: a7dd220bd15f22e45a88bdef6e629c0f, type: 3}
+  - _room: {fileID: 5478190382994246210, guid: f2db4268560807245b9da39ec96c2c2a, type: 3}
+    _weight: 1
+  - _room: {fileID: 7120266461264190368, guid: 1d32f8e97096fea448fb85aaf4bd7454, type: 3}
+    _weight: 1
+  - _room: {fileID: 4394230894082809392, guid: 68e4a6a3e8c889242b74e735ed46cc20, type: 3}
     _weight: 1
   _endRooms:
-  - _room: {fileID: 3422235425607117657, guid: c72dffbb52b6ef840b4e86bab3a86e18, type: 3}
+  - _room: {fileID: 6948516275836599208, guid: c0fc552d5eed2dc458e81b9681d1c468, type: 3}
     _weight: 1
   _startRoom: {fileID: 0}
   _generatedCombatRooms: []
@@ -392,3 +463,4 @@ SceneRoots:
   - {fileID: 1957998751}
   - {fileID: 1626518896}
   - {fileID: 785517784}
+  - {fileID: 362465735}

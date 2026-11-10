@@ -22,6 +22,8 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private bool _active;
         public bool Active { get { return _active; } set { _active = value; } }
+
+        [SerializeField] public GameObject vfx;
         
         //[SerializeField] If there's only one portal in each room, this isn't really needed
         //private LevelGenerator.Direction _direction;
@@ -37,7 +39,14 @@ namespace _Project.Scripts.Dungeon
         
         void Update()
         {
-            
+            if(Active)
+            {
+                vfx.SetActive(true);
+            }
+            else
+            {
+                vfx.SetActive(false);
+            }
         }
 
         private void OnTriggerEnter(Collider other)

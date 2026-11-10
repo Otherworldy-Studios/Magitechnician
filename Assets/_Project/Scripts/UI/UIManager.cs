@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -45,7 +46,11 @@ public class UIManager : MGR<UIManager>
         }
         screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
         HideAllScreens(); //makes sure the screens are 
-
+        if(SceneManager.GetActiveScene().buildIndex != Scenes.MainMenu)
+        {
+            ChangeState(UIStates.Gameplay);
+            HideAllScreens();
+        }
         GameManager.OnGameOver += GameOver;
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
