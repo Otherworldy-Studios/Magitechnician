@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,6 +46,11 @@ namespace _Project.Scripts.Dungeon
 
         [SerializeField]
         private bool _complete;
+
+        [SerializeField]
+        private List<Spawnpoint> _spawnpoints;
+        
+        public List<Spawnpoint> Spawnpoints { get => _spawnpoints; }
 
         [SerializeField]
         private Portal _portal;
@@ -115,9 +121,10 @@ namespace _Project.Scripts.Dungeon
                 Debug.Log($"{name} has no exit portal"); 
             else
                 _portal.Parent = this;
-        }
 
-      
+            _spawnpoints = GetComponentsInChildren<Spawnpoint>().ToList();
+        }
+        
         public void EnterRoom()
         {
             if (GameManager.HasInstance)
