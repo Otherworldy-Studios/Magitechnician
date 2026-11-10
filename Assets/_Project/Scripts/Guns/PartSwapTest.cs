@@ -4,9 +4,12 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Debug tool: one key lets you swap gun parts at runtime with two keys.
-// "[" moves to the next socket, and "]" cycles through the parts you’ve assigned to that socket.
-// After every press it writes a readout of everything equipped into its own Inspector fields.
+/// <summary>
+/// Old debug tool for swapping gun parts at run time: "[" moves to the next socket, and "]" cycles through the parts
+/// assigned to that socket. After every press it writes a readout of everything equipped into its own Inspector fields.
+/// </summary>
+// INTEGRATION: off the player prefab. Gun.EquipPart and Gun.RemovePart are Inspector buttons now, which replace this.
+// Delete the file in cleanup. It creates its own InputActions, which the input standard no longer allows.
 public class PartSwapTest : MonoBehaviour
 {
     [SerializeField] private Gun _gun;
@@ -28,7 +31,7 @@ public class PartSwapTest : MonoBehaviour
     [SerializeField, TextArea(8, 30)] private string _equippedStats;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-    //Sockets the keys cycle through. Frame isn't here because it isn't equipped through a socket
+    // The sockets the keys cycle through, in order.
     private static readonly GunPartType[] Sockets =
     {
         GunPartType.Barrel,
@@ -41,11 +44,12 @@ public class PartSwapTest : MonoBehaviour
     private InputAction _nextSocketAction;
     private InputAction _nextPartAction;
 
-    private int _currentSocket;
-    private int _currentPart = -1; //-1 here means nothing from this socket's list is equipped yet.
+    private int _currentSocket; // Index into Sockets.
+    private int _currentPart = -1; // Index into the current socket's parts. -1 means nothing from the list is equipped yet.
 
     private GunPartType CurrentSocket => Sockets[_currentSocket];
 
+    /// <summary>Finds the Gun and creates the two key actions from the binding paths.</summary>
     private void Awake()
     {
         if (!_gun)
@@ -57,6 +61,7 @@ public class PartSwapTest : MonoBehaviour
         _nextPartAction = new InputAction("Next Part", InputActionType.Button, _nextPartBinding);
     }
 
+    /// <summary>Listens to and turns on the key actions.</summary>
     private void OnEnable()
     {
         _nextSocketAction.performed += OnNextSocket;
@@ -66,6 +71,7 @@ public class PartSwapTest : MonoBehaviour
         _nextPartAction.Enable();
     }
 
+    /// <summary>Stops listening to and turns off the key actions.</summary>
     private void OnDisable()
     {
         _nextSocketAction.performed -= OnNextSocket;
@@ -75,12 +81,14 @@ public class PartSwapTest : MonoBehaviour
         _nextPartAction.Disable();
     }
 
+    /// <summary>Releases the key actions.</summary>
     private void OnDestroy()
     {
         _nextSocketAction.Dispose();
         _nextPartAction.Dispose();
     }
 
+    /// <summary>Selects the first socket that has parts, and writes the first readout.</summary>
     private void Start()
     {
         if (!_gun)
@@ -90,7 +98,7 @@ public class PartSwapTest : MonoBehaviour
             return;
         }
 
-        // Gun builds itself in Awake, so the default parts are already equipped here.
+        // Gun builds itself in its Start, which may run after this one, so the readout can start empty.
         if (!CanSwap(CurrentSocket))
         {
             SelectNextSocket();
@@ -100,9 +108,10 @@ public class PartSwapTest : MonoBehaviour
         RefreshReadout();
     }
 
-    //adds 1 to _currentSocket and loops back at the end. It skips any socket that the frame doesn’t have or that has an empty array.
-    //It then calls SyncPartIndex, which looks up which part is currently equipped in that socket and points _currentPart at it.
-    //That way the next ] press moves to the other part instead of re-equipping the same one. If nothing from the list is equipped, the index is -1, so the next press lands on element 0.
+    /// <summary>
+    /// Moves to the next socket that has parts, then points the part index at the part already equipped there,
+    /// so the next "]" press moves to another part instead of equipping the same one again.
+    /// </summary>
     private void OnNextSocket(InputAction.CallbackContext context)
     {
         SelectNextSocket();
@@ -112,6 +121,7 @@ public class PartSwapTest : MonoBehaviour
         Debug.Log($"[PartSwapTest] Socket: {CurrentSocket}", this);
     }
 
+    /// <summary>Equips the next part in the current socket's list, looping back to the start.</summary>
     private void OnNextPart(InputAction.CallbackContext context)
     {
         GunPart[] parts = GetParts(CurrentSocket);
@@ -139,7 +149,7 @@ public class PartSwapTest : MonoBehaviour
         RefreshReadout();
     }
 
-    // +1, looping, skipping sockets the frame doesn't have or that have no parts assigned.
+    /// <summary>Moves to the next socket, looping, and skips sockets the gun doesn't have or that have no parts assigned.</summary>
     private void SelectNextSocket()
     {
         for (int i = 0; i < Sockets.Length; i++)
@@ -153,7 +163,7 @@ public class PartSwapTest : MonoBehaviour
         }
     }
 
-    // Points _currentPart at whatever is already equipped, so the next press moves to the other part.
+    /// <summary>Points the part index at whatever is already equipped, so the next press moves to another part.</summary>
     private void SyncPartIndex()
     {
         GunPart[] parts = GetParts(CurrentSocket);
@@ -162,6 +172,7 @@ public class PartSwapTest : MonoBehaviour
         _currentPart = parts != null && equipped ? Array.IndexOf(parts, equipped) : -1;
     }
 
+    /// <summary>True when the gun has the socket and the socket has parts assigned.</summary>
     private bool CanSwap(GunPartType socket)
     {
         GunPart[] parts = GetParts(socket);
@@ -169,6 +180,7 @@ public class PartSwapTest : MonoBehaviour
         return _gun.HasSocket(socket) && parts != null && parts.Length > 0;
     }
 
+    /// <summary>Returns the parts assigned to a socket.</summary>
     private GunPart[] GetParts(GunPartType socket)
     {
         return socket switch
@@ -182,6 +194,7 @@ public class PartSwapTest : MonoBehaviour
         };
     }
 
+    /// <summary>Writes the current socket, the current part, and every equipped part with its values into the readout fields.</summary>
     private void RefreshReadout()
     {
         GunPart current = _gun.GetEquippedPart(CurrentSocket);
@@ -216,7 +229,7 @@ public class PartSwapTest : MonoBehaviour
         _equippedStats = text.ToString();
     }
 
-    // Reads the part type's own [SerializeField] values, so the part scripts don't need public getters.
+    /// <summary>Appends the part class's own serialized values, read by reflection, so the part scripts don't need public getters.</summary>
     private static void AppendStats(StringBuilder text, GunPart part)
     {
         FieldInfo[] fields = part.GetType().GetFields(
@@ -241,6 +254,7 @@ public class PartSwapTest : MonoBehaviour
         }
     }
 
+    /// <summary>Returns the part's name, or its asset name if the name is empty.</summary>
     private static string GetName(GunPart part)
     {
         return string.IsNullOrEmpty(part.PartName) ? part.name : part.PartName;

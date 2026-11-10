@@ -2,15 +2,22 @@ using System;
 using UnityEngine;
 using Unity.Cinemachine;
 
+/// <summary>
+/// Switches between the normal and aiming Cinemachine cameras while Aim is held, and reports aim changes.
+/// </summary>
 public class PlayerCameraController : MonoBehaviour
 {
     [SerializeField] private CinemachineCamera _mainCamera;
     [SerializeField] private CinemachineCamera _aimCamera;
     [SerializeField] private PlayerInput _input;
 
+    /// <summary>True while the aiming camera is active.</summary>
     public bool IsAiming { get; private set; }
+
+    /// <summary>Fires with the new value when IsAiming changes. PlayerAnimator listens.</summary>
     public event Action<bool> OnAimChanged;
 
+    /// <summary>Starts on the normal camera.</summary>
     private void Awake()
     {
         IsAiming = false;
@@ -19,6 +26,7 @@ public class PlayerCameraController : MonoBehaviour
         _aimCamera.Priority = 0;
     }
 
+    /// <summary>Follows the Aim button each frame.</summary>
     private void Update()
     {
         SetAiming(_input.IsAiming);

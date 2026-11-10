@@ -1,7 +1,14 @@
+using System;
 using UnityEngine;
-[System.Serializable]
+using UnityEngine.Serialization;
+
+/// <summary>One row of a StatBlock: a stat and its base value before modifiers.</summary>
+[Serializable]
 public class StatEntry
 {
-    public StatDefinition Stat;
-    public float BaseValue;
+    [SerializeField, FormerlySerializedAs("Stat")] private StatDefinition _stat;
+    [SerializeField, FormerlySerializedAs("BaseValue")] private float _baseValue;
+
+    public StatDefinition Stat => _stat;
+    public float BaseValue => _baseValue;
 }
