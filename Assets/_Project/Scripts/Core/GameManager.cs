@@ -49,6 +49,7 @@ public class GameManager : MGR<GameManager>
     [SerializeField] private Health _playerHealthbar;
     [SerializeField] private GameObject player;
     [SerializeField] private Room[,] currentDungeon;
+    [SerializeField] private RoomCompletionLootPool _lootPool;
 
 
     
@@ -268,6 +269,7 @@ public class GameManager : MGR<GameManager>
     private void StartRun()
     {
         _playerSpawner.OnPlayerSpawned -= StartRun; 
+        _lootPool.ResetObtained(); //make sure the data asset is cleared
         currentDungeon = generator.RoomGrid;
         Room startRoom = generator.StartRoom;
         startRoom.EnterRoom(); 

@@ -32,12 +32,17 @@ public class RoomCompletionLootPool : ScriptableObject
 {
     [SerializeField]
     private List<WeightedReward<GunPart>> _rewards;
-    
-    [SerializeField]
-    private List<WeightedReward<GunPart>> _obtained; // This needs to be wiped manually in the inspector
+
+    [NonSerialized] //CHANGED: unity tries less to save this to the data asset
+    private List<WeightedReward<GunPart>> _obtained = new();
     
     public List<WeightedReward<GunPart>> Obtained { get { return _obtained; } }
 
+    public void ResetObtained()
+    {
+        _obtained.Clear();
+    }
+    
     // This gets really weird when there are multiple rooms rolling at once
     public List<WeightedReward<GunPart>> PickThree()
     {
