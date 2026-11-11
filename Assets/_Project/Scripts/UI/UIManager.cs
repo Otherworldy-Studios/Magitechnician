@@ -1,10 +1,12 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Dungeon;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using _Project.Scripts.Dungeon;
 
 
 
@@ -16,7 +18,8 @@ public class UIManager : MGR<UIManager>
     {
         StartMenu,
         PauseMenu,
-        Gameplay
+        Gameplay,
+        RewardChoice
     }
 
     [SerializeField] private List<UIScreen> screenList;
@@ -55,7 +58,8 @@ public class UIManager : MGR<UIManager>
         GameManager.OnGameWin += GameWin;
         GameManager.OnPauseToggle += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
-       
+        Room.OnRoomCleared += HandleRewards;
+
     }
 
     [Button, DisableInEditorMode]
@@ -81,6 +85,10 @@ public class UIManager : MGR<UIManager>
                 HideAllScreens();
                 ToggleCursor(false);
                 //connecting player UI and the UI manager here might cause issues with not showing it
+                break;
+            case UIStates.RewardChoice:
+                HideAllScreens();
+                ShowScreen(rewardScreen);
                 break;
         }
     }
@@ -136,6 +144,18 @@ public class UIManager : MGR<UIManager>
     {
         HideAllScreens();
         ShowScreen(winScreen);
+    }
+
+    private void HandleRewards(Room room)
+    {
+        Debug.Log("HandleRewards");
+        if (room.RewardOptions.Count == 0)
+        {
+            Debug.Log("no reward options");
+            return;
+        }
+        ChangeState(UIStates.RewardChoice);
+        rewardScreen.ShowChoices(room, room.RewardOptions);
     }
 
     /// <summary>

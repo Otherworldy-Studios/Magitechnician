@@ -67,7 +67,7 @@ namespace _Project.Scripts.Dungeon
         // CHANGED: new. EnterRoom fires OnRoomEntered. OnComplete fires OnRoomCleared once.
         // RoomEncounter listens to OnRoomEntered. Room rewards can listen to OnRoomCleared later.
         public event Action<Room> OnRoomEntered;
-        public event Action<Room> OnRoomCleared;
+        public static event Action<Room> OnRoomCleared; //made static so that listeners dont need to subscribe to individual isntances of rooms
 
         public Room North
         {
@@ -106,6 +106,8 @@ namespace _Project.Scripts.Dungeon
 
         // This should possibly be temporary
         private List<WeightedReward<GunPart>> rewardOptions = new();
+        
+        public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => rewardOptions; 
 
         private void Awake()
         {
@@ -131,15 +133,15 @@ namespace _Project.Scripts.Dungeon
 
         public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
-            bool wasComplete = _complete; // CHANGED
+            if (_complete)
+            {
+                return rewardOptions; //changed the way it prevents the double trigger so that the UI can listen to the roomcleared event better
+            }
+            
             _complete = true;
-
-          
+            
             if (_portal != null && _portal.Connected != null)
                 _portal.Active = true;
-
-            if (!wasComplete)                    // CHANGED
-                OnRoomCleared?.Invoke(this);     // CHANGED
 
             if ((_roomType == RoomType.Combat || force) && _lootPool != null) 
             {
@@ -155,19 +157,20 @@ namespace _Project.Scripts.Dungeon
                     Debug.Log($"{_id} Completion Reward {i + 1}:" +
                               $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
                 }
-
+                
                 rewardOptions = rewards;
-                return rewards;
             }
-
-            return null;
+            
+            OnRoomCleared?.Invoke(this);
+            
+            return rewardOptions; //never returns a null but now it'll return an empty list which is checkable and functionally the same
         }
 
         // This should probably be temporary
         // Picks the reward at an index of options
         // This needs to just be a player pickup thing
         [Button, DisableInEditorMode]
-        void PickReward(int reward)
+        void PickReward(int reward) //made public
         {
             if (rewardOptions == null || reward >= rewardOptions.Count)
                 return;

@@ -35,6 +35,7 @@ public class GameManager : MGR<GameManager>
     public static event Action<bool> OnPauseToggle;
     public event Action<GameState> OnGameStateChanged;
     public event Action<PlayerRoot> OnPlayerRegistered;
+    
 
     public float StartTime { get; private set; }
     public float EndTime { get; private set; }
@@ -47,7 +48,6 @@ public class GameManager : MGR<GameManager>
     [SerializeField] private GameState currentState; //serialized for viewing in editor
     [SerializeField] private Health _playerHealthbar;
     [SerializeField] private GameObject player;
-    [SerializeField] private PH_WaveManager waveManager; //wave manager responsible for spawning in enemies?
     [SerializeField] private Room[,] currentDungeon;
 
 
@@ -83,8 +83,9 @@ public class GameManager : MGR<GameManager>
         UIManager.OnMenuRequested += MainMenu;
         UIManager.OnExitRequested += ExitGame;
         //LevelGenerator.Instance.OnMapGenerated += StartRun;
+        Room.OnRoomCleared += RoomCleared;
         PH_Boss.OnBossDefeated += BossDefeated;
-        PH_WaveManager.OnRoomCleared += RoomCleared;
+        
     }
 
     private void Start()
@@ -283,12 +284,10 @@ public class GameManager : MGR<GameManager>
         RequestGameEnd(RunResult.Victory);
     }
 
-    private void RoomCleared()
+    private void RoomCleared(Room room)
     {
-        //room itself invokes the room clear? wave manager?
-        //allow the doors to open
-        //rewards shou
-
+        Debug.Log("CHECK THIS CHECK THIS CHECK THIS CHECK THIS DONT FORGET");
+        InputManager.Instance.SetMode(InputMode.UI);
     }
 
     /// <summary>
@@ -511,20 +510,6 @@ public class PH_Boss : MonoBehaviour
     private void OnBossDead()
     {
         OnBossDefeated?.Invoke();
-    }
-}
-
-public class PH_WaveManager : MonoBehaviour
-{
-    //needs to be given the spawn points of each room
-    //instantiates/teleports in enemies at the spawn points
-
-    public static event Action OnRoomCleared;
-
-
-    private void OnRoomCompleted()
-    {
-        OnRoomCleared?.Invoke();
     }
 }
 

@@ -106,7 +106,14 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_item != null && _tooltip != null) _tooltip.Show(_item);
+        Debug.Log(
+            $"Hovered {name}, Item: {_item != null}, Tooltip: {_tooltip != null}"
+        );
+        if (_item != null && _tooltip != null)
+        {
+            _tooltip.Show(_item);
+        }
+            
     }
 
     public void OnPointerExit(PointerEventData eventData)
