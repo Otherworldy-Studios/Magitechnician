@@ -3,9 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using _Project.Scripts.Dungeon;
 using TMPro;
-using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 /// <summary>
 /// The screen for picking one of the gun parts a cleared room rolled. Only has a Resume button so far; ShowChoices and
@@ -13,52 +11,72 @@ using UnityEngine.UI;
 /// </summary>
 public class RewardScreen : UIScreen
 {
-    [SerializeField] private Button resumeButton;
+    [SerializeField, FormerlySerializedAs("resumeButton")]
+    private Button _resumeButton;
+
     [SerializeField] private ItemGridUI itemGrid;
     [SerializeField] private ItemSlotUI itemSlot1;
     [SerializeField] private ItemSlotUI itemSlot2;
     [SerializeField] private ItemSlotUI itemSlot3;
-    protected RoomCompletionLootPool _lootPool;
-    protected Gun _playerGun;
-    protected Room _room;
-    
-    
-
-    //item currently selected shows the text
-
-    //send signal to players gun to give them the item
-    
-    [SerializeField, FormerlySerializedAs("resumeButton")] private Button _resumeButton;
 
     protected RoomCompletionLootPool _lootPool; // The pool the shown parts came from. Not set yet.
     protected Gun _playerGun;                   // The gun the picked part goes on. Not set yet.
+    protected Room _room;
+
+    //item currently selected shows the text
+    //send signal to players gun to give them the item
 
     /// <summary>Connects the Resume button.</summary>
     private void Awake()
     {
         _resumeButton.onClick.AddListener(OnResume);
+        itemGrid.OnSelectionChanged += HandleSelectionChanged;
     }
 
-    private void OnResume() //handles all the things after picking a screen
+    private void HandleSelectionChanged(ItemSlotUI selectedSlot)
+    {
+        if (_room != null || selectedSlot != null)
+        {
+            return;
+        }
+
+        if (selectedSlot == itemSlot1) //wish i could switch statement this
+        {
+            Pick(0);
+        }
+        else if (selectedSlot == itemSlot2)
+        {
+            Pick(1);
+        }
+        else if (selectedSlot == itemSlot3)
+        {
+            Pick(2);
+        }
+            
+    }
+
+    /// <summary>Resume button. Closes the screen and unpauses.</summary>
+    private void OnResume()
     {
         //send info to GM about selected item, GM links to player about the item
         itemSlot1.Clear();
         itemSlot2.Clear();
         itemSlot3.Clear();
         //no clear method for the grid?
-        UIManager.Instance.ResumeButtonPressed(); 
+        UIManager.Instance.ResumeButtonPressed();
     }
 
+    /// <summary>Will show the rolled parts. Empty until task 7.</summary>
     public void ShowChoices(Room room, IReadOnlyList<WeightedReward<GunPart>> rewards) //comedically long type
     {
         _room = room;
         _lootPool = room.LootPool;
-        
+
         //extract the items from the rewards
         IInventoryItem item1 = rewards[0].Item;
         IInventoryItem item2 = rewards[1].Item;
         IInventoryItem item3 = rewards[2].Item;
-        
+
         //link each item slot and convert all the data
         itemSlot1.SetItem(item1); //set it in the actual UI
         itemSlot2.SetItem(item2);
@@ -66,24 +84,11 @@ public class RewardScreen : UIScreen
         itemGrid.Register(itemSlot1); //takes care of tooltip and selecting
         itemGrid.Register(itemSlot2);
         itemGrid.Register(itemSlot3);
-        
-        
-        
-    /// <summary>Resume button. Closes the screen and unpauses.</summary>
-    private void OnResume()
-    {
-        UIManager.Instance.ResumeButtonPressed();
-    }
-
-    /// <summary>Will show the rolled parts. Empty until task 7.</summary>
-    public void ShowChoices()
-    {
     }
 
     /// <summary>Will equip the chosen part and return the others to the pool. Empty until task 7.</summary>
     private void Pick(int index)
     {
-        //_room.PickReward(index);
-        
+        Debug.Log($"Selected reward {index}: {_room.RewardOptions[index].Item.PartName}");
     }
 }

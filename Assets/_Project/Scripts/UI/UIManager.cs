@@ -5,9 +5,6 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using _Project.Scripts.Dungeon;
-
-
 using UnityEngine.Serialization;
 
 /// <summary>
@@ -77,7 +74,6 @@ public class UIManager : MGR<UIManager>
         GameManager.OnPauseToggled += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
         Room.OnRoomCleared += HandleRewards;
-
     }
 
     /// <summary>Debug: switches to a UI state.</summary>
@@ -108,7 +104,7 @@ public class UIManager : MGR<UIManager>
                 break;
             case UIStates.RewardChoice:
                 HideAllScreens();
-                ShowScreen(rewardScreen);
+                ShowScreen(_rewardScreen);
                 break;
         }
     }
@@ -182,14 +178,9 @@ public class UIManager : MGR<UIManager>
             return;
         }
         ChangeState(UIStates.RewardChoice);
-        rewardScreen.ShowChoices(room, room.RewardOptions);
+        _rewardScreen.ShowChoices(room, room.RewardOptions);
     }
 
-    /// <summary>
-    /// Shows any given UI screen and handles cursor visiblity
-    /// </summary>
-    /// <param name="givenScreen">Which screen to be shown</param>
-    public void ShowScreen(UIScreen givenScreen) 
     /// <summary>Shows a screen and sets the cursor to match it.</summary>
     /// <param name="givenScreen">Which screen to show.</param>
     public void ShowScreen(UIScreen givenScreen)
@@ -286,6 +277,8 @@ public class UIManager : MGR<UIManager>
         GameManager.OnGameLost -= GameOver;
         GameManager.OnGameWon -= GameWin;
         GameManager.OnPauseToggled -= HandlePause;
+        Room.OnRoomCleared -= HandleRewards;
+
         if (GameManager.HasInstance)
         {
             GameManager.Instance.OnGameStateChanged -= HandleStateChanged;

@@ -37,26 +37,20 @@ public enum RarityChance
 public class RoomCompletionLootPool : ScriptableObject
 {
     [SerializeField]
-    private List<WeightedReward<GunPart>> _rewards;
+    private List<WeightedReward<GunPart>> _rewards; // Every part this pool can give.
 
     [NonSerialized] //CHANGED: unity tries less to save this to the data asset
     private List<WeightedReward<GunPart>> _obtained = new();
-    
+
+    /// <summary>Parts already rolled. Room.PickReward removes the parts that weren't picked.</summary>
     public List<WeightedReward<GunPart>> Obtained { get { return _obtained; } }
 
     public void ResetObtained()
     {
         _obtained.Clear();
     }
-    
+
     // This gets really weird when there are multiple rooms rolling at once
-    private List<WeightedReward<GunPart>> _rewards; // Every part this pool can give.
-
-    [SerializeField]
-    private List<WeightedReward<GunPart>> _obtained; // Parts already rolled. Clear this by hand in the Inspector.
-
-    /// <summary>Parts already rolled. Room.PickReward removes the parts that weren't picked.</summary>
-    public List<WeightedReward<GunPart>> Obtained { get { return _obtained; } }
 
     /// <summary>
     /// Rolls up to three parts that haven't been obtained, weighted by rarity, and adds them to Obtained.

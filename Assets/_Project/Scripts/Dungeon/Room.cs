@@ -72,9 +72,9 @@ namespace _Project.Scripts.Dungeon
         // RoomRewards will listen to OnRoomCleared to open the reward screen (task 7).
         /// <summary>Fires each time the player enters this room, with this room.</summary>
         public event Action<Room> OnRoomEntered;
-        public static event Action<Room> OnRoomCleared; //made static so that listeners dont need to subscribe to individual isntances of rooms
+
         /// <summary>Fires once, the first time the room completes, with this room.</summary>
-        public event Action<Room> OnRoomCleared;
+        public static event Action<Room> OnRoomCleared; //made static so that listeners dont need to subscribe to individual isntances of rooms
 
         public Room North
         {
@@ -113,11 +113,10 @@ namespace _Project.Scripts.Dungeon
         public bool Complete { get => _complete; }
 
         // This should possibly be temporary
-        private List<WeightedReward<GunPart>> rewardOptions = new();
-        
-        public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => rewardOptions; 
         // The three parts rolled by the last OnComplete. Temporary until RoomRewards handles rewards (task 7).
         private List<WeightedReward<GunPart>> _rewardOptions = new();
+
+        public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => _rewardOptions;
 
         /// <summary>Finds the exit portal and tells it which room it belongs to.</summary>
         private void Awake()
@@ -153,27 +152,18 @@ namespace _Project.Scripts.Dungeon
         [Button, DisableInEditorMode]
         public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
+            // INTEGRATION: new, so OnRoomCleared fires only once.
             if (_complete)
             {
-                return rewardOptions; //changed the way it prevents the double trigger so that the UI can listen to the roomcleared event better
+                return _rewardOptions; //changed the way it prevents the double trigger so that the UI can listen to the roomcleared event better
             }
-            
-            _complete = true;
-            
-            if (_portal != null && _portal.Connected != null)
-                _portal.Active = true;
 
-            if ((_roomType == RoomType.Combat || force) && _lootPool != null) 
-            bool wasComplete = _complete; // INTEGRATION: new, so OnRoomCleared fires only once.
             _complete = true;
 
             // INTEGRATION: was "_portal.Active = true". Skips rooms without a portal, and leaves the End room's portal off,
             // because the End room's portal has no connected room.
             if (_portal != null && _portal.Connected != null)
                 _portal.Active = true;
-
-            if (!wasComplete)
-                OnRoomCleared?.Invoke(this);
 
             if ((_roomType == RoomType.Combat || force) && _lootPool != null) // INTEGRATION: added the loot pool check.
             {
@@ -187,16 +177,13 @@ namespace _Project.Scripts.Dungeon
                     Debug.Log($"{_id} Completion Reward {i + 1}:" +
                               $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
                 }
-                
-                rewardOptions = rewards;
 
                 _rewardOptions = rewards;
-                return rewards;
             }
-            
+
             OnRoomCleared?.Invoke(this);
-            
-            return rewardOptions; //never returns a null but now it'll return an empty list which is checkable and functionally the same
+
+            return _rewardOptions; //never returns a null but now it'll return an empty list which is checkable and functionally the same
         }
 
         /// <summary>
@@ -206,8 +193,7 @@ namespace _Project.Scripts.Dungeon
         /// <param name="reward">0, 1, or 2.</param>
         // INTEGRATION: the 1, 2, and 3 debug keys became this Inspector button.
         [Button, DisableInEditorMode]
-        void PickReward(int reward) //made public
-        private void PickReward(int reward)
+        public void PickReward(int reward) //made public
         {
             if (_rewardOptions == null || reward >= _rewardOptions.Count)
                 return;

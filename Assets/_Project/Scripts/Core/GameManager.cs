@@ -49,7 +49,6 @@ public class GameManager : MGR<GameManager>
     // because the Hub and the Dungeon each create their own player.
     /// <summary>Fires when a scene's player registers, with its PlayerRoot.</summary>
     public event Action<PlayerRoot> OnPlayerRegistered;
-    
 
     /// <summary>Time.time when the current run started.</summary>
     public float StartTime { get; private set; }
@@ -65,11 +64,8 @@ public class GameManager : MGR<GameManager>
     /// <summary>The registered player's root object, the one with PlayerRoot.</summary>
     public GameObject Player => _player;
 
-    [SerializeField] private GameState currentState; //serialized for viewing in editor
-    [SerializeField] private Health _playerHealthbar;
-    [SerializeField] private GameObject player;
-    [SerializeField] private Room[,] currentDungeon;
     [SerializeField] private RoomCompletionLootPool _lootPool;
+
     // INTEGRATION: new. Carries crystals and charms between scenes. LoadScene saves into it and RegisterPlayer loads from it.
     /// <summary>Progress kept between runs and scenes for this play session.</summary>
     public PersistentProgress Progress { get; private set; } = new PersistentProgress();
@@ -80,8 +76,6 @@ public class GameManager : MGR<GameManager>
     [SerializeField, FormerlySerializedAs("_playerHealthbar")] private Health _playerHealth;
     [Tooltip("The registered player's root object. Set by RegisterPlayer.")]
     [SerializeField, FormerlySerializedAs("player")] private GameObject _player; // INTEGRATION: set by RegisterPlayer instead of GameObject.Find.
-    [Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
-    [SerializeField, FormerlySerializedAs("waveManager")] private PH_WaveManager _waveManager;
 
     private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
     private bool _hasSavedProgress;    // INTEGRATION: new. False until the first save, so the first player keeps the values set on its prefab.
@@ -115,7 +109,6 @@ public class GameManager : MGR<GameManager>
         //LevelGenerator.Instance.OnMapGenerated += StartRun;
         Room.OnRoomCleared += RoomCleared;
         PH_Boss.OnBossDefeated += BossDefeated;
-        
     }
 
     /// <summary>Enters the Menu state when the game starts in the menu, and listens to the pause key.</summary>
@@ -317,12 +310,10 @@ public class GameManager : MGR<GameManager>
     /// </summary>
     private void StartRun()
     {
-        _playerSpawner.OnPlayerSpawned -= StartRun; 
-        _lootPool.ResetObtained(); //make sure the data asset is cleared
-        currentDungeon = generator.RoomGrid;
-        Room startRoom = generator.StartRoom;
-        startRoom.EnterRoom(); 
         _playerSpawner.OnPlayerSpawned -= StartRun; // INTEGRATION: listens to PlayerSpawner instead of LevelGenerator.OnMapGenerated.
+
+        _lootPool.ResetObtained(); //make sure the data asset is cleared
+
         _currentDungeon = _generator.RoomGrid;
         Room startRoom = _generator.StartRoom;
         // INTEGRATION: was "CurrentRoom = startRoom". EnterRoom calls ChangeRoom and fires the room's OnRoomEntered,
@@ -341,13 +332,11 @@ public class GameManager : MGR<GameManager>
         RequestGameEnd(RunResult.Victory);
     }
 
+    /// <summary>Placeholder for room clears. Empty: rooms clear through Room.OnRoomCleared now.</summary>
     private void RoomCleared(Room room)
     {
         Debug.Log("CHECK THIS CHECK THIS CHECK THIS CHECK THIS DONT FORGET");
         InputManager.Instance.SetMode(InputMode.UI);
-    /// <summary>Placeholder for room clears. Empty: rooms clear through Room.OnRoomCleared now.</summary>
-    private void RoomCleared()
-    {
     }
 
     /// <summary>Starts a run by loading the Level scene. RunStartPortal calls this from the Hub.</summary>
