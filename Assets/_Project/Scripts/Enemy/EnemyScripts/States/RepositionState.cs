@@ -2,80 +2,85 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-/// Summary -
-/// Moves the enemy away from the player when too close.
-/// Uses the Goldilocks range and NavMesh to find a
-/// preferred position, then returns to ChaseState.
+/// <summary>
+/// Moves the enemy away from the player when too close. Uses the Goldilocks range and NavMesh to find a preferred position, then returns to ChaseState.
+/// </summary>
 public class RepositionState : IEnemyState
 {
-    private readonly EnemyBase enemy;
+    private readonly EnemyBase _enemy;
 
-    private const float SampleRadius = 2f;
-    private const float RepathInterval = 0.25f;
+    private const float SampleRadius = 2f;      // How far from the wanted spot to look for a point on the NavMesh.
+    private const float RepathInterval = 0.25f; // Seconds between new destinations.
 
-    private float nextRepathTime;
+    private float _nextRepathTime; // Time.time of the next destination update.
 
+    /// <summary>Creates the state for one enemy. EnemyBase.Awake calls this.</summary>
     public RepositionState(EnemyBase enemy)
     {
-        this.enemy = enemy;
+        _enemy = enemy;
     }
-    // Allows immediate position recalculation and stops current movement.
+
+    /// <summary>Allows immediate position recalculation and stops current movement.</summary>
     public void Enter()
     {
-        nextRepathTime = 0f;
-        enemy.Movement.StopMoving();
+        _nextRepathTime = 0f;
+        _enemy.Movement.StopMoving();
     }
-    // Checks the preferred range and calculates a new NavMesh destination.
+
+    /// <summary>
+    /// Goes back to Chase when the target is too far, or in range and in sight. Otherwise moves to the point
+    /// halfway between MinDistance and MaxDistance from the target, on the side away from it.
+    /// </summary>
     public void Tick(float dt)
     {
-        if (!enemy.HasTarget)
+        if (!_enemy.HasTarget)
         {
-            enemy.ChangeState(enemy.IdleState);
+            _enemy.ChangeState(_enemy.IdleState);
             return;
         }
 
-        RangeStatus status = enemy.CurrentRange;
+        RangeStatus status = _enemy.CurrentRange;
 
         if (status == RangeStatus.TooFar)
         {
-            enemy.ChangeState(enemy.ChaseState);
+            _enemy.ChangeState(_enemy.ChaseState);
             return;
         }
 
         if (status == RangeStatus.InRange &&
-            enemy.HasLineOfSight)
+            _enemy.HasLineOfSight)
         {
-            enemy.ChangeState(enemy.ChaseState);
+            _enemy.ChangeState(_enemy.ChaseState);
             return;
         }
 
-        if (enemy.Range == null)
+        if (_enemy.Range == null)
         {
-            enemy.Movement.StopMoving();
+            _enemy.Movement.StopMoving();
             return;
         }
 
-        if (Time.time < nextRepathTime)
+        if (Time.time < _nextRepathTime)
             return;
 
-        nextRepathTime = Time.time + RepathInterval;
+        _nextRepathTime = Time.time + RepathInterval;
 
         Vector3 away =
-            enemy.transform.position - enemy.Target.position;
+            _enemy.transform.position - _enemy.Target.position;
 
         away.y = 0f;
 
         if (away.sqrMagnitude < 0.001f)
-            away = -enemy.transform.forward;
+            away = -_enemy.transform.forward;
 
         away.Normalize();
 
         float preferredDistance =
-            (enemy.Range.MinDistance +
-             enemy.Range.MaxDistance) * 0.5f;
+            (_enemy.Range.MinDistance +
+             _enemy.Range.MaxDistance) * 0.5f;
 
         Vector3 desiredPosition =
-            enemy.Target.position +
+            _enemy.Target.position +
             away * preferredDistance;
 
         if (NavMesh.SamplePosition(
@@ -84,14 +89,15 @@ public class RepositionState : IEnemyState
                 SampleRadius,
                 NavMesh.AllAreas))
         {
-            enemy.Movement.MoveTo(hit.position);
+            _enemy.Movement.MoveTo(hit.position);
         }
         else
         {
-            enemy.Movement.StopMoving();
+            _enemy.Movement.StopMoving();
         }
     }
 
+    /// <summary>Does nothing.</summary>
     public void Exit()
     {
     }
