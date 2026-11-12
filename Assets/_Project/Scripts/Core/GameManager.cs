@@ -74,9 +74,12 @@ public class GameManager : MGR<GameManager>
     [SerializeField, FormerlySerializedAs("_playerHealthbar")] private Health _playerHealth;
     [Tooltip("The registered player's root object. Set by RegisterPlayer.")]
     [SerializeField, FormerlySerializedAs("player")] private GameObject _player; // INTEGRATION: set by RegisterPlayer instead of GameObject.Find.
-    [Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
-    [SerializeField, FormerlySerializedAs("waveManager")] private PH_WaveManager _waveManager;
-
+    //[Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
+    //[SerializeField, FormerlySerializedAs("waveManager")] private PH_WaveManager _waveManager;
+    [Tooltip("The wave manager that handles enemies spawning in rooms.")]
+    [SerializeField]
+    private WaveManager _waveManager;
+    
     private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
     private bool _hasSavedProgress;    // INTEGRATION: new. False until the first save, so the first player keeps the values set on its prefab.
     private bool _isPaused;            // True while the game is paused. Pausing is a flag, not a GameState.
@@ -107,7 +110,6 @@ public class GameManager : MGR<GameManager>
         UIManager.OnMenuRequested += MainMenu;
         UIManager.OnExitRequested += ExitGame;
         PH_Boss.OnBossDefeated += BossDefeated;
-        PH_WaveManager.OnRoomCleared += RoomCleared;
     }
 
     /// <summary>Enters the Menu state when the game starts in the menu, and listens to the pause key.</summary>

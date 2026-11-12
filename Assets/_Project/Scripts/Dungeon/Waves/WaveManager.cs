@@ -30,6 +30,7 @@ public class WaveManager : MGR<WaveManager>
     public event Action<int> OnWaveStarted;
     public event Action<int> OnWaveCompleted;
     public event Action<EnemyBase> OnBossSpawned;
+    public event Action<Room> OnRoomCleared;
     
     override protected void Awake()
     {
@@ -45,7 +46,7 @@ public class WaveManager : MGR<WaveManager>
     {
         foreach (Room room in LevelGenerator.Instance.RoomGrid)
         {
-            if (room != null)
+            if (room != null && room.Type != Room.RoomType.Start)
                 room.OnRoomEntered += HandlePlayerEntered;
         }
     }
@@ -107,9 +108,12 @@ public class WaveManager : MGR<WaveManager>
         {
             OnWaveCompleted?.Invoke(_currentWave);
             _currentWave++;
-            
+
             if (_currentWave >= _waves.Count)
+            {
                 _currentRoom.OnComplete();
+                OnRoomCleared?.Invoke(_currentRoom);
+            }
         }
     }
 
