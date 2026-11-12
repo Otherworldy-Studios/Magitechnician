@@ -24,66 +24,14 @@
     "_maxPreviewCountInEditMode": 200,
     "_unsavedChangesAction": 0,
     "_prefabCountDict": {
-        "_keys": [
-            "719f872211fe4e041a3971b0713d554b",
-            "cf65c08ff4650764291a7092c4db5e22",
-            "2dcc2234330e2af41970168fc76d5ac8",
-            "22a05a849fafafa4a91631ddc9a80734",
-            "38af6319ffe44a4459554b28f1888275",
-            "02efdef403ecbdf44a8d5218f8bf6999",
-            "791d8f422da404042a7b43fc48eadcb8",
-            "061cb3c332b609645944473ae3e5ca43",
-            "9e5cdc9faa50c5d4b81aa8c55c931cae",
-            "8927d3e40e772e14782cbdf1f94c882e",
-            "89c4fbcfe06d34e4ab8e2d4c9b436c33",
-            "37e0dfc4890865b4c8a0bc265d15acc0",
-            "e1d50035830f94242b5df5dbb34c986d",
-            "52bdb0270cea404479b32047a806a2ea",
-            "bdf601b513a307d4b866f26e11993700",
-            "cf91a87dff8a94c4c913106c050c1e8f",
-            "1883e702ac93b2e4897a13a19a164d48",
-            "6260e5ed6d3edfc469f216ef9a00f03b",
-            "e03f8a4b2fa8f4c4bbf36141899c7392",
-            "c0481adccae4c264bbb77d39176b29fa",
-            "0525711aa1fa4614a994cb313bff51e5",
-            "bed273fb82afbbb4698fc4107c10221c",
-            "650747b91b6de7f4387894fa8252721d",
-            "595cc241e259730498bf8ffd71b50f31",
-            "d455067590177044fbe07fdefb213db0"
-        ],
-        "_values": [
-            2286,
-            87,
-            1,
-            3,
-            2,
-            3,
-            10,
-            87,
-            118,
-            106,
-            127,
-            187,
-            241,
-            104,
-            26,
-            107,
-            30,
-            14,
-            25,
-            50,
-            15,
-            28,
-            18,
-            28,
-            31
-        ]
+        "_keys": [],
+        "_values": []
     },
     "_paletteManager": {
-        "_selectedBrushIdx": 23,
+        "_selectedBrushIdx": -1,
         "_showBrushName": false,
         "_viewList": false,
-        "_showTabsInMultipleRows": true,
+        "_showTabsInMultipleRows": false,
         "_iconSize": 64,
         "_selectedPaletteId": -1
     },
@@ -242,9 +190,9 @@
         "_unsavedProfile": {
             "_moduleSizeType": 1,
             "_moduleSize": {
-                "x": 5.000312328338623,
-                "y": 0.2615390419960022,
-                "z": 5.000380516052246
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             },
             "_subtractBrushOffset": false,
             "_spacing": {
@@ -550,9 +498,9 @@
         "_unsavedProfile": {
             "_moduleSizeType": 1,
             "_moduleSize": {
-                "x": 0.5639971494674683,
-                "y": 5.0,
-                "z": 5.0
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             },
             "_subtractBrushOffset": false,
             "_spacing": {
@@ -565,7 +513,7 @@
                 "_sign": 1
             },
             "_forwardAxis": {
-                "_axis": 0,
+                "_axis": 2,
                 "_sign": 1
             },
             "_paintTool": {
@@ -852,9 +800,9 @@
         "_unsavedProfile": {
             "_moduleSizeType": 1,
             "_moduleSize": {
-                "x": 0.5639971494674683,
-                "y": 5.0,
-                "z": 5.0
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             },
             "_subtractBrushOffset": false,
             "_spacing": {
@@ -1003,165 +951,7 @@
             }
         ],
         "_selectedSizeName": "Default",
-        "_sceneItems": [
-            {
-                "_sceneGUID": "5fbafcba7e8a96748839af0ab82f5870",
-                "_occupiedCells": [
-                    {
-                        "_center": {
-                            "x": -187.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    },
-                    {
-                        "_center": {
-                            "x": -182.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    },
-                    {
-                        "_center": {
-                            "x": -177.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    },
-                    {
-                        "_center": {
-                            "x": -172.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    },
-                    {
-                        "_center": {
-                            "x": -167.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    },
-                    {
-                        "_center": {
-                            "x": -162.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    },
-                    {
-                        "_center": {
-                            "x": -157.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    },
-                    {
-                        "_center": {
-                            "x": -152.49969482421876,
-                            "y": 11.36212158203125,
-                            "z": 189.7848663330078
-                        },
-                        "_size": {
-                            "x": 5.0,
-                            "y": 5.0,
-                            "z": 0.5639966130256653
-                        },
-                        "_rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "_brushId": 639297964037248604
-                    }
-                ]
-            }
-        ]
+        "_sceneItems": []
     },
     "_pinManager": {
         "_profileKeys": [
@@ -1758,7 +1548,7 @@
                 "z": 0.0
             },
             "_spacingType": 0,
-            "_minSpacing": 4.017827987670898,
+            "_minSpacing": 1.0,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_maxHeightFromCenter": 2.0,
@@ -2089,7 +1879,7 @@
                 "z": 0.0
             },
             "_spacingType": 0,
-            "_minSpacing": 0.2604212760925293,
+            "_minSpacing": 1.0,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_simData": {
@@ -2108,7 +1898,7 @@
                 "_tempLayer": 0,
                 "_ignoreSceneColliders": false
             },
-            "_height": 0.715949535369873,
+            "_height": 10.0,
             "_tempCollidersAction": 2
         },
         "_surfaceDistanceSensitivity": 1.0
@@ -4048,24 +3838,24 @@
             "_snappingOn": {
                 "x": true,
                 "y": true,
-                "z": true
+                "z": false
             },
             "_visibleGrid": false,
             "_gridOn": {
                 "x": false,
-                "y": true,
-                "z": false
+                "y": false,
+                "z": true
             },
-            "_lockedGrid": true,
+            "_lockedGrid": false,
             "_boundsSnapping": false,
             "_step": {
-                "x": 5.0,
-                "y": 5.0,
-                "z": 5.0
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
             },
             "_origin": {
-                "x": 5.000312328338623,
-                "y": 3.86212158203125,
+                "x": 0.0,
+                "y": 0.0,
                 "z": 0.0
             },
             "_rotation": {

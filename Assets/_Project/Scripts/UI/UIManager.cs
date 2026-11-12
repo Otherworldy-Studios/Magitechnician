@@ -143,7 +143,12 @@ public class UIManager : MGR<UIManager>
 
     public void BackButtonPressed()
     {
-        ChangeState(currentState);
+        ChangeState(_currentState);
+    }
+
+    public void MouseSensitivityChanged(float newSensitivity)
+    {
+        CameraTargetController.
     }
 
     #endregion
