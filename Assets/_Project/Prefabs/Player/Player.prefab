@@ -237,7 +237,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4521514832301540837}
-  - component: {fileID: 1993322130270300342}
   m_Layer: 7
   m_Name: Camera Holder
   m_TagString: Untagged
@@ -264,28 +263,6 @@ Transform:
   - {fileID: 1298366828220030050}
   m_Father: {fileID: 4285462192350137379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1993322130270300342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 672291082853233845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c05d2e1b6c371b941980900d29f36d1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAimController
-  _camera: {fileID: 2285013190888354012}
-  _muzzle: {fileID: 2854997375581094083}
-  _cameraController: {fileID: 8946386472445388545}
-  _impactDot: {fileID: 3617950425623483312}
-  _combatState: {fileID: 8879478622747076826}
-  _maxDistance: 100
-  _maxAimAngle: 15
-  _hitMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1 &1654653529879858094
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,6 +644,7 @@ MonoBehaviour:
   _playerStats: {fileID: 2538457442136657555}
   _gunStats: {fileID: 0}
   _health: {fileID: 2470234422445426739}
+  _onlyDuringRun: 1
 --- !u!114 &3692322850074084798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1679,7 +1657,7 @@ Transform:
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.0000000514953, z: 0, w: 1}
-  m_LocalPosition: {x: 1.633, y: 0.6259999, z: -0.738}
+  m_LocalPosition: {x: 1.403, y: 0.6259999, z: -1.6879998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
