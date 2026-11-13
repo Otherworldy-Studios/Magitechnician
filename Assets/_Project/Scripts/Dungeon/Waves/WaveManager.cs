@@ -9,13 +9,10 @@ public class WaveManager : MGR<WaveManager>
 {
     [Header("Wave Manager Fields")]
     [SerializeField]
-    private List<Wave> _waves;
+    private List<WaveData> _waves;
     
     [SerializeField]
     private Room _currentRoom;
-    
-    [SerializeField] 
-    private int _currentWave;
 
     [SerializeField]
     private int _maxAlive;
@@ -24,11 +21,17 @@ public class WaveManager : MGR<WaveManager>
     private float minSpawnDistance;
 
     [Header("Debug (Do not edit)")]
+    [SerializeField] 
+    private int _currentWave;
+    
     [SerializeField]
     private List<EnemyBase> _alive;
+
+    [SerializeField]
+    private bool _spawningDone;
     
     public event Action<int> OnWaveStarted;
-    public event Action<int> OnWaveCompleted;
+    public event Action OnWaveCompleted;
     public event Action<EnemyBase> OnBossSpawned;
     public event Action<Room> OnRoomCleared;
     
@@ -36,25 +39,33 @@ public class WaveManager : MGR<WaveManager>
     {
         base.Awake();
         
-        LevelGenerator.Instance.OnMapGenerated += HandleMapGenerated;
         _currentWave = 0;
         OnWaveCompleted += StartWave;
         GameManager.OnGameLost += StopAll;
     }
 
+    void Start()
+    {
+        LevelGenerator.Instance.OnMapGenerated += HandleMapGenerated;
+    }
+    
     public void HandleMapGenerated()
     {
         foreach (Room room in LevelGenerator.Instance.RoomGrid)
         {
-            if (room != null && room.Type != Room.RoomType.Start)
+            if (room != null)
+            {
                 room.OnRoomEntered += HandlePlayerEntered;
+                Debug.Log("Attempting to listen for room enter");
+            }
         }
     }
 
     private void HandlePlayerEntered(Room room)
     {
         SetActiveRoom(room);
-        StartCoroutine(RunWave(_currentRoom, 0));
+        Debug.Log($"Entered {room.name}");
+        StartCoroutine(RunWave(_currentRoom, _currentWave));
     }
 
     public void StopAll()
@@ -79,17 +90,24 @@ public class WaveManager : MGR<WaveManager>
 
     IEnumerator RunWave(Room room, int currentWave)
     {
-        Wave wave = _waves[currentWave];
+        _spawningDone = false;
+        WaveData wave = _waves[currentWave];
+        
+        yield return new WaitForSeconds(wave[currentWave].StartDelay);
 
-        yield return new WaitForSeconds(wave.StartDelay);
-
-        while (_alive.Count < _maxAlive && _alive.Count <= wave.EnemiesPerWave)
+        foreach (WaveEntry entry in wave.waves[currentWave].Entries)
         {
-            SpawnEnemy(wave.Entries[Random.Range(0, wave.Entries.Count)].Enemy, 
-                room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+            for (int i = 0; i < entry.Count; i++)
+            {
+                SpawnEnemy(entry.Enemy, room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+
+                yield return new WaitForSeconds(wave[currentWave].SpawnInterval);
+            }
             
-            yield return new WaitForSeconds(wave.SpawnInterval);
+            yield return new WaitForSeconds(wave[currentWave].SpawnInterval);
         }
+
+        _spawningDone = true;
     }
 
     void SpawnEnemy(EnemyBase enemy, Spawnpoint point)
@@ -97,32 +115,41 @@ public class WaveManager : MGR<WaveManager>
         EnemyBase alive = Instantiate(enemy, point.transform.position, point.transform.rotation);
         alive.Movement.Warp(point.transform.position);
         _alive.Add(alive);
+        
         alive.OnEnemyKilled += HandleEnemyKilled;
+        
+        Debug.Log($"Spawned {alive.name}");
     }
 
     void HandleEnemyKilled(EnemyBase enemy)
     {
         _alive.Remove(enemy);
+        Debug.Log($"{enemy.name} has been killed. {_alive.Count} enemies remain");
         
-        if (_alive.Count == 0)
+        if (_alive.Count == 0 && _spawningDone)
         {
-            OnWaveCompleted?.Invoke(_currentWave);
+            Debug.Log($"Wave {_currentWave} has been completed");
             _currentWave++;
-
+            
+            OnWaveCompleted?.Invoke();
+            
             if (_currentWave >= _waves.Count)
             {
+                Debug.Log($"{_currentRoom.Id} has been cleared.");
+                
                 _currentRoom.OnComplete();
                 OnRoomCleared?.Invoke(_currentRoom);
             }
         }
     }
 
-    void StartWave(int currentWave)
+    void StartWave()
     {
-        if (currentWave < _waves.Count)
+        if (_currentWave < _waves.Count)
         {
-            OnWaveStarted?.Invoke(currentWave);
-            StartCoroutine(RunWave(_currentRoom, currentWave));
+            OnWaveStarted?.Invoke(_currentWave);
+            Debug.Log($"Started wave {_currentWave}");
+            StartCoroutine(RunWave(_currentRoom, _currentWave));
         }
     }
 

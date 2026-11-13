@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[CreateAssetMenu(fileName = "WaveData", menuName = "Dungeon/Waves/Wave Entry")]
 public class WaveEntry : ScriptableObject
 {
     [SerializeField] private EnemyBase _enemy;
@@ -11,4 +12,6 @@ public class WaveEntry : ScriptableObject
     {
         get { return _enemy; }
     }
+    
+    public int Count { get { return count; } }
 }

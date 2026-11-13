@@ -19937,7 +19937,7 @@ MonoBehaviour:
   _parent: {fileID: 0}
   _connected: {fileID: 0}
   _active: 0
-  vfx: {fileID: 8950142483743920746}
+  _vfx: {fileID: 8950142483743920746}
   _collider: {fileID: 3940481035819004053}
 --- !u!1 &5328877077106968026
 GameObject:
@@ -26947,12 +26947,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed36c77408ff8374d8b9829326309fe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Dungeon.Room
-  _roomType: 0
+  _roomType: 2
   _lootPool: {fileID: 11400000, guid: e542e18de73b9d4468b28bc441487345, type: 2}
   _playerSpawn: {fileID: 8255884792687214898}
   _boundingBox: {fileID: 2060355103869704608}
   _id: 
   _complete: 0
+  _spawnpoints: []
   _portal: {fileID: 0}
   _north: {fileID: 0}
   _south: {fileID: 0}
@@ -36676,8 +36677,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ce7b914172a3942927ae1c00ab7c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBob
-  bobSpeed: 5
-  bobAmount: 0.05
+  _bobSpeed: 5
+  _bobAmount: 0.05
 --- !u!1 &8313903828549608659
 GameObject:
   m_ObjectHideFlags: 0

@@ -87,7 +87,7 @@ public class GameManager : MGR<GameManager>
     private GameState _stateAfterLoad; // INTEGRATION: new. The state LoadScene was asked to enter once the scene finishes loading.
     private PlayerSpawner _playerSpawner; // INTEGRATION: new. The Level player's spawner. StartRun listens to its OnPlayerSpawned.
     private LevelGenerator _generator; // The Level scene's generator. Set in InitReferences or RegisterPlayer.
-
+    
     /// <summary>Subscribes to scene loads and to the UI's request events.</summary>
     protected override void Awake()
     {
@@ -151,6 +151,7 @@ public class GameManager : MGR<GameManager>
         if (scene.buildIndex == Scenes.Level)
         {
             _generator = LevelGenerator.Instance;
+            _waveManager = FindFirstObjectByType<WaveManager>();
             return;
         }
 
