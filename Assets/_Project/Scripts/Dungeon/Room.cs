@@ -51,7 +51,7 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private List<Spawnpoint> _spawnpoints;
         
-        public List<Spawnpoint> Spawnpoints { get => _spawnpoints; }
+        public IReadOnlyList<Spawnpoint> Spawnpoints { get => _spawnpoints; }
 
         [SerializeField]
         private Portal _portal; // The exit. Found in children in Awake.

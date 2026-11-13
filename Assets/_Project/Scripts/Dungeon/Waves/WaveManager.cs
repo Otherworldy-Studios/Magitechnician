@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using _Project.Scripts.Dungeon;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -30,7 +31,7 @@ public class WaveManager : MGR<WaveManager>
     [SerializeField]
     private bool _spawningDone;
     
-    public event Action<int> OnWaveStarted;
+    public event Action<int, int> OnWaveStarted;
     public event Action OnWaveCompleted;
     public event Action<EnemyBase> OnBossSpawned;
     public event Action<Room> OnRoomCleared;
@@ -47,8 +48,17 @@ public class WaveManager : MGR<WaveManager>
     void Start()
     {
         LevelGenerator.Instance.OnMapGenerated += HandleMapGenerated;
+        GameManager.OnGameLost += StopAll;
     }
-    
+
+    private void OnDestroy()
+    {
+        OnWaveCompleted -= StartWave;
+        GameManager.OnGameLost -= StopAll;
+        LevelGenerator.Instance.OnMapGenerated -= HandleMapGenerated;
+        GameManager.OnGameLost -= StopAll;
+    }
+
     public void HandleMapGenerated()
     {
         foreach (Room room in LevelGenerator.Instance.RoomGrid)
@@ -67,13 +77,14 @@ public class WaveManager : MGR<WaveManager>
         Debug.Log($"Entered {room.name}");
         StartCoroutine(RunWave(_currentRoom, _currentWave));
     }
-
+    
     public void StopAll()
     {
         StopAllCoroutines();
         KillAll();
     }
 
+    [Button, DisableInEditorMode]
     public void KillAll()
     {
         DamageInfo instantKill = new DamageInfo()
@@ -83,9 +94,13 @@ public class WaveManager : MGR<WaveManager>
             DamageDirection = Vector3.zero,
             DamageSource = null
         };
-        
+
         foreach (EnemyBase enemy in _alive)
+        {
+            enemy.OnEnemyKilled -= HandleEnemyKilled;
             enemy.Health.TakeDamage(instantKill);
+            Destroy(enemy.gameObject);
+        }
     }
 
     IEnumerator RunWave(Room room, int currentWave)
@@ -125,7 +140,13 @@ public class WaveManager : MGR<WaveManager>
     {
         _alive.Remove(enemy);
         Debug.Log($"{enemy.name} has been killed. {_alive.Count} enemies remain");
-        
+
+        if (enemy is PH_Boss) // Replace with actual boss
+        {
+            GameManager.Instance.RequestGameEnd(GameManager.RunResult.Victory);
+            return;
+        }
+
         if (_alive.Count == 0 && _spawningDone)
         {
             Debug.Log($"Wave {_currentWave} has been completed");
@@ -147,7 +168,7 @@ public class WaveManager : MGR<WaveManager>
     {
         if (_currentWave < _waves.Count)
         {
-            OnWaveStarted?.Invoke(_currentWave);
+            OnWaveStarted?.Invoke(_currentWave, _waves.Count);
             Debug.Log($"Started wave {_currentWave}");
             StartCoroutine(RunWave(_currentRoom, _currentWave));
         }
