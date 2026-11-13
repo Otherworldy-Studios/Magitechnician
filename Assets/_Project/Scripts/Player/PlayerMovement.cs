@@ -226,6 +226,7 @@ public class PlayerMovement : MonoBehaviour
 
             case MovementStates.Airborne:
                 currentAcceleration = _settings.AirborneAcceleration;
+                _currentMaxSpeed = MoveSpeed;
                 break;
         }
 
