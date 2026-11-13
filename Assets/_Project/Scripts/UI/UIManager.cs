@@ -146,11 +146,6 @@ public class UIManager : MGR<UIManager>
         ChangeState(_currentState);
     }
 
-    public void MouseSensitivityChanged(float newSensitivity)
-    {
-        CameraTargetController.
-    }
-
     #endregion
 
     /// <summary>Shows the death screen. Runs on GameManager.OnGameLost, and as a debug button.</summary>

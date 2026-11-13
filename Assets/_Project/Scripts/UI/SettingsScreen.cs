@@ -23,6 +23,7 @@ public class SettingsScreen : UIScreen
 
     private void OnMouseSensitivity()
     {
-        UIManager.Instance.MouseSensitivityChanged(_mouseSensitivitySlider.value);
+        CameraTargetController cameraTarget = FindAnyObjectByType<CameraTargetController>();
+        cameraTarget.SetMouseSensitivity(_mouseSensitivitySlider.value);
     }
 }
