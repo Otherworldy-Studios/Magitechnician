@@ -21,6 +21,6 @@ MonoBehaviour:
   <Gravity>k__BackingField: -20
   <GroundGravity>k__BackingField: -5
   <LocomotionAcceleration>k__BackingField: 18
-  <AirborneAcceleration>k__BackingField: 8
+  <AirborneAcceleration>k__BackingField: 15
   <AimingAcceleration>k__BackingField: 20
   <IdleAcceleration>k__BackingField: 35
