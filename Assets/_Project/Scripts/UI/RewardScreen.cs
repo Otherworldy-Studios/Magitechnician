@@ -24,8 +24,31 @@ public class RewardScreen : UIScreen
     private void Awake()
     {
         resumeButton.onClick.AddListener(OnResume);
+        itemGrid.OnSelectionChanged += HandleSelectionChanged;
     }
 
+    private void HandleSelectionChanged(ItemSlotUI selectedSlot)
+    {
+        if (_room == null || selectedSlot == null)
+        {
+            return;
+        }
+
+
+        if (selectedSlot == itemSlot1) //i would turn this into a switch if i knew how to make this static
+        {
+            Pick(0);
+        }
+        else if (selectedSlot == itemSlot2)
+        {
+            Pick(1);
+        }
+        else if (selectedSlot == itemSlot3)
+        {
+            Pick(2);
+        }
+            
+    }
     private void OnResume() //handles all the things after picking a screen
     {
         //send info to GM about selected item, GM links to player about the item
@@ -61,7 +84,8 @@ public class RewardScreen : UIScreen
     private void Pick(int index)
     {
         //_room.PickReward(index);
-        
+        Debug.Log($"Selected reward {index}: {_room.RewardOptions[index].Item.PartName}");
+        //sends to game manager
     }
 
 }

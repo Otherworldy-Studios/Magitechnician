@@ -3438,6 +3438,7 @@ MonoBehaviour:
   currentState: 0
   _playerHealthbar: {fileID: 0}
   player: {fileID: 0}
+  _lootPool: {fileID: 11400000, guid: e542e18de73b9d4468b28bc441487345, type: 2}
 --- !u!1 &1570802158260435909
 GameObject:
   m_ObjectHideFlags: 0
