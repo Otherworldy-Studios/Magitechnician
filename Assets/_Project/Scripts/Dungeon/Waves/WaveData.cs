@@ -7,7 +7,12 @@ public class WaveData : ScriptableObject
     [SerializeField]
     private List<Wave> _waves;
     
-    public List<Wave> waves { get { return _waves; } }
+    [SerializeField]
+    private float _startDelay;
+
+    public float StartDelay => _startDelay;
     
-    public Wave this[int index] { get { return _waves[index]; } set { _waves[index] = value; } }
+    public List<Wave> Waves { get { return _waves; } }
+    
+    public Wave this[int index] { get { return _waves[index]; } }
 }

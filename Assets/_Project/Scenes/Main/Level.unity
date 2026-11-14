@@ -288,11 +288,13 @@ MonoBehaviour:
   _shouldPersist: 0
   _waves:
   - {fileID: 11400000, guid: e8b83f233e2b37c49aab26dc3bcfe37d, type: 2}
+  - {fileID: 11400000, guid: 74f912d89e08bfa42b532fda2bd1bbef, type: 2}
   _currentRoom: {fileID: 0}
-  _currentWave: 0
   _maxAlive: 20
   minSpawnDistance: 3
+  _currentWave: 0
   _alive: []
+  _spawningDone: 0
 --- !u!4 &1342687026
 Transform:
   m_ObjectHideFlags: 0

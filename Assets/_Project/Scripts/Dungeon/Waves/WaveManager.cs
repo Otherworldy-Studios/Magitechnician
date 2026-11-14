@@ -63,7 +63,7 @@ public class WaveManager : MGR<WaveManager>
     {
         foreach (Room room in LevelGenerator.Instance.RoomGrid)
         {
-            if (room != null)
+            if (room != null && room.Type != Room.RoomType.Start)
             {
                 room.OnRoomEntered += HandlePlayerEntered;
                 Debug.Log("Attempting to listen for room enter");
@@ -75,7 +75,7 @@ public class WaveManager : MGR<WaveManager>
     {
         SetActiveRoom(room);
         Debug.Log($"Entered {room.name}");
-        StartCoroutine(RunWave(_currentRoom, _currentWave));
+        StartCoroutine(RunWave(_currentRoom));
     }
     
     public void StopAll()
@@ -103,23 +103,35 @@ public class WaveManager : MGR<WaveManager>
         }
     }
 
-    IEnumerator RunWave(Room room, int currentWave)
+    IEnumerator RunWave(Room room)
     {
         _spawningDone = false;
-        WaveData wave = _waves[currentWave];
+        Debug.Log($"Spawning wave {_currentWave}");
+
+        if (_currentWave >= _waves.Count)
+            yield break;
         
-        yield return new WaitForSeconds(wave[currentWave].StartDelay);
+        WaveData waveData = _waves[_currentWave];
+        Debug.Log($"Wave data: {waveData.name}");
 
-        foreach (WaveEntry entry in wave.waves[currentWave].Entries)
+
+        yield return new WaitForSeconds(waveData.StartDelay);
+
+        for (int current = 0; current < waveData.Waves.Count; current++)
         {
-            for (int i = 0; i < entry.Count; i++)
+            foreach (WaveEntry entry in waveData[current].Entries)
             {
-                SpawnEnemy(entry.Enemy, room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+                for (int i = 0; i < entry.Count; i++)
+                {
+                    if (entry.Enemy is PH_Boss)
+                        OnBossSpawned?.Invoke(entry.Enemy);
 
-                yield return new WaitForSeconds(wave[currentWave].SpawnInterval);
+                    SpawnEnemy(entry.Enemy, room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+                    yield return new WaitForSeconds(waveData[current].SpawnInterval);
+                }
+
+                yield return new WaitForSeconds(waveData[current].SpawnInterval);
             }
-            
-            yield return new WaitForSeconds(wave[currentWave].SpawnInterval);
         }
 
         _spawningDone = true;
@@ -127,6 +139,9 @@ public class WaveManager : MGR<WaveManager>
 
     void SpawnEnemy(EnemyBase enemy, Spawnpoint point)
     {
+        if (enemy.IsDead)
+            return;
+        
         EnemyBase alive = Instantiate(enemy, point.transform.position, point.transform.rotation);
         alive.Movement.Warp(point.transform.position);
         _alive.Add(alive);
@@ -138,6 +153,8 @@ public class WaveManager : MGR<WaveManager>
 
     void HandleEnemyKilled(EnemyBase enemy)
     {
+        enemy.OnEnemyKilled -= HandleEnemyKilled;
+        
         _alive.Remove(enemy);
         Debug.Log($"{enemy.name} has been killed. {_alive.Count} enemies remain");
 
@@ -170,7 +187,7 @@ public class WaveManager : MGR<WaveManager>
         {
             OnWaveStarted?.Invoke(_currentWave, _waves.Count);
             Debug.Log($"Started wave {_currentWave}");
-            StartCoroutine(RunWave(_currentRoom, _currentWave));
+            StartCoroutine(RunWave(_currentRoom));
         }
     }
 

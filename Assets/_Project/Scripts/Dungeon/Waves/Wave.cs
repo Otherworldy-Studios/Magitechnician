@@ -8,12 +8,8 @@ public class Wave : ScriptableObject
     private List<WaveEntry> _entries;
 
     [SerializeField]
-    private float _startDelay;
-
-    [SerializeField]
     private float _spawnInterval;
     
     public List<WaveEntry> Entries { get { return _entries; } }
-    public float StartDelay => _startDelay;
     public float SpawnInterval => _spawnInterval;
 }

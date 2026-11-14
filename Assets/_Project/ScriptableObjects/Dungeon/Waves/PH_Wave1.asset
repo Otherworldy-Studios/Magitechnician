@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Wave
   _entries:
   - {fileID: 11400000, guid: c738161072e7bab43b38d3deb0ac930a, type: 2}
-  _startDelay: 0
-  _spawnInterval: 0
+  _startDelay: 2
+  _spawnInterval: 1
