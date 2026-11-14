@@ -141,6 +141,11 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_settingsScreen);
     }
 
+    public void BackButtonPressed()
+    {
+        ChangeState(_currentState);
+    }
+
     #endregion
 
     /// <summary>Shows the death screen. Runs on GameManager.OnGameLost, and as a debug button.</summary>
