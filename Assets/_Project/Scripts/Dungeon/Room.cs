@@ -130,7 +130,8 @@ namespace _Project.Scripts.Dungeon
             else
                 _portal.Parent = this;
 
-            _spawnpoints = GetComponentsInChildren<Spawnpoint>().ToList();
+            _spawnpoints = GetComponentsInChildren<Spawnpoint>().ToList()
+                .Where(x => x.CanSpawnEnemies).ToList();
         }
         
         /// <summary>
