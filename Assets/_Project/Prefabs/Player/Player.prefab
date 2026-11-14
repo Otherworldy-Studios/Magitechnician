@@ -542,7 +542,7 @@ MonoBehaviour:
   _hitMask:
     serializedVersion: 2
     m_Bits: 768
-  _maxMuzzleAngle: 90
+  _maxMuzzleAngle: 12.7
   _cameraController: {fileID: 8946386472445388545}
 --- !u!114 &8879478622747076826
 MonoBehaviour:
@@ -609,13 +609,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Stats
   _statBlock: {fileID: 11400000, guid: c5b14219c170f43dbaa1694b8111ee0b, type: 2}
   _modifiers: []
-  testStat: {fileID: 0}
-  TestModifier:
-    Stat: {fileID: 0}
-    Operation: 0
-    Value: 0
-    Duration: 0
-    Permanent: 0
+  _testStat: {fileID: 0}
+  _testModifier:
+    _stat: {fileID: 0}
+    _operation: 0
+    _value: 0
+    _duration: 0
+    _permanent: 0
 --- !u!114 &2233296635478493348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,10 +637,10 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  Crystals: 0
-  EquippedCharmSlots: 0
-  TotalCharmSlots: 5
-  MaxConsumbables: 3
+  _crystals: 0
+  _equippedCharmSlots: 0
+  _charmSlots: 5
+  _maxConsumables: 3
   _playerStats: {fileID: 2538457442136657555}
   _gunStats: {fileID: 0}
   _health: {fileID: 2470234422445426739}
@@ -745,8 +745,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3346735939129070630}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.00000056212525, z: 0, w: 1}
-  m_LocalPosition: {x: 1.6330001, y: 0.62599945, z: -0.73800004}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.633, y: 0.6259999, z: -0.738}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1459,8 +1459,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6124366050051757803}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.0000000514953, z: 0, w: 1}
-  m_LocalPosition: {x: 1.403, y: 0.62599945, z: -1.6879998}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.403, y: 0.6259999, z: -1.688}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1656,8 +1656,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.0000000514953, z: 0, w: 1}
-  m_LocalPosition: {x: 1.403, y: 0.6259999, z: -1.6879998}
+  m_LocalRotation: {x: 0.000000035263913, y: 0.75243455, z: -0.000000040284068, w: 0.6586671}
+  m_LocalPosition: {x: -0.54280263, y: -13.80828, z: -11.505083}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2226,7 +2226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec64f6a922e42d418aa4ac3863e2fa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HUDScreen
-  showsCursor: 0
+  _showsCursor: 0
   _healthBar: {fileID: 228193353579605080}
   _shieldBar: {fileID: 7812177592832386689}
   _currencyDisplay: {fileID: 0}
@@ -2511,7 +2511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 1
+  _socketType: 1
 --- !u!1001 &1827959793586978411
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2596,7 +2596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 2
+  _socketType: 2
 --- !u!1001 &4083033763523820686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2755,7 +2755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 0
+  _socketType: 0
 --- !u!1001 &5514524248034511352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2837,7 +2837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 4
+  _socketType: 4
 --- !u!4 &5519022023759868404 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4512242118932492, guid: 49a934e369238d343af64c4afebec86e, type: 3}
@@ -2922,7 +2922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 3
+  _socketType: 3
 --- !u!4 &5949285608500870618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4607946608563794, guid: af61f6a5065c73f4e936371e96ea261c, type: 3}
@@ -3186,8 +3186,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 159998589347c4f87b3cf294ec8ebcb3, type: 2}
   - {fileID: 11400000, guid: 8879ff21c14c24a8d8b36da80b650e42, type: 2}
   - {fileID: 11400000, guid: 0f2e017156cba415780f67fb1d639728, type: 2}
-  Stats: {fileID: 2538457442136657555}
-  Muzzle: {fileID: 8536945881307047410}
+  _stats: {fileID: 2538457442136657555}
+  _muzzle: {fileID: 8536945881307047410}
   _projectilePrefab: {fileID: 96595193664342919, guid: 503d231ab675f8045b20d2148539669c, type: 3}
   _player: {fileID: 4765447663455402449}
   _damageStat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
@@ -3211,13 +3211,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Stats
   _statBlock: {fileID: 11400000, guid: 3838b8939f49341f483b3ccc8ff2a2e2, type: 2}
   _modifiers: []
-  testStat: {fileID: 0}
-  TestModifier:
-    Stat: {fileID: 0}
-    Operation: 0
-    Value: 0
-    Duration: 0
-    Permanent: 0
+  _testStat: {fileID: 0}
+  _testModifier:
+    _stat: {fileID: 0}
+    _operation: 0
+    _value: 0
+    _duration: 0
+    _permanent: 0
 --- !u!4 &9131247008824980194 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4073316784439530, guid: aa1e7dc87991f87449268b020190ad8e, type: 3}
