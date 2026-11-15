@@ -59,6 +59,18 @@ public class Inventory : SerializedMonoBehaviour
     [SerializeField] private Health _health; // INTEGRATION: ResolveHealth fills it, since nothing assigned it before.
     [Tooltip("Only use consumables during a run. Off allows them in the Hub too.")]
     [SerializeField] private bool _onlyDuringRun = true;
+    [SerializeField] private PlayerRoot _playerRoot;
+
+    private void Awake()
+    {
+        if (!_playerRoot)
+        {
+            _playerRoot = GetComponentInParent<PlayerRoot>();
+            if (!_playerRoot) 
+                Debug.LogWarning($"{nameof(Inventory)} on {name} is missing a {nameof(PlayerRoot)} reference.", this);
+        }
+        
+    }
 
     private bool _subscribed; // INTEGRATION: new. True once listening to InputManager, so it never subscribes twice.
 
@@ -220,6 +232,7 @@ public class Inventory : SerializedMonoBehaviour
         if (_equippedCharms.Contains(charm)) return; // INTEGRATION: new. A charm can't be equipped twice.
 
         _equippedCharms.Add(charm);
+        _playerRoot?.PlayerAbilities.Add(charm); // INTEGRATION: Adds the equipped charm's ability to the player.
         foreach (StatModifier mod in charm.Modifiers)
         {
             ApplyModifier(mod, charm); // INTEGRATION: goes to the player's or the gun's Stats, with the charm as source.
@@ -234,6 +247,7 @@ public class Inventory : SerializedMonoBehaviour
         if (!_equippedCharms.Contains(charm)) return;
 
         RemoveModifiers(charm); // INTEGRATION: removes by source instead of each modifier asset.
+        _playerRoot?.PlayerAbilities.Remove(charm); // INTEGRATION: Removes the unequipped charm's ability.
 
         _equippedCharms.Remove(charm);
         OnInventoryChanged?.Invoke();
@@ -250,6 +264,7 @@ public class Inventory : SerializedMonoBehaviour
         if (index < 0 || index >= _consumables.Count) return;
 
         Consumable consumable = _consumables[index];
+        _playerRoot?.PlayerAbilities.Add(consumable, consumable.Duration);// INTEGRATION: Grants the consumable's ability for its duration.
 
         // A timed use gets its own source object, so using the same potion twice doesn't end the first one early
         // when RemoveAfter removes by source. An untimed use keeps the consumable as its source.

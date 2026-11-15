@@ -56,6 +56,7 @@ public class InputManager : MGR<InputManager>, InputSystem_Actions.IPlayerAction
     public event Action OnFirePressed;
     public event Action OnInteractPressed;
     public event Action OnPausePressed;
+    public event Action OnSecondaryFirePressed;
     /// <summary>Fires when a consumable key is pressed. The value is the slot: 0, 1, or 2.</summary>
     public event Action<int> OnConsumablePressed;
     /// <summary>Fires after SetMode. UIManager can use it to show or hide the cursor.</summary>
@@ -214,6 +215,14 @@ public class InputManager : MGR<InputManager>, InputSystem_Actions.IPlayerAction
         if (context.performed)
         {
             OnConsumablePressed?.Invoke(2);
+        }
+    }
+
+    public void OnSecondaryFire(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            OnSecondaryFirePressed?.Invoke();
         }
     }
 
