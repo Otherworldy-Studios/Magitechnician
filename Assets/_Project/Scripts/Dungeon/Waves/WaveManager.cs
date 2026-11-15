@@ -30,6 +30,9 @@ public class WaveManager : MGR<WaveManager>
 
     [SerializeField]
     private bool _spawningDone;
+
+    [SerializeField]
+    private bool _waveRunning;
     
     public event Action<int, int> OnWaveStarted;
     public event Action OnWaveCompleted;
@@ -73,9 +76,16 @@ public class WaveManager : MGR<WaveManager>
 
     private void HandlePlayerEntered(Room room)
     {
+        if (_waveRunning)
+            return;
+        
         SetActiveRoom(room);
         Debug.Log($"Entered {room.name}");
+        
+        _waveRunning = true;
+        
         StartCoroutine(RunWave(_currentRoom));
+        room.OnRoomEntered -= HandlePlayerEntered;
     }
     
     public void StopAll()
@@ -105,6 +115,9 @@ public class WaveManager : MGR<WaveManager>
 
     IEnumerator RunWave(Room room)
     {
+        if (room != _currentRoom || !_waveRunning)
+            yield return null;
+        
         _spawningDone = false;
         Debug.Log($"Spawning wave {_currentWave}");
 
@@ -113,8 +126,7 @@ public class WaveManager : MGR<WaveManager>
         
         WaveData waveData = _waves[_currentWave];
         Debug.Log($"Wave data: {waveData.name}");
-
-
+        
         yield return new WaitForSeconds(waveData.StartDelay);
 
         for (int current = 0; current < waveData.Waves.Count; current++)
@@ -176,6 +188,7 @@ public class WaveManager : MGR<WaveManager>
                 Debug.Log($"{_currentRoom.Id} has been cleared.");
                 
                 _currentRoom.OnComplete();
+                _waveRunning = false;
                 OnRoomCleared?.Invoke(_currentRoom);
             }
         }
@@ -183,6 +196,9 @@ public class WaveManager : MGR<WaveManager>
 
     void StartWave()
     {
+        if (_currentRoom.Complete || !_waveRunning)
+            return;
+        
         if (_currentWave < _waves.Count)
         {
             OnWaveStarted?.Invoke(_currentWave, _waves.Count);
