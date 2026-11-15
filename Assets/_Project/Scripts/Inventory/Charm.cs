@@ -31,4 +31,9 @@ public class Charm : ScriptableObject, IInventoryItem
     public int Price => _price;
     /// <summary>What the charm changes while equipped. Inventory.EquipCharm applies these.</summary>
     public List<StatModifier> Modifiers => _modifiers;
+    /// <summary>
+    /// Optional ability prefab granted by this item.
+    /// </summary>
+    [SerializeField] private GameObject _abilityPrefab;
+    public GameObject AbilityPrefab => _abilityPrefab;
 }
