@@ -14,12 +14,17 @@ public class RewardScreen : UIScreen
     protected RoomCompletionLootPool _lootPool;
     protected Gun _playerGun;
     protected Room _room;
-    
+    private int _selectedRewardIndex = -1;
     
 
     //item currently selected shows the text
 
     //send signal to players gun to give them the item
+
+    protected override void OnShown()
+    {
+        //call pause
+    }
     
     private void Awake()
     {
@@ -51,6 +56,21 @@ public class RewardScreen : UIScreen
     }
     private void OnResume() //handles all the things after picking a screen
     {
+        if (_selectedRewardIndex < 0) 
+        {
+            return;
+        }
+        
+        bool equipped = GameManager.Instance.ChooseReward(_selectedRewardIndex);
+        
+        Debug.Log($"ChooseReward result: {equipped}");
+        
+        if (!equipped)
+        {
+            Debug.LogWarning("Failed to equip reward");
+            return;
+        }
+        
         //send info to GM about selected item, GM links to player about the item
         itemSlot1.Clear();
         itemSlot2.Clear();
@@ -61,6 +81,7 @@ public class RewardScreen : UIScreen
 
     public void ShowChoices(Room room, IReadOnlyList<WeightedReward<GunPart>> rewards) //comedically long type
     {
+        _selectedRewardIndex = -1;
         _room = room;
         _lootPool = room.LootPool;
         
@@ -83,9 +104,9 @@ public class RewardScreen : UIScreen
 
     private void Pick(int index)
     {
-        //_room.PickReward(index);
-        Debug.Log($"Selected reward {index}: {_room.RewardOptions[index].Item.PartName}");
-        //sends to game manager
+       _selectedRewardIndex = index;
+       
+       Debug.Log($"Selected: {_room.RewardOptions[index].Item.PartName}");
     }
 
 }

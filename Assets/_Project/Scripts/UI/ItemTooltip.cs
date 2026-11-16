@@ -14,9 +14,11 @@ public class ItemTooltip : MonoBehaviour
 
         _name.text = item.DisplayName;
         _description.text = item.Description;
-        _icon.sprite = item.Icon;
-        _icon.enabled = item.Icon != null;
-
+        if (_icon != null) //no icon image assigned to managers in inspector?
+        {
+            _icon.sprite = item.Icon;
+            _icon.enabled = item.Icon != null;
+        }
         gameObject.SetActive(true);
     }
 

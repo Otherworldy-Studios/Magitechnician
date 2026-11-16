@@ -78,7 +78,7 @@ public class GameManager : MGR<GameManager>
 
         }
         SceneManager.sceneLoaded += InitReferences; //init references after scene load
-        UIManager.OnPauseRequested += TogglePause;
+        UIManager.OnPauseRequested += SetPause;
         UIManager.OnResetRequested += ResetGame;
         UIManager.OnStartRequested += StartHub;
         UIManager.OnMenuRequested += MainMenu;
@@ -100,7 +100,7 @@ public class GameManager : MGR<GameManager>
             ChangeState(GameState.Menu, force: true);
         }
 
-        InputManager.Instance.PausePressed += TogglePause;
+        InputManager.Instance.PausePressed += HandlePausePressed;
     }
 
     private void OnEnable()
@@ -239,12 +239,48 @@ public class GameManager : MGR<GameManager>
         SceneManager.LoadSceneAsync(buildIndex);
     }
 
+    public bool ChooseReward(int index) //having it be a bool is useful for knowing it actually succeeded
+    {
+        Room room = CurrentRoom;
+
+        if (room == null || index < 0 || index >= room.RewardOptions.Count)
+        {
+            return false;
+        }
+        
+        GunPart part = room.RewardOptions[index].Item;
+        Gun gun = player.GetComponentInChildren<Gun>();
+
+        if (!gun.HasSocket(part.PartType))
+        {
+            Debug.LogError($"Gun has no socket for {part.PartType}");
+            return false;
+        }
+
+        if (!gun.EquipPart(part))
+        {
+            Debug.LogError($"EquipPart failed for {part.PartName}");
+            return false;
+        }
+        
+        Debug.Log($"gun parts seems to be working, go back and clean up debug scripts in GM");
+        
+        room.PickReward(index);
+        return true;
+    }
+
     #region EventHandlers
 
     private void ExitGame()
     {
         Application.Quit();
     }
+
+    private void HandlePausePressed()
+    {
+        SetPause(!_isPaused);
+    }
+    
     private void PlayerDied(GameObject player)
     {
         RequestGameEnd(RunResult.Lose);
@@ -288,7 +324,6 @@ public class GameManager : MGR<GameManager>
 
     private void RoomCleared(Room room)
     {
-        Debug.Log("CHECK THIS CHECK THIS CHECK THIS CHECK THIS DONT FORGET");
         InputManager.Instance.SetMode(InputMode.UI);
     }
 
@@ -321,7 +356,7 @@ public class GameManager : MGR<GameManager>
 
         if (_isPaused)
         {
-            TogglePause(); //unpause when quiting to menu or hub
+            SetPause(false); //unpause when quiting to menu or hub
         }
 
         currentState = newState;
@@ -390,9 +425,8 @@ public class GameManager : MGR<GameManager>
     #region Misc
 
     [Button, DisableInEditorMode]
-    private void TogglePause()
+    private void SetPause(bool pauseIntended)
     {
-
         if (currentState != GameState.Playing && currentState != GameState.Hub)
         {
             return;
@@ -401,21 +435,28 @@ public class GameManager : MGR<GameManager>
         {
             return;   // No player registered yet, so there's nothing to freeze.
         }
-        if (_isPaused)
+        
+        bool pauseChanged = _isPaused != pauseIntended; //i love bools
+        
+        _isPaused = pauseIntended;
+        
+        if (!pauseIntended)
         {
             InputManager.Instance.SetMode(InputMode.Gameplay);
             Time.timeScale = 1;
-            _isPaused = false;
         }
         else
         {
             InputManager.Instance.SetMode(InputMode.UI);
             Time.timeScale = 0;
-            _isPaused = true;
         }
-        OnPauseToggle?.Invoke(_isPaused);
-    }
 
+        if (pauseChanged)
+        {
+            OnPauseToggle?.Invoke(_isPaused);
+        }
+    }
+    
     private void ResetGame() //used to have a call that prevents unless state was win or loss, didnt work with pause or main menu so uhh removed it, hope that wasnt for any reason :^ )
     {
         LoadScene(Scenes.Hub, GameState.Hub);
@@ -444,7 +485,7 @@ public class GameManager : MGR<GameManager>
     {
         if (InputManager.HasInstance)
         {
-            InputManager.Instance.PausePressed -= TogglePause;
+            InputManager.Instance.PausePressed -= HandlePausePressed;
         }
         if (_playerHealthbar != null)
         {

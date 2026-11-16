@@ -31,7 +31,7 @@ public class UIManager : MGR<UIManager>
     [SerializeField] private PauseScreen pauseScreen;
     [SerializeField] private UIStates currentState;
 
-    public static event Action OnPauseRequested;
+    public static event Action<bool> OnPauseRequested;
     public static event Action OnStartRequested;
     public static event Action OnResetRequested;
     public static event Action OnMenuRequested; 
@@ -89,6 +89,7 @@ public class UIManager : MGR<UIManager>
             case UIStates.RewardChoice:
                 HideAllScreens();
                 ShowScreen(rewardScreen);
+                OnPauseRequested?.Invoke(true);
                 break;
         }
     }
@@ -97,8 +98,8 @@ public class UIManager : MGR<UIManager>
 
     public void ResumeButtonPressed()
     {
+        OnPauseRequested?.Invoke(false); 
         ChangeState(UIStates.Gameplay);
-        OnPauseRequested?.Invoke(); //toggle bug is possible however it SHOULD be handled by the GM
     }
     
     public void StartButtonPressed()
@@ -148,10 +149,8 @@ public class UIManager : MGR<UIManager>
 
     private void HandleRewards(Room room)
     {
-        Debug.Log("HandleRewards");
         if (room.RewardOptions.Count == 0)
         {
-            Debug.Log("no reward options");
             return;
         }
         ChangeState(UIStates.RewardChoice);
@@ -213,6 +212,11 @@ public class UIManager : MGR<UIManager>
         /// <param name="isPaused"></param>
         private void HandlePause(bool isPaused)
         {
+            if (currentState == UIStates.RewardChoice) //dont go to pause menu if in certain states already
+            {
+                return; 
+            }
+            
             if (isPaused)
             { 
                 ChangeState(UIStates.PauseMenu);

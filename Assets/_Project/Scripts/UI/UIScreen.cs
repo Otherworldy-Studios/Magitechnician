@@ -6,6 +6,7 @@ public abstract class UIScreen : MonoBehaviour
     public bool showsCursor;
 
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public virtual void Show()
     {
         gameObject.SetActive(true);

@@ -170,7 +170,7 @@ namespace _Project.Scripts.Dungeon
         // Picks the reward at an index of options
         // This needs to just be a player pickup thing
         [Button, DisableInEditorMode]
-        void PickReward(int reward) //made public
+        public void PickReward(int reward) //made public
         {
             if (rewardOptions == null || reward >= rewardOptions.Count)
                 return;
