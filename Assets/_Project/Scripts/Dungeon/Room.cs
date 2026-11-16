@@ -190,10 +190,10 @@ namespace _Project.Scripts.Dungeon
         [Button, DisableInEditorMode]
         public void PickReward(int reward) //made public
         {
-            if (_rewardOptions == null || reward >= _rewardOptions.Count)
+            if (rewardOptions == null || reward >= rewardOptions.Count)
                 return;
 
-            for (int i = 0; i < _rewardOptions.Count; i++)
+            for (int i = 0; i < rewardOptions.Count; i++)
             {
                 if (i == reward)
                 {
@@ -201,7 +201,7 @@ namespace _Project.Scripts.Dungeon
                     continue;
                 }
 
-                _lootPool.Obtained.Remove(_rewardOptions[i]);
+                _lootPool.Obtained.Remove(rewardOptions[i]);
             }
         }
     }

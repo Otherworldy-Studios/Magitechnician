@@ -108,7 +108,7 @@ public class UIManager : MGR<UIManager>
                 break;
             case UIStates.RewardChoice:
                 HideAllScreens();
-                ShowScreen(rewardScreen);
+                ShowScreen(_rewardScreen);
                 OnPauseRequested?.Invoke(true);
                 break;
         }
@@ -186,7 +186,7 @@ public class UIManager : MGR<UIManager>
             return;
         }
         ChangeState(UIStates.RewardChoice);
-        rewardScreen.ShowChoices(room, room.RewardOptions);
+        _rewardScreen.ShowChoices(room, room.RewardOptions);
     }
 
     /// <summary>Shows a screen and sets the cursor to match it.</summary>
@@ -244,7 +244,7 @@ public class UIManager : MGR<UIManager>
         /// <param name="isPaused"></param>
         private void HandlePause(bool isPaused)
         {
-            if (currentState == UIStates.RewardChoice) //dont go to pause menu if in certain states already
+            if (_currentState == UIStates.RewardChoice) //dont go to pause menu if in certain states already
             {
                 return; 
             }
@@ -262,41 +262,6 @@ public class UIManager : MGR<UIManager>
         }
     
     
-    #endregion
-    
-    
-
-    /// <summary>Shows and frees the cursor, or hides and locks it. Called by ShowScreen and ChangeState.</summary>
-    private void ToggleCursor(bool isVisible)
-    {
-        if (!isVisible)
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            _cursorVisible = false;
-        }
-        else
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            _cursorVisible = true;
-        }
-    }
-
-    /// <summary>Shows the pause menu when paused, and returns to gameplay when unpaused. Runs on GameManager.OnPauseToggled.</summary>
-    private void HandlePause(bool isPaused)
-    {
-        if (isPaused)
-        {
-            ChangeState(UIStates.PauseMenu);
-        }
-        else
-        {
-            ChangeState(UIStates.Gameplay);
-            ToggleCursor(false);
-        }
-    }
-
     #endregion
 
     /// <summary>

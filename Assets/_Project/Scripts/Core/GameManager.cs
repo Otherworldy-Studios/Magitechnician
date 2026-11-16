@@ -127,7 +127,7 @@ public class GameManager : MGR<GameManager>
 
         // INTEGRATION: replaces reading the Escape key in Update. Subscribed in Start because InputManager
         // may not have run its Awake yet when this Awake runs.
-        InputManager.Instance.PausePressed += HandlePausePressed;
+        InputManager.Instance.OnPausePressed += HandlePausePressed;
     }
 
     /// <summary>Listens to the player's death, if a player was assigned before this component turned on.</summary>
@@ -289,7 +289,7 @@ public class GameManager : MGR<GameManager>
         }
         
         GunPart part = room.RewardOptions[index].Item;
-        Gun gun = player.GetComponentInChildren<Gun>();
+        Gun gun = _player.GetComponentInChildren<Gun>();
 
         if (!gun.HasSocket(part.PartType))
         {
@@ -348,8 +348,8 @@ public class GameManager : MGR<GameManager>
     {
         _playerSpawner.OnPlayerSpawned -= StartRun; // INTEGRATION: listens to PlayerSpawner instead of LevelGenerator.OnMapGenerated.
         _lootPool.ResetObtained(); //make sure the data asset is cleared
-        currentDungeon = generator.RoomGrid;
-        Room startRoom = generator.StartRoom;
+        _currentDungeon = _generator.RoomGrid;
+        Room startRoom = _generator.StartRoom;
         // INTEGRATION: was "CurrentRoom = startRoom". EnterRoom calls ChangeRoom and fires the room's OnRoomEntered,
         // which starts a RoomEncounter if the start room has enemies.
         startRoom.EnterRoom(); 
@@ -508,7 +508,7 @@ public class GameManager : MGR<GameManager>
 
         if (pauseChanged)
         {
-            OnPauseToggle?.Invoke(_isPaused);
+            OnPauseToggled?.Invoke(_isPaused);
         }
     }
     
@@ -535,7 +535,7 @@ public class GameManager : MGR<GameManager>
     {
         if (InputManager.HasInstance)
         {
-            InputManager.Instance.PausePressed -= HandlePausePressed;
+            InputManager.Instance.OnPausePressed -= HandlePausePressed;
         }
         if (_playerHealth != null)
         {
