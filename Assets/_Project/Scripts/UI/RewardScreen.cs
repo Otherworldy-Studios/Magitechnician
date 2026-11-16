@@ -4,6 +4,10 @@ using UnityEngine;
 using _Project.Scripts.Dungeon;
 using TMPro;
 
+/// <summary>
+/// The screen for picking one of the gun parts a cleared room rolled. Only has a Resume button so far; ShowChoices and
+/// Pick are empty. Hooking it up to Room.OnRoomCleared and the loot pool is task 7.
+/// </summary>
 public class RewardScreen : UIScreen
 {
     [SerializeField] private Button resumeButton;
@@ -26,6 +30,7 @@ public class RewardScreen : UIScreen
         //call pause
     }
     
+    /// <summary>Connects the Resume button.</summary>
     private void Awake()
     {
         resumeButton.onClick.AddListener(OnResume);
@@ -54,6 +59,7 @@ public class RewardScreen : UIScreen
         }
             
     }
+    /// <summary>Resume button. Closes the screen and unpauses.</summary>
     private void OnResume() //handles all the things after picking a screen
     {
         if (_selectedRewardIndex < 0) 
@@ -79,6 +85,7 @@ public class RewardScreen : UIScreen
         UIManager.Instance.ResumeButtonPressed(); 
     }
 
+     /// <summary>Sets and displays all items into the item slots.</summary>
     public void ShowChoices(Room room, IReadOnlyList<WeightedReward<GunPart>> rewards) //comedically long type
     {
         _selectedRewardIndex = -1;
@@ -102,11 +109,11 @@ public class RewardScreen : UIScreen
         
     }
 
+    /// <summary></summary>
     private void Pick(int index)
     {
        _selectedRewardIndex = index;
        
        Debug.Log($"Selected: {_room.RewardOptions[index].Item.PartName}");
     }
-
 }

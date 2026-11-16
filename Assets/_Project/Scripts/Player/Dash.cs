@@ -2,6 +2,10 @@ using System;
 using ScriptableSettings;
 using UnityEngine;
 
+/// <summary>
+/// The player's dash. PlayerMovement passes Dash presses to IntendToDash and calls HandleDash every frame. A dash
+/// moves a set distance over a set time, slowing down as it goes, with an invincibility window partway through.
+/// </summary>
 public class Dash : MonoBehaviour
 {
     [SerializeField] private DashSettings _settings;
@@ -11,36 +15,50 @@ public class Dash : MonoBehaviour
     [SerializeField] private Transform _orientation;
     [SerializeField] private Health _health;
 
-   
-    [Header("Stats")]                                                  
-    [SerializeField] private StatDefinition _dashDistanceStat;          
-    [SerializeField] private StatDefinition _dashDurationStat;          
-    [SerializeField] private StatDefinition _dashCooldownStat;         
-    [SerializeField] private StatDefinition _dashInvincibilityStat;    
+    // INTEGRATION: new. Which stats in _playerStats hold each dash value. The properties below read them.
+    [Header("Stats")]
+    [SerializeField] private StatDefinition _dashDistanceStat;
+    [SerializeField] private StatDefinition _dashDurationStat;
+    [SerializeField] private StatDefinition _dashCooldownStat;
+    [SerializeField] private StatDefinition _dashInvincibilityStat;
 
+    /// <summary>True during a dash. PlayerMovement uses the dash velocity instead of walking while this is true.</summary>
     public bool IsDashing { get; private set; }
+
+    /// <summary>The direction of the current dash, locked when it starts. PlayerAnimator reads it.</summary>
     public Vector3 DashDirection { get; private set; }
 
-   
-    public float DashDistance => ReadStat(_dashDistanceStat, _settings.DashDistance);                
-    public float DashDuration => ReadStat(_dashDurationStat, _settings.DashDuration);                
-    public float InvincibilityDuration => ReadStat(_dashInvincibilityStat, _settings.InvincibilityDuration); 
+    // INTEGRATION: new. Each was read straight from _settings. Now each reads its stat, falling back to _settings when
+    // the stat isn't set, so charms and consumables can change the dash through StatModifiers.
+    /// <summary>How far a dash goes.</summary>
+    public float DashDistance => ReadStat(_dashDistanceStat, _settings.DashDistance);
+    /// <summary>How long a dash lasts, in seconds.</summary>
+    public float DashDuration => ReadStat(_dashDurationStat, _settings.DashDuration);
+    /// <summary>How long the invincibility window lasts, in seconds.</summary>
+    public float InvincibilityDuration => ReadStat(_dashInvincibilityStat, _settings.InvincibilityDuration);
 
-   
-    public float DashCooldown => ReadStat(_dashCooldownStat, _settings.DashCooldown) + DashDuration; 
+    /// <summary>Seconds from the start of a dash until the next one: the cooldown stat plus the dash's duration.</summary>
+    // INTEGRATION: was a property set once in Awake from _settings. Now worked out each time, so stat changes apply.
+    // DashCooldownIcon reads it to fill the icon.
+    public float DashCooldown => ReadStat(_dashCooldownStat, _settings.DashCooldown) + DashDuration;
 
+    /// <summary>Fires when a dash starts. PlayerAnimator plays the dash, and DashCooldownIcon starts its countdown.</summary>
     public event Action OnDashed;
 
-    private float _dashTimer;
-    private float _nextDashTime;
-    private bool _intendToDash;
+    private float _dashTimer;    // Seconds since the current dash started.
+    private float _nextDashTime; // Time.time when the next dash is allowed.
+    private bool _intendToDash;  // Set by a Dash press, used and cleared by the next HandleDash.
 
-    // Tracks this dash's invincibility separately from other sources.
-    private object invincibilityToken;
-    private bool _wasInvincible = false;
+    // This dash's invincibility token. Health stays invincible while any token is held, so this dash only removes its
+    // own.
+    private object _invincibilityToken;
+    private bool _wasInvincible = false; // Last frame's invincibility, so the token is only added or removed on a change.
 
+    // INTEGRATION: new. Source of the dash stats. Set here or by PlayerRoot through SetStats.
     [SerializeField] private Stats _playerStats;
 
+    /// <summary>Hands over the player's Stats, unless one is already assigned.</summary>
+    // INTEGRATION: new. PlayerRoot calls this in Awake.
     public void SetStats(Stats playerStats)
     {
         if (_playerStats == null)
@@ -49,6 +67,7 @@ public class Dash : MonoBehaviour
         }
     }
 
+    /// <summary>Checks the orientation is set and finds Health if empty.</summary>
     private void Awake()
     {
         if (!_orientation)
@@ -57,9 +76,10 @@ public class Dash : MonoBehaviour
         if (!_health)
             _health = GetComponent<Health>();
 
-        
+        // INTEGRATION: removed setting DashCooldown here. It's now a property that reads the stat.
     }
 
+    /// <summary>Ends a dash in progress, so its invincibility doesn't stay on.</summary>
     private void OnDisable()
     {
         CancelDash();
@@ -88,7 +108,7 @@ public class Dash : MonoBehaviour
 
             _dashTimer += Time.deltaTime;
 
-            if (_dashTimer >= DashDuration) 
+            if (_dashTimer >= DashDuration)
             {
                 CancelDash();
                 IsDashing = false;
@@ -117,8 +137,8 @@ public class Dash : MonoBehaviour
         _dashTimer = 0f;
         IsDashing = true;
 
-        //Cooldown
-        _nextDashTime = Time.time + DashCooldown; 
+        // INTEGRATION: was _settings.DashDuration + _settings.DashCooldown. DashCooldown now includes the duration.
+        _nextDashTime = Time.time + DashCooldown;
 
         OnDashed?.Invoke();
     }
@@ -147,7 +167,7 @@ public class Dash : MonoBehaviour
 
         bool shouldBeInvincible = IsDashing &&
             _dashTimer >= _settings.InvincibilityStart &&
-            _dashTimer < _settings.InvincibilityStart + InvincibilityDuration; // CHANGED: reads the stat
+            _dashTimer < _settings.InvincibilityStart + InvincibilityDuration;
 
         if (shouldBeInvincible == _wasInvincible)
             return;
@@ -160,26 +180,30 @@ public class Dash : MonoBehaviour
         _wasInvincible = shouldBeInvincible;
     }
 
+    /// <summary>Asks Health for an invincibility token, unless this dash already holds one.</summary>
     private void StartDashInvincibility()
     {
-        if (invincibilityToken != null || !_health || !_settings.InvincibilityEnabled)
+        if (_invincibilityToken != null || !_health || !_settings.InvincibilityEnabled)
             return;
 
-        invincibilityToken = _health.StartInvincibility();
+        _invincibilityToken = _health.StartInvincibility();
     }
 
+    /// <summary>Returns this dash's token to Health.</summary>
     private void StopDashInvincibility()
     {
         if (!_health || !_settings.InvincibilityEnabled)
             return;
 
-        _health.StopInvincibility(invincibilityToken);
-        invincibilityToken = null;
+        _health.StopInvincibility(_invincibilityToken);
+        _invincibilityToken = null;
     }
 
+    /// <summary>Requests a dash. The next HandleDash starts it if the cooldown is over.</summary>
     public void IntendToDash() => _intendToDash = true;
 
-    
+    /// <summary>Returns a stat from _playerStats, or the fallback when the stat or Stats isn't set.</summary>
+    // INTEGRATION: new. The same lookup as PlayerMovement.ReadStat.
     private float ReadStat(StatDefinition stat, float fallback)
     {
         if (_playerStats == null || stat == null || !_playerStats.HasStat(stat))

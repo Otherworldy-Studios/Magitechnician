@@ -1,6 +1,7 @@
 /// <summary>
 /// Anything the player can use with the Interact button: portals, chests, the shop, the charm station.
 /// </summary>
+// INTEGRATION: new. InteractionDetector finds these and InteractPrompt shows their PromptText.
 public interface IInteractable
 {
     /// <summary>The action shown after the key in the prompt, for example "Start run" or "Open chest".</summary>

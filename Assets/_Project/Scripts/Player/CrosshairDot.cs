@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// Moves the impact dot to where the next shot lands, using Shoot.LastAim. Replaces the dot code in PlayerAimController.
-// The position comes from AimSolution.AimPoint, which CrossHairAim finds with a ray from the camera through the screen centre.
-// It never uses a ray from the muzzle, so the dot doesn't move with the gun model or its animations.
+/// <summary>
+/// Moves the impact dot to where the next shot lands, using Shoot.LastAim. The position comes from AimSolution.AimPoint,
+/// which CrossHairAim finds with a ray from the camera through the screen center. It never uses a ray from the muzzle,
+/// so the dot doesn't move with the gun model or its animations. While relaxed, the dot stays at the screen center.
+/// </summary>
+// INTEGRATION: new. Replaces the dot code in PlayerAimController. Reads Shoot.LastAim and Shoot.HasAim (both new).
 public class CrosshairDot : MonoBehaviour
 {
     [SerializeField] private Shoot _shoot;
@@ -11,8 +14,9 @@ public class CrosshairDot : MonoBehaviour
     [SerializeField] private RectTransform _dot;
     [SerializeField] private PlayerCombatState _combatState;
 
-    private Graphic _dotGraphic; 
+    private Graphic _dotGraphic; // The dot's Image or other Graphic, turned off to hide it.
 
+    /// <summary>Finds any references left empty.</summary>
     private void Awake()
     {
         if (!_dot) _dot = transform as RectTransform;
@@ -22,7 +26,9 @@ public class CrosshairDot : MonoBehaviour
         if (!_combatState) _combatState = FindFirstObjectByType<PlayerCombatState>();
     }
 
-   
+    /// <summary>
+    /// Places the dot. Runs in LateUpdate, after Shoot.Update has worked out this frame's aim.
+    /// </summary>
     private void LateUpdate()
     {
         if (!_dot) return;
@@ -47,6 +53,7 @@ public class CrosshairDot : MonoBehaviour
             _dot.position = screenPosition;
     }
 
+    /// <summary>Shows or hides the dot.</summary>
     private void SetVisible(bool visible)
     {
         if (_dotGraphic) _dotGraphic.enabled = visible;

@@ -1,33 +1,36 @@
 using UnityEngine;
 
 /// <summary>
-/// Determines whether the enemy is too close, far, or within
-/// its ideal range of the player using the MinRange and MaxRange stats.
+/// Tells whether the enemy is too close to, too far from, or within its preferred distance of the target,
+/// using the MinRange and MaxRange stats. EnemyBase.CurrentRange reads this through IEnemyRange.
 /// </summary>
-
 [RequireComponent(typeof(EnemyBase))]
 public class GoldilocksRange : MonoBehaviour, IEnemyRange
 {
-  
+    // INTEGRATION: removed the EnemyStats field. The distances now come from EnemyBase, which reads them from Stats.
+    private EnemyBase _enemy;
 
-    private EnemyBase enemy;
+    /// <summary>Closest preferred distance.</summary>
+    public float MinDistance => _enemy.MinRange;
 
-    public float MinDistance => enemy.MinRange;
-    public float MaxDistance => enemy.MaxRange; 
+    /// <summary>Farthest preferred distance.</summary>
+    public float MaxDistance => _enemy.MaxRange;
 
+    /// <summary>Finds the EnemyBase.</summary>
     private void Awake()
     {
-        enemy = GetComponent<EnemyBase>();
+        _enemy = GetComponent<EnemyBase>();
     }
 
+    /// <summary>Compares the distance to the target with MinDistance and MaxDistance. TooFar when there's no target.</summary>
     public RangeStatus GetRangeStatus()
     {
-        if (enemy.Target == null)
+        if (_enemy.Target == null)
             return RangeStatus.TooFar;
 
         float distance = Vector3.Distance(
             transform.position,
-            enemy.Target.position
+            _enemy.Target.position
         );
 
         if (distance < MinDistance)
