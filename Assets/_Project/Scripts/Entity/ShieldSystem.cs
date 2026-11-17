@@ -1,4 +1,5 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
@@ -200,5 +201,19 @@ public class ShieldSystem : MonoBehaviour
             return fallback;
 
         return _playerStats.GetValue(stat);
+    }
+    
+    [Button]
+    public void Restore(float amount)
+    {
+        if (Mathf.Approximately(CurrentShield, MaxShield))
+            return;
+        
+        float temp = CurrentShield + amount;
+        CurrentShield = Mathf.Min(temp, MaxShield);
+        OnShieldHealed?.Invoke();
+        
+        if (Mathf.Approximately(CurrentShield, MaxShield))
+            OnShieldRestored?.Invoke(); 
     }
 }
