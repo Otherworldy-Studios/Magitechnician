@@ -58,8 +58,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 159998589347c4f87b3cf294ec8ebcb3, type: 2}
   - {fileID: 11400000, guid: 8879ff21c14c24a8d8b36da80b650e42, type: 2}
   - {fileID: 11400000, guid: 0f2e017156cba415780f67fb1d639728, type: 2}
-  Stats: {fileID: 6665533326396814276}
-  Muzzle: {fileID: 7083117123293746370}
+  _stats: {fileID: 6665533326396814276}
+  _muzzle: {fileID: 7083117123293746370}
+  _projectilePrefab: {fileID: 0}
+  _player: {fileID: 0}
+  _damageStat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
+  _fireRateStat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}
+  _rangeStat: {fileID: 11400000, guid: 1273e247e399148f4b50c9746f98b743, type: 2}
+  _spreadStat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}
+  _bulletSpeedStat: {fileID: 11400000, guid: 9a1aa751653564c1eb77b30e5ff5fed0, type: 2}
+  _fireTypeStat: {fileID: 11400000, guid: ac0de3d9f0e725748b895e083011a05e, type: 2}
+  _ammoTypeStat: {fileID: 11400000, guid: afc89de14e2fc5145ac3f9cb2950b0ef, type: 2}
 --- !u!114 &6665533326396814276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,13 +83,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Stats
   _statBlock: {fileID: 11400000, guid: 3838b8939f49341f483b3ccc8ff2a2e2, type: 2}
   _modifiers: []
-  testStat: {fileID: 0}
-  TestModifier:
-    Stat: {fileID: 0}
-    Operation: 0
-    Value: 0
-    Duration: 0
-  debug: 1
+  _testStat: {fileID: 0}
+  _testModifier:
+    _stat: {fileID: 0}
+    _operation: 0
+    _value: 0
+    _duration: 0
+    _permanent: 0
 --- !u!1 &1835416752219969872
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 0
+  _socketType: 0
 --- !u!1 &6861416841345177414
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 1
+  _socketType: 1
 --- !u!1 &6892661886144959918
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 4
+  _socketType: 4
 --- !u!1 &7293356198712035886
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 3
+  _socketType: 3
 --- !u!1 &7675301414596941410
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,4 +457,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2138780ed04654d198495b7556c0096a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunSocket
-  SocketType: 2
+  _socketType: 2
