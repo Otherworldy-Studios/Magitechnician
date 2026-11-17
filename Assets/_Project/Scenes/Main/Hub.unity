@@ -2120,8 +2120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ce7b914172a3942927ae1c00ab7c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBob
-  bobSpeed: 0.8
-  bobAmount: 0.25
+  _bobSpeed: 0.8
+  _bobAmount: 0.25
 --- !u!1 &789148009
 GameObject:
   m_ObjectHideFlags: 0
@@ -2468,8 +2468,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ce7b914172a3942927ae1c00ab7c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBob
-  bobSpeed: 1
-  bobAmount: 0.5
+  _bobSpeed: 1
+  _bobAmount: 0.5
 --- !u!1 &884490256
 GameObject:
   m_ObjectHideFlags: 0
@@ -2804,8 +2804,28 @@ PrefabInstance:
       value: 1.403
       objectReference: {fileID: 0}
     - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.62599945
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_LocalPosition.z
       value: -1.6879998
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.000000050910867
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.000000044848598
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732992565851014402, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 2.4401164e-15
       objectReference: {fileID: 0}
     - target: {fileID: 7357744756683246077, guid: f7529fa31f785364580e94043da7fd01, type: 3}
       propertyPath: m_Name
@@ -9547,8 +9567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ce7b914172a3942927ae1c00ab7c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBob
-  bobSpeed: 5
-  bobAmount: 0.05
+  _bobSpeed: 5
+  _bobAmount: 0.05
 --- !u!23 &1264319320019112648
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -40344,8 +40364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ce7b914172a3942927ae1c00ab7c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemBob
-  bobSpeed: 0.8
-  bobAmount: 0.25
+  _bobSpeed: 0.8
+  _bobAmount: 0.25
 --- !u!4 &7774661109869637374
 Transform:
   m_ObjectHideFlags: 0

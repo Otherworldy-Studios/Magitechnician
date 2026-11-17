@@ -12,5 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184b1c80d495b2749b03707c6e3df001, type: 3}
   m_Name: LootPool
   m_EditorClassIdentifier: Assembly-CSharp::RoomCompletionLootPool
-  _rewards: []
-  _obtained: []
+  _rewards:
+  - _item: {fileID: 11400000, guid: 6c7b90b6145a4224282130252a2965ca, type: 2}
+    _weight: 65
+  - _item: {fileID: 11400000, guid: b8237cc36c60e1c4394768d89307bee4, type: 2}
+    _weight: 20
+  - _item: {fileID: 11400000, guid: 486b1c31a54a57645ba7ab457b948378, type: 2}
+    _weight: 10
+  - _item: {fileID: 11400000, guid: 8b6cb3e4fa114ff469e98f537121d410, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: de9b6e547c2ab2446abb4220035d3a1d, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: 572efa32a0571dd428b02c8af3ceb02d, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: 3e6e6e57b7926634cbc899fcf18165b0, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: 13c6b773d49835f4e8d1ff7a219ee403, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: 2ef3e87221947e04caa7a750671fc40e, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: 155545b3af150ca49815b1fb7eea24b7, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: 39f0b8afc38037d46ab20d56da64cff0, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: c19c82cc7b8e43f4fbdd9333c0291506, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: e407aa8131ee64f4a8c85085b8c8604b, type: 2}
+    _weight: 5
+  - _item: {fileID: 11400000, guid: 417f23bcce08ab142adf8b8cd3f3abc7, type: 2}
+    _weight: 5

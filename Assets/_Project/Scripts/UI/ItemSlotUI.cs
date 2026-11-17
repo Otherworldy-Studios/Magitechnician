@@ -140,7 +140,14 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     /// <summary>Shows the tooltip for this slot's item. Called by the EventSystem.</summary>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_item != null && _tooltip != null) _tooltip.Show(_item);
+        Debug.Log(
+            $"Hovered {name}, Item: {_item != null}, Tooltip: {_tooltip != null}"
+        );
+        if (_item != null && _tooltip != null)
+        {
+            _tooltip.Show(_item);
+        }
+            
     }
 
     /// <summary>Hides the tooltip. Called by the EventSystem.</summary>
