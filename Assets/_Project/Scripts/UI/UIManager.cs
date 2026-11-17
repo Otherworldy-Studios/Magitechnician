@@ -1,8 +1,13 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Dungeon;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using _Project.Scripts.Dungeon;
+
+
 using UnityEngine.Serialization;
 
 /// <summary>
@@ -19,7 +24,8 @@ public class UIManager : MGR<UIManager>
     {
         StartMenu,
         PauseMenu,
-        Gameplay
+        Gameplay,
+        RewardChoice
     }
 
     [SerializeField, FormerlySerializedAs("screenList")] private List<UIScreen> _screenList; // Filled from children in Awake.
@@ -33,7 +39,7 @@ public class UIManager : MGR<UIManager>
 
     // Requests from the screen buttons. GameManager subscribes to each.
     /// <summary>Resume was pressed. GameManager toggles the pause.</summary>
-    public static event Action OnPauseRequested;
+    public static event Action<bool> OnPauseRequested;
     /// <summary>Start was pressed on the main menu. GameManager loads the Hub.</summary>
     public static event Action OnStartRequested;
     /// <summary>Restart was pressed. GameManager returns to the Hub.</summary>
@@ -70,6 +76,8 @@ public class UIManager : MGR<UIManager>
         GameManager.OnGameWon += GameWin;
         GameManager.OnPauseToggled += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
+        Room.OnRoomCleared += HandleRewards;
+
     }
 
     /// <summary>Debug: switches to a UI state.</summary>
@@ -98,6 +106,11 @@ public class UIManager : MGR<UIManager>
                 HideAllScreens();
                 ToggleCursor(false);
                 break;
+            case UIStates.RewardChoice:
+                HideAllScreens();
+                ShowScreen(_rewardScreen);
+                OnPauseRequested?.Invoke(true);
+                break;
         }
     }
 
@@ -106,8 +119,8 @@ public class UIManager : MGR<UIManager>
     /// <summary>Returns to gameplay and asks GameManager to unpause.</summary>
     public void ResumeButtonPressed()
     {
+        OnPauseRequested?.Invoke(false); 
         ChangeState(UIStates.Gameplay);
-        OnPauseRequested?.Invoke(); // GameManager toggles the pause, so this only unpauses while paused.
     }
 
     /// <summary>Asks GameManager to start the game.</summary>
@@ -166,9 +179,19 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_winScreen);
     }
 
+    private void HandleRewards(Room room)
+    {
+        if (room.RewardOptions.Count == 0)
+        {
+            return;
+        }
+        ChangeState(UIStates.RewardChoice);
+        _rewardScreen.ShowChoices(room, room.RewardOptions);
+    }
+
     /// <summary>Shows a screen and sets the cursor to match it.</summary>
-    /// <param name="givenScreen">Which screen to show.</param>
-    public void ShowScreen(UIScreen givenScreen)
+    /// <param name="givenScreen">Which screen to be shown</param>
+    public void ShowScreen(UIScreen givenScreen) 
     {
         givenScreen.Show();
         ToggleCursor(givenScreen.ShowsCursor);
@@ -195,38 +218,50 @@ public class UIManager : MGR<UIManager>
     }
 
     #region misc
-
-    /// <summary>Shows and frees the cursor, or hides and locks it. Called by ShowScreen and ChangeState.</summary>
+    
+    /// <summary>
+        /// Toggle cursor visibility, used implicitly when changing screens
+        /// </summary>
     private void ToggleCursor(bool isVisible)
-    {
-        if (!isVisible)
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            _cursorVisible = false;
+            if (!isVisible)
+            {
+               Cursor.visible = false;
+               Cursor.lockState = CursorLockMode.Locked;
+               _cursorVisible = false;
+            }
+            else
+            {
+                Cursor.visible = true; 
+                Cursor.lockState = CursorLockMode.None;
+                _cursorVisible = true;
+            }
         }
-        else
+    
+        /// <summary>
+        /// Called when GM invokes the pause request
+        /// </summary>
+        /// <param name="isPaused"></param>
+        private void HandlePause(bool isPaused)
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            _cursorVisible = true;
+            if (_currentState == UIStates.RewardChoice) //dont go to pause menu if in certain states already
+            {
+                return; 
+            }
+            
+            if (isPaused)
+            { 
+                ChangeState(UIStates.PauseMenu);
+            }
+            else
+            {
+                ChangeState(UIStates.Gameplay);
+                ToggleCursor(false);
+            }
+            
         }
-    }
-
-    /// <summary>Shows the pause menu when paused, and returns to gameplay when unpaused. Runs on GameManager.OnPauseToggled.</summary>
-    private void HandlePause(bool isPaused)
-    {
-        if (isPaused)
-        {
-            ChangeState(UIStates.PauseMenu);
-        }
-        else
-        {
-            ChangeState(UIStates.Gameplay);
-            ToggleCursor(false);
-        }
-    }
-
+    
+    
     #endregion
 
     /// <summary>

@@ -49,6 +49,7 @@ public class GameManager : MGR<GameManager>
     // because the Hub and the Dungeon each create their own player.
     /// <summary>Fires when a scene's player registers, with its PlayerRoot.</summary>
     public event Action<PlayerRoot> OnPlayerRegistered;
+    
 
     /// <summary>Time.time when the current run started.</summary>
     public float StartTime { get; private set; }
@@ -76,6 +77,7 @@ public class GameManager : MGR<GameManager>
     [SerializeField, FormerlySerializedAs("player")] private GameObject _player; // INTEGRATION: set by RegisterPlayer instead of GameObject.Find.
     [Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
     [SerializeField, FormerlySerializedAs("waveManager")] private PH_WaveManager _waveManager;
+    [SerializeField] private RoomCompletionLootPool _lootPool;
 
     private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
     private bool _hasSavedProgress;    // INTEGRATION: new. False until the first save, so the first player keeps the values set on its prefab.
@@ -101,13 +103,13 @@ public class GameManager : MGR<GameManager>
         }
 
         SceneManager.sceneLoaded += InitReferences; // INTEGRATION: new. Finishes each scene change after the scene loads.
-        UIManager.OnPauseRequested += TogglePause;
+        UIManager.OnPauseRequested += SetPause;
         UIManager.OnResetRequested += ResetGame;
         UIManager.OnStartRequested += StartHub;
         UIManager.OnMenuRequested += MainMenu;
         UIManager.OnExitRequested += ExitGame;
         PH_Boss.OnBossDefeated += BossDefeated;
-        PH_WaveManager.OnRoomCleared += RoomCleared;
+        
     }
 
     /// <summary>Enters the Menu state when the game starts in the menu, and listens to the pause key.</summary>
@@ -125,7 +127,7 @@ public class GameManager : MGR<GameManager>
 
         // INTEGRATION: replaces reading the Escape key in Update. Subscribed in Start because InputManager
         // may not have run its Awake yet when this Awake runs.
-        InputManager.Instance.OnPausePressed += TogglePause;
+        InputManager.Instance.OnPausePressed += HandlePausePressed;
     }
 
     /// <summary>Listens to the player's death, if a player was assigned before this component turned on.</summary>
@@ -277,6 +279,36 @@ public class GameManager : MGR<GameManager>
         SceneManager.LoadSceneAsync(buildIndex);
     }
 
+    public bool ChooseReward(int index) //having it be a bool is useful for knowing it actually succeeded
+    {
+        Room room = CurrentRoom;
+
+        if (room == null || index < 0 || index >= room.RewardOptions.Count)
+        {
+            return false;
+        }
+        
+        GunPart part = room.RewardOptions[index].Item;
+        Gun gun = _player.GetComponentInChildren<Gun>();
+
+        if (!gun.HasSocket(part.PartType))
+        {
+            Debug.LogError($"Gun has no socket for {part.PartType}");
+            return false;
+        }
+
+        if (!gun.EquipPart(part))
+        {
+            Debug.LogError($"EquipPart failed for {part.PartName}");
+            return false;
+        }
+        
+        Debug.Log($"gun parts seems to be working, go back and clean up debug scripts in GM");
+        
+        room.PickReward(index);
+        return true;
+    }
+
     #region EventHandlers
 
     /// <summary>Quits the game. Raised by the menu's Quit button through UIManager.</summary>
@@ -285,6 +317,11 @@ public class GameManager : MGR<GameManager>
         Application.Quit();
     }
 
+    private void HandlePausePressed()
+    {
+        SetPause(!_isPaused);
+    }
+    
     /// <summary>Ends the run as a loss when the player's Health fires OnDied.</summary>
     private void PlayerDied(GameObject player)
     {
@@ -310,11 +347,12 @@ public class GameManager : MGR<GameManager>
     private void StartRun()
     {
         _playerSpawner.OnPlayerSpawned -= StartRun; // INTEGRATION: listens to PlayerSpawner instead of LevelGenerator.OnMapGenerated.
+        _lootPool.ResetObtained(); //make sure the data asset is cleared
         _currentDungeon = _generator.RoomGrid;
         Room startRoom = _generator.StartRoom;
         // INTEGRATION: was "CurrentRoom = startRoom". EnterRoom calls ChangeRoom and fires the room's OnRoomEntered,
         // which starts a RoomEncounter if the start room has enemies.
-        startRoom.EnterRoom();
+        startRoom.EnterRoom(); 
 
         // UIManager.Instance.ShowLoading(false);   // Turn on when the loading screen exists.
         ChangeState(GameState.Playing);
@@ -360,7 +398,7 @@ public class GameManager : MGR<GameManager>
 
         if (_isPaused)
         {
-            TogglePause(); // Unpause when leaving to the menu or the Hub.
+            SetPause(false); // Unpause when leaving to the menu or the Hub.
         }
 
         _currentState = newState;
@@ -441,7 +479,7 @@ public class GameManager : MGR<GameManager>
     /// and only after a player has registered.
     /// </summary>
     [Button, DisableInEditorMode]
-    private void TogglePause()
+    private void SetPause(bool pauseIntended)
     {
         // INTEGRATION: pause also works in the Hub now.
         if (_currentState != GameState.Playing && _currentState != GameState.Hub)
@@ -452,23 +490,30 @@ public class GameManager : MGR<GameManager>
         {
             return; // No player registered yet, so there's nothing to freeze.
         }
-        if (_isPaused)
+        
+        bool pauseChanged = _isPaused != pauseIntended; //i love bools
+        
+        _isPaused = pauseIntended;
+        
+        if (!pauseIntended)
         {
             InputManager.Instance.SetMode(InputMode.Gameplay);
             Time.timeScale = 1;
-            _isPaused = false;
         }
         else
         {
             InputManager.Instance.SetMode(InputMode.UI);
             Time.timeScale = 0;
-            _isPaused = true;
         }
-        OnPauseToggled?.Invoke(_isPaused);
-    }
 
+        if (pauseChanged)
+        {
+            OnPauseToggled?.Invoke(_isPaused);
+        }
+    }
+    
     /// <summary>Returns to the Hub. Raised by the death, win, and pause screens' Hub buttons through UIManager.</summary>
-    private void ResetGame()
+    private void ResetGame() 
     {
         LoadScene(Scenes.Hub, GameState.Hub); // INTEGRATION: loads the Hub scene instead of only changing the state.
     }
@@ -490,7 +535,7 @@ public class GameManager : MGR<GameManager>
     {
         if (InputManager.HasInstance)
         {
-            InputManager.Instance.OnPausePressed -= TogglePause;
+            InputManager.Instance.OnPausePressed -= HandlePausePressed;
         }
         if (_playerHealth != null)
         {

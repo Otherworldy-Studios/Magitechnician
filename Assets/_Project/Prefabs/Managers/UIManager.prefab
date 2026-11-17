@@ -22101,7 +22101,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardScreen
   _showsCursor: 1
-  _resumeButton: {fileID: 7541596204444910464}
+  resumeButton: {fileID: 7541596204444910464}
+  itemGrid: {fileID: 6933602424646893516}
+  itemSlot1: {fileID: 6416711487900078795}
+  itemSlot2: {fileID: 685255439480775915}
+  itemSlot3: {fileID: 1817782422273034364}
 --- !u!1 &4629476238262737471
 GameObject:
   m_ObjectHideFlags: 0
@@ -28674,7 +28678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcc97411a897c9447b00fafadfff3a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemGridUI
-  _tooltip: {fileID: 0}
+  _tooltip: {fileID: 6107555625223757097}
   _slots: []
 --- !u!1 &6211670533428547115
 GameObject:
@@ -45283,7 +45287,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1508758403866968506, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_Name
-      value: AssetDemo_FantasyWarrior_Button_Basic_01
+      value: ResumeButton
       objectReference: {fileID: 0}
     - target: {fileID: 2617263665655766227, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_text
@@ -45575,6 +45579,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+--- !u!114 &685255439480775915 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2696495076802945683, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+  m_PrefabInstance: {fileID: 3236218744842356344}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce8a6a012df1d54eb83d6dd55e75466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSlotUI
 --- !u!224 &9044800304847344576 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5867291162776131000, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
@@ -46258,6 +46273,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+--- !u!114 &1817782422273034364 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2696495076802945683, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+  m_PrefabInstance: {fileID: 4346484394465520367}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce8a6a012df1d54eb83d6dd55e75466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSlotUI
 --- !u!224 &7871481528846008151 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5867291162776131000, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
@@ -47884,6 +47910,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5867291162776131000, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
   m_PrefabInstance: {fileID: 8964242321291751512}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6416711487900078795 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2696495076802945683, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+  m_PrefabInstance: {fileID: 8964242321291751512}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce8a6a012df1d54eb83d6dd55e75466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSlotUI
 --- !u!1001 &9074282069418642828
 PrefabInstance:
   m_ObjectHideFlags: 0
