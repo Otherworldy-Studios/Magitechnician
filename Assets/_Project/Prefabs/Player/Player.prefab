@@ -393,6 +393,7 @@ GameObject:
   - component: {fileID: 2538457442136657555}
   - component: {fileID: 2233296635478493348}
   - component: {fileID: 3692322850074084798}
+  - component: {fileID: 8175562478228806300}
   m_Layer: 7
   m_Name: Player Controller
   m_TagString: Player
@@ -663,6 +664,25 @@ MonoBehaviour:
   _interactableLayers:
     serializedVersion: 2
     m_Bits: 4096
+--- !u!114 &8175562478228806300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335441713561965772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 575f2fcb8eb41454e94b3aa743fe7e85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostHealth
+  health: {fileID: 2470234422445426739}
+  ghostRecoverySource: {fileID: 521992841820949502}
+  damageReceiver: {fileID: 5614074075523072044}
+  useContestedHealth: 1
+  ghostHealthPercent: 0.4
+  ghostDrainTime: 5
+  ghostRecoveryPercent: 0.5
 --- !u!1 &3005668390539063271
 GameObject:
   m_ObjectHideFlags: 0
