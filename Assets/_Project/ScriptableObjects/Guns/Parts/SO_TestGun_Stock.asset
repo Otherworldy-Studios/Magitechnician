@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunStock
   _partPrefab: {fileID: 2114168392298959822, guid: ed98bce06d7a76e47b22e9c4a1c187c8, type: 3}
   _partName: TestGun Stock
+  _description: 
+  _icon: {fileID: 21300000, guid: 1838e2a7224da034aaafe856b2232099, type: 3}
+  rarity: 0
+  statModifiers: []

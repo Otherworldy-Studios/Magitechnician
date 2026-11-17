@@ -1,61 +1,67 @@
 using UnityEngine;
-/// Summary -
-/// Moves the enemy toward its target using EnemyMovement.cs.
-/// Uses Goldilocks range and Line of Sight (LOS) to determine whether
-/// to chase, reposition, or attack.
+/// <summary>
+/// Moves the enemy toward its target using EnemyMovement.cs. Uses Goldilocks range and Line of Sight (LOS) to determine whether to chase, reposition, or attack.
+/// </summary>
 public class ChaseState : IEnemyState
 {
-    private readonly EnemyBase enemy;
+    private readonly EnemyBase _enemy;
     private const float RepathInterval = 0.2f;
-    private float nextRepathTime;
+    private float _nextRepathTime; // Time.time of the next path update. Paths update every RepathInterval seconds.
 
+    /// <summary>Creates the state for one enemy. EnemyBase.Awake calls this.</summary>
     public ChaseState(EnemyBase enemy)
     {
-        this.enemy = enemy;
+        _enemy = enemy;
     }
-    // Allows immediate path recalculation and resumes movement.
+
+    /// <summary>Allows immediate path recalculation and resumes movement.</summary>
     public void Enter()
     {
-        nextRepathTime = 0f;
-        enemy.Movement.ResumeMoving();
+        _nextRepathTime = 0f;
+        _enemy.Movement.ResumeMoving();
     }
-    // Evaluates target distance and visibility to select the next behavior.
+
+    /// <summary>
+    /// Moves toward the target while it's too far. Switches to Reposition when too close or out of sight,
+    /// to Attack when in range and in sight, and to Idle when the target is lost.
+    /// </summary>
     public void Tick(float dt)
     {
-        if (!enemy.HasTarget)
+        if (!_enemy.HasTarget)
         {
-            enemy.ChangeState(enemy.IdleState);
+            _enemy.ChangeState(_enemy.IdleState);
             return;
         }
 
-        switch (enemy.CurrentRange)
+        switch (_enemy.CurrentRange)
         {
             case RangeStatus.TooClose:
-                enemy.ChangeState(enemy.RepositionState);
+                _enemy.ChangeState(_enemy.RepositionState);
                 return;
 
             case RangeStatus.InRange:
-                if (!enemy.HasLineOfSight)
+                if (!_enemy.HasLineOfSight)
                 {
-                    enemy.ChangeState(enemy.RepositionState);
+                    _enemy.ChangeState(_enemy.RepositionState);
                     return;
                 }
 
-                enemy.Movement.StopMoving();
-                enemy.ChangeState(enemy.AttackState);
+                _enemy.Movement.StopMoving();
+                _enemy.ChangeState(_enemy.AttackState);
 
                 return;
 
             case RangeStatus.TooFar:
-                if (Time.time >= nextRepathTime)
+                if (Time.time >= _nextRepathTime)
                 {
-                    nextRepathTime = Time.time + RepathInterval;
-                    enemy.Movement.MoveTo(enemy.Target.position);
+                    _nextRepathTime = Time.time + RepathInterval;
+                    _enemy.Movement.MoveTo(_enemy.Target.position);
                 }
                 return;
         }
     }
 
+    /// <summary>Does nothing.</summary>
     public void Exit()
     {
     }

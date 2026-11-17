@@ -1,0 +1,1526 @@
+{
+    "_version": "4.12.3",
+    "_name": "Books",
+    "_id": -8584073863335421633,
+    "_hexId": "88DF3E4D3A2D593F",
+    "_brushes": [
+        {
+            "_id": 639297993680717149,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Item_Spellbook_01",
+            "_items": [
+                {
+                    "_id": 639297993680717150,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "02efdef403ecbdf44a8d5218f8bf6999",
+                    "_prefabPath": "Assets/Synty/PolygonElvenRealm/Prefabs/Items/SM_Item_Spellbook_01.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297993680717149,
+                    "_paletteName": "Books",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297993681234770,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Item_Spellbook_02",
+            "_items": [
+                {
+                    "_id": 639297993681234771,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "583bdf240c65803499a14fd9b2c441ad",
+                    "_prefabPath": "Assets/Synty/PolygonElvenRealm/Prefabs/Items/SM_Item_Spellbook_02.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297993681234770,
+                    "_paletteName": "Books",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297993681728893,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Item_Spellbook_03",
+            "_items": [
+                {
+                    "_id": 639297993681728894,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "502ab6d07ea346841a257712061dbc3c",
+                    "_prefabPath": "Assets/Synty/PolygonElvenRealm/Prefabs/Items/SM_Item_Spellbook_03.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297993681728893,
+                    "_paletteName": "Books",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297993682278682,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Item_Spellbook_04",
+            "_items": [
+                {
+                    "_id": 639297993682278683,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "55d08092955f0344ebe1c9faff79a85d",
+                    "_prefabPath": "Assets/Synty/PolygonElvenRealm/Prefabs/Items/SM_Item_Spellbook_04.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297993682278682,
+                    "_paletteName": "Books",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297993682910482,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Item_Spellbook_05",
+            "_items": [
+                {
+                    "_id": 639297993682910483,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "b8524ad956bd2884e976f33351e4a2b4",
+                    "_prefabPath": "Assets/Synty/PolygonElvenRealm/Prefabs/Items/SM_Item_Spellbook_05.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297993682910482,
+                    "_paletteName": "Books",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297993683549127,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Item_Spellbook_06",
+            "_items": [
+                {
+                    "_id": 639297993683549128,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "1bfb403f6889d1b48a6c9614b200a389",
+                    "_prefabPath": "Assets/Synty/PolygonElvenRealm/Prefabs/Items/SM_Item_Spellbook_06.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297993683549127,
+                    "_paletteName": "Books",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        }
+    ],
+    "_brushCreationSettings": {
+        "_includeSubfolders": true,
+        "_addLabelsToDroppedPrefabs": false,
+        "_labelsCSV": "",
+        "_defaultBrushSettings": {
+            "_id": -1,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            }
+        },
+        "_defaultThumbnailSettings": {
+            "_backgroudColor": {
+                "r": 0.5,
+                "g": 0.5,
+                "b": 0.5,
+                "a": 1.0
+            },
+            "_lightEuler": {
+                "x": 130.0,
+                "y": -165.0
+            },
+            "_lightColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "_lightIntensity": 1.0,
+            "_zoom": 1.0,
+            "_targetEuler": {
+                "x": 0.0,
+                "y": 125.0,
+                "z": 0.0
+            },
+            "_targetOffset": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "_useCustomImage": false
+        }
+    },
+    "_hashCode": -1931836645,
+    "_isPinned": false
+}

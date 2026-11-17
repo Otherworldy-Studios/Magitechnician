@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb2f7ab99969a14dac231cb8311dd79, type: 3}
+  m_Name: SO_GlobalSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GlobalSettings
+  RarityColorSettings:
+    Common: {r: 1, g: 1, b: 1, a: 0}
+    Uncommon: {r: 0, g: 1, b: 0.14361954, a: 0}
+    Rare: {r: 0, g: 1, b: 0.796659, a: 0}
+    Epic: {r: 0.6740659, g: 0.11774653, b: 0.9245283, a: 0}

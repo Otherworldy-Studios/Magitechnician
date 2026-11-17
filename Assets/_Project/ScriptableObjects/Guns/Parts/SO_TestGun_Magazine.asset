@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunMagazine
   _partPrefab: {fileID: 2063286040651128319, guid: 167113100d193de4fa82b6774551ac22, type: 3}
   _partName: TestGun Magazine
-  _magazineSize: 30
-  _reloadSpeed: 2
-  _ammoType: 0
+  _description: 
+  _icon: {fileID: 21300000, guid: 1b4d6e20497c6e54698ee4a7cbb697e1, type: 3}
+  rarity: 0
+  statModifiers: []
+  DamageType: 0

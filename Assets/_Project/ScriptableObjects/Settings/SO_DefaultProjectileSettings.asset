@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6283dda95b5ef9744b2e73447cf352e6, type: 3}
   m_Name: SO_DefaultProjectileSettings
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileSettings
-  <Speed>k__BackingField: 40
   <Radius>k__BackingField: 0.01
-  <MaxDistance>k__BackingField: 100
   <BulletCollisionLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 1
-  <Damage>k__BackingField: 10
-  <Prefab>k__BackingField: {fileID: 3957664738974331342, guid: b6a0de0609a91f549823946eddd3a554, type: 3}
+    m_Bits: 769
+  <Prefab>k__BackingField: {fileID: 8822410932414643581, guid: 503d231ab675f8045b20d2148539669c, type: 3}

@@ -1,42 +1,47 @@
-using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+/// <summary>The pause menu: Resume, Main Menu, Hub, and Settings. Each button calls UIManager.</summary>
 public class PauseScreen : UIScreen
 {
-    [SerializeField] private Button resumeButton;
-    [SerializeField] private Button menuButton;
-    [SerializeField] private Button settingsButton;
-    [SerializeField] private Button hubButton;
-    
-    
+    [SerializeField, FormerlySerializedAs("resumeButton")] private Button _resumeButton;
+    [SerializeField, FormerlySerializedAs("menuButton")] private Button _menuButton;
+    [SerializeField, FormerlySerializedAs("settingsButton")] private Button _settingsButton;
+    [SerializeField, FormerlySerializedAs("hubButton")] private Button _hubButton;
+    [SerializeField, FormerlySerializedAs("pauseImage")] private Image _pauseImage; // The background. Not read by this script.
+
+    /// <summary>Connects the buttons.</summary>
     private void Awake()
     {
-        resumeButton.onClick.AddListener(OnResume);
-        menuButton.onClick.AddListener(OnMenu);
-        hubButton.onClick.AddListener(OnHub);
-        settingsButton.onClick.AddListener(OnSettings);
+        _resumeButton.onClick.AddListener(OnResume);
+        _menuButton.onClick.AddListener(OnMenu);
+        _hubButton.onClick.AddListener(OnHub);
+        _settingsButton.onClick.AddListener(OnSettings);
     }
 
-
+    /// <summary>Resume button. Pressing Pause again does the same through GameManager.</summary>
     private void OnResume()
     {
-        UIManager.instance.PauseButtonPressed(); //OR pressing escape again but this should be implicit from the GM
+        UIManager.Instance.ResumeButtonPressed();
     }
 
+    /// <summary>Main Menu button.</summary>
     private void OnMenu()
     {
-        UIManager.instance.MenuButtonPressed();
+        UIManager.Instance.MenuButtonPressed();
     }
 
+    /// <summary>Hub button. Ends the run and returns to the Hub.</summary>
     private void OnHub()
     {
         Debug.Log("On Hub");
-        UIManager.instance.ResetButtonPressed();
+        UIManager.Instance.ResetButtonPressed();
     }
 
+    /// <summary>Settings button.</summary>
     private void OnSettings()
     {
-        UIManager.instance.PauseButtonPressed();
+        UIManager.Instance.SettingsButtonPressed();
     }
 }

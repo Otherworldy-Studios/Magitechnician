@@ -4,7 +4,10 @@
   <Project Path="MoreMountains.Tools.Editor.csproj" />
   <Project Path="Lofelt.NiceVibrations.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Unity.InputSystem.RebindingUI.csproj" />
+  <Project Path="Unity.InputSystem.InGameHints.csproj" />
   <Project Path="Lofelt.NiceVibrations.Demo.csproj" />
   <Project Path="Lofelt.NiceVibrations.Editor.csproj" />
+  <Project Path="UnityEngine.InputSystem.Samples.UIvsGameInput.csproj" />
   <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
 </Solution>

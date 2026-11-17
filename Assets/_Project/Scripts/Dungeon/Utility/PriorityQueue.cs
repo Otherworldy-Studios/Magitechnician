@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-// Ok to be honest, I don't even know where this came from, I just stole it
-// from my last build because we had to download it from I don't even know where
+// A copy of the .NET PriorityQueue source (link and license below), with long priorities.
+// LevelGenerator uses it to pick rooms. Names follow the .NET source, so they're kept unchanged.
 
 namespace _Project.Scripts.Dungeon.Utility
 {
@@ -123,7 +123,6 @@ namespace System.Collections.Generic
             _nodes = new (TElement, long)[initialCapacity];
             _comparer = InitializeComparer(comparer);
         }
-
 
         /// <summary>
         ///  Gets the number of elements contained in the <see cref="PriorityQueue{TElement, int}"/>.

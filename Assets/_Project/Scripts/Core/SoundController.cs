@@ -1,137 +1,141 @@
 using System;
 using MoreMountains.Feedbacks;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.Audio;
 using MoreMountains.Tools;
-using UnityEngine.InputSystem;
-using UnityEngine.ProBuilder.MeshOperations;
+using Sirenix.OdinInspector;
+using UnityEngine;
+using UnityEngine.Serialization;
 
-public class SoundController : MonoBehaviour
+/// <summary>
+/// Plays sound effects, music, and UI sounds by name through Feel's MMSoundManager.
+/// Each track has its own list of named sounds, filled in the Inspector. Call PlaySFX, PlayMusic, or PlayUI
+/// with a sound's name through SoundController.Instance.
+/// </summary>
+// INTEGRATION: was a MonoBehaviour with a private static instance and DontDestroyOnLoad, so no other script could reach it.
+// Now inherits MGR<SoundController> and lives in the Managers prefab, so any script can use SoundController.Instance.
+public class SoundController : MGR<SoundController>
 {
     /// <summary>
-    /// Sound Class holds the name and SoundData file of a certain SFX, Song, or UI sound
+    /// A named sound: the name other scripts pass to the Play methods, and the Feel sound data to play.
     /// </summary>
-    /// <param name="name">string</param>
-    /// <param name="soundData">MMF_MMSoundManagerSoundData</param>
     [Serializable]
     public class Sound
     {
-        public string name;
-        public MMF_MMSoundManagerSoundData soundData;
+        [Tooltip("The name scripts use to play this sound, for example \"UI Click\".")]
+        [SerializeField, FormerlySerializedAs("name")] private string _name;
+        [Tooltip("The clip and its playback settings.")]
+        [SerializeField, FormerlySerializedAs("soundData")] private MMF_MMSoundManagerSoundData _soundData;
+
+        public string Name => _name;
+        public MMF_MMSoundManagerSoundData SoundData => _soundData;
     }
 
-    // Separate Sound arrays of each track type begin empty and can be expanded upon in the Inspector
-    [SerializeField] private Sound[] sfxSounds;
-    [SerializeField] private Sound[] musicTracks;
-    [SerializeField] private Sound[] uiSounds;
+    // One list per track. Each starts empty and is filled in the Inspector.
+    [SerializeField, FormerlySerializedAs("sfxSounds")] private Sound[] _sfxSounds;    
+    [SerializeField, FormerlySerializedAs("musicTracks")] private Sound[] _musicTracks;
+    [SerializeField, FormerlySerializedAs("uiSounds")] private Sound[] _uiSounds;      
 
-    // Instance of SounController class, ensures class remains as singleton
-    private static SoundController _instance;
-
-    private void Awake()
+    /// <summary>Puts every sound on the track of the list it's in, so the lists decide the track.</summary>
+    protected override void Awake()
     {
-        // Keep class as singleton
-        if (_instance == null)
-            _instance = this;
-        else
+        base.Awake();
+        if (Instance != this)
         {
-            Destroy(gameObject);
             return;
         }
 
-        DontDestroyOnLoad(gameObject);
+        foreach (Sound sfxSound in _sfxSounds)
+        {
+            sfxSound.SoundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
+        }
 
-        // Ensures that on awake, each Sound Data in each Sound of each array is matched to the track it should fall under
-        foreach (var sfxSound in  sfxSounds)
+        foreach (Sound musicTrack in _musicTracks)
         {
-            sfxSound.soundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Sfx;
+            musicTrack.SoundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Music;
+            musicTrack.SoundData.DoNotPlayIfClipAlreadyPlaying = true; // A track that's already playing doesn't restart.
         }
-        
-        foreach (var musicTrack in  musicTracks)
+
+        foreach (Sound uiSound in _uiSounds)
         {
-            musicTrack.soundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.Music;
-            musicTrack.soundData.DoNotPlayIfClipAlreadyPlaying = true;
-        }
-        
-        foreach (var uiSound in  uiSounds)
-        {
-            uiSound.soundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.UI;
+            uiSound.SoundData.MmSoundManagerTrack = MMSoundManager.MMSoundManagerTracks.UI;
         }
     }
 
-    /// <summary>
-    /// Used to test out various sounds in Play Mode
-    /// </summary>
-    /// <param name="N Key">Plays UI sound in the same position as Sound Manager</param>
-    /// <param name="M Key">Plays Music track in a distinct position in the scene</param>
-    /// <param name="B Key">Plays randomized SFX in a distinct position in the scene</param>
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-    private void Update()
+    // INTEGRATION: the N, M, and B debug keys became these Inspector buttons.
+
+    /// <summary>Debug: plays a sound effect by name at the SoundController's position.</summary>
+    [Button, DisableInEditorMode]
+    public void DEBUGPlaySFX(string soundName)
     {
-        if (Keyboard.current != null)
-        {
-            if (Keyboard.current.nKey.wasPressedThisFrame)
-                PlayUI("UI Click");
-            if (Keyboard.current.mKey.wasPressedThisFrame)
-                PlayMusic("Sewer Theme", new Vector3(-5f, -5f, 5f));
-            if (Keyboard.current.bKey.wasPressedThisFrame)
-                PlaySFX("Hammer Strike", new Vector3(1, 2, -3));
-        }
+        PlaySFX(soundName, transform.position);
     }
-#endif
 
-    
-    // Plays Sound based on the name for each array. A position can be specified for where in the scene the Sound plays.
-    
+    /// <summary>Debug: plays a music track by name.</summary>
+    [Button, DisableInEditorMode]
+    public void DEBUGPlayMusic(string soundName)
+    {
+        PlayMusic(soundName, transform.position);
+    }
+
+    /// <summary>Debug: plays a UI sound by name.</summary>
+    [Button, DisableInEditorMode]
+    public void DEBUGPlayUI(string soundName)
+    {
+        PlayUI(soundName, transform.position);
+    }
+
+    /// <summary>Plays a sound effect by name at a position in the scene.</summary>
+    /// <param name="soundName">The sound's Name in the SFX list.</param>
+    /// <param name="atPosition">Where in the scene the sound plays.</param>
     public void PlaySFX(string soundName, Vector3 atPosition)
     {
-        Sound s = Array.Find(sfxSounds, sfxSound => sfxSound.name == soundName);
+        Sound s = Array.Find(_sfxSounds, sfxSound => sfxSound.Name == soundName);
         PlaySound(s, soundName, atPosition);
     }
 
+    /// <summary>Plays a music track by name at a position in the scene.</summary>
     public void PlayMusic(string soundName, Vector3 atPosition)
     {
-        Sound s = Array.Find(musicTracks, musicTrack => musicTrack.name == soundName);
+        Sound s = Array.Find(_musicTracks, musicTrack => musicTrack.Name == soundName);
         PlaySound(s, soundName, atPosition);
     }
 
+    /// <summary>Plays a UI sound by name at a position in the scene.</summary>
     public void PlayUI(string soundName, Vector3 atPosition)
     {
-        Sound s = Array.Find(uiSounds, uiSound => uiSound.name == soundName);
+        Sound s = Array.Find(_uiSounds, uiSound => uiSound.Name == soundName);
         PlaySound(s, soundName, atPosition);
     }
 
-    /// <summary>
-    /// Plays Sound based on the track type and name it falls under. A position can be specified for where in the scene the Sound plays
-    /// </summary>
-    /// <param name="trackType"></param>
-    /// <param name="soundName"></param>
-    /// <param name="atPosition"></param>
-    private void PlaySound(Sound s, string soundName,  Vector3 atPosition)
+    /// <summary>Plays a sound that was found by name, or logs a warning if no sound has that name.</summary>
+    /// <param name="s">The sound from one of the lists, or null if none matched.</param>
+    /// <param name="soundName">The name that was looked up, for the warning.</param>
+    /// <param name="atPosition">Where in the scene the sound plays.</param>
+    private void PlaySound(Sound s, string soundName, Vector3 atPosition)
     {
         if (s == null)
         {
             Debug.LogWarning("Sound not found: " + soundName);
             return;
         }
-        
-        s.soundData.Play(atPosition);
+
+        s.SoundData.Play(atPosition);
     }
 
-    // Constructors of PLaySFX, PlayMusic, and PlayUI that automatically place the
-    // audio at the position of the Sound Controller in the scene space.
-    
+    // Overloads that play at the SoundController's own position.
+
+    /// <summary>Plays a sound effect by name at the SoundController's position.</summary>
     public void PlaySFX(string soundName)
     {
         PlaySFX(soundName, transform.position);
     }
-    
+
+    /// <summary>Plays a music track by name at the SoundController's position.</summary>
     public void PlayMusic(string soundName)
     {
         PlayMusic(soundName, transform.position);
     }
-    
+
+    /// <summary>Plays a UI sound by name at the SoundController's position.</summary>
     public void PlayUI(string soundName)
     {
         PlayUI(soundName, transform.position);

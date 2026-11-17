@@ -1,0 +1,2442 @@
+{
+    "_version": "4.12.3",
+    "_name": "Wall",
+    "_id": -8584073893393121105,
+    "_hexId": "88DF3E463A9940AF",
+    "_brushes": [
+        {
+            "_id": 639297964034828358,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 180.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_01",
+            "_items": [
+                {
+                    "_id": 639297964034828359,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "cf65c08ff4650764291a7092c4db5e22",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_01.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964034828358,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964035300357,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_02",
+            "_items": [
+                {
+                    "_id": 639297964035300358,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "1f507fc5e624d6e4aa3c2ff951f4bcf1",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_02.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964035300357,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964035742786,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_03",
+            "_items": [
+                {
+                    "_id": 639297964035742787,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "8d68c83de6136de4681de793079f0979",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_03.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964035742786,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964036192257,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_04",
+            "_items": [
+                {
+                    "_id": 639297964036192258,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "b48a1a2d55e0c2548bfd3590c0a1a829",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_04.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964036192257,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964036674130,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_05",
+            "_items": [
+                {
+                    "_id": 639297964036674131,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "63baf9dc330c3de4b8989173c035ef37",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_05.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964036674130,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964037248604,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 90.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_06",
+            "_items": [
+                {
+                    "_id": 639297964037248605,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "791d8f422da404042a7b43fc48eadcb8",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_06.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964037248604,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964037811831,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_Alcove_Angular_01",
+            "_items": [
+                {
+                    "_id": 639297964037811832,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "59adc97482d01e6408b3f38f078358a9",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_Alcove_Angular_01.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964037811831,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964038341493,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_Alcove_Angular_02",
+            "_items": [
+                {
+                    "_id": 639297964038341494,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "ebdd8df7b34e8c04ab0b59da3ab2f407",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_Alcove_Angular_02.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964038341493,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964038934965,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_Alcove_Small_01",
+            "_items": [
+                {
+                    "_id": 639297964038934966,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "4302882e6c3a10b4cae4ff1a8955f702",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_Alcove_Small_01.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964038934965,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        },
+        {
+            "_id": 639297964039611886,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            },
+            "_name": "SM_Env_Dwarf_Wall_Alcove_Small_02",
+            "_items": [
+                {
+                    "_id": 639297964039611887,
+                    "_surfaceDistance": 0.0,
+                    "_randomSurfaceDistance": false,
+                    "_randomSurfaceDistanceRange": {
+                        "_v1": -0.004999999888241291,
+                        "_v2": 0.004999999888241291,
+                        "_min": -0.004999999888241291,
+                        "_max": 0.004999999888241291
+                    },
+                    "_embedInSurface": false,
+                    "_embedAtPivotHeight": false,
+                    "_localPositionOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_rotateToTheSurface": true,
+                    "_eulerOffset": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "_addRandomRotation": false,
+                    "_rotationFactor": 90.0,
+                    "_rotateInMultiples": false,
+                    "_randomEulerOffset": {
+                        "x": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "y": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        },
+                        "z": {
+                            "_v1": 0.0,
+                            "_v2": 0.0,
+                            "_min": 0.0,
+                            "_max": 0.0
+                        }
+                    },
+                    "_alwaysOrientUp": false,
+                    "_separateScaleAxes": false,
+                    "_scaleMultiplier": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "_randomScaleMultiplier": false,
+                    "_randomScaleMultiplierRange": {
+                        "x": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "y": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        },
+                        "z": {
+                            "_v1": 1.0,
+                            "_v2": 1.0,
+                            "_min": 1.0,
+                            "_max": 1.0
+                        }
+                    },
+                    "_flipX": 0,
+                    "_flipY": 0,
+                    "_thumbnailSettings": {
+                        "_backgroudColor": {
+                            "r": 0.5,
+                            "g": 0.5,
+                            "b": 0.5,
+                            "a": 1.0
+                        },
+                        "_lightEuler": {
+                            "x": 130.0,
+                            "y": -165.0
+                        },
+                        "_lightColor": {
+                            "r": 1.0,
+                            "g": 1.0,
+                            "b": 1.0,
+                            "a": 1.0
+                        },
+                        "_lightIntensity": 1.0,
+                        "_zoom": 1.0,
+                        "_targetEuler": {
+                            "x": 0.0,
+                            "y": 125.0,
+                            "z": 0.0
+                        },
+                        "_targetOffset": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "_useCustomImage": false
+                    },
+                    "_overwriteSettings": false,
+                    "_guid": "ced12dbf677ce1245b2916ad9a8696d6",
+                    "_prefabPath": "Assets/Synty/PolygonDungeonRealms/Prefabs/Environments/SM_Env_Dwarf_Wall_Alcove_Small_02.prefab",
+                    "_frequency": 1.0,
+                    "_parentId": 639297964039611886,
+                    "_paletteName": "",
+                    "_overwriteThumbnailSettings": false,
+                    "_includeInThumbnail": true,
+                    "_isAsset2D": false
+                }
+            ],
+            "_frequencyMode": 0,
+            "_pattern": "1...",
+            "_restartPatternForEachStroke": true
+        }
+    ],
+    "_brushCreationSettings": {
+        "_includeSubfolders": true,
+        "_addLabelsToDroppedPrefabs": false,
+        "_labelsCSV": "",
+        "_defaultBrushSettings": {
+            "_id": -1,
+            "_surfaceDistance": 0.0,
+            "_randomSurfaceDistance": false,
+            "_randomSurfaceDistanceRange": {
+                "_v1": -0.004999999888241291,
+                "_v2": 0.004999999888241291,
+                "_min": -0.004999999888241291,
+                "_max": 0.004999999888241291
+            },
+            "_embedInSurface": false,
+            "_embedAtPivotHeight": false,
+            "_localPositionOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_rotateToTheSurface": true,
+            "_eulerOffset": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "_addRandomRotation": false,
+            "_rotationFactor": 90.0,
+            "_rotateInMultiples": false,
+            "_randomEulerOffset": {
+                "x": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "y": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                },
+                "z": {
+                    "_v1": 0.0,
+                    "_v2": 0.0,
+                    "_min": 0.0,
+                    "_max": 0.0
+                }
+            },
+            "_alwaysOrientUp": false,
+            "_separateScaleAxes": false,
+            "_scaleMultiplier": {
+                "x": 1.0,
+                "y": 1.0,
+                "z": 1.0
+            },
+            "_randomScaleMultiplier": false,
+            "_randomScaleMultiplierRange": {
+                "x": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "y": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                },
+                "z": {
+                    "_v1": 1.0,
+                    "_v2": 1.0,
+                    "_min": 1.0,
+                    "_max": 1.0
+                }
+            },
+            "_flipX": 0,
+            "_flipY": 0,
+            "_thumbnailSettings": {
+                "_backgroudColor": {
+                    "r": 0.5,
+                    "g": 0.5,
+                    "b": 0.5,
+                    "a": 1.0
+                },
+                "_lightEuler": {
+                    "x": 130.0,
+                    "y": -165.0
+                },
+                "_lightColor": {
+                    "r": 1.0,
+                    "g": 1.0,
+                    "b": 1.0,
+                    "a": 1.0
+                },
+                "_lightIntensity": 1.0,
+                "_zoom": 1.0,
+                "_targetEuler": {
+                    "x": 0.0,
+                    "y": 125.0,
+                    "z": 0.0
+                },
+                "_targetOffset": {
+                    "x": 0.0,
+                    "y": 0.0
+                },
+                "_useCustomImage": false
+            }
+        },
+        "_defaultThumbnailSettings": {
+            "_backgroudColor": {
+                "r": 0.5,
+                "g": 0.5,
+                "b": 0.5,
+                "a": 1.0
+            },
+            "_lightEuler": {
+                "x": 130.0,
+                "y": -165.0
+            },
+            "_lightColor": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "_lightIntensity": 1.0,
+            "_zoom": 1.0,
+            "_targetEuler": {
+                "x": 0.0,
+                "y": 125.0,
+                "z": 0.0
+            },
+            "_targetOffset": {
+                "x": 0.0,
+                "y": 0.0
+            },
+            "_useCustomImage": false
+        }
+    },
+    "_hashCode": 526030287,
+    "_isPinned": false
+}

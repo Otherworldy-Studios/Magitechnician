@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunScope
   _partPrefab: {fileID: 3913984763035319951, guid: 8262fee8b46ae44498f586fcd66756fd, type: 3}
   _partName: TestGun Scope
+  _description: 
+  _icon: {fileID: 21300000, guid: 9f0d9206351b516498cdebd71dd4b0b4, type: 3}
+  rarity: 0
+  statModifiers: []
+  Zoom: 0

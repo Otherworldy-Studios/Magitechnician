@@ -1,5 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// The enemy's tuning values.
+/// </summary>
+// INTEGRATION: no longer used. EnemyBase reads these values from the shared Stats component instead, through the
+// StatDefinitions in its Stats header. Kept so existing EnemyStats assets don't lose their values; safe to delete
+// once every enemy prefab has its Stats set up.
 [CreateAssetMenu(fileName = "EnemyStats", menuName = "Scriptable Objects/EnemyStats")]
 public class EnemyStats : ScriptableObject
 {

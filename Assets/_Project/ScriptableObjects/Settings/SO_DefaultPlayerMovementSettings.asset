@@ -13,16 +13,14 @@ MonoBehaviour:
   m_Name: SO_DefaultPlayerMovementSettings
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementSettings
   <AimSpeed>k__BackingField: 2.5
-  <WalkSpeed>k__BackingField: 4
-  <SprintSpeed>k__BackingField: 7
+  <LocomotionSpeed>k__BackingField: 10
   <MinJumpHeight>k__BackingField: 0.9
   <MaxJumpHeight>k__BackingField: 1.5
   <CoyoteTime>k__BackingField: 0.1
   <JumpBufferTime>k__BackingField: 0.1
   <Gravity>k__BackingField: -20
   <GroundGravity>k__BackingField: -5
-  <SprintAcceleration>k__BackingField: 18
-  <WalkAcceleration>k__BackingField: 25
+  <LocomotionAcceleration>k__BackingField: 18
   <AirborneAcceleration>k__BackingField: 8
   <AimingAcceleration>k__BackingField: 20
   <IdleAcceleration>k__BackingField: 35
