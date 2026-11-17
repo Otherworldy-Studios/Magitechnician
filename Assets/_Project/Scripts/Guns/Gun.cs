@@ -26,6 +26,8 @@ public class Gun : MonoBehaviour
     [Tooltip("Where bullets start. Replaced by the Muzzle child of the equipped barrel's model when it has one.")]
     [SerializeField, FormerlySerializedAs("Muzzle")] private Transform _muzzle;
 
+    private Transform _defaultMuzzle;
+
     /// <summary>The gun's Stats. PlayerRoot hands it to Inventory, and sends gun-stat modifiers here.</summary>
     public Stats Stats => _stats;
     /// <summary>Where bullets start. Shoot passes its position to CrossHairAim.</summary>
@@ -92,6 +94,8 @@ public class Gun : MonoBehaviour
         _equippedParts = new Dictionary<GunPartType, GunPart>();
 
         if (!_player) _player = GetComponentInParent<PlayerRoot>();
+
+        _defaultMuzzle = _muzzle;
     }
 
     /// <summary>Listens to stat changes, builds the gun, and picks the fire mode.</summary>
@@ -387,6 +391,7 @@ public class Gun : MonoBehaviour
         }
 
         _partModels.Remove(part.PartType);
+        _muzzle = _defaultMuzzle;
     }
 
     /// <summary>Destroys every part model, removes the parts' modifiers, and forgets the sockets and parts.</summary>
