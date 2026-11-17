@@ -159,16 +159,13 @@ namespace _Project.Scripts.Dungeon
         [Button, DisableInEditorMode]
         public List<WeightedReward<GunPart>> OnComplete(bool force = false)
         {
-            // INTEGRATION: new, so OnRoomCleared fires only once.
             if (_complete)
             {
-                return _rewardOptions; //changed the way it prevents the double trigger so that the UI can listen to the roomcleared event better
+                return rewardOptions; //changed the way it prevents the double trigger so that the UI can listen to the roomcleared event better
             }
-
+            
             _complete = true;
-
-            // INTEGRATION: was "_portal.Active = true". Skips rooms without a portal, and leaves the End room's portal off,
-            // because the End room's portal has no connected room.
+            
             if (_portal != null && _portal.Connected != null)
                 _portal.Active = true;
 
@@ -184,13 +181,13 @@ namespace _Project.Scripts.Dungeon
                     Debug.Log($"{_id} Completion Reward {i + 1}:" +
                               $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
                 }
-
-                _rewardOptions = rewards;
+                
+                rewardOptions = rewards;
             }
-
+            
             OnRoomCleared?.Invoke(this);
-
-            return _rewardOptions; //never returns a null but now it'll return an empty list which is checkable and functionally the same
+            
+            return rewardOptions; //never returns a null but now it'll return an empty list which is checkable and functionally the same
         }
 
         /// <summary>
@@ -202,10 +199,10 @@ namespace _Project.Scripts.Dungeon
         [Button, DisableInEditorMode]
         public void PickReward(int reward) //made public
         {
-            if (_rewardOptions == null || reward >= _rewardOptions.Count)
+            if (rewardOptions == null || reward >= rewardOptions.Count)
                 return;
 
-            for (int i = 0; i < _rewardOptions.Count; i++)
+            for (int i = 0; i < rewardOptions.Count; i++)
             {
                 if (i == reward)
                 {
@@ -213,7 +210,7 @@ namespace _Project.Scripts.Dungeon
                     continue;
                 }
 
-                _lootPool.Obtained.Remove(_rewardOptions[i]);
+                _lootPool.Obtained.Remove(rewardOptions[i]);
             }
         }
     }
