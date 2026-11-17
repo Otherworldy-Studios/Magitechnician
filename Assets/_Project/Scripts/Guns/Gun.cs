@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -30,12 +31,22 @@ public class Gun : MonoBehaviour
     /// <summary>Where bullets start. Shoot passes its position to CrossHairAim.</summary>
     public Transform Muzzle => _muzzle;
 
+    public float Damage => ReadStat(_damageStat, DefaultDamage);
+
+    public float FireRate => ReadStat(_fireRateStat, DefaultFireRate);
+
+    public float Spread => ReadStat(_spreadStat, DefaultSpread);
+
+    public float BulletSpeed => ReadStat(_bulletSpeedStat, DefaultBulletSpeed);
+
     /// <summary>Fires after each shot. Not Shoot's OnFired, which fires from the same shot.</summary>
     public event Action OnFired;
     /// <summary>Fires when one of this gun's bullets damages something. For hit markers and contested health.</summary>
     public event Action<DamageInfo> OnDamageDealt;
     /// <summary>Fires after a part is equipped or removed. For the HUD's parts strip.</summary>
     public event Action OnPartsChanged;
+
+    public event Action OnStatsChanged;
 
     [Tooltip("The bullet to spawn. Moved here from Shoot.")]
     [SerializeField] private Projectile _projectilePrefab; // INTEGRATION: new. The bullet prefab moved from Shoot to Gun.
@@ -104,7 +115,7 @@ public class Gun : MonoBehaviour
         ClearGun();
 
         // Only one socket per type is registered.
-        foreach (GunSocket socket in GetComponentsInChildren<GunSocket>(true))
+        foreach (GunSocket socket in transform.parent.GetComponentsInChildren<GunSocket>(true))
         {
             _gunSockets.TryAdd(socket.SocketType, socket);
         }
@@ -316,6 +327,8 @@ public class Gun : MonoBehaviour
     private void HandleStatChanged(StatDefinition stat, float value)
     {
         if (stat == _fireTypeStat) RefreshFireMode();
+        
+        OnStatsChanged?.Invoke();
     }
 
     /// <summary>Returns the stat's value, or the fallback when there's no Stats, no stat assigned, or the StatBlock doesn't list it.</summary>
