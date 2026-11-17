@@ -5,6 +5,11 @@ namespace _Project.Scripts.Dungeon
     /// <summary>Marks a spot in a room where an enemy can spawn. Only draws a gizmo for now.</summary>
     public class Spawnpoint : MonoBehaviour
     {
+        [SerializeField]
+        private bool _canSpawnEnemies;
+    
+        public bool CanSpawnEnemies { get { return _canSpawnEnemies; } }
+        
         /// <summary>Draws a translucent sphere at the spawn point in the Scene view.</summary>
         private void OnDrawGizmos()
         {

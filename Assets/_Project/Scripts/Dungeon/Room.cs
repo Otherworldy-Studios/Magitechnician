@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -46,6 +47,11 @@ namespace _Project.Scripts.Dungeon
 
         [SerializeField]
         private bool _complete; // True once OnComplete has run.
+
+        [SerializeField]
+        private List<Spawnpoint> _spawnpoints;
+        
+        public IReadOnlyList<Spawnpoint> Spawnpoints { get => _spawnpoints; }
 
         [SerializeField]
         private Portal _portal; // The exit. Found in children in Awake.
@@ -125,8 +131,11 @@ namespace _Project.Scripts.Dungeon
                 Debug.Log($"{name} has no exit portal"); // INTEGRATION: was _id, which the generator hasn't set yet in Awake.
             else
                 _portal.Parent = this;
-        }
 
+            _spawnpoints = GetComponentsInChildren<Spawnpoint>().ToList()
+                .Where(x => x.CanSpawnEnemies).ToList();
+        }
+        
         /// <summary>
         /// Marks this as the player's current room and fires OnRoomEntered. Portal calls this after moving the player in,
         /// and GameManager.StartRun calls it for the start room.
