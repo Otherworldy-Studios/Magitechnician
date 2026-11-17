@@ -22,25 +22,33 @@ public class RewardScreen : UIScreen
     protected RoomCompletionLootPool _lootPool; // The pool the shown parts came from. Not set yet.
     protected Gun _playerGun;                   // The gun the picked part goes on. Not set yet.
     protected Room _room;
+    private int _selectedRewardIndex = -1;
+    
 
     //item currently selected shows the text
     //send signal to players gun to give them the item
 
+    protected override void OnShown()
+    {
+        //call pause
+    }
+    
     /// <summary>Connects the Resume button.</summary>
     private void Awake()
     {
-        _resumeButton.onClick.AddListener(OnResume);
+        resumeButton.onClick.AddListener(OnResume);
         itemGrid.OnSelectionChanged += HandleSelectionChanged;
     }
 
     private void HandleSelectionChanged(ItemSlotUI selectedSlot)
     {
-        if (_room != null || selectedSlot != null)
+        if (_room == null || selectedSlot == null)
         {
             return;
         }
 
-        if (selectedSlot == itemSlot1) //wish i could switch statement this
+
+        if (selectedSlot == itemSlot1) //i would turn this into a switch if i knew how to make this static
         {
             Pick(0);
         }
@@ -54,10 +62,24 @@ public class RewardScreen : UIScreen
         }
             
     }
-
     /// <summary>Resume button. Closes the screen and unpauses.</summary>
-    private void OnResume()
+    private void OnResume() //handles all the things after picking a screen
     {
+        if (_selectedRewardIndex < 0) 
+        {
+            return;
+        }
+        
+        bool equipped = GameManager.Instance.ChooseReward(_selectedRewardIndex);
+        
+        Debug.Log($"ChooseReward result: {equipped}");
+        
+        if (!equipped)
+        {
+            Debug.LogWarning("Failed to equip reward");
+            return;
+        }
+        
         //send info to GM about selected item, GM links to player about the item
         itemSlot1.Clear();
         itemSlot2.Clear();
@@ -66,29 +88,36 @@ public class RewardScreen : UIScreen
         UIManager.Instance.ResumeButtonPressed();
     }
 
-    /// <summary>Will show the rolled parts. Empty until task 7.</summary>
+     /// <summary>Sets and displays all items into the item slots.</summary>
     public void ShowChoices(Room room, IReadOnlyList<WeightedReward<GunPart>> rewards) //comedically long type
     {
+        _selectedRewardIndex = -1;
         _room = room;
         _lootPool = room.LootPool;
 
         //extract the items from the rewards
-        IInventoryItem item1 = rewards[0].Item;
-        IInventoryItem item2 = rewards[1].Item;
-        IInventoryItem item3 = rewards[2].Item;
+        ItemSlotUI[] itemSlots = { itemSlot1, itemSlot2, itemSlot3 };
 
-        //link each item slot and convert all the data
-        itemSlot1.SetItem(item1); //set it in the actual UI
-        itemSlot2.SetItem(item2);
-        itemSlot3.SetItem(item3);
-        itemGrid.Register(itemSlot1); //takes care of tooltip and selecting
-        itemGrid.Register(itemSlot2);
-        itemGrid.Register(itemSlot3);
+        for (int i = 0; i < itemSlots.Length; i++) //made into a for loop cause hardcoding it before was stupid
+        {
+            bool hasReward = i < rewards.Count;
+            itemSlots[i].gameObject.SetActive(hasReward); //now automatically disables itself if there isnt an item to put in
+
+            if (hasReward)
+            {
+                itemSlots[i].SetItem(rewards[i].Item); //set it in the actual UI
+            }
+            
+            
+        }
+        
     }
 
-    /// <summary>Will equip the chosen part and return the others to the pool. Empty until task 7.</summary>
+    /// <summary></summary>
     private void Pick(int index)
     {
-        Debug.Log($"Selected reward {index}: {_room.RewardOptions[index].Item.PartName}");
+       _selectedRewardIndex = index;
+       
+       Debug.Log($"Selected: {_room.RewardOptions[index].Item.PartName}");
     }
 }

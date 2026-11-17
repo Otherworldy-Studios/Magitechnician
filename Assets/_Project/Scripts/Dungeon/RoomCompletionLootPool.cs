@@ -49,9 +49,7 @@ public class RoomCompletionLootPool : ScriptableObject
     {
         _obtained.Clear();
     }
-
-    // This gets really weird when there are multiple rooms rolling at once
-
+    
     /// <summary>
     /// Rolls up to three parts that haven't been obtained, weighted by rarity, and adds them to Obtained.
     /// Returns fewer than three when the pool runs low. Results get unreliable when several rooms roll at once,

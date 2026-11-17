@@ -72,7 +72,6 @@ namespace _Project.Scripts.Dungeon
         // RoomRewards will listen to OnRoomCleared to open the reward screen (task 7).
         /// <summary>Fires each time the player enters this room, with this room.</summary>
         public event Action<Room> OnRoomEntered;
-
         /// <summary>Fires once, the first time the room completes, with this room.</summary>
         public static event Action<Room> OnRoomCleared; //made static so that listeners dont need to subscribe to individual isntances of rooms
 
@@ -112,11 +111,10 @@ namespace _Project.Scripts.Dungeon
         /// <summary>True once the room is cleared.</summary>
         public bool Complete { get => _complete; }
 
-        // This should possibly be temporary
-        // The three parts rolled by the last OnComplete. Temporary until RoomRewards handles rewards (task 7).
-        private List<WeightedReward<GunPart>> _rewardOptions = new();
-
-        public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => _rewardOptions;
+        // Reward options generated when the room completes and displayed by RewardScreen
+        private List<WeightedReward<GunPart>> rewardOptions = new();
+        
+        public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => rewardOptions; 
 
         /// <summary>Finds the exit portal and tells it which room it belongs to.</summary>
         private void Awake()

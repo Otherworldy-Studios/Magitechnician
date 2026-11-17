@@ -91,4 +91,9 @@ public class CameraTargetController : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(_pitch, _yaw, 0f);
     }
+
+    public void SetMouseSensitivity(float newSensitivity)
+    {
+        _mouseSensitivity = newSensitivity;
+    }
 }
