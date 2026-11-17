@@ -15,6 +15,7 @@ public interface IInventoryItem
     /// <summary>INTEGRATION: new. ItemSlotUI colors its border by rarity, with colors from GlobalSettings.</summary>
     ItemRarity Rarity { get; }
     GameObject AbilityPrefab { get; }
+    
 }
 
 /// <summary>The three kinds of item. Stored in assets as numbers, so renaming a value keeps the assets' values.</summary>
