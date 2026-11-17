@@ -76,7 +76,7 @@ public class GameManager : MGR<GameManager>
     [Tooltip("The registered player's root object. Set by RegisterPlayer.")]
     [SerializeField, FormerlySerializedAs("player")] private GameObject _player; // INTEGRATION: set by RegisterPlayer instead of GameObject.Find.
     [Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
-    [SerializeField, FormerlySerializedAs("waveManager")] private PH_WaveManager _waveManager;
+    [SerializeField, FormerlySerializedAs("waveManager")] private WaveManager _waveManager;
     [SerializeField] private RoomCompletionLootPool _lootPool;
 
     private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
