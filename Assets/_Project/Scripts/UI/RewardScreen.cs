@@ -93,19 +93,20 @@ public class RewardScreen : UIScreen
         _lootPool = room.LootPool;
         
         //extract the items from the rewards
-        IInventoryItem item1 = rewards[0].Item;
-        IInventoryItem item2 = rewards[1].Item;
-        IInventoryItem item3 = rewards[2].Item;
-        
-        //link each item slot and convert all the data
-        itemSlot1.SetItem(item1); //set it in the actual UI
-        itemSlot2.SetItem(item2);
-        itemSlot3.SetItem(item3);
-        itemGrid.Register(itemSlot1); //takes care of tooltip and selecting
-        itemGrid.Register(itemSlot2);
-        itemGrid.Register(itemSlot3);
-        
-        
+        ItemSlotUI[] itemSlots = { itemSlot1, itemSlot2, itemSlot3 };
+
+        for (int i = 0; i < itemSlots.Length; i++) //made into a for loop cause hardcoding it before was stupid
+        {
+            bool hasReward = i < rewards.Count;
+            itemSlots[i].gameObject.SetActive(hasReward); //now automatically disables itself if there isnt an item to put in
+
+            if (hasReward)
+            {
+                itemSlots[i].SetItem(rewards[i].Item); //set it in the actual UI
+            }
+            
+            
+        }
         
     }
 
