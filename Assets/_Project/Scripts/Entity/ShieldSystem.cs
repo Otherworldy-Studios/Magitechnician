@@ -204,7 +204,7 @@ public class ShieldSystem : MonoBehaviour
     }
     
     [Button]
-    private void Restore(float amount)
+    public void Restore(float amount)
     {
         if (Mathf.Approximately(CurrentShield, MaxShield))
             return;
