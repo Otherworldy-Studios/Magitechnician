@@ -5,7 +5,8 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.XR;
+using _Project.Scripts.Dungeon;
+
 
 using UnityEngine.Serialization;
 
@@ -23,7 +24,8 @@ public class UIManager : MGR<UIManager>
     {
         StartMenu,
         PauseMenu,
-        Gameplay
+        Gameplay,
+        RewardChoice
     }
 
     [SerializeField, FormerlySerializedAs("screenList")] private List<UIScreen> _screenList; // Filled from children in Awake.
@@ -74,7 +76,7 @@ public class UIManager : MGR<UIManager>
         GameManager.OnGameWon += GameWin;
         GameManager.OnPauseToggled += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
-        //GameManager.Instance.OnRoomClear += HandleRewards;
+        Room.OnRoomCleared += HandleRewards;
 
     }
 
@@ -83,21 +85,7 @@ public class UIManager : MGR<UIManager>
     [Button, DisableInEditorMode]
     private void DEBUGChangeUIState(UIStates state)
     {
-        //DEBUG i could make this a switch at this point but idc its debug
-        #if UNITY_EDITOR
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            GameOver();
-        }
-        else if (Keyboard.current.mKey.wasPressedThisFrame)
-        {
-            GameWin();
-        }
-        else if (Keyboard.current.gKey.wasPressedThisFrame)
-        {
-            ChangeState(UIStates.StartMenu);
-        }
-        #endif
+        ChangeState(state);
     }
 
     /// <summary>Hides every screen except the HUD and shows the ones for the new state.</summary>
@@ -170,9 +158,8 @@ public class UIManager : MGR<UIManager>
     {
         ChangeState(_currentState);
     }
-    
+
     #endregion
-    
 
     /// <summary>Shows the death screen. Runs on GameManager.OnGameLost, and as a debug button.</summary>
     // INTEGRATION: the J debug key became the Inspector button.
@@ -192,7 +179,7 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_winScreen);
     }
 
-    private void HandleRewards()
+    private void HandleRewards(Room room)
     {
         if (room.RewardOptions.Count == 0)
         {
@@ -223,7 +210,10 @@ public class UIManager : MGR<UIManager>
     {
         foreach (UIScreen screen in _screenList)
         {
-            screen.Hide();
+            if (hideHUD || screen is not HUDScreen)
+            {
+                screen.Hide();
+            }
         }
     }
 
@@ -266,6 +256,7 @@ public class UIManager : MGR<UIManager>
             else
             {
                 ChangeState(UIStates.Gameplay);
+                ToggleCursor(false);
             }
             
         }

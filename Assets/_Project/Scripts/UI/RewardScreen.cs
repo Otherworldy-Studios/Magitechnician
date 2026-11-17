@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using UnityEngine;
 using _Project.Scripts.Dungeon;
 using TMPro;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// The screen for picking one of the gun parts a cleared room rolled. Only has a Resume button so far; ShowChoices and
@@ -11,21 +10,19 @@ using UnityEngine.Serialization;
 /// </summary>
 public class RewardScreen : UIScreen
 {
-    [SerializeField, FormerlySerializedAs("resumeButton")]
-    private Button _resumeButton;
-
+    [SerializeField] private Button resumeButton;
     [SerializeField] private ItemGridUI itemGrid;
     [SerializeField] private ItemSlotUI itemSlot1;
     [SerializeField] private ItemSlotUI itemSlot2;
     [SerializeField] private ItemSlotUI itemSlot3;
-
-    protected RoomCompletionLootPool _lootPool; // The pool the shown parts came from. Not set yet.
-    protected Gun _playerGun;                   // The gun the picked part goes on. Not set yet.
+    protected RoomCompletionLootPool _lootPool;
+    protected Gun _playerGun;
     protected Room _room;
     private int _selectedRewardIndex = -1;
     
 
     //item currently selected shows the text
+
     //send signal to players gun to give them the item
 
     protected override void OnShown()
@@ -85,7 +82,7 @@ public class RewardScreen : UIScreen
         itemSlot2.Clear();
         itemSlot3.Clear();
         //no clear method for the grid?
-        UIManager.Instance.ResumeButtonPressed();
+        UIManager.Instance.ResumeButtonPressed(); 
     }
 
      /// <summary>Sets and displays all items into the item slots.</summary>
@@ -94,7 +91,7 @@ public class RewardScreen : UIScreen
         _selectedRewardIndex = -1;
         _room = room;
         _lootPool = room.LootPool;
-
+        
         //extract the items from the rewards
         ItemSlotUI[] itemSlots = { itemSlot1, itemSlot2, itemSlot3 };
 

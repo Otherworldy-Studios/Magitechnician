@@ -49,6 +49,7 @@ public class GameManager : MGR<GameManager>
     // because the Hub and the Dungeon each create their own player.
     /// <summary>Fires when a scene's player registers, with its PlayerRoot.</summary>
     public event Action<PlayerRoot> OnPlayerRegistered;
+    
 
     /// <summary>Time.time when the current run started.</summary>
     public float StartTime { get; private set; }
@@ -108,6 +109,7 @@ public class GameManager : MGR<GameManager>
         UIManager.OnMenuRequested += MainMenu;
         UIManager.OnExitRequested += ExitGame;
         PH_Boss.OnBossDefeated += BossDefeated;
+        
     }
 
     /// <summary>Enters the Menu state when the game starts in the menu, and listens to the pause key.</summary>
@@ -366,7 +368,7 @@ public class GameManager : MGR<GameManager>
     }
 
     /// <summary>Placeholder for room clears. Empty: rooms clear through Room.OnRoomCleared now.</summary>
-    private void RoomCleared(Room room)
+    private void RoomCleared()
     {
     }
 

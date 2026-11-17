@@ -11,7 +11,7 @@ public class HealthBar : MonoBehaviour
     [Header("References")]
     [SerializeField] private Health _health;
     [SerializeField] private Image _fill;
-    [SerializeField] private Image _ghostFill; // Meant for a delayed second fill. Not used yet.
+    [SerializeField] private Image _ghostFill;
     [SerializeField] private TMP_Text _healthCounter;
 
     [Header("Settings")]
