@@ -83,7 +83,6 @@ public class ItemDatabase : ScriptableObject
         return AllItems.Where(item => item != null && item.Rarity == rarity);
     }
 
-#if UNITY_EDITOR
     // Editor-only buttons. They use AssetDatabase, which doesn't exist in a build.
 
     /// <summary>Fills every list with every asset of its type in the project, sorted by file name, and saves.</summary>
@@ -122,7 +121,7 @@ public class ItemDatabase : ScriptableObject
     private string Summary =>
         $"{_charms.Count} charms, {_consumables.Count} consumables, " +
         $"{_barrels.Count} barrels, {_magazines.Count} magazines, {_scopes.Count} scopes, {_stocks.Count} stocks";
-#endif
+
     /// <summary>Finds every asset of a type in the project, sorted by file name.</summary>
     private static List<T> FindAll<T>() where T : ScriptableObject
     {
