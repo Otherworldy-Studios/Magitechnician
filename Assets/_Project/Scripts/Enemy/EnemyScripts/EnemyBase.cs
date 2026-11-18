@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Sirenix.OdinInspector;
 
 /// <summary>
 /// Controls the enemy's state machine, target detection, attack timing, and death.
@@ -95,6 +96,7 @@ public class EnemyBase : MonoBehaviour
     private IEnemyState _currentState;
     private bool _isLockedOn; // Set every frame in Update.
     private bool _isDead;
+    private bool _isAggressive;
 
     /// <summary>Finds the components, creates the states, and hands each attack this enemy.</summary>
     private void Awake()
@@ -143,21 +145,49 @@ public class EnemyBase : MonoBehaviour
     /// <summary>Finds the target if none is set, and starts in IdleState.</summary>
     private void Start()
     {
-        if (_target == null)
+        if (GameManager.HasInstance)
         {
-            // INTEGRATION: was FindGameObjectWithTag("Player"). GameManager.Player is the player root, which stays at the
-            // spawn point, so the target is the CharacterController's transform, which is the part that moves.
-            // LineOfSight and GoldilocksRange read this through Target.
-            GameObject player = GameManager.Instance.Player;
-            if (player != null)
+            GameManager.Instance.OnPlayerRegistered += HandlePlayerRegistered;
+
+            if (_target == null)
             {
-                CharacterController controller = player.GetComponentInChildren<CharacterController>();
-                _target = controller != null ? controller.transform : player.transform;
+                // INTEGRATION: was FindGameObjectWithTag("Player"). GameManager.Player is the player root, which stays at the
+                // spawn point, so the target is the CharacterController's transform, which is the part that moves.
+                // LineOfSight and GoldilocksRange read this through Target.
+                GameObject player = GameManager.Instance.Player;
+                if (player != null)
+                {
+                    PlayerRoot playerRoot = player.GetComponent<PlayerRoot>();
+                    if (playerRoot != null)
+                        HandlePlayerRegistered(playerRoot);
+                }
             }
         }
 
         // INTEGRATION: removed the "die if health is 0" check here. Health now gets its max from Stats in Awake.
         ChangeState(IdleState);
+
+        if (_isAggressive && HasTarget)
+            ChangeState(ChaseState);
+    }
+
+     private void HandlePlayerRegistered(PlayerRoot player)
+    {
+        if (player == null)
+            return;
+
+        CharacterController controller =
+            player.GetComponentInChildren<CharacterController>();
+
+        _target = controller != null
+            ? controller.transform
+            : player.transform;
+
+        if (_isAggressive && !_isDead)
+        {
+            _isLockedOn = true;
+            ChangeState(ChaseState);
+        }
     }
 
     /// <summary>Locks on when the target is in range and in sight, and updates the current state.</summary>
@@ -166,7 +196,11 @@ public class EnemyBase : MonoBehaviour
         if (_isDead)
             return;
 
-        if (_target != null)
+        if (_isAggressive)
+        {
+            _isLockedOn = _target != null;
+        }
+        else if (_target != null)
         {
             float distance = Vector3.Distance(
                 transform.position,
@@ -195,6 +229,14 @@ public class EnemyBase : MonoBehaviour
     {
         if (Health != null)
             Health.OnDied -= HandleDeath;
+    }
+
+    private void OnDestroy()
+    {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnPlayerRegistered -= HandlePlayerRegistered;
+        }
     }
 
     /// <summary>Runs when Health fires OnDied.</summary>
@@ -242,6 +284,30 @@ public class EnemyBase : MonoBehaviour
         _isDead = true;
         ChangeState(DeadState);
         OnEnemyKilled?.Invoke(this);
+    }
+
+    [Button("Make Aggressive")]
+    public void MakeAggressive()
+    {
+        if(!Application.isPlaying || _isDead)
+            return;
+        
+        _isAggressive = true;
+
+        if(_target == null && GameManager.HasInstance)
+        {
+            GameObject player = GameManager.Instance.Player;
+            if (player != null)
+            {
+                CharacterController controller = player.GetComponentInChildren<CharacterController>();
+                _target = controller != null ? controller.transform : player.transform;
+            }
+        }
+
+        _isLockedOn = _target !=null;
+
+        if (HasTarget)
+            ChangeState(ChaseState);
     }
 
     /// <summary>
