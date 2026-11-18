@@ -124,6 +124,7 @@ public class PlayerRoot : MonoBehaviour
         {
             _inventory.SetStats(_playerStats);
             if (_gun) _inventory.SetGunStats(_gun.Stats);
+            if (_abilities) _inventory.SetAbilities(_abilities);
         }
         else
         {
