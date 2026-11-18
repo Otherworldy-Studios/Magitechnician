@@ -179,14 +179,14 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_winScreen);
     }
 
-    private void HandleRewards(Room room)
+    public void HandleRewards(ItemRolling rewards)
     {
-        if (room.RewardOptions.Count == 0)
+        if (rewards.RewardOptions.Count == 0)
         {
             return;
         }
         ChangeState(UIStates.RewardChoice);
-        _rewardScreen.ShowChoices(room, room.RewardOptions);
+        _rewardScreen.ShowChoices(rewards, rewards.RewardOptions);
     }
 
     /// <summary>Shows a screen and sets the cursor to match it.</summary>

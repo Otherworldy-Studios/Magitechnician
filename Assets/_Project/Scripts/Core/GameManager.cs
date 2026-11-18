@@ -77,6 +77,7 @@ public class GameManager : MGR<GameManager>
     [SerializeField, FormerlySerializedAs("player")] private GameObject _player; // INTEGRATION: set by RegisterPlayer instead of GameObject.Find.
     [Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
     [SerializeField, FormerlySerializedAs("waveManager")] private WaveManager _waveManager;
+    [SerializeField] private ItemRolling rewardPool;
     [SerializeField] private RoomCompletionLootPool _lootPool;
 
     private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
@@ -108,6 +109,7 @@ public class GameManager : MGR<GameManager>
         UIManager.OnStartRequested += StartHub;
         UIManager.OnMenuRequested += MainMenu;
         UIManager.OnExitRequested += ExitGame;
+        Room.OnRoomCleared += RoomCleared;
         PH_Boss.OnBossDefeated += BossDefeated;
         
     }
@@ -367,9 +369,10 @@ public class GameManager : MGR<GameManager>
         RequestGameEnd(RunResult.Victory);
     }
 
-    /// <summary>Placeholder for room clears. Empty: rooms clear through Room.OnRoomCleared now.</summary>
-    private void RoomCleared()
+    /// <summary>Handles directing ItemsRolling and passes the info to UImanager</summary>
+    private void RoomCleared(Room room)
     {
+        UIManager.Instance.HandleRewards(rewardPool);
     }
 
     /// <summary>Starts a run by loading the Level scene. RunStartPortal calls this from the Hub.</summary>
