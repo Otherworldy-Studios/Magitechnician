@@ -90,7 +90,7 @@ public class Inventory : SerializedMonoBehaviour
 
     public void SetAbilities(PlayerAbilities abilities)
     {
-        if(abilities == null)
+        if(_playerAbilities == null)
         {
             _playerAbilities = abilities;
         }
@@ -162,13 +162,10 @@ public class Inventory : SerializedMonoBehaviour
                 {
                     return false;
                 }
-                if(_equippedCharms.Count < _equippedCharmSlots)
+                _ownedCharms.Add(charm);
+                if (_equippedCharms.Count < _equippedCharmSlots)
                 {
                     EquipCharm(item as Charm);
-                }
-                else
-                {
-                    _ownedCharms.Add(charm);
                 }
                 break;
 
@@ -253,7 +250,7 @@ public class Inventory : SerializedMonoBehaviour
         if (_equippedCharms.Contains(charm)) return; // INTEGRATION: new. A charm can't be equipped twice.
 
         _equippedCharms.Add(charm);
-        _playerAbilities.Add(charm); // INTEGRATION: Adds the equipped charm's ability to the player.
+        _playerRoot.AddAbility(charm); // INTEGRATION: Adds the equipped charm's ability to the player.
         foreach (StatModifier mod in charm.Modifiers)
         {
             ApplyModifier(mod, charm); // INTEGRATION: goes to the player's or the gun's Stats, with the charm as source.
