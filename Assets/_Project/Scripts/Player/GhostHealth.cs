@@ -1,14 +1,16 @@
-
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using _Project.Scripts.Dungeon;
 
 [DefaultExecutionOrder(100)]
 public class GhostHealth : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Health health;
-    [SerializeField] private Gun ghostRecoverySource;
+    [SerializeField] private Gun ghostRecoverySource; // Existing Inspector field; no longer used for recovery.
 
     // Added for Inspector damage testing.
     [SerializeField] private DamageReceiver damageReceiver;
@@ -22,14 +24,22 @@ public class GhostHealth : MonoBehaviour
     [SerializeField, Min(0.1f)]
     private float ghostDrainTime = 5f;
 
+    // NEW: Percentage of damage dealt to an enemy that can be recovered.
+    [SerializeField, Range(0f, 1f)]
+    private float ghostRecoveryPercent = 0.2f;
+
     public float GhostHealthAmount { get; private set; }
 
     public event Action<float> OnGhostHealthChanged;
 
     private int previousHealth;
-
-    // Countdown before Ghost Health disappears.
     private float ghostTimeRemaining;
+    private float pendingRecovery;
+
+    // NEW: Track which enemy Health events we subscribed to.
+    private readonly List<Health> enemyHealthList = new();
+    private Room currentRoom;
+    private Coroutine registrationRoutine;
 
     private void Awake()
     {
@@ -47,11 +57,7 @@ public class GhostHealth : MonoBehaviour
 
         if (health == null)
         {
-            Debug.LogError(
-                "GhostHealth: No Health component assigned!",
-                this
-            );
-
+            Debug.LogError("GhostHealth: No Health component assigned!", this);
             enabled = false;
         }
     }
@@ -63,21 +69,26 @@ public class GhostHealth : MonoBehaviour
 
         // Health.cs initializes its HP in Start().
         previousHealth = health.CurrentHealth;
+
+        // NEW: The run may have entered a room before our Start ran.
+        if (GameManager.HasInstance && GameManager.Instance.CurrentRoom != null)
+            HandleRoomEntered(GameManager.Instance.CurrentRoom);
     }
 
     private void OnEnable()
     {
-        if (health == null)
-            return;
-
-        health.OnDamaged += HandleDamage;
-        health.OnHealed += HandleHealing;
-        health.OnDied += HandleDeath;
-
-        if (ghostRecoverySource != null)
+        if (health != null)
         {
-            ghostRecoverySource.OnDamageDealt += HandleDamageDealt;
+            health.OnDamaged += HandleDamage;
+            health.OnHealed += HandleHealing;
+            health.OnDied += HandleDeath;
         }
+
+        // CHANGED: Listen for enemy Health events, not Gun.OnDamageDealt.
+        if (GameManager.HasInstance)
+            GameManager.Instance.OnRoomEntered += HandleRoomEntered;
+
+        Room.OnRoomCleared += HandleRoomCleared;
     }
 
     private void OnDisable()
@@ -89,10 +100,11 @@ public class GhostHealth : MonoBehaviour
             health.OnDied -= HandleDeath;
         }
 
-        if (ghostRecoverySource != null)
-        {
-            ghostRecoverySource.OnDamageDealt -= HandleDamageDealt;
-        }
+        if (GameManager.HasInstance)
+            GameManager.Instance.OnRoomEntered -= HandleRoomEntered;
+
+        Room.OnRoomCleared -= HandleRoomCleared;
+        UnregisterEnemies();
     }
 
     private void Update()
@@ -111,164 +123,208 @@ public class GhostHealth : MonoBehaviour
         DrainGhostHealth();
     }
 
-    // STEP 5 & 6:
     // Player takes damage and gains 40% Ghost Health.
-    private void HandleDamage(
-        int currentHealth,
-        GameObject player)
+    private void HandleDamage(int currentHealth, GameObject player)
     {
-        int damageTaken = Mathf.Max(
-            0,
-            previousHealth - currentHealth
-        );
-
+        int damageTaken = Mathf.Max(0, previousHealth - currentHealth);
         previousHealth = currentHealth;
 
         if (!useContestedHealth || damageTaken <= 0)
             return;
 
-        float ghostGained =
-            damageTaken * ghostHealthPercent;
+        float ghostGained = damageTaken * ghostHealthPercent;
+        float missingHealth = health.MaxHealth - currentHealth;
 
-        float missingHealth =
-            health.MaxHealth - currentHealth;
-
-        SetGhostHealth(
-            Mathf.Min(
-                GhostHealthAmount + ghostGained,
-                missingHealth
-            )
-        );
+        SetGhostHealth(Mathf.Min(GhostHealthAmount + ghostGained, missingHealth));
 
         if (GhostHealthAmount > 0f)
         {
-            // Start the five-second countdown.
+            // Start (or refresh) the five-second recovery window.
             ghostTimeRemaining = ghostDrainTime;
         }
     }
 
-    // Keep tracking correct after regular healing.
-    private void HandleHealing(
-        int currentHealth,
-        GameObject player)
+    private void HandleHealing(int currentHealth, GameObject player)
     {
         previousHealth = currentHealth;
-
-        SetGhostHealth(
-            Mathf.Min(
-                GhostHealthAmount,
-                health.MaxHealth - currentHealth
-            )
-        );
+        SetGhostHealth(Mathf.Min(GhostHealthAmount, health.MaxHealth - currentHealth));
     }
 
-    // Clear Ghost Health when the player dies.
     private void HandleDeath(GameObject player)
     {
         previousHealth = 0;
         SetGhostHealth(0f);
     }
 
-    // STEP 7:
-    // Wait five seconds, then remove Ghost Health.
+    // CHANGED: Gradually decrease Ghost Health to zero over the remaining time.
     private void DrainGhostHealth()
     {
-        ghostTimeRemaining -= Time.deltaTime;
-
         if (ghostTimeRemaining <= 0f)
         {
             SetGhostHealth(0f);
+            return;
         }
+
+        float delta = Mathf.Min(Time.deltaTime, ghostTimeRemaining);
+        float t = delta / ghostTimeRemaining;
+        SetGhostHealth(Mathf.Lerp(GhostHealthAmount, 0f, t));
+
+        ghostTimeRemaining = Mathf.Max(0f, ghostTimeRemaining - delta);
+
+        if (ghostTimeRemaining <= 0f)
+            SetGhostHealth(0f);
     }
 
-    // STEP 8:
-    // Listen for damage reported by the Gun.
-    private void HandleDamageDealt(DamageInfo damageInfo)
+    // NEW: The room entry event comes from GameManager.ChangeRoom().
+    private void HandleRoomEntered(Room room)
     {
-        int recovered =
-            RecoverGhostHealth(damageInfo.DamageAmount);
+        UnregisterEnemies();
+        currentRoom = room;
 
-        Debug.Log(
-            "Enemy damage reported: " +
-            damageInfo.DamageAmount +
-            " | Health recovered: " + recovered
-        );
+        if (room == null || room.Complete)
+            return;
+
+        // Let Room.OnRoomEntered / RoomEncounter activate enemies first.
+        registrationRoutine = StartCoroutine(RegisterEnemiesNextFrame(room));
     }
 
-    // Recover HP using available Ghost Health.
+    private IEnumerator RegisterEnemiesNextFrame(Room room)
+    {
+        yield return null;
+        registrationRoutine = null;
+
+        if (room == null || currentRoom != room || room.Complete)
+            yield break;
+
+        RegisterEnemies(room);
+    }
+
+    private void RegisterEnemies(Room room)
+    {
+        // IMPORTANT: The Room script provided does not have room.Enemies.
+        // This works only if enemies exist under the Room GameObject
+        // when this method runs. Verify against RoomEncounter.cs.
+        EnemyBase[] enemies = room.GetComponentsInChildren<EnemyBase>(true);
+
+        foreach (EnemyBase enemy in enemies)
+        {
+            if (enemy == null)
+                continue;
+
+            Health enemyHealth = enemy.GetComponentInChildren<Health>();
+
+            if (enemyHealth == null || enemyHealthList.Contains(enemyHealth))
+                continue;
+
+            enemyHealth.OnDamageInstance += HandleEnemyDamageDealt;
+            enemyHealthList.Add(enemyHealth);
+        }
+
+        Debug.Log("GhostHealth registered " + enemyHealthList.Count + " enemies.", this);
+    }
+
+    private void HandleRoomCleared(Room room)
+    {
+        if (room != currentRoom)
+            return;
+
+        UnregisterEnemies();
+    }
+
+    private void UnregisterEnemies()
+    {
+        if (registrationRoutine != null)
+        {
+            StopCoroutine(registrationRoutine);
+            registrationRoutine = null;
+        }
+
+        foreach (Health enemyHealth in enemyHealthList)
+        {
+            if (enemyHealth != null)
+                enemyHealth.OnDamageInstance -= HandleEnemyDamageDealt;
+        }
+
+        enemyHealthList.Clear();
+        currentRoom = null;
+    }
+
+    // NEW: Recover only a percentage of damage dealt to enemies.
+    private void HandleEnemyDamageDealt(DamageInfo damageInfo)
+    {
+        if (GhostHealthAmount <= 0f || ghostTimeRemaining <= 0f)
+            return;
+
+        // Only player-caused enemy damage should restore this player's HP.
+        if (!GameManager.HasInstance ||
+            damageInfo.DamageSource != GameManager.Instance.Player)
+            return;
+
+        int recovered = RecoverGhostHealth(damageInfo.DamageAmount);
+
+        Debug.Log("Enemy damage reported: " + damageInfo.DamageAmount +
+                  " | Health recovered: " + recovered, this);
+    }
+
     public int RecoverGhostHealth(int damageDealt)
     {
         if (!useContestedHealth ||
             health == null ||
             health.CurrentHealth <= 0 ||
             damageDealt <= 0 ||
+            ghostTimeRemaining <= 0f ||
             GhostHealthAmount <= 0f)
             return 0;
 
-        // Recover all available whole Ghost Health points.
+        // Example: 20 enemy damage * 0.2 = 4 HP.
+        pendingRecovery += damageDealt * ghostRecoveryPercent;
+
         int recovery = Mathf.FloorToInt(
-            Mathf.Min(
-                GhostHealthAmount,
-                health.MaxHealth - health.CurrentHealth
-            )
+            Mathf.Min(pendingRecovery,
+                      GhostHealthAmount,
+                      health.MaxHealth - health.CurrentHealth)
         );
 
         if (recovery <= 0)
-        {
-            ghostTimeRemaining = 0f;
-            SetGhostHealth(0f);
             return 0;
-        }
 
-        // FIX 1:
-        // Stop the timer BEFORE changing real health.
-        ghostTimeRemaining = 0f;
+        pendingRecovery -= recovery;
 
-        // FIX 2:
-        // Clear Ghost Health BEFORE healing.
-        // This immediately tells the HUD to hide white.
-        SetGhostHealth(0f);
-
-        // Restore real HP.
+        // Consume only what was recovered, then restore real HP.
+        SetGhostHealth(GhostHealthAmount - recovery);
         health.RegenHealth(recovery);
-
-        Debug.Log(
-            "Recovered HP: " + recovery +
-            " | Remaining Ghost HP: " + GhostHealthAmount
-        );
 
         return recovery;
     }
 
-    // Update Ghost Health and notify other systems.
     private void SetGhostHealth(float amount)
     {
         float newAmount = Mathf.Max(0f, amount);
+
+        if (newAmount <= 0f)
+        {
+            ghostTimeRemaining = 0f;
+            pendingRecovery = 0f;
+        }
 
         if (GhostHealthAmount == newAmount)
             return;
 
         GhostHealthAmount = newAmount;
-
         OnGhostHealthChanged?.Invoke(GhostHealthAmount);
     }
 
     // =======================================
     // DEBUG BUTTONS - ODIN INSPECTOR
     // =======================================
-
     #region Debug
 
-    // Replaces pressing M.
     [Button, DisableInEditorMode]
     private void DebugGhostHealth()
     {
         if (damageReceiver == null)
         {
-            Debug.LogWarning(
-                "Assign DamageReceiver in the Inspector.",
-                this
-            );
+            Debug.LogWarning("Assign DamageReceiver in the Inspector.", this);
             return;
         }
 
@@ -281,36 +337,25 @@ public class GhostHealth : MonoBehaviour
         };
 
         damageReceiver.TakeDamage(damage);
-
         Debug.Log("Debug: Player received damage.");
-
         PrintHealth();
     }
 
-    // Replaces pressing O.
     [Button, DisableInEditorMode]
     private void DebugRecoverGhostHealth()
     {
         int recovered = RecoverGhostHealth(20);
-
-        Debug.Log(
-            "Debug: Recovered " + recovered + " HP."
-        );
-
+        Debug.Log("Debug: Recovered " + recovered + " HP.");
         PrintHealth();
     }
 
-    // Prints current values in the Console.
     private void PrintHealth()
     {
         if (health == null)
             return;
 
-        Debug.Log(
-            "Real HP: " + health.CurrentHealth +
-            " | Ghost HP: " + GhostHealthAmount
-        );
+        Debug.Log("Real HP: " + health.CurrentHealth +
+                  " | Ghost HP: " + GhostHealthAmount);
     }
-
     #endregion
 }
