@@ -26,7 +26,8 @@ public class GlobalSettings : ScriptableObject
     }
 
     [Tooltip("The border color for each item rarity.")]
-    [SerializeField, FormerlySerializedAs("RarityColorSettings")] private RarityColors _rarityColors;
+    [SerializeField] private RarityColors _rarityColors;
+    [SerializeField] private int totalCharms;
 
     /// <summary>The border color for each item rarity.</summary>
     public RarityColors RarityColorSettings => _rarityColors;
