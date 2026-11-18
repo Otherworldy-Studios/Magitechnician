@@ -11,6 +11,8 @@ public class ItemRolling : MonoBehaviour
 
     private List<WeightedReward<GunPart>> _rewardOptions = new();
     public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => _rewardOptions;
+    
+    private HashSet<GunPart> _obtained = new();
 
     // Generates rewards and returns them to whoever requested them.
     public IReadOnlyList<WeightedReward<GunPart>> RollRewards()
@@ -23,7 +25,7 @@ public class ItemRolling : MonoBehaviour
             return _rewardOptions;
         }
 
-        _rewardOptions = _lootPool.PickThree();
+        _rewardOptions = _lootPool.PickThree(_obtained);
 
         return _rewardOptions;
     }
@@ -32,30 +34,22 @@ public class ItemRolling : MonoBehaviour
     public void ResetObtained()
     {
         _rewardOptions.Clear();
-
-        if (_lootPool != null)
-        {
-            _lootPool.ResetObtained();
-        }
+        _obtained.Clear();
     }
 
     // Keeps the selected reward and returns the others to the pool.
     public void PickReward(int index)
     {
-        if (_lootPool == null || index < 0 || index >= _rewardOptions.Count)
+        if (index < 0 || index >= _rewardOptions.Count)
         {
             return;
         }
 
-        for (int i = 0; i < _rewardOptions.Count; i++)
-        {
-            if (i == index)
-            {
-                continue;
-            }
+        GunPart selectedPart = _rewardOptions[index].Item;
 
-            _lootPool.Obtained.Remove(_rewardOptions[i]);
-        }
+        
+        
+        _obtained.Add(selectedPart);
 
         _rewardOptions.Clear();
     }

@@ -311,7 +311,6 @@ public class GameManager : MGR<GameManager>
             return false;
         }
         
-        Debug.Log($"gun parts seems to be working, go back and clean up debug scripts in GM");
         
         rewardPool.PickReward(index);
 
