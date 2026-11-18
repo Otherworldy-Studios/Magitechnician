@@ -23,7 +23,8 @@ public class GameManager : MGR<GameManager>
         Playing, // A run in the Dungeon.
         Store,   // The shop or charm screen is open in the Hub.
         Dead,    // The player died. The death screen is showing.
-        Win      // The boss is defeated. The win screen is showing.
+        Win,      // The boss is defeated. The win screen is showing.
+        Charm
     }
 
     /// <summary>How a run ended. Passed to RequestGameEnd.</summary>
@@ -446,6 +447,9 @@ public class GameManager : MGR<GameManager>
             case GameState.Store:
                 EnterStore();
                 break;
+            case GameState.Charm:
+                EnterCharm();
+                break;
         }
         OnGameStateChanged?.Invoke(_currentState);
     }
@@ -489,6 +493,11 @@ public class GameManager : MGR<GameManager>
 
     /// <summary>Hands input to the shop or charm screen.</summary>
     private void EnterStore()
+    {
+        InputManager.Instance.SetMode(InputMode.UI);
+    }
+
+    private void EnterCharm()
     {
         InputManager.Instance.SetMode(InputMode.UI);
     }

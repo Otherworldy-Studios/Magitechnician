@@ -25,7 +25,7 @@ public class UIManager : MGR<UIManager>
         StartMenu,
         PauseMenu,
         Gameplay,
-        RewardChoice,
+        Reward,
         Shop,
         Charm
     }
@@ -37,9 +37,11 @@ public class UIManager : MGR<UIManager>
     [SerializeField, FormerlySerializedAs("deathScreen")] private DeathScreen _deathScreen;
     [SerializeField, FormerlySerializedAs("winScreen")] private WinScreen _winScreen;
     [SerializeField, FormerlySerializedAs("pauseScreen")] private PauseScreen _pauseScreen;
-    [SerializeField, FormerlySerializedAs("currentState")] private UIStates _currentState;
     [SerializeField] private ShopScreen _shopScreen;
     [SerializeField] private CharmScreen _charmScreen;
+    [SerializeField] private HUDScreen _hudScreen;
+    [SerializeField, FormerlySerializedAs("currentState")] private UIStates _currentState;
+    private UIStates _previousState;
 
     // Requests from the screen buttons. GameManager subscribes to each.
     /// <summary>Resume was pressed. GameManager toggles the pause.</summary>
@@ -106,13 +108,27 @@ public class UIManager : MGR<UIManager>
                 break;
             case UIStates.Gameplay:
                 HideAllScreens();
+                SetHUDVisible(true);
                 ToggleCursor(false);
                 break;
-            case UIStates.RewardChoice:
+            case UIStates.Reward:
                 HideAllScreens();
                 ShowScreen(_rewardScreen);
                 OnPauseRequested?.Invoke(true);
                 break;
+            case UIStates.Shop:
+                HideAllScreens();
+                SetHUDVisible(true);
+                ShowScreen(_shopScreen);
+                OnPauseRequested?.Invoke(true);
+                break;
+            case UIStates.Charm:
+                HideAllScreens();
+                SetHUDVisible(true);
+                ShowScreen(_charmScreen);
+                OnPauseRequested?.Invoke(true);
+                break;
+            
         }
     }
 
@@ -181,6 +197,18 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_winScreen);
     }
 
+    private void SetHUDVisible(bool visible)
+    {
+        if (visible)
+        {
+            _hudScreen.Show();
+        }
+        else
+        {
+            _hudScreen.Hide();
+        }
+    }
+    
     public void HandleRewards(IReadOnlyList<WeightedReward<GunPart>> rewards)
     {
         if (rewards.Count == 0)
@@ -188,7 +216,7 @@ public class UIManager : MGR<UIManager>
             return;
         }
         
-        ChangeState(UIStates.RewardChoice);
+        ChangeState(UIStates.Reward);
         
         _rewardScreen.ShowChoices(rewards);
     }
@@ -248,8 +276,9 @@ public class UIManager : MGR<UIManager>
         /// <param name="isPaused"></param>
         private void HandlePause(bool isPaused)
         {
-            if (_currentState == UIStates.RewardChoice) //dont go to pause menu if in certain states already
+            if (_currentState == UIStates.Reward || _currentState == UIStates.Charm || _currentState == UIStates.Shop) //dont go to pause menu if in certain states already
             {
+                CloseScreen();
                 return; 
             }
             
@@ -290,6 +319,10 @@ public class UIManager : MGR<UIManager>
             case GameManager.GameState.Win:
                 break;
             case GameManager.GameState.Store:
+                ChangeState(UIStates.Shop);
+                break;
+            case GameManager.GameState.Charm:
+                ChangeState(UIStates.Charm);
                 break;
         }
     }
@@ -307,18 +340,18 @@ public class UIManager : MGR<UIManager>
         }
     }
 
-    public void OpenShop()
+    public void OpenShop() //gamemanager
     {
-        ShowScreen(_shopScreen);
+        ChangeState(UIStates.Shop);
     }
 
     public void OpenCharmScreen()
     {
-        
+        ChangeState(UIStates.Charm);
     }
 
     public void CloseScreen()
     {
-        
+        ChangeState(_previousState);
     }
 }
