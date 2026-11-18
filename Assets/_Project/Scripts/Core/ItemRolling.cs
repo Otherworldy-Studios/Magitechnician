@@ -7,65 +7,57 @@ using Sirenix.OdinInspector;
 
 public class ItemRolling : MonoBehaviour
 {
+    [SerializeField] private RoomCompletionLootPool _lootPool;
 
-    [Tooltip("The gun parts this room can offer when cleared.")]
-    [SerializeField]
-    private RoomCompletionLootPool _lootPool;
-    
-    public RoomCompletionLootPool LootPool { get => _lootPool; }
-    
-    // Reward options generated when the room completes and displayed by RewardScreen
-    private List<WeightedReward<GunPart>> rewardOptions = new();
-    
-    public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => rewardOptions; 
-    
-    private bool _complete = false;
-    
-    private List<WeightedReward<GunPart>> OnComplete(bool force = false)
+    private List<WeightedReward<GunPart>> _rewardOptions = new();
+    public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => _rewardOptions;
+
+    // Generates rewards and returns them to whoever requested them.
+    public IReadOnlyList<WeightedReward<GunPart>> RollRewards()
     {
-        
-        if ((_roomType == RoomType.Combat || force) && _lootPool != null) 
+        _rewardOptions = new List<WeightedReward<GunPart>>();
+
+        if (_lootPool == null)
         {
-            List<WeightedReward<GunPart>> rewards = _lootPool.PickThree();
-
-            for (int i = 0; i < rewards.Count; i++)
-            {
-                if (rewards[i].Item == null)
-                    continue;
-
-                Debug.Log($"Completion Reward {i + 1}:" +
-                          $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
-            }
-                
-            rewardOptions = rewards;
+            Debug.LogError("ItemRolling has no loot pool assigned.");
+            return _rewardOptions;
         }
-        
-        return rewardOptions; //never returns a null but now it'll return an empty list which is checkable and functionally the same
-    }
-    
-    /// <summary>
-    /// Debug: picks one of the parts the last OnComplete rolled, and returns the other two to the loot pool.
-    /// Doesn't equip anything. Temporary until the reward screen exists (task 7).
-    /// </summary>
-    /// <param name="reward">0, 1, or 2.</param>
-    // INTEGRATION: the 1, 2, and 3 debug keys became this Inspector button.
-    [Button, DisableInEditorMode]
-    public void PickReward(int reward) //made public
-    {
-        if (rewardOptions == null || reward >= rewardOptions.Count)
-            return;
 
-        for (int i = 0; i < rewardOptions.Count; i++)
+        _rewardOptions = _lootPool.PickThree();
+
+        return _rewardOptions;
+    }
+
+    // Resets the pool when a new run begins.
+    public void ResetObtained()
+    {
+        _rewardOptions.Clear();
+
+        if (_lootPool != null)
         {
-            if (i == reward)
+            _lootPool.ResetObtained();
+        }
+    }
+
+    // Keeps the selected reward and returns the others to the pool.
+    public void PickReward(int index)
+    {
+        if (_lootPool == null || index < 0 || index >= _rewardOptions.Count)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _rewardOptions.Count; i++)
+        {
+            if (i == index)
             {
-                Debug.Log($"Picked Reward {i + 1}");
                 continue;
             }
 
-            _lootPool.Obtained.Remove(rewardOptions[i]);
+            _lootPool.Obtained.Remove(_rewardOptions[i]);
         }
+
+        _rewardOptions.Clear();
     }
-    
-    
 }
+

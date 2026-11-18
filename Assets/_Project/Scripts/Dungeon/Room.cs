@@ -159,7 +159,7 @@ namespace _Project.Scripts.Dungeon
             if (_portal != null && _portal.Connected != null)
                 _portal.Active = true;
             
-            OnRoomCleared.Invoke(this);
+            OnRoomCleared?.Invoke(this);
         }
         
     }

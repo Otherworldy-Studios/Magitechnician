@@ -78,7 +78,6 @@ public class GameManager : MGR<GameManager>
     [Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
     [SerializeField, FormerlySerializedAs("waveManager")] private WaveManager _waveManager;
     [SerializeField] private ItemRolling rewardPool;
-    [SerializeField] private RoomCompletionLootPool _lootPool;
 
     private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
     private bool _hasSavedProgress;    // INTEGRATION: new. False until the first save, so the first player keeps the values set on its prefab.
@@ -286,14 +285,19 @@ public class GameManager : MGR<GameManager>
     {
         Room room = CurrentRoom;
 
-        if (room == null || index < 0 || index >= room.RewardOptions.Count)
+        if (rewardPool == null || index < 0 || index >= rewardPool.RewardOptions.Count || _player == null )
         {
             return false;
         }
         
-        GunPart part = room.RewardOptions[index].Item;
+        GunPart part = rewardPool.RewardOptions[index].Item;
         Gun gun = _player.GetComponentInChildren<Gun>();
-
+        
+        if (part == null || gun == null)
+        {
+            return false;
+        }
+        
         if (!gun.HasSocket(part.PartType))
         {
             Debug.LogError($"Gun has no socket for {part.PartType}");
@@ -308,7 +312,7 @@ public class GameManager : MGR<GameManager>
         
         Debug.Log($"gun parts seems to be working, go back and clean up debug scripts in GM");
         
-        room.PickReward(index);
+        rewardPool.PickReward(index);
         return true;
     }
 
@@ -350,7 +354,7 @@ public class GameManager : MGR<GameManager>
     private void StartRun()
     {
         _playerSpawner.OnPlayerSpawned -= StartRun; // INTEGRATION: listens to PlayerSpawner instead of LevelGenerator.OnMapGenerated.
-        _lootPool.ResetObtained(); //make sure the data asset is cleared
+        rewardPool.ResetObtained(); //make sure the data asset is cleared
         _currentDungeon = _generator.RoomGrid;
         Room startRoom = _generator.StartRoom;
         // INTEGRATION: was "CurrentRoom = startRoom". EnterRoom calls ChangeRoom and fires the room's OnRoomEntered,
@@ -372,7 +376,14 @@ public class GameManager : MGR<GameManager>
     /// <summary>Handles directing ItemsRolling and passes the info to UImanager</summary>
     private void RoomCleared(Room room)
     {
-        UIManager.Instance.HandleRewards(rewardPool);
+        if (room == null || room.Type != Room.RoomType.Combat)
+        {
+            return;
+        }
+
+        var rewards = rewardPool.RollRewards();
+
+        UIManager.Instance.HandleRewards(rewards);
     }
 
     /// <summary>Starts a run by loading the Level scene. RunStartPortal calls this from the Hub.</summary>
@@ -550,6 +561,7 @@ public class GameManager : MGR<GameManager>
             _playerSpawner.OnPlayerSpawned -= StartRun;
         }
         SceneManager.sceneLoaded -= InitReferences;
+        Room.OnRoomCleared -= RoomCleared;
     }
 
     #region Debug

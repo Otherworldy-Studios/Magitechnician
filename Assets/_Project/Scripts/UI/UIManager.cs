@@ -76,8 +76,6 @@ public class UIManager : MGR<UIManager>
         GameManager.OnGameWon += GameWin;
         GameManager.OnPauseToggled += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
-        Room.OnRoomCleared += HandleRewards;
-
     }
 
     /// <summary>Debug: switches to a UI state.</summary>
@@ -179,14 +177,16 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_winScreen);
     }
 
-    public void HandleRewards(ItemRolling rewards)
+    public void HandleRewards(IReadOnlyList<WeightedReward<GunPart>> rewards)
     {
-        if (rewards.RewardOptions.Count == 0)
+        if (rewards.Count == 0)
         {
             return;
         }
+        
         ChangeState(UIStates.RewardChoice);
-        _rewardScreen.ShowChoices(rewards, rewards.RewardOptions);
+        
+        _rewardScreen.ShowChoices(rewards);
     }
 
     /// <summary>Shows a screen and sets the cursor to match it.</summary>
