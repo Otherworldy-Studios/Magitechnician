@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -15,18 +16,22 @@ using UnityEngine.Serialization;
 public class Inventory : SerializedMonoBehaviour
 {
     [Tooltip("Crystals the player has. PersistentProgress carries them between scenes.")]
-    [SerializeField, FormerlySerializedAs("Crystals")] private int _crystals;
+    [SerializeField] private int _crystals;
     [Tooltip("Charm slots in use.")]
-    [SerializeField, FormerlySerializedAs("EquippedCharmSlots")] private int _equippedCharmSlots;
+    [SerializeField] private int _equippedCharmSlots;
     [Tooltip("How many charms the player can own. 0 refuses every charm.")]
-    [SerializeField, FormerlySerializedAs("TotalCharmSlots")] private int _charmSlots;
+    [SerializeField] private int _charmSlots;
     [Tooltip("How many consumables the player can carry, one per key. 0 refuses every consumable.")]
-    [SerializeField, FormerlySerializedAs("MaxConsumbables")] private int _maxConsumables;
+    [SerializeField] private int _maxConsumables;
+
+    //All the current charms in the game, should be retrieved from somewhere
+    [OdinSerialize, ReadOnly]private int _totalCharms => ItemDatabase.Instance.Charms.Count;
 
     public int Crystals => _crystals;
     public int EquippedCharmSlots => _equippedCharmSlots;
     /// <summary>How many charms the player can own.</summary>
     public int CharmSlots => _charmSlots;
+    public int TotalCharms => _totalCharms;
     /// <summary>How many consumables the player can carry.</summary>
     public int MaxConsumables => _maxConsumables;
 
@@ -49,13 +54,12 @@ public class Inventory : SerializedMonoBehaviour
     /// <summary>Fires when charms or consumables are added, removed, equipped, or used. ConsumableSlotsUI listens to it.</summary>
     public event Action OnInventoryChanged;
 
-    // INTEGRATION: new. PlayerRoot.AssignStats hands these over in Awake, so charm and consumable modifiers can reach
-    // either Stats. ApplyModifier picks between them.
-    [Tooltip("The player's Stats. PlayerRoot fills this in Awake if it's empty.")]
+
     [SerializeField] private Stats _playerStats;
-    [Tooltip("The gun's Stats. PlayerRoot fills this in Awake.")]
+    [SerializeField]private PlayerAbilities _playerAbilities;
+    
     [SerializeField] private Stats _gunStats;
-    [Tooltip("Healed by consumables. Found through PlayerRoot if empty.")]
+  
     [SerializeField] private Health _health; // INTEGRATION: ResolveHealth fills it, since nothing assigned it before.
     [Tooltip("Only use consumables during a run. Off allows them in the Hub too.")]
     [SerializeField] private bool _onlyDuringRun = true;
@@ -81,6 +85,14 @@ public class Inventory : SerializedMonoBehaviour
         if (_playerStats == null)
         {
             _playerStats = playerStats;
+        }
+    }
+
+    public void SetAbilities(PlayerAbilities abilities)
+    {
+        if(abilities == null)
+        {
+            _playerAbilities = abilities;
         }
     }
 
@@ -146,11 +158,18 @@ public class Inventory : SerializedMonoBehaviour
         switch (item)
         {
             case Charm charm:
-                if (_ownedCharms.Count >= _charmSlots)
+                if (_ownedCharms.Count >= _totalCharms)
                 {
                     return false;
                 }
-                _ownedCharms.Add(charm);
+                if(_equippedCharms.Count < _equippedCharmSlots)
+                {
+                    EquipCharm(item as Charm);
+                }
+                else
+                {
+                    _ownedCharms.Add(charm);
+                }
                 break;
 
             case Consumable consumable:
@@ -167,6 +186,8 @@ public class Inventory : SerializedMonoBehaviour
             default:
                 return false;
         }
+
+       
         OnInventoryChanged?.Invoke();
         return true;
     }
@@ -185,7 +206,7 @@ public class Inventory : SerializedMonoBehaviour
     {
         foreach (Charm charm in _equippedCharms)
         {
-            RemoveModifiers(charm);
+            UnequipCharm(charm);
         }
         _equippedCharms.Clear();
         _ownedCharms.Clear();
@@ -232,7 +253,7 @@ public class Inventory : SerializedMonoBehaviour
         if (_equippedCharms.Contains(charm)) return; // INTEGRATION: new. A charm can't be equipped twice.
 
         _equippedCharms.Add(charm);
-        _playerRoot?.PlayerAbilities.Add(charm); // INTEGRATION: Adds the equipped charm's ability to the player.
+        _playerAbilities.Add(charm); // INTEGRATION: Adds the equipped charm's ability to the player.
         foreach (StatModifier mod in charm.Modifiers)
         {
             ApplyModifier(mod, charm); // INTEGRATION: goes to the player's or the gun's Stats, with the charm as source.

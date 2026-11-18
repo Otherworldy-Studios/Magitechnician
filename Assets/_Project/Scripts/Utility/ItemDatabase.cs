@@ -122,7 +122,7 @@ public class ItemDatabase : ScriptableObject
     private string Summary =>
         $"{_charms.Count} charms, {_consumables.Count} consumables, " +
         $"{_barrels.Count} barrels, {_magazines.Count} magazines, {_scopes.Count} scopes, {_stocks.Count} stocks";
-
+#endif
     /// <summary>Finds every asset of a type in the project, sorted by file name.</summary>
     private static List<T> FindAll<T>() where T : ScriptableObject
     {
@@ -132,5 +132,20 @@ public class ItemDatabase : ScriptableObject
             .OrderBy(asset => asset.name)
             .ToList();
     }
-#endif
+
+    private static ItemDatabase _instance; // Cached after the first load.
+
+    /// <summary>The settings asset. Null if Item Database isn't in a Resources folder.</summary>
+    public static ItemDatabase Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = Resources.Load<ItemDatabase>("ItemDatabase");
+            }
+            return _instance;
+        }
+    }
+
 }

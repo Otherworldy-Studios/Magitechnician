@@ -18,7 +18,7 @@ public abstract class GunPart : ScriptableObject, IInventoryItem
     [SerializeField, FormerlySerializedAs("rarity")] private ItemRarity _rarity;
 
     [Tooltip("What the part changes, such as Damage Add 5. Mark each one Permanent.")]
-    [SerializeField, FormerlySerializedAs("statModifiers")] private List<StatModifier> _modifiers = new();
+    [SerializeField, FormerlySerializedAs("staotModifiers")] private List<StatModifier> _modifiers = new();
 
     public GameObject PartPrefab => _partPrefab;
     public string PartName => _partName;
