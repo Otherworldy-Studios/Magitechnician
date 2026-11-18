@@ -60,6 +60,7 @@ public class GameManager : MGR<GameManager>
 
     /// <summary>The room the player is in. Room.EnterRoom sets it.</summary>
     public Room CurrentRoom { get; private set; }
+    private Room _rewardRoom;
     public GameState CurrentState => _currentState; // INTEGRATION: new, so other scripts can read the state without the event.
     // INTEGRATION: new. Enemies and debug buttons find the player through this instead of GameObject.Find("Player").
     /// <summary>The registered player's root object, the one with PlayerRoot.</summary>
@@ -313,6 +314,12 @@ public class GameManager : MGR<GameManager>
         Debug.Log($"gun parts seems to be working, go back and clean up debug scripts in GM");
         
         rewardPool.PickReward(index);
+
+        if (_rewardRoom != null)
+        {
+            _rewardRoom.RollChest();
+            _rewardRoom = null;
+        }
         return true;
     }
 
@@ -382,6 +389,8 @@ public class GameManager : MGR<GameManager>
         }
 
         var rewards = rewardPool.RollRewards();
+        
+        _rewardRoom = room;
 
         UIManager.Instance.HandleRewards(rewards);
     }

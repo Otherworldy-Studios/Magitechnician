@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = System.Random;
 
 namespace _Project.Scripts.Dungeon
 {
@@ -34,6 +35,12 @@ namespace _Project.Scripts.Dungeon
         private BoxCollider _boundingBox;
 
         public BoxCollider BoundingBox { get => _boundingBox; }
+        
+        [Header("Chest")]
+        [SerializeField] private GameObject _chest;
+
+        [Tooltip("Chance to spawn in consumable chest in room.")]
+        [SerializeField, Range(0f,1f)] private float chestChance = 0.5f;
 
         [Header("Debug (Do not edit)")]
         [SerializeField]
@@ -160,6 +167,32 @@ namespace _Project.Scripts.Dungeon
                 _portal.Active = true;
             
             OnRoomCleared?.Invoke(this);
+        }
+        
+        
+        public void RollChest()
+        {
+            if (UnityEngine.Random.value < chestChance)
+            {
+                SpawnChest();
+            }
+            else
+            {
+                Debug.Log($"player failed chest roll");
+            }
+        }
+        
+        /// <summary>Button will simply spawn in the chest guaranteed.</summary>
+        [Button, DisableInEditorMode]
+        public void SpawnChest()
+        {
+            if (_chest == null)
+            {
+                Debug.LogWarning($"{name} has no chest assigned.");
+                return;
+            }
+
+            _chest.SetActive(true);
         }
         
     }

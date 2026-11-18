@@ -25,7 +25,9 @@ public class UIManager : MGR<UIManager>
         StartMenu,
         PauseMenu,
         Gameplay,
-        RewardChoice
+        RewardChoice,
+        Shop,
+        Charm
     }
 
     [SerializeField, FormerlySerializedAs("screenList")] private List<UIScreen> _screenList; // Filled from children in Awake.
@@ -36,6 +38,8 @@ public class UIManager : MGR<UIManager>
     [SerializeField, FormerlySerializedAs("winScreen")] private WinScreen _winScreen;
     [SerializeField, FormerlySerializedAs("pauseScreen")] private PauseScreen _pauseScreen;
     [SerializeField, FormerlySerializedAs("currentState")] private UIStates _currentState;
+    [SerializeField] private ShopScreen _shopScreen;
+    [SerializeField] private CharmScreen _charmScreen;
 
     // Requests from the screen buttons. GameManager subscribes to each.
     /// <summary>Resume was pressed. GameManager toggles the pause.</summary>
@@ -301,5 +305,20 @@ public class UIManager : MGR<UIManager>
         {
             GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
         }
+    }
+
+    public void OpenShop()
+    {
+        ShowScreen(_shopScreen);
+    }
+
+    public void OpenCharmScreen()
+    {
+        
+    }
+
+    public void CloseScreen()
+    {
+        
     }
 }
