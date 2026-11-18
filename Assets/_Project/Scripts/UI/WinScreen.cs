@@ -13,12 +13,21 @@ public class WinScreen : UIScreen
     [SerializeField, FormerlySerializedAs("runTimeText")] private TMP_Text _runTimeText;
     [SerializeField, FormerlySerializedAs("crystalsCollectedText")] private TMP_Text _crystalsCollectedText;
     [SerializeField, FormerlySerializedAs("damageTakenText")] private TMP_Text _damageTakenText;
-    [SerializeField, FormerlySerializedAs("charmsActivatedText")] private TMP_Text _charmsActivatedText;
-    [SerializeField,  FormerlySerializedAs("consumablesUsedText")] private TMP_Text _consumablesUsedText;
+    [SerializeField, FormerlySerializedAs("damageDealtText")] private TMP_Text _damageDealtText;
+    [SerializeField,  FormerlySerializedAs("enemiesKilledText")] private TMP_Text _enemiesKilledText;
     [SerializeField,  FormerlySerializedAs("totalScoreText")] private TMP_Text _totalScoreText;
+    
+    //Multipliers for each key stat
+    private float _runTimeMultiplier = 1f;
+    private float _crystalsCollectedMultiplier = 1f;
+    private float _damageTakenMultiplier = 10f;
+    private float _damageDealtMultiplier = 10f;
+    private float _enemiesKilledMultiplier = 50f;
     
     // Image used to display the final ranking, going from based on run stats calculation
     [SerializeField, FormerlySerializedAs("finalRankImage")] private Image _finalRankImage;
+    [SerializeField, FormerlySerializedAs("listOfRanks")] private Sprite[] _rankSprites;
+    
     [SerializeField, FormerlySerializedAs("winImage")] private Image _winImage; // The background. Not read by this script.
 
     /// <summary>Connects the Hub button.</summary>
@@ -33,9 +42,11 @@ public class WinScreen : UIScreen
         _runTimeText.text = $"Run Time: {CollectEndTime()}";
         _crystalsCollectedText.text = $"Crystals Collected: {TotalCrystalsCollected()}";
         _damageTakenText.text = $"Damage Taken: {TotalDamageTaken()}";
-        _charmsActivatedText.text = $"Charms Activated: {TotalCharmsActivated()}";
-        _consumablesUsedText.text = $"Consumables Used: {TotalConsumablesUsed()}";
+        _damageDealtText.text = $"Damage Dealt: {TotalDamageDealt()}";
+        _enemiesKilledText.text = $"Enemies Killed: {TotalEnemiesKilled()}";
         _totalScoreText.text = $"Total Score: {CalculateTotalScore()}";
+
+        _finalRankImage.sprite = SetRankingImage();
     }
 
     /// <summary>Hub button.</summary>
@@ -58,31 +69,37 @@ public class WinScreen : UIScreen
 
     private int TotalDamageTaken()
     {
-        // Need to know where total damage taken is stored. Doesn't seem GameManager is recording that,
-        // though it is taking in the Player's Health component.
-        return 0;
+        // Blocked, need to wait on Ali to implement
+        return 1234; // For testing
     }
     
-    private int TotalCharmsActivated()
+    private int TotalDamageDealt()
     {
-        // Need to know where total charm use is stored. Doesn't seem GameManager is recording that.
-        return 0;
+        // Blocked, need to wait on Ali to implement
+        return 4321;
     }
 
-    private int TotalConsumablesUsed()
+    private int TotalEnemiesKilled()
     {
-        // Need to know where total consumable use is stored. Doesn't seem GameManager is recording that.
-        return 0;
+        // Blocked, need to wait on Ali to implement
+        return 12;
     }
 
     private int CalculateTotalScore()
     {
         return
-            (int)CollectEndTime() * 1 +
-            TotalCrystalsCollected() * 1 +
-            TotalDamageTaken() * 10 +
-            TotalCharmsActivated() * 100 +
-            TotalConsumablesUsed() * 100
+            (int)(
+                CollectEndTime() * _runTimeMultiplier +
+                TotalCrystalsCollected() * _crystalsCollectedMultiplier +
+                TotalDamageTaken() * _damageTakenMultiplier +
+                TotalDamageDealt() * _damageDealtMultiplier +
+                TotalEnemiesKilled() * _enemiesKilledMultiplier
+            )
         ;
+    }
+    
+    private Sprite SetRankingImage()
+    {
+        
     }
 }
