@@ -34,10 +34,11 @@ public class DeathScreen : UIScreen
     // Image used to display the final ranking, based on run stats calculation
     [Header("Image Objects")]
     [SerializeField, FormerlySerializedAs("finalRankImage")] private Image _finalRankImage;
+    [Tooltip("Rank sprites should be added in ascending order to the array (Lowest ranks go first)")]
     [SerializeField, FormerlySerializedAs("listOfRanks")] private Sprite[] _rankSprites = new Sprite[5];
     [Space]
     
-    [SerializeField, FormerlySerializedAs("winImage")] private Image _winImage; // The background. Not read by this script.
+    [SerializeField, FormerlySerializedAs("deathImage")] private Image _deathImage; // The background. Not read by this script.
 
     /// <summary>Connects the Hub button.</summary>
     private void Awake()
@@ -45,7 +46,7 @@ public class DeathScreen : UIScreen
         _hubButton.onClick.AddListener(OnHub);
     }
 
-    /// <summary>Shows the run time when the screen opens.</summary>
+    /// <summary>Shows the run stats and ranking when the screen opens.</summary>
     protected override void OnShown()
     {
         _runTimeText.text = $"Run Time: {CollectEndTime()}";
@@ -71,29 +72,34 @@ public class DeathScreen : UIScreen
         return (int)GameManager.Instance.EndTime;
     }
 
+    /// <summary>The number of crystals the player collected, from GameManager.</summary>
     private int TotalCrystalsCollected()
     {
         return GameManager.Instance.Progress.Crystals;
     }
 
+    /// <summary>The total amount of damage taken by the player, from GameManager.</summary>
     private int TotalDamageTaken()
     {
         // Blocked, need to wait on Ali's additions to implement
-        return 1234; // For testing
+        return 1234; // Placeholder
     }
     
+    /// <summary>The total amount of damage dealt by the player to enemies, from GameManager.</summary>
     private int TotalDamageDealt()
     {
         // Blocked, need to wait on Ali's additions to implement
-        return 4321; // For testing
+        return 4321; // Placeholder
     }
 
+    /// <summary>The total number of enemies killed by the player, from GameManager.</summary>
     private int TotalEnemiesKilled()
     {
         // Blocked, need to wait on Ali's additions to implement
-        return 12; // For testing
+        return 12; // Placeholder
     }
 
+    /// <summary>The sum of each previous run stat method modified by a multiplier.</summary>
     private int TotalScoreCalculation()
     {
         return
@@ -107,25 +113,27 @@ public class DeathScreen : UIScreen
         ;
     }
     
+    /// <summary>The rank Sprite (chosen from _rankSprites[]) according to the range the TotalScoreCalculation() falls under.</summary>
     private Sprite SetRankingImage()
     {
+        // Checks if _rankSprites[] is empty, sends warning and returns NULL
         if (_rankSprites.IsNullOrEmpty())
         {
             Debug.LogWarning("The Rank Sprites array is empty, check the WinScreen in UIManager");
             return null;
         }
-
-        if (_rankSprites.Length == 1) return _rankSprites[0];
         
+        // Variables hold final score and placeholder for a score threshold
         int finalScore = TotalScoreCalculation();
-        int scoreThreshold = 1000;
+        int PH_scoreThreshold = 1000;
         
-        for (int rank = 1; rank < _rankSprites.Length - 1; rank++)
+        // Loops through _rankSprites[] and returns Sprite in array if threshold is met, threshold gets incremented otherwise.
+        for (int rank = 0; rank < _rankSprites.Length - 1; rank++)
         {
-            if (finalScore < scoreThreshold)
+            if (finalScore < PH_scoreThreshold)
                 return _rankSprites[rank];
             
-            scoreThreshold *= 10;
+            PH_scoreThreshold *= 10;
         }
         
         return _rankSprites[_rankSprites.Length - 1];
