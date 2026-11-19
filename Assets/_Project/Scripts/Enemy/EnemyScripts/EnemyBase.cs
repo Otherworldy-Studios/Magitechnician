@@ -33,6 +33,10 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private StatDefinition _windUpTimeStat;
     [SerializeField] private StatDefinition _cooldownTimeStat;
 
+    [Header("Death")]
+    [SerializeField, Min(0f)] private float _deathDelay = 2f; // Seconds to wait before removing the enemy after death.
+    public float DeathDelay => _deathDelay;
+
     /// <summary>Moves the enemy on the NavMesh.</summary>
     public EnemyMovement Movement { get; private set; }
 
