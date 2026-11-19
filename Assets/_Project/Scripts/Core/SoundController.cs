@@ -121,6 +121,59 @@ public class SoundController : MGR<SoundController>
         s.SoundData.Play(atPosition);
     }
 
+    /// <summary>Plays a sound effect by name at a position, at a fraction of its normal volume.</summary>
+    /// <param name="soundName">The sound's Name in the SFX list.</param>
+    /// <param name="atPosition">Where in the scene the sound plays.</param>
+    /// <param name="volumeScale">1 is the sound's normal volume, 0.5 is half.</param>
+    // AUDIO: new. PlayerAudio uses it for quieter walking steps and softer landings.
+    public void PlaySFX(string soundName, Vector3 atPosition, float volumeScale)
+    {
+        Sound s = Array.Find(_sfxSounds, sfxSound => sfxSound.Name == soundName);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound not found: " + soundName);
+            return;
+        }
+
+        // Scale the sound's volume range for this one play, then put it back.
+        float minVolume = s.SoundData.MinVolume;
+        float maxVolume = s.SoundData.MaxVolume;
+        s.SoundData.MinVolume = minVolume * volumeScale;
+        s.SoundData.MaxVolume = maxVolume * volumeScale;
+
+        s.SoundData.Play(atPosition);
+
+        s.SoundData.MinVolume = minVolume;
+        s.SoundData.MaxVolume = maxVolume;
+    }
+
+    /// <summary>Stops every playing copy of a sound effect, such as a loop. Does nothing if it isn't playing.</summary>
+    /// <param name="soundName">The sound's Name in the SFX list.</param>
+    // AUDIO: new. PlayerAudio stops the heartbeat loop with it. Searches every AudioSource, because MMSoundManager's
+    // FindByClip can return an old, stopped source before the one that's still playing.
+    public void StopSFX(string soundName)
+    {
+        Sound s = Array.Find(_sfxSounds, sfxSound => sfxSound.Name == soundName);
+        if (s == null || !MMSoundManager.HasInstance)
+        {
+            return;
+        }
+
+        AudioSource[] sources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+        foreach (AudioSource source in sources)
+        {
+            if (!source.isPlaying || source.clip == null) continue;
+
+            bool isThisSound = source.clip == s.SoundData.Sfx
+                               || (s.SoundData.RandomSfx != null && Array.IndexOf(s.SoundData.RandomSfx, source.clip) >= 0);
+
+            if (isThisSound)
+            {
+                MMSoundManager.Instance.FreeSound(source);
+            }
+        }
+    }
+
     // Overloads that play at the SoundController's own position.
 
     /// <summary>Plays a sound effect by name at the SoundController's position.</summary>

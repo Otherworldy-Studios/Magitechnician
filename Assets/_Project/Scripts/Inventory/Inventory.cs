@@ -51,6 +51,12 @@ public class Inventory : SerializedMonoBehaviour
     public event Action<int> OnCrystalsChanged;
     /// <summary>Fires when charms or consumables are added, removed, equipped, or used. ConsumableSlotsUI listens to it.</summary>
     public event Action OnInventoryChanged;
+    /// <summary>Fires when a consumable is used, with that consumable.</summary>
+    // AUDIO: new. PlayerAudio plays the use sound from it.
+    public event Action<Consumable> OnConsumableUsed;
+    /// <summary>Fires when a timed consumable's modifiers are removed at the end of its duration.</summary>
+    // AUDIO: new. PlayerAudio plays the effect-ends sound from it.
+    public event Action<Consumable> OnConsumableEnded;
 
     [SerializeField] private Stats _playerStats;
     [SerializeField] private PlayerAbilities _playerAbilities;
@@ -289,17 +295,20 @@ public class Inventory : SerializedMonoBehaviour
 
         // Mark consumable modifiers Permanent, so Stats doesn't remove them before this does.
         if (consumable.Duration > 0f && consumable.Modifiers.Count > 0)
-            StartCoroutine(RemoveAfter(source, consumable.Duration));
+            StartCoroutine(RemoveAfter(source, consumable.Duration, consumable)); // AUDIO: passes the consumable for OnConsumableEnded.
 
         _consumables.RemoveAt(index);
         OnInventoryChanged?.Invoke();
+        OnConsumableUsed?.Invoke(consumable); // AUDIO: new.
     }
 
     /// <summary>Waits in game time, so pausing pauses the timer, then removes one use's modifiers.</summary>
-    private IEnumerator RemoveAfter(object source, float seconds)
+    // AUDIO: the consumable parameter is new, for OnConsumableEnded.
+    private IEnumerator RemoveAfter(object source, float seconds, Consumable consumable)
     {
         yield return new WaitForSeconds(seconds);
         RemoveModifiers(source);
+        OnConsumableEnded?.Invoke(consumable); // AUDIO: new.
     }
 
     /// <summary>Returns the assigned Health, or finds the player's through PlayerRoot.</summary>
