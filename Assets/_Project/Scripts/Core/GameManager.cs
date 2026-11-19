@@ -24,7 +24,6 @@ public class GameManager : MGR<GameManager>
         Store,   // The shop or charm screen is open in the Hub.
         Dead,    // The player died. The death screen is showing.
         Win,      // The boss is defeated. The win screen is showing.
-        Charm
     }
 
     /// <summary>How a run ended. Passed to RequestGameEnd.</summary>
@@ -81,6 +80,7 @@ public class GameManager : MGR<GameManager>
     [SerializeField, FormerlySerializedAs("waveManager")] private WaveManager _waveManager;
     [SerializeField] private ItemRolling rewardPool;
 
+    private GameState _previousState; // for use in leaving the store state
     private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
     private bool _hasSavedProgress;    // INTEGRATION: new. False until the first save, so the first player keeps the values set on its prefab.
     private bool _isPaused;            // True while the game is paused. Pausing is a flag, not a GameState.
@@ -110,6 +110,7 @@ public class GameManager : MGR<GameManager>
         UIManager.OnStartRequested += StartHub;
         UIManager.OnMenuRequested += MainMenu;
         UIManager.OnExitRequested += ExitGame;
+        UIManager.OnStoreRequested += ViewStore;
         Room.OnRoomCleared += RoomCleared;
         PH_Boss.OnBossDefeated += BossDefeated;
         
@@ -130,7 +131,7 @@ public class GameManager : MGR<GameManager>
 
         // INTEGRATION: replaces reading the Escape key in Update. Subscribed in Start because InputManager
         // may not have run its Awake yet when this Awake runs.
-        InputManager.Instance.OnPausePressed += HandlePausePressed;
+        InputManager.Instance.OnPausePressed += HandleEscapePressed;
     }
 
     /// <summary>Listens to the player's death, if a player was assigned before this component turned on.</summary>
@@ -325,15 +326,31 @@ public class GameManager : MGR<GameManager>
 
     #region EventHandlers
 
+    private void ViewStore()
+    {
+        ChangeState(GameState.Store);
+    }
+    
     /// <summary>Quits the game. Raised by the menu's Quit button through UIManager.</summary>
     private void ExitGame()
     {
         Application.Quit();
     }
 
-    private void HandlePausePressed()
+    private void HandleEscapePressed() //RENAMED from HandlePausePressed to track its new gate beforehand, handling closing screens
     {
-        SetPause(!_isPaused);
+        if (_currentState == GameState.Store) //checks first if it needs to simply close a screen
+        {
+            UIManager.Instance.CloseScreen(); 
+            return;
+        }
+
+        if (UIManager.Instance.IsRewardOpen)
+        {
+            return;
+        }
+        
+        SetPause(!_isPaused); //pauses otherwise
     }
     
     /// <summary>Ends the run as a loss when the player's Health fires OnDied.</summary>
@@ -425,6 +442,7 @@ public class GameManager : MGR<GameManager>
             SetPause(false); // Unpause when leaving to the menu or the Hub.
         }
 
+        _previousState = _currentState;
         _currentState = newState;
 
         switch (newState)
@@ -446,9 +464,6 @@ public class GameManager : MGR<GameManager>
                 break;
             case GameState.Store:
                 EnterStore();
-                break;
-            case GameState.Charm:
-                EnterCharm();
                 break;
         }
         OnGameStateChanged?.Invoke(_currentState);
@@ -496,11 +511,7 @@ public class GameManager : MGR<GameManager>
     {
         InputManager.Instance.SetMode(InputMode.UI);
     }
-
-    private void EnterCharm()
-    {
-        InputManager.Instance.SetMode(InputMode.UI);
-    }
+    
 
     #endregion
 
@@ -543,6 +554,19 @@ public class GameManager : MGR<GameManager>
             OnPauseToggled?.Invoke(_isPaused);
         }
     }
+
+    /// <summary>
+    /// for other scripts to decide a more "minimal" state should end
+    /// </summary>
+    public void CloseState()
+    {
+        if (_currentState != GameState.Store)
+        {
+            return;
+        }
+
+        ChangeState(_previousState);
+    }
     
     /// <summary>Returns to the Hub. Raised by the death, win, and pause screens' Hub buttons through UIManager.</summary>
     private void ResetGame() 
@@ -567,7 +591,7 @@ public class GameManager : MGR<GameManager>
     {
         if (InputManager.HasInstance)
         {
-            InputManager.Instance.OnPausePressed -= HandlePausePressed;
+            InputManager.Instance.OnPausePressed -= HandleEscapePressed;
         }
         if (_playerHealth != null)
         {

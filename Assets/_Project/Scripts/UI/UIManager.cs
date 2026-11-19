@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using _Project.Scripts.Dungeon;
-
-
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 /// <summary>
@@ -29,6 +28,8 @@ public class UIManager : MGR<UIManager>
         Shop,
         Charm
     }
+    
+    public bool IsRewardOpen => _currentState == UIStates.Reward;
 
     [SerializeField, FormerlySerializedAs("screenList")] private List<UIScreen> _screenList; // Filled from children in Awake.
     [SerializeField, FormerlySerializedAs("menuScreen")] private MenuScreen _menuScreen;
@@ -41,13 +42,14 @@ public class UIManager : MGR<UIManager>
     [SerializeField] private CharmScreen _charmScreen;
     [SerializeField] private HUDScreen _hudScreen;
     [SerializeField, FormerlySerializedAs("currentState")] private UIStates _currentState;
-    private UIStates _previousState;
 
     // Requests from the screen buttons. GameManager subscribes to each.
     /// <summary>Resume was pressed. GameManager toggles the pause.</summary>
     public static event Action<bool> OnPauseRequested;
     /// <summary>Start was pressed on the main menu. GameManager loads the Hub.</summary>
     public static event Action OnStartRequested;
+    
+    public static event Action OnStoreRequested;
     /// <summary>Restart was pressed. GameManager returns to the Hub.</summary>
     public static event Action OnResetRequested;
     /// <summary>Main Menu was pressed. GameManager loads the main menu.</summary>
@@ -92,6 +94,8 @@ public class UIManager : MGR<UIManager>
         ChangeState(state);
     }
 
+    
+
     /// <summary>Hides every screen except the HUD and shows the ones for the new state.</summary>
     private void ChangeState(UIStates state)
     {
@@ -100,10 +104,12 @@ public class UIManager : MGR<UIManager>
         {
             case UIStates.StartMenu:
                 HideAllScreens();
+                SetHUDVisible(false);
                 ShowScreen(_menuScreen);
                 break;
             case UIStates.PauseMenu:
                 HideAllScreens();
+                SetHUDVisible(false);
                 ShowScreen(_pauseScreen);
                 break;
             case UIStates.Gameplay:
@@ -113,6 +119,7 @@ public class UIManager : MGR<UIManager>
                 break;
             case UIStates.Reward:
                 HideAllScreens();
+                SetHUDVisible(true);
                 ShowScreen(_rewardScreen);
                 OnPauseRequested?.Invoke(true);
                 break;
@@ -120,13 +127,11 @@ public class UIManager : MGR<UIManager>
                 HideAllScreens();
                 SetHUDVisible(true);
                 ShowScreen(_shopScreen);
-                OnPauseRequested?.Invoke(true);
                 break;
             case UIStates.Charm:
                 HideAllScreens();
                 SetHUDVisible(true);
                 ShowScreen(_charmScreen);
-                OnPauseRequested?.Invoke(true);
                 break;
             
         }
@@ -278,7 +283,6 @@ public class UIManager : MGR<UIManager>
         {
             if (_currentState == UIStates.Reward || _currentState == UIStates.Charm || _currentState == UIStates.Shop) //dont go to pause menu if in certain states already
             {
-                CloseScreen();
                 return; 
             }
             
@@ -319,11 +323,9 @@ public class UIManager : MGR<UIManager>
             case GameManager.GameState.Win:
                 break;
             case GameManager.GameState.Store:
-                ChangeState(UIStates.Shop);
+                //store and charm will independently decide this behavior rather than gamemanager automatically doing it 
                 break;
-            case GameManager.GameState.Charm:
-                ChangeState(UIStates.Charm);
-                break;
+            
         }
     }
 
@@ -339,19 +341,27 @@ public class UIManager : MGR<UIManager>
             GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
         }
     }
-
-    public void OpenShop() //gamemanager
+    [Button, DisableInEditorMode]
+    public void OpenShop()
     {
+        OnStoreRequested?.Invoke();
         ChangeState(UIStates.Shop);
     }
-
+    [Button, DisableInEditorMode]
     public void OpenCharmScreen()
     {
+        OnStoreRequested?.Invoke();
         ChangeState(UIStates.Charm);
     }
 
     public void CloseScreen()
     {
-        ChangeState(_previousState);
+        if (_currentState != UIStates.Shop &&
+            _currentState != UIStates.Charm)
+        {
+            return;
+        }
+
+        GameManager.Instance.CloseState();
     }
 }
