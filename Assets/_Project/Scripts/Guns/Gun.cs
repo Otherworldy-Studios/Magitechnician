@@ -190,6 +190,7 @@ public class Gun : MonoBehaviour
         RefreshFireMode(); // INTEGRATION: a new barrel can change the fire mode.
 
         OnPartsChanged?.Invoke();
+        OnStatsChanged?.Invoke();
 
         return true;
     }
@@ -220,6 +221,7 @@ public class Gun : MonoBehaviour
         RefreshFireMode();
 
         OnPartsChanged?.Invoke();
+        OnStatsChanged?.Invoke();
 
         return true;
     }
@@ -275,7 +277,7 @@ public class Gun : MonoBehaviour
             DamageDirection = rotation * Vector3.forward,
             DamageType = GetDamageType()
         };
-
+        
         // INTEGRATION: Instantiate until ProjectilePool exists. Projectile.Initialize gets the stats read above, and
         // the callback fires OnDamageDealt when the bullet hits.
         Projectile projectile = Instantiate(_projectilePrefab, aim.Origin, rotation);
@@ -292,26 +294,28 @@ public class Gun : MonoBehaviour
     // INTEGRATION: new. Runs in Start, after each equip or removal, and when Stat_FireType changes.
     private void RefreshFireMode()
     {
-        FireMode mode = FireMode.Semi;
+        GunBarrel barrel = GetEquippedPart(GunPartType.Barrel) as GunBarrel;
+        FireMode mode = barrel ? barrel.FireMode : FireMode.Semi;
 
-        if (_stats != null && _fireTypeStat != null && _stats.HasStat(_fireTypeStat))
+        if (mode == _currentFireMode && _fireMode != null)
         {
-            mode = (FireMode)Mathf.RoundToInt(_stats.GetValue(_fireTypeStat));
+            return;
         }
-        else if (GetEquippedPart(GunPartType.Barrel) is GunBarrel barrel)
-        {
-            mode = barrel.FireMode;
-        }
-
-        if (mode == _currentFireMode && _fireMode != null) return;
 
         _currentFireMode = mode;
-        _fireMode = mode switch
+
+        if (mode == FireMode.Semi)
         {
-            FireMode.Burst => new BurstFire(),
-            FireMode.Auto => new AutoFire(),
-            _ => new SemiAutoFire()
-        };
+            _fireMode = new SemiAutoFire();
+        }
+        else if (mode == FireMode.Burst)
+        {
+            _fireMode = new BurstFire(barrel.BurstCount, barrel.BurstDelay);
+        }
+        else if (mode == FireMode.Auto)
+        {
+            _fireMode = new AutoFire();
+        }
     }
 
     /// <summary>Picks the damage type: from Stat_AmmoType when the gun's StatBlock has it, otherwise from the magazine, otherwise Physical.</summary>
@@ -391,7 +395,11 @@ public class Gun : MonoBehaviour
         }
 
         _partModels.Remove(part.PartType);
-        _muzzle = _defaultMuzzle;
+
+        if (part.PartType == GunPartType.Barrel)
+        {
+            _muzzle = _defaultMuzzle;
+        }
     }
 
     /// <summary>Destroys every part model, removes the parts' modifiers, and forgets the sockets and parts.</summary>

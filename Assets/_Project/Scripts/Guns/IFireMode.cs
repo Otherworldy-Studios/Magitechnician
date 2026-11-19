@@ -1,3 +1,6 @@
+using System;
+using UnityEngine;
+
 /// <summary>
 /// Decides whether the gun fires this frame. Gun.TryFire asks its current fire mode every frame.
 /// Because each mode gets both "pressed this frame" and "held", Shoot doesn't need to know which mode is equipped.
@@ -46,11 +49,17 @@ public class AutoFire : IFireMode
 /// <summary>Each press fires a burst of shots close together, then waits the normal fire rate before the next burst.</summary>
 public class BurstFire : IFireMode
 {
-    private const int ShotsPerBurst = 3;
-    private const float BurstSpeedMultiplier = 3f; // Shots inside a burst are 3 times faster than the fire rate.
+    private int _burstCount;
+    private float _burstDelay;
 
     private int _shotsLeft;      // Shots left in the current burst. 0 between bursts.
     private float _nextShotTime; // The earliest time the next shot can fire.
+
+    public BurstFire(int count, float delay)
+    {
+        _burstCount = Mathf.Max(1, count);
+        _burstDelay = Mathf.Max(0.01f, delay);
+    }
 
     /// <inheritdoc />
     public bool ShouldFire(bool triggerPressed, bool triggerHeld, float fireRate, float time)
@@ -58,16 +67,15 @@ public class BurstFire : IFireMode
         // A press between bursts starts a new burst.
         if (_shotsLeft == 0 && triggerPressed && time >= _nextShotTime)
         {
-            _shotsLeft = ShotsPerBurst;
+            _shotsLeft = _burstCount;
         }
 
         if (_shotsLeft == 0 || time < _nextShotTime) return false;
 
         _shotsLeft--;
         // Inside a burst, wait the short interval. After the last shot, wait the normal interval.
-        _nextShotTime = _shotsLeft > 0
-            ? time + 1f / (fireRate * BurstSpeedMultiplier)
-            : time + 1f / fireRate;
+        _nextShotTime = time + (_shotsLeft > 0 ? _burstDelay : 1.0f / fireRate);
+
         return true;
     }
 }
