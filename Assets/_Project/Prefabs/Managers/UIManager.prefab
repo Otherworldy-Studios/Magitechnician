@@ -6200,7 +6200,7 @@ GameObject:
   - component: {fileID: 8628943495225856437}
   - component: {fileID: 1377770573182805010}
   m_Layer: 5
-  m_Name: CharmsActivatedText
+  m_Name: DamageDealtText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6222,8 +6222,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -268.3333}
-  m_SizeDelta: {x: 800, y: 60}
+  m_AnchoredPosition: {x: 150, y: -268.3333}
+  m_SizeDelta: {x: 850, y: 60}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &8628943495225856437
 CanvasRenderer:
@@ -6253,7 +6253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Charms Activated: 000'
+  m_text: 'Damage Dealt: 0000'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7161,10 +7161,13 @@ MonoBehaviour:
   _runTimeText: {fileID: 7020234821122379867}
   _crystalsCollectedText: {fileID: 4162848774453252498}
   _damageTakenText: {fileID: 7750318807440157133}
-  _charmsActivatedText: {fileID: 1377770573182805010}
-  _consumablesUsedText: {fileID: 3831885176656925489}
+  _damageDealtText: {fileID: 1377770573182805010}
+  _enemiesKilledText: {fileID: 3831885176656925489}
   _totalScoreText: {fileID: 8619065949312553479}
   _finalRankImage: {fileID: 4772245656054198338}
+  _rankSprites:
+  - {fileID: 21300000, guid: 330bef15fea63624e81e0f7184613049, type: 3}
+  - {fileID: 21300000, guid: 3f341a23c15acab469d1ec140f594b36, type: 3}
   _winImage: {fileID: 0}
 --- !u!1 &1583856401614932774
 GameObject:
@@ -14714,7 +14717,7 @@ GameObject:
   - component: {fileID: 5235576565471608225}
   - component: {fileID: 3831885176656925489}
   m_Layer: 5
-  m_Name: ConsumablesUsedText
+  m_Name: EnemiesKilledText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14736,8 +14739,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -345}
-  m_SizeDelta: {x: 750, y: 60}
+  m_AnchoredPosition: {x: 200, y: -345}
+  m_SizeDelta: {x: 800, y: 60}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5235576565471608225
 CanvasRenderer:
@@ -14767,7 +14770,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Consumables Used: 000'
+  m_text: 'Enemies Killed: 000'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
