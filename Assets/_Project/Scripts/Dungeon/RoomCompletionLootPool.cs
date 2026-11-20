@@ -38,58 +38,43 @@ public class RoomCompletionLootPool : ScriptableObject
 {
     [SerializeField]
     private List<WeightedReward<GunPart>> _rewards; // Every part this pool can give.
-
-    [NonSerialized] //CHANGED: unity tries less to save this to the data asset
-    private List<WeightedReward<GunPart>> _obtained = new();
-
-    /// <summary>Parts already rolled. Room.PickReward removes the parts that weren't picked.</summary>
-    public List<WeightedReward<GunPart>> Obtained { get { return _obtained; } }
-
-    public void ResetObtained()
-    {
-        _obtained.Clear();
-    }
-    
     /// <summary>
     /// Rolls up to three parts that haven't been obtained, weighted by rarity, and adds them to Obtained.
-    /// Returns fewer than three when the pool runs low. Results get unreliable when several rooms roll at once,
-    /// because they share Obtained.
+    /// Returns fewer than three when the pool runs low.
     /// </summary>
-    public List<WeightedReward<GunPart>> PickThree()
+    public List<WeightedReward<GunPart>> PickThree(IReadOnlyCollection<GunPart> obtained)
     {
         List<WeightedReward<GunPart>> rolledRewards = new List<WeightedReward<GunPart>>();
         ItemSelector<WeightedReward<GunPart>> rewardPool = new ItemSelector<WeightedReward<GunPart>>();
 
-        Debug.Log($"Items: {_rewards.Count}");
+        HashSet<GunPart> excluded = new(obtained);
+        
+        int available = obtained.Count;
+        int availableCount = 0;
 
-        // Only parts not yet obtained go into the roll.
         foreach (WeightedReward<GunPart> part in _rewards)
         {
-            if (_obtained.Contains(part))
+            if (part.Item == null || excluded.Contains(part.Item))
             {
-                Debug.Log($"{part.Item.PartName} is already obtained");
                 continue;
             }
 
             rewardPool.AddItem(part, (long)part.Weight);
-            Debug.Log($"Added {part.Item.PartType}");
+            
+            excluded.Add(part.Item);
+            availableCount++;
         }
 
-        // RollWithRemoval takes each rolled part out of the pool, so the three are different.
-        for (int i = 0; i < 3 && _obtained.Count < _rewards.Count; i++)
+        int rollCount = Mathf.Min(3, availableCount);
+
+        for (int i = 0; i < rollCount; i++)
         {
             WeightedReward<GunPart> roll = rewardPool.RollWithRemoval();
 
-            if (roll.Item == null)
-                continue;
-
-            if (_obtained.Contains(roll))
-                continue;
-
             rolledRewards.Add(roll);
-            _obtained.Add(roll);
         }
 
         return rolledRewards;
     }
+    
 }

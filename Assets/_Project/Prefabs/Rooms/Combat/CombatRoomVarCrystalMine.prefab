@@ -40580,9 +40580,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Dungeon.Room
   _roomType: 1
-  _lootPool: {fileID: 11400000, guid: e542e18de73b9d4468b28bc441487345, type: 2}
   _playerSpawn: {fileID: 3641969836838219388}
   _boundingBox: {fileID: 7752247790088703501}
+  _chest: {fileID: 1197125711971233871}
+  chestChance: 0.5
   _id: 
   _complete: 0
   _spawnpoints: []
@@ -46010,6 +46011,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab09df2d4b7a57c419c1ad15c73053aa, type: 3}
+--- !u!1 &1197125711971233871 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7952847965316827973, guid: ab09df2d4b7a57c419c1ad15c73053aa, type: 3}
+  m_PrefabInstance: {fileID: 9134208690422676234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2006032381566806773 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7283976162392773119, guid: ab09df2d4b7a57c419c1ad15c73053aa, type: 3}

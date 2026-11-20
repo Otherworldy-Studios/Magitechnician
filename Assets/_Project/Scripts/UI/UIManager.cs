@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using _Project.Scripts.Dungeon;
-
-
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 /// <summary>
@@ -25,8 +24,12 @@ public class UIManager : MGR<UIManager>
         StartMenu,
         PauseMenu,
         Gameplay,
-        RewardChoice
+        Reward,
+        Shop,
+        Charm
     }
+    
+    public bool IsRewardOpen => _currentState == UIStates.Reward;
 
     [SerializeField, FormerlySerializedAs("screenList")] private List<UIScreen> _screenList; // Filled from children in Awake.
     [SerializeField, FormerlySerializedAs("menuScreen")] private MenuScreen _menuScreen;
@@ -35,6 +38,9 @@ public class UIManager : MGR<UIManager>
     [SerializeField, FormerlySerializedAs("deathScreen")] private DeathScreen _deathScreen;
     [SerializeField, FormerlySerializedAs("winScreen")] private WinScreen _winScreen;
     [SerializeField, FormerlySerializedAs("pauseScreen")] private PauseScreen _pauseScreen;
+    [SerializeField] private ShopScreen _shopScreen;
+    [SerializeField] private CharmScreen _charmScreen;
+    [SerializeField] private HUDScreen _hudScreen;
     [SerializeField, FormerlySerializedAs("currentState")] private UIStates _currentState;
 
     // Requests from the screen buttons. GameManager subscribes to each.
@@ -42,6 +48,8 @@ public class UIManager : MGR<UIManager>
     public static event Action<bool> OnPauseRequested;
     /// <summary>Start was pressed on the main menu. GameManager loads the Hub.</summary>
     public static event Action OnStartRequested;
+    
+    public static event Action OnStoreRequested;
     /// <summary>Restart was pressed. GameManager returns to the Hub.</summary>
     public static event Action OnResetRequested;
     /// <summary>Main Menu was pressed. GameManager loads the main menu.</summary>
@@ -76,8 +84,6 @@ public class UIManager : MGR<UIManager>
         GameManager.OnGameWon += GameWin;
         GameManager.OnPauseToggled += HandlePause;
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
-        Room.OnRoomCleared += HandleRewards;
-
     }
 
     /// <summary>Debug: switches to a UI state.</summary>
@@ -88,6 +94,8 @@ public class UIManager : MGR<UIManager>
         ChangeState(state);
     }
 
+    
+
     /// <summary>Hides every screen except the HUD and shows the ones for the new state.</summary>
     private void ChangeState(UIStates state)
     {
@@ -96,21 +104,36 @@ public class UIManager : MGR<UIManager>
         {
             case UIStates.StartMenu:
                 HideAllScreens();
+                SetHUDVisible(false);
                 ShowScreen(_menuScreen);
                 break;
             case UIStates.PauseMenu:
                 HideAllScreens();
+                SetHUDVisible(false);
                 ShowScreen(_pauseScreen);
                 break;
             case UIStates.Gameplay:
                 HideAllScreens();
+                SetHUDVisible(true);
                 ToggleCursor(false);
                 break;
-            case UIStates.RewardChoice:
+            case UIStates.Reward:
                 HideAllScreens();
+                SetHUDVisible(true);
                 ShowScreen(_rewardScreen);
                 OnPauseRequested?.Invoke(true);
                 break;
+            case UIStates.Shop:
+                HideAllScreens();
+                SetHUDVisible(true);
+                ShowScreen(_shopScreen);
+                break;
+            case UIStates.Charm:
+                HideAllScreens();
+                SetHUDVisible(true);
+                ShowScreen(_charmScreen);
+                break;
+            
         }
     }
 
@@ -179,14 +202,28 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_winScreen);
     }
 
-    private void HandleRewards(Room room)
+    private void SetHUDVisible(bool visible)
     {
-        if (room.RewardOptions.Count == 0)
+        if (visible)
+        {
+            _hudScreen.Show();
+        }
+        else
+        {
+            _hudScreen.Hide();
+        }
+    }
+    
+    public void HandleRewards(IReadOnlyList<WeightedReward<GunPart>> rewards)
+    {
+        if (rewards.Count == 0)
         {
             return;
         }
-        ChangeState(UIStates.RewardChoice);
-        _rewardScreen.ShowChoices(room, room.RewardOptions);
+        
+        ChangeState(UIStates.Reward);
+        
+        _rewardScreen.ShowChoices(rewards);
     }
 
     /// <summary>Shows a screen and sets the cursor to match it.</summary>
@@ -244,7 +281,7 @@ public class UIManager : MGR<UIManager>
         /// <param name="isPaused"></param>
         private void HandlePause(bool isPaused)
         {
-            if (_currentState == UIStates.RewardChoice) //dont go to pause menu if in certain states already
+            if (_currentState == UIStates.Reward || _currentState == UIStates.Charm || _currentState == UIStates.Shop) //dont go to pause menu if in certain states already
             {
                 return; 
             }
@@ -286,7 +323,9 @@ public class UIManager : MGR<UIManager>
             case GameManager.GameState.Win:
                 break;
             case GameManager.GameState.Store:
+                //store and charm will independently decide this behavior rather than gamemanager automatically doing it 
                 break;
+            
         }
     }
 
@@ -301,5 +340,28 @@ public class UIManager : MGR<UIManager>
         {
             GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
         }
+    }
+    [Button, DisableInEditorMode]
+    public void OpenShop()
+    {
+        OnStoreRequested?.Invoke();
+        ChangeState(UIStates.Shop);
+    }
+    [Button, DisableInEditorMode]
+    public void OpenCharmScreen()
+    {
+        OnStoreRequested?.Invoke();
+        ChangeState(UIStates.Charm);
+    }
+
+    public void CloseScreen()
+    {
+        if (_currentState != UIStates.Shop &&
+            _currentState != UIStates.Charm)
+        {
+            return;
+        }
+
+        GameManager.Instance.CloseState();
     }
 }

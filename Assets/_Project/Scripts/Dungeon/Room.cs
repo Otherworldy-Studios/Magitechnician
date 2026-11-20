@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = System.Random;
 
 namespace _Project.Scripts.Dungeon
 {
@@ -25,12 +26,6 @@ namespace _Project.Scripts.Dungeon
         [SerializeField]
         private RoomType _roomType;
 
-        [Tooltip("The gun parts this room can offer when cleared.")]
-        [SerializeField]
-        private RoomCompletionLootPool _lootPool;
-
-        public RoomCompletionLootPool LootPool { get => _lootPool; }
-
         [Tooltip("Where the player arrives. Its blue (Z) axis is the way the player faces after a teleport.")]
         [SerializeField]
         private GameObject _playerSpawn;
@@ -40,6 +35,12 @@ namespace _Project.Scripts.Dungeon
         private BoxCollider _boundingBox;
 
         public BoxCollider BoundingBox { get => _boundingBox; }
+        
+        [Header("Chest")]
+        [SerializeField] private GameObject _chest;
+
+        [Tooltip("Chance to spawn in consumable chest in room.")]
+        [SerializeField, Range(0f,1f)] private float chestChance = 0.5f;
 
         [Header("Debug (Do not edit)")]
         [SerializeField]
@@ -117,11 +118,6 @@ namespace _Project.Scripts.Dungeon
         /// <summary>True once the room is cleared.</summary>
         public bool Complete { get => _complete; }
 
-        // Reward options generated when the room completes and displayed by RewardScreen
-        private List<WeightedReward<GunPart>> rewardOptions = new();
-        
-        public IReadOnlyList<WeightedReward<GunPart>> RewardOptions => rewardOptions; 
-
         /// <summary>Finds the exit portal and tells it which room it belongs to.</summary>
         private void Awake()
         {
@@ -157,61 +153,47 @@ namespace _Project.Scripts.Dungeon
         /// <param name="force">True rolls rewards for any room type. RoomEncounter passes its Roll Rewards option.</param>
         // INTEGRATION: the Z debug key became this Inspector button.
         [Button, DisableInEditorMode]
-        public List<WeightedReward<GunPart>> OnComplete(bool force = false)
+        public void OnComplete(bool force = false)
         {
+            
             if (_complete)
             {
-                return rewardOptions; //changed the way it prevents the double trigger so that the UI can listen to the roomcleared event better
+                return; //changed the way it prevents the double trigger so that the UI can listen to the roomcleared event better
             }
             
             _complete = true;
             
             if (_portal != null && _portal.Connected != null)
                 _portal.Active = true;
-
-            if ((_roomType == RoomType.Combat || force) && _lootPool != null) // INTEGRATION: added the loot pool check.
-            {
-                List<WeightedReward<GunPart>> rewards = _lootPool.PickThree();
-
-                for (int i = 0; i < rewards.Count; i++)
-                {
-                    if (rewards[i].Item == null)
-                        continue;
-
-                    Debug.Log($"{_id} Completion Reward {i + 1}:" +
-                              $" {rewards[i].Item.PartName} with rarity {rewards[i].Weight}");
-                }
-                
-                rewardOptions = rewards;
-            }
             
             OnRoomCleared?.Invoke(this);
-            
-            return rewardOptions; //never returns a null but now it'll return an empty list which is checkable and functionally the same
         }
-
-        /// <summary>
-        /// Debug: picks one of the parts the last OnComplete rolled, and returns the other two to the loot pool.
-        /// Doesn't equip anything. Temporary until the reward screen exists (task 7).
-        /// </summary>
-        /// <param name="reward">0, 1, or 2.</param>
-        // INTEGRATION: the 1, 2, and 3 debug keys became this Inspector button.
-        [Button, DisableInEditorMode]
-        public void PickReward(int reward) //made public
+        
+        
+        public void RollChest()
         {
-            if (rewardOptions == null || reward >= rewardOptions.Count)
-                return;
-
-            for (int i = 0; i < rewardOptions.Count; i++)
+            if (UnityEngine.Random.value < chestChance)
             {
-                if (i == reward)
-                {
-                    Debug.Log($"{_id} Picked Reward {i + 1}");
-                    continue;
-                }
-
-                _lootPool.Obtained.Remove(rewardOptions[i]);
+                SpawnChest();
+            }
+            else
+            {
+                Debug.Log($"player failed chest roll");
             }
         }
+        
+        /// <summary>Button will simply spawn in the chest guaranteed.</summary>
+        [Button, DisableInEditorMode]
+        public void SpawnChest()
+        {
+            if (_chest == null)
+            {
+                Debug.LogWarning($"{name} has no chest assigned.");
+                return;
+            }
+
+            _chest.SetActive(true);
+        }
+        
     }
 }

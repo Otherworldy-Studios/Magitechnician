@@ -2,4 +2,5 @@
 // The empty Start and Update from Unity's script template were removed, so Unity doesn't call them every frame.
 public class CharmScreen : UIScreen
 {
+    
 }
