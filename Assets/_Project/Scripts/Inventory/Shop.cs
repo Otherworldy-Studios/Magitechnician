@@ -28,6 +28,7 @@ public class Shop : MonoBehaviour
         if (inventory == null) return false;
         if (inventory.Crystals < charm.Price) return false;
 
+        if (!inventory.TrySpendCrystals(charm.Price)) return false;
         _stock.Remove(charm);
         inventory.TryAddItem(charm);
         return true;

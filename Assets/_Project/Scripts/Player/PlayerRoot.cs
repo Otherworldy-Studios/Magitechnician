@@ -18,6 +18,7 @@ public class PlayerRoot : MonoBehaviour
     [SerializeField] private Stats _playerStats; // The player's Stats, not the gun's. See FindPlayerStats.
     [SerializeField] private PlayerMovement _playerMovement;
     [SerializeField] private Gun _gun;
+    [SerializeField] private PlayerAbilities _abilities;
 
     /// <summary>The player's Health. GameManager listens to its OnDied to end the run.</summary>
     public Health PlayerHealth => _health;
@@ -33,6 +34,8 @@ public class PlayerRoot : MonoBehaviour
     public PlayerMovement PlayerMovement => _playerMovement;
     /// <summary>The player's gun. Its own Stats hold damage, fire rate, range, spread, and bullet speed.</summary>
     public Gun Gun => _gun;
+    /// <summary>The player's Abilities.</summary>
+    public PlayerAbilities PlayerAbilities => _abilities;
 
     /// <summary>Finds any references left empty, then hands the player's Stats to each component.</summary>
     private void Awake()
@@ -68,6 +71,11 @@ public class PlayerRoot : MonoBehaviour
         if (!_playerMovement)
         {
             _playerMovement = GetComponentInChildren<PlayerMovement>();
+        }
+
+        if (!_abilities)
+        {
+            _abilities = GetComponentInChildren<PlayerAbilities>();
         }
         AssignStats();
     }
@@ -116,6 +124,7 @@ public class PlayerRoot : MonoBehaviour
         {
             _inventory.SetStats(_playerStats);
             if (_gun) _inventory.SetGunStats(_gun.Stats);
+            if (_abilities) _inventory.SetAbilities(_abilities);
         }
         else
         {
@@ -134,6 +143,11 @@ public class PlayerRoot : MonoBehaviour
         if (!_gun)
         {
             Debug.LogWarning($"{nameof(PlayerRoot)} on {name} is missing a {nameof(Gun)} reference.", this);
+        }
+
+        if (!_abilities)
+        {
+            Debug.LogWarning($"{nameof(PlayerRoot)} on {name} is missing a {nameof(PlayerAbilities)} reference.", this);
         }
     }
 
@@ -199,13 +213,13 @@ public class PlayerRoot : MonoBehaviour
     /// </summary>
     public void AddAbility(IInventoryItem item)
     {
-        // _abilities?.Add(item);
+        _abilities?.Add(item);
     }
 
     /// <summary>Stops the item's ability. Empty until PlayerAbilities exists.</summary>
     public void RemoveAbility(IInventoryItem item)
     {
-        // _abilities?.Remove(item);
+        _abilities?.Remove(item);
     }
 
     /// <summary>The modifier list of a gun part, charm, or consumable. Null for any other item.</summary>

@@ -83,7 +83,6 @@ public class ItemDatabase : ScriptableObject
         return AllItems.Where(item => item != null && item.Rarity == rarity);
     }
 
-#if UNITY_EDITOR
     // Editor-only buttons. They use AssetDatabase, which doesn't exist in a build.
 
     /// <summary>Fills every list with every asset of its type in the project, sorted by file name, and saves.</summary>
@@ -132,5 +131,20 @@ public class ItemDatabase : ScriptableObject
             .OrderBy(asset => asset.name)
             .ToList();
     }
-#endif
+
+    private static ItemDatabase _instance; // Cached after the first load.
+
+    /// <summary>The settings asset. Null if Item Database isn't in a Resources folder.</summary>
+    public static ItemDatabase Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = Resources.Load<ItemDatabase>("ItemDatabase");
+            }
+            return _instance;
+        }
+    }
+
 }

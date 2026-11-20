@@ -643,9 +643,11 @@ MonoBehaviour:
   _charmSlots: 5
   _maxConsumables: 3
   _playerStats: {fileID: 2538457442136657555}
+  _playerAbilities: {fileID: 0}
   _gunStats: {fileID: 0}
   _health: {fileID: 2470234422445426739}
   _onlyDuringRun: 1
+  _playerRoot: {fileID: 0}
 --- !u!114 &3692322850074084798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -682,7 +684,6 @@ MonoBehaviour:
   useContestedHealth: 1
   ghostHealthPercent: 0.4
   ghostDrainTime: 5
-  ghostRecoveryPercent: 0.5
 --- !u!1 &3005668390539063271
 GameObject:
   m_ObjectHideFlags: 0
@@ -1676,8 +1677,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000035263913, y: 0.75243455, z: -0.000000040284068, w: 0.6586671}
-  m_LocalPosition: {x: -0.54280263, y: -13.80828, z: -11.505083}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.633, y: 0.6259999, z: -0.738}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2105,7 +2106,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4285462192350137379}
   - component: {fileID: 4765447663455402449}
+  - component: {fileID: 6185835534511645459}
   - component: {fileID: 8713052468444065285}
+  - component: {fileID: -5756397201750618001}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -2151,6 +2154,21 @@ MonoBehaviour:
   _playerStats: {fileID: 2538457442136657555}
   _playerMovement: {fileID: 2796982883176742587}
   _gun: {fileID: 521992841820949502}
+  _abilities: {fileID: 0}
+--- !u!114 &6185835534511645459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7357744756683246077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde68494c01749d47af1c93a36ab3cf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAbilities
+  _testItem: {fileID: 11400000, guid: 9a731fab99a23aa42b73c8e17caa92ac, type: 2}
+  _testDuration: 5
 --- !u!114 &8713052468444065285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2166,6 +2184,26 @@ MonoBehaviour:
   _controller: {fileID: 5571396932141888879}
   _cameraTarget: {fileID: 6469339263041004998}
   _pitchAfterTeleport: 0
+--- !u!114 &-5756397201750618001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7357744756683246077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e125d8e0e65694591a73dc004a3748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAudio
+  lowHealthThreshold: 0.25
+  walkVolume: 0.6
+  runVolume: 1
+  minTimeBetweenSteps: 0.15
+  minAirTime: 0.3
+  loudAirTime: 1
+  softLandVolume: 0.4
+  minTimeBetweenHeals: 0.5
 --- !u!1 &7765213929413278480
 GameObject:
   m_ObjectHideFlags: 0
@@ -3097,8 +3135,36 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4398040221165394, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6827939487981893994}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1574488988487076, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6444635170401976430}
   m_SourcePrefab: {fileID: 100100000, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}
+--- !u!1 &8138646757664477121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1574488988487076, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}
+  m_PrefabInstance: {fileID: 8140221031607779941}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6444635170401976430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138646757664477121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e125d8e0e65694591a73dc004a3748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAudio
+  lowHealthThreshold: 0.25
+  walkVolume: 0.6
+  runVolume: 1
+  minTimeBetweenSteps: 0.15
+  minAirTime: 0.3
+  loudAirTime: 1
+  softLandVolume: 0.4
+  minTimeBetweenHeals: 0.5
 --- !u!4 &8140326801771750711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4398040221165394, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}

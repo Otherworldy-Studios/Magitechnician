@@ -13,6 +13,9 @@ public class Projectile : MonoBehaviour
 
     private Vector3 _direction; // Set from the spawn rotation in Start. The Gun's spread is already in that rotation.
     private float _travelTime;  // Seconds since the bullet started, for the range check.
+    private Vector3 _velocity;
+    private bool _useGravity;
+    private float _distanceTraveled;
 
     // INTEGRATION: new. Initialize fills these from the Gun's stats at the moment of firing, replacing
     // ProjectileSettings' Speed, MaxDistance, and Damage, which were removed.
@@ -32,12 +35,13 @@ public class Projectile : MonoBehaviour
     /// <param name="range">Meters before it's destroyed.</param>
     /// <param name="onHit">Called after the bullet damages something. Optional.</param>
     // INTEGRATION: replaces the commented-out Initialize(GameObject attacker). Gun.TryFire calls it.
-    public void Initialize(DamageInfo damageInfo, float speed, float range, Action<DamageInfo> onHit = null)
+    public void Initialize(DamageInfo damageInfo, float speed, float range, Action<DamageInfo> onHit = null, bool useGravity = false)
     {
         _damageInfo = damageInfo;
         _speed = speed;
         _range = range;
         _onHit = onHit;
+        _useGravity = useGravity;
         _initialized = true;
     }
 
@@ -53,6 +57,10 @@ public class Projectile : MonoBehaviour
         }
 
         _direction = transform.forward.normalized;
+
+        // Intial velocity of the projectile.
+        _velocity = _direction * _speed;
+
         Destroy(gameObject, 5f); // Backup in case the range check never triggers.
     }
 
@@ -70,8 +78,23 @@ public class Projectile : MonoBehaviour
         }
 
         Vector3 oldPos = transform.position;
-        float step = _speed * Time.deltaTime;
-        Vector3 newPos = oldPos + _direction * step;
+        Vector3 displacement;
+
+        if (_useGravity)
+        {
+            displacement = _velocity * Time.deltaTime +
+                        0.5f * Physics.gravity * Time.deltaTime * Time.deltaTime;
+
+            _velocity += Physics.gravity * Time.deltaTime;
+        }
+        else
+        {
+            displacement = _direction * _speed * Time.deltaTime;
+        }
+
+        float step = displacement.magnitude;
+        Vector3 moveDirection = step > 0f ? displacement / step : _direction;
+        Vector3 newPos = oldPos + displacement;
 
         // Start the cast one radius behind, so the bullet still catches something it's already touching.
         Vector3 castOrigin = oldPos - _direction * _settings.Radius;

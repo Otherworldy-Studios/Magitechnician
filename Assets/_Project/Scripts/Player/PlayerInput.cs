@@ -31,6 +31,8 @@ public class PlayerInput : MonoBehaviour
     public event Action OnDashPressed;
     /// <summary>Fires when Fire is pressed.</summary>
     public event Action OnFirePressed;
+    /// <summary>Fires when Secondary Fire is pressed.</summary>
+    public event Action OnSecondaryFirePressed;
 
     /// <summary>Starts forwarding InputManager's events.</summary>
     private void OnEnable()
@@ -41,6 +43,7 @@ public class PlayerInput : MonoBehaviour
         input.OnJumpReleased += HandleJumpReleased;
         input.OnDashPressed += HandleDashPressed;
         input.OnFirePressed += HandleFirePressed;
+        input.OnSecondaryFirePressed += HandleSecondaryFirePressed;
     }
 
     /// <summary>Stops forwarding. Skipped if InputManager was already destroyed, such as when the game closes.</summary>
@@ -56,6 +59,7 @@ public class PlayerInput : MonoBehaviour
         input.OnJumpReleased -= HandleJumpReleased;
         input.OnDashPressed -= HandleDashPressed;
         input.OnFirePressed -= HandleFirePressed;
+        input.OnSecondaryFirePressed -= HandleSecondaryFirePressed;
     }
 
     /// <summary>Passes InputManager.OnJumpPressed on to OnJumpPressed.</summary>
@@ -69,4 +73,7 @@ public class PlayerInput : MonoBehaviour
 
     /// <summary>Passes InputManager.OnFirePressed on to OnFirePressed.</summary>
     private void HandleFirePressed() => OnFirePressed?.Invoke();
+    
+    /// <summary>Passes InputManager.OnSecondaryFirePressed on to OnSecondaryFirePressed.</summary>
+    private void HandleSecondaryFirePressed() => OnSecondaryFirePressed?.Invoke();
 }

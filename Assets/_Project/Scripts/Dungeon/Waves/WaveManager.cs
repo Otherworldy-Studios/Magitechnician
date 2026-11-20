@@ -189,7 +189,7 @@ public class WaveManager : MGR<WaveManager>
                 
                 _currentRoom.OnComplete();
                 _waveRunning = false;
-                OnRoomCleared?.Invoke(_currentRoom);
+                //doubled OnRoomCleared event invoke
             }
         }
     }

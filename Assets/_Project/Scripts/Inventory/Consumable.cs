@@ -34,6 +34,11 @@ public class Consumable : ScriptableObject, IInventoryItem
     public float Duration => _duration;
     /// <summary>Health restored when used.</summary>
     public int InstantHeal => _instantHeal;
+    /// <summary>
+    /// Optional ability prefab granted by this item.
+    /// </summary>
+    [SerializeField] private GameObject _abilityPrefab;
+    public GameObject AbilityPrefab => _abilityPrefab;
 
     /// <summary>
     /// Old way to use a consumable: adds the modifiers to the first Stats found and heals. Unused, because

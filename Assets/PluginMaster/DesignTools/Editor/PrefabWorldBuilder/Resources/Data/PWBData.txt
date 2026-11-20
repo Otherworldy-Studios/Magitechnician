@@ -3836,15 +3836,15 @@
         "_settings": {
             "_snappingEnabled": false,
             "_snappingOn": {
-                "x": true,
-                "y": true,
+                "x": false,
+                "y": false,
                 "z": false
             },
             "_visibleGrid": false,
             "_gridOn": {
                 "x": false,
-                "y": false,
-                "z": true
+                "y": true,
+                "z": false
             },
             "_lockedGrid": false,
             "_boundsSnapping": false,

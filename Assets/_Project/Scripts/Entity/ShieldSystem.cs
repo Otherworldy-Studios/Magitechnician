@@ -1,4 +1,5 @@
 using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
@@ -45,11 +46,15 @@ public class ShieldSystem : MonoBehaviour
     public event Action OnShieldRestored;
     /// <summary>Fires on every frame the shield regenerates.</summary>
     public event Action OnShieldHealed;
+    /// <summary>Fires once when the shield starts regenerating after the delay.</summary>
+    // AUDIO: new. PlayerAudio plays the recharge sound from it.
+    public event Action OnShieldRegenStarted;
 
     [Tooltip("The player's Stats. PlayerRoot fills this in Awake if it's empty.")]
     [SerializeField] private Stats _playerStats;
 
     private float _regenTimer;     // Seconds left before regeneration starts.
+    private bool _isRegenerating;  // AUDIO: new. True while regenerating, so OnShieldRegenStarted fires once per recharge.
     private Stats _subscribedTo;   // INTEGRATION: new. The Stats whose OnStatChanged this listens to, so it can unsubscribe.
     private bool _started;         // INTEGRATION: new. True after Start, so the subscription waits until the shield is filled.
     private float _lastMaxShield;  // INTEGRATION: new. MaxShield before the latest change, to work out how much it grew.
@@ -126,6 +131,13 @@ public class ShieldSystem : MonoBehaviour
         }
         else if (CurrentShield < maxShield)
         {
+            // AUDIO: new. Fires once when regeneration begins.
+            if (!_isRegenerating)
+            {
+                _isRegenerating = true;
+                OnShieldRegenStarted?.Invoke();
+            }
+
             float previousShield = CurrentShield;
             CurrentShield += RegenRate * Time.deltaTime;
             CurrentShield = Mathf.Clamp(CurrentShield, 0, maxShield);
@@ -160,6 +172,7 @@ public class ShieldSystem : MonoBehaviour
         if (CurrentShield <= 0 || IsBroken)
         {
             _regenTimer = BrokenRegenDelay;
+            _isRegenerating = false; // AUDIO: new. The next recharge plays its sound again.
             return damageInfo.DamageAmount;
         }
 
@@ -171,6 +184,7 @@ public class ShieldSystem : MonoBehaviour
         {
             CurrentShield -= modifiedDamage;
             _regenTimer = RegenDelay;
+            _isRegenerating = false; // AUDIO: new.
 
             OnShieldDamaged?.Invoke(CurrentShield);
             return 0;
@@ -184,6 +198,7 @@ public class ShieldSystem : MonoBehaviour
             CurrentShield = 0;
             IsBroken = true;
             _regenTimer = BrokenRegenDelay;
+            _isRegenerating = false; // AUDIO: new.
 
             OnShieldDamaged?.Invoke(CurrentShield);
             OnShieldBroken?.Invoke();
@@ -200,5 +215,19 @@ public class ShieldSystem : MonoBehaviour
             return fallback;
 
         return _playerStats.GetValue(stat);
+    }
+    
+    [Button]
+    public void Restore(float amount)
+    {
+        if (Mathf.Approximately(CurrentShield, MaxShield))
+            return;
+        
+        float temp = CurrentShield + amount;
+        CurrentShield = Mathf.Min(temp, MaxShield);
+        OnShieldHealed?.Invoke();
+        
+        if (Mathf.Approximately(CurrentShield, MaxShield))
+            OnShieldRestored?.Invoke(); 
     }
 }

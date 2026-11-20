@@ -15,10 +15,8 @@ public class RewardScreen : UIScreen
     [SerializeField] private ItemSlotUI itemSlot1;
     [SerializeField] private ItemSlotUI itemSlot2;
     [SerializeField] private ItemSlotUI itemSlot3;
-    protected RoomCompletionLootPool _lootPool;
-    protected Gun _playerGun;
-    protected Room _room;
     private int _selectedRewardIndex = -1;
+    private IReadOnlyList<WeightedReward<GunPart>> _rewards;
     
 
     //item currently selected shows the text
@@ -39,7 +37,7 @@ public class RewardScreen : UIScreen
 
     private void HandleSelectionChanged(ItemSlotUI selectedSlot)
     {
-        if (_room == null || selectedSlot == null)
+        if (_rewards == null || selectedSlot == null)
         {
             return;
         }
@@ -81,16 +79,16 @@ public class RewardScreen : UIScreen
         itemSlot1.Clear();
         itemSlot2.Clear();
         itemSlot3.Clear();
+        _rewards = null;
         //no clear method for the grid?
         UIManager.Instance.ResumeButtonPressed(); 
     }
 
      /// <summary>Sets and displays all items into the item slots.</summary>
-    public void ShowChoices(Room room, IReadOnlyList<WeightedReward<GunPart>> rewards) //comedically long type
+    public void ShowChoices(IReadOnlyList<WeightedReward<GunPart>> rewards) //comedically long type
     {
         _selectedRewardIndex = -1;
-        _room = room;
-        _lootPool = room.LootPool;
+        _rewards = rewards;
         
         //extract the items from the rewards
         ItemSlotUI[] itemSlots = { itemSlot1, itemSlot2, itemSlot3 };
@@ -115,6 +113,6 @@ public class RewardScreen : UIScreen
     {
        _selectedRewardIndex = index;
        
-       Debug.Log($"Selected: {_room.RewardOptions[index].Item.PartName}");
+       Debug.Log($"Selected: {_rewards[index].Item.PartName}");
     }
 }
