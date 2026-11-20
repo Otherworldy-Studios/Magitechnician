@@ -2855,6 +2855,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8175562478228806300, guid: f7529fa31f785364580e94043da7fd01, type: 3}
+      propertyPath: ghostRecoveryPercent
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15270,6 +15274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1914e8d3f34d62a002b439bf3c334b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Dungeon.Spawnpoint
+  _canSpawnEnemies: 0
 --- !u!33 &3391256521253867378
 MeshFilter:
   m_ObjectHideFlags: 0

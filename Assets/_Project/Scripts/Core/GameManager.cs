@@ -49,7 +49,7 @@ public class GameManager : MGR<GameManager>
     // because the Hub and the Dungeon each create their own player.
     /// <summary>Fires when a scene's player registers, with its PlayerRoot.</summary>
     public event Action<PlayerRoot> OnPlayerRegistered;
-    
+    public event Action<Room> OnRoomEntered;
 
     /// <summary>Time.time when the current run started.</summary>
     public float StartTime { get; private set; }
@@ -88,7 +88,7 @@ public class GameManager : MGR<GameManager>
     private GameState _stateAfterLoad; // INTEGRATION: new. The state LoadScene was asked to enter once the scene finishes loading.
     private PlayerSpawner _playerSpawner; // INTEGRATION: new. The Level player's spawner. StartRun listens to its OnPlayerSpawned.
     private LevelGenerator _generator; // The Level scene's generator. Set in InitReferences or RegisterPlayer.
-    
+
     /// <summary>Subscribes to scene loads and to the UI's request events.</summary>
     protected override void Awake()
     {
@@ -113,7 +113,7 @@ public class GameManager : MGR<GameManager>
         UIManager.OnStoreRequested += ViewStore;
         Room.OnRoomCleared += RoomCleared;
         PH_Boss.OnBossDefeated += BossDefeated;
-        
+
     }
 
     /// <summary>Enters the Menu state when the game starts in the menu, and listens to the pause key.</summary>
@@ -234,6 +234,9 @@ public class GameManager : MGR<GameManager>
     public void ChangeRoom(Room newRoom)
     {
         CurrentRoom = newRoom;
+
+        OnRoomEntered?.Invoke(newRoom);
+
     }
 
     /// <summary>
@@ -352,7 +355,7 @@ public class GameManager : MGR<GameManager>
         
         SetPause(!_isPaused); //pauses otherwise
     }
-    
+
     /// <summary>Ends the run as a loss when the player's Health fires OnDied.</summary>
     private void PlayerDied(GameObject player)
     {
@@ -383,7 +386,7 @@ public class GameManager : MGR<GameManager>
         Room startRoom = _generator.StartRoom;
         // INTEGRATION: was "CurrentRoom = startRoom". EnterRoom calls ChangeRoom and fires the room's OnRoomEntered,
         // which starts a RoomEncounter if the start room has enemies.
-        startRoom.EnterRoom(); 
+        startRoom.EnterRoom();
 
         // UIManager.Instance.ShowLoading(false);   // Turn on when the loading screen exists.
         ChangeState(GameState.Playing);
@@ -533,11 +536,11 @@ public class GameManager : MGR<GameManager>
         {
             return; // No player registered yet, so there's nothing to freeze.
         }
-        
+
         bool pauseChanged = _isPaused != pauseIntended; //i love bools
-        
+
         _isPaused = pauseIntended;
-        
+
         if (!pauseIntended)
         {
             InputManager.Instance.SetMode(InputMode.Gameplay);
@@ -569,7 +572,7 @@ public class GameManager : MGR<GameManager>
     }
     
     /// <summary>Returns to the Hub. Raised by the death, win, and pause screens' Hub buttons through UIManager.</summary>
-    private void ResetGame() 
+    private void ResetGame()
     {
         LoadScene(Scenes.Hub, GameState.Hub); // INTEGRATION: loads the Hub scene instead of only changing the state.
     }

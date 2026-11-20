@@ -23,6 +23,8 @@ public class Health : MonoBehaviour
     public event Action<int, GameObject> OnHealed;
     /// <summary>Fires once when health reaches 0, with this object. GameManager ends the run on the player's; EnemyBase dies on an enemy's.</summary>
     public event Action<GameObject> OnDied;
+    //NEW: Sends the DamageInfo whenever health takes damage.
+    public event Action<DamageInfo> OnDamageInstance;
 
     // Healing over time. RegenHealthOverTime sets these, and Update spreads the total across the duration.
     private float _healAccumulator;   // Fractional healing not applied yet, because health is whole numbers.
@@ -116,6 +118,9 @@ public class Health : MonoBehaviour
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
         OnDamaged?.Invoke(CurrentHealth, gameObject);
+
+        //NEW: Notify listeners and provide the DamageInfo.
+        OnDamageInstance?.Invoke(damageInfo);
 
         if (CurrentHealth <= 0)
         {
@@ -246,3 +251,4 @@ public class Health : MonoBehaviour
     }
     #endregion
 }
+
