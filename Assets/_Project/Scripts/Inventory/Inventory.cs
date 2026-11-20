@@ -215,10 +215,14 @@ public class Inventory : SerializedMonoBehaviour
     }
 
     /// <summary>Removes crystals and fires OnCrystalsChanged. Known bug, fixed in task 11: it can go below 0.</summary>
-    public void SpendCrystals(int amount)
+    public bool TrySpendCrystals(int amount)
     {
+        if (amount > _crystals)
+            return false;
+        
         _crystals -= amount;
         OnCrystalsChanged?.Invoke(_crystals);
+        return true;
     }
 
     /// <summary>

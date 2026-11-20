@@ -1,13 +1,43 @@
+using Sirenix.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-/// <summary>Shown when the run ends in a loss. Shows the run time and has a button back to the Hub.</summary>
+/// <summary>Shown when the run ends in a loss. Shows the run time and several other
+/// stats during gameplay which is used in a calculation which determines player ranking.
+/// Also has a button back to the Hub.</summary>
 public class DeathScreen : UIScreen
 {
+    // Button to return back to the Hub area and do another rerun
+    [Header("Buttons")]
     [SerializeField, FormerlySerializedAs("hubButton")] private Button _hubButton;
+    [Space]
+    
+    // Text fields for showing all the key stats in a run
+    [Header("Text Objects")]
     [SerializeField, FormerlySerializedAs("runTimeText")] private TMP_Text _runTimeText;
+    [SerializeField, FormerlySerializedAs("crystalsCollectedText")] private TMP_Text _crystalsCollectedText;
+    [SerializeField, FormerlySerializedAs("damageTakenText")] private TMP_Text _damageTakenText;
+    [SerializeField, FormerlySerializedAs("damageDealtText")] private TMP_Text _damageDealtText;
+    [SerializeField,  FormerlySerializedAs("enemiesKilledText")] private TMP_Text _enemiesKilledText;
+    [SerializeField,  FormerlySerializedAs("totalScoreText")] private TMP_Text _totalScoreText;
+    [Space]
+    
+    //Multipliers for each key stat
+    private float _runTimeMultiplier = 1f;
+    private float _crystalsCollectedMultiplier = 1f;
+    private float _damageTakenMultiplier = 10f;
+    private float _damageDealtMultiplier = 10f;
+    private float _enemiesKilledMultiplier = 50f;
+    
+    // Image used to display the final ranking, based on run stats calculation
+    [Header("Image Objects")]
+    [SerializeField, FormerlySerializedAs("finalRankImage")] private Image _finalRankImage;
+    [Tooltip("Rank sprites should be added in ascending order to the array (Lowest ranks go first)")]
+    [SerializeField, FormerlySerializedAs("listOfRanks")] private Sprite[] _rankSprites = new Sprite[5];
+    [Space]
+    
     [SerializeField, FormerlySerializedAs("deathImage")] private Image _deathImage; // The background. Not read by this script.
 
     /// <summary>Connects the Hub button.</summary>
@@ -16,10 +46,17 @@ public class DeathScreen : UIScreen
         _hubButton.onClick.AddListener(OnHub);
     }
 
-    /// <summary>Shows the run time when the screen opens.</summary>
+    /// <summary>Shows the run stats and ranking when the screen opens.</summary>
     protected override void OnShown()
     {
         _runTimeText.text = $"Run Time: {CollectEndTime()}";
+        _crystalsCollectedText.text = $"Crystals Collected: {TotalCrystalsCollected()}";
+        _damageTakenText.text = $"Damage Taken: {TotalDamageTaken()}";
+        _damageDealtText.text = $"Damage Dealt: {TotalDamageDealt()}";
+        _enemiesKilledText.text = $"Enemies Killed: {TotalEnemiesKilled()}";
+        _totalScoreText.text = $"Total Score: {TotalScoreCalculation()}";
+
+        _finalRankImage.sprite = SetRankingImage();
     }
 
     /// <summary>Hub button.</summary>
@@ -30,8 +67,75 @@ public class DeathScreen : UIScreen
     }
 
     /// <summary>The run's length in seconds, from GameManager.</summary>
-    private float CollectEndTime()
+    private int CollectEndTime()
     {
-        return GameManager.Instance.EndTime;
+        return (int)GameManager.Instance.EndTime;
+    }
+
+    /// <summary>The number of crystals the player collected, from GameManager.</summary>
+    private int TotalCrystalsCollected()
+    {
+        return GameManager.Instance.Progress.Crystals;
+    }
+
+    /// <summary>The total amount of damage taken by the player, from GameManager.</summary>
+    private int TotalDamageTaken()
+    {
+        // Blocked, need to wait on Ali's additions to implement
+        return 1234; // Placeholder
+    }
+    
+    /// <summary>The total amount of damage dealt by the player to enemies, from GameManager.</summary>
+    private int TotalDamageDealt()
+    {
+        // Blocked, need to wait on Ali's additions to implement
+        return 4321; // Placeholder
+    }
+
+    /// <summary>The total number of enemies killed by the player, from GameManager.</summary>
+    private int TotalEnemiesKilled()
+    {
+        // Blocked, need to wait on Ali's additions to implement
+        return 12; // Placeholder
+    }
+
+    /// <summary>The sum of each previous run stat method modified by a multiplier.</summary>
+    private int TotalScoreCalculation()
+    {
+        return
+            (int)(
+                CollectEndTime() * _runTimeMultiplier +
+                TotalCrystalsCollected() * _crystalsCollectedMultiplier +
+                TotalDamageTaken() * _damageTakenMultiplier +
+                TotalDamageDealt() * _damageDealtMultiplier +
+                TotalEnemiesKilled() * _enemiesKilledMultiplier
+            )
+        ;
+    }
+    
+    /// <summary>The rank Sprite (chosen from _rankSprites[]) according to the range the TotalScoreCalculation() falls under.</summary>
+    private Sprite SetRankingImage()
+    {
+        // Checks if _rankSprites[] is empty, sends warning and returns NULL
+        if (_rankSprites.IsNullOrEmpty())
+        {
+            Debug.LogWarning("The Rank Sprites array is empty, check the WinScreen in UIManager");
+            return null;
+        }
+        
+        // Variables hold final score and placeholder for a score threshold
+        int finalScore = TotalScoreCalculation();
+        int PH_scoreThreshold = 1000;
+        
+        // Loops through _rankSprites[] and returns Sprite in array if threshold is met, threshold gets incremented otherwise.
+        for (int rank = 0; rank < _rankSprites.Length - 1; rank++)
+        {
+            if (finalScore < PH_scoreThreshold)
+                return _rankSprites[rank];
+            
+            PH_scoreThreshold *= 10;
+        }
+        
+        return _rankSprites[_rankSprites.Length - 1];
     }
 }
