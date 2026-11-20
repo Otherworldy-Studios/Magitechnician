@@ -1,3 +1,4 @@
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,15 +11,18 @@ public class HealthBar : MonoBehaviour
     [Header("References")]
     [SerializeField] private Health _health;
     [SerializeField] private Image _fill;
-    [SerializeField] private Image _ghostFill; // Meant for a delayed second fill. Not used yet.
+    [SerializeField] private Image _ghostFill;
     [SerializeField] private TMP_Text _healthCounter;
-    
+
     [Header("Settings")]
     [SerializeField] private float _smoothDuration = 0.08f; // Seconds the fill takes to catch up.
 
     private float _visualHealth = 1f; // The fill shown now, from 0 to 1.
     private float _targetHealth = 1f; // The fill to ease toward: current health over max health.
     private float _velocity;          // Used by SmoothDamp between frames.
+
+    // Reference to the player's Ghost Health.
+    private GhostHealth _ghostHealth;
 
     /// <summary>Starts listening for player registration.</summary>
     // INTEGRATION: was a check that _health was assigned.
@@ -38,6 +42,8 @@ public class HealthBar : MonoBehaviour
         {
             HandlePlayerRegistered(GameManager.Instance.Player.GetComponent<PlayerRoot>());
         }
+
+        _healthCounter.text = _health.CurrentHealth.ToString("F0");
     }
 
     /// <summary>Stops listening to GameManager and the player.</summary>
@@ -47,6 +53,7 @@ public class HealthBar : MonoBehaviour
         {
             GameManager.Instance.OnPlayerRegistered -= HandlePlayerRegistered;
         }
+
         Unbind();
     }
 
@@ -66,11 +73,29 @@ public class HealthBar : MonoBehaviour
         _health.OnDamaged += HandleHealthChange;
         _health.OnHealed += HandleHealthChange;
 
+        // Find GhostHealth on the registered player.
+        _ghostHealth =
+            player.GetComponentInChildren<GhostHealth>(true);
+
+        // Listen for recoverable Ghost Health changes.
+        if (_ghostHealth != null)
+        {
+            _ghostHealth.OnGhostHealthChanged +=
+                HandleGhostHealthChange;
+        }
+
         // Snap to the new player's health with no smoothing.
-        _targetHealth = (float)_health.CurrentHealth / _health.MaxHealth;
+        _targetHealth =
+            (float)_health.CurrentHealth / _health.MaxHealth;
+
         _visualHealth = _targetHealth;
         _fill.fillAmount = _visualHealth;
-        _healthCounter.text = _health.CurrentHealth.ToString("F0");
+
+        // Update white when the player connects.
+        UpdateGhostFill();
+
+        _healthCounter.text =
+            _health.CurrentHealth.ToString("F0");
     }
 
     /// <summary>Disconnects from the current player, if any.</summary>
@@ -81,6 +106,22 @@ public class HealthBar : MonoBehaviour
             _health.OnDamaged -= HandleHealthChange;
             _health.OnHealed -= HandleHealthChange;
         }
+
+        if (_ghostHealth != null)
+        {
+            _ghostHealth.OnGhostHealthChanged -=
+                HandleGhostHealthChange;
+        }
+
+        _ghostHealth = null;
+
+        // FIX 3: Hide white when disconnecting.
+        if (_ghostFill != null)
+        {
+            _ghostFill.fillAmount = 0f;
+            _ghostFill.enabled = false;
+        }
+
         _health = null;
     }
 
@@ -98,17 +139,58 @@ public class HealthBar : MonoBehaviour
 
             _fill.fillAmount = _visualHealth;
         }
+
+        // FIX 4: Make sure the white image always
+        // matches the actual Ghost Health amount.
+        UpdateGhostFill();
     }
 
     /// <summary>Sets the new target and number. Runs on Health.OnDamaged and OnHealed.</summary>
     private void HandleHealthChange(int amount, GameObject sender)
     {
-        _targetHealth = (float)_health.CurrentHealth / _health.MaxHealth;
-        _healthCounter.text = _health.CurrentHealth.ToString("F0");
+        _targetHealth =
+            (float)_health.CurrentHealth / _health.MaxHealth;
+
+        _healthCounter.text =
+            _health.CurrentHealth.ToString("F0");
     }
 
-    /// <summary>Empty. For the ghost fill later.</summary>
+    /// <summary>Refreshes white whenever Ghost Health changes.</summary>
     private void HandleGhostHealthChange(float ghostHealth)
     {
+        UpdateGhostFill();
+    }
+
+    // FIX 5:
+    // Display the recoverable Ghost Health only.
+    // Turn the white Image OFF when Ghost Health is zero.
+    private void UpdateGhostFill()
+    {
+        if (_ghostFill == null)
+            return;
+
+        if (_health == null ||
+            _ghostHealth == null ||
+            _health.MaxHealth <= 0 ||
+            _ghostHealth.GhostHealthAmount <= 0f)
+        {
+            // Completely hide the white Image.
+            _ghostFill.fillAmount = 0f;
+            _ghostFill.enabled = false;
+            return;
+        }
+
+        // Show the white Image only when
+        // actual recoverable Ghost Health exists.
+        _ghostFill.enabled = true;
+
+        float ghostHealthPercent =
+            _ghostHealth.GhostHealthAmount /
+            _health.MaxHealth;
+
+        // White Image sits behind the red Image.
+        _ghostFill.fillAmount = Mathf.Clamp01(
+            _visualHealth + ghostHealthPercent
+        );
     }
 }

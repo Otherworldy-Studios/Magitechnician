@@ -33,4 +33,9 @@ public abstract class GunPart : ScriptableObject, IInventoryItem
     /// <summary>The part's stat modifiers.</summary>
     public List<StatModifier> Modifiers => _modifiers;
     public ItemRarity Rarity => _rarity; // INTEGRATION: new. ItemSlotUI colors its border by rarity.
+    /// <summary>
+    /// Optional ability prefab granted by this item.
+    /// </summary>
+    [SerializeField] private GameObject _abilityPrefab;
+    public GameObject AbilityPrefab => _abilityPrefab;
 }

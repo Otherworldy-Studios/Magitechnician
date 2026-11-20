@@ -54,7 +54,7 @@ public class PartSwapTest : MonoBehaviour
     {
         if (!_gun)
         {
-            _gun = GetComponent<Gun>();
+            _gun = GetComponentInChildren<Gun>(true);
         }
 
         _nextSocketAction = new InputAction("Next Socket", InputActionType.Button, _nextSocketBinding);
