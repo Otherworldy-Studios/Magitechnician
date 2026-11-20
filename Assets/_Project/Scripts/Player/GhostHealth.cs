@@ -26,6 +26,10 @@ public class GhostHealth : MonoBehaviour
 
     public event Action<float> OnGhostHealthChanged;
 
+    // AUDIO: new. Fires right before health is restored from Ghost Health, with the amount.
+    // PlayerAudio plays the recover sound from it.
+    public event Action<int> OnGhostRecovered;
+
     private int previousHealth;
 
     // Countdown before Ghost Health disappears.
@@ -228,6 +232,9 @@ public class GhostHealth : MonoBehaviour
         // Clear Ghost Health BEFORE healing.
         // This immediately tells the HUD to hide white.
         SetGhostHealth(0f);
+
+        // AUDIO: new. Before the heal, so PlayerAudio can skip the normal heal sound.
+        OnGhostRecovered?.Invoke(recovery);
 
         // Restore real HP.
         health.RegenHealth(recovery);

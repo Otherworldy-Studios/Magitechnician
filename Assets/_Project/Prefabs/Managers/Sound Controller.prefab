@@ -48,6 +48,34 @@ MonoBehaviour:
   _sfxSounds:
   - _name: Hammer Strike
     _soundData: {fileID: 11400000, guid: aa2379a34e7bb87448d98adf80c2fee7, type: 2}
+  - _name: Player_Footstep
+    _soundData: {fileID: 11400000, guid: 0e84577d20eebb64287b4803bba1d9b9, type: 2}
+  - _name: Player_Jump
+    _soundData: {fileID: 11400000, guid: 159abe524e927d440834b98dc627bf60, type: 2}
+  - _name: Player_Land
+    _soundData: {fileID: 11400000, guid: 9707b828b554b3a478fdb5cf3a89b293, type: 2}
+  - _name: Player_ShieldHit
+    _soundData: {fileID: 11400000, guid: a0eaba8b138505344b8a92f6d670224f, type: 2}
+  - _name: Player_ShieldRecharge
+    _soundData: {fileID: 11400000, guid: 4b52991a0a0dc514087ea13427d06956, type: 2}
+  - _name: Player_Heal
+    _soundData: {fileID: 11400000, guid: f4f5472ec2a967f439c9f2eaa3af10c7, type: 2}
+  - _name: Player_GhostRecover
+    _soundData: {fileID: 11400000, guid: bd6800ba89a7c644eb0a8cb259954da5, type: 2}
+  - _name: Player_Death
+    _soundData: {fileID: 11400000, guid: f37ecdd7c1843314db123c55f79a7f7f, type: 2}
+  - _name: Player_Heartbeat
+    _soundData: {fileID: 11400000, guid: 70d364b5be242a9499298461dd686b8d, type: 2}
+  - _name: Player_AimIn
+    _soundData: {fileID: 11400000, guid: 99571d3d01f4ce9429d2adfd2ce703f9, type: 2}
+  - _name: Player_AimOut
+    _soundData: {fileID: 11400000, guid: d2eb52087f7d27742b420882e07ae192, type: 2}
+  - _name: Player_DashReady
+    _soundData: {fileID: 11400000, guid: 848015377e3014d44a5e36e468214848, type: 2}
+  - _name: Player_ConsumableUse
+    _soundData: {fileID: 11400000, guid: 3dfdc109c0493cd4f9bf6a7393c94dc7, type: 2}
+  - _name: Player_ConsumableEnd
+    _soundData: {fileID: 11400000, guid: b5d86adc751b1044ea96e8d649256a9c, type: 2}
   _musicTracks:
   - _name: Sewer Theme
     _soundData: {fileID: 11400000, guid: c1992ec5c6af778428df546c7029c29f, type: 2}
