@@ -20,6 +20,11 @@ public class DeadState : IEnemyState
         _enemy.Movement.StopMoving();
         _enemy.Movement.enabled = false;
 
+        // Disable NavMeshAgent immediately, so the enemy doesn't try to move while waiting for the death delay.
+        UnityEngine.AI.NavMeshAgent agent = _enemy.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null)
+            agent.enabled = false;
+
         // Disable enemy collisions
         foreach (Collider collider in _enemy.GetComponentsInChildren<Collider>())
         {
@@ -30,7 +35,7 @@ public class DeadState : IEnemyState
         _enemy.enabled = false;
 
         // Remove the enemy
-        Object.Destroy(_enemy.gameObject);
+        Object.Destroy(_enemy.gameObject, _enemy.DeathDelay);
     }
 
     /// <summary>Dead enemies perform no further behavior.</summary>

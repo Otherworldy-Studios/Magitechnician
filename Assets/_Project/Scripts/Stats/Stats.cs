@@ -107,7 +107,9 @@ public class Stats : MonoBehaviour
     /// <param name="stat">The stat to look for.</param>
     public bool HasStat(StatDefinition stat)
     {
-        return stat != null && _finalValues.ContainsKey(stat); // INTEGRATION: a null stat returns false instead of throwing.
+        return stat != null &&
+            _finalValues != null &&
+            _finalValues.ContainsKey(stat);
     }
 
     /// <summary>
