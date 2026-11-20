@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: d7bc24d8d6afd8340a19b02909fcb65f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Floor/ToolModesOverlay.Floor.cs
+  uploadId: 989014

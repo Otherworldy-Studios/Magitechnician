@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 16d60127ef0f75742ab3c8556deb3f3d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/PropPlacement/Line/PWBIO.LineSpawnMode.cs
+  uploadId: 989014

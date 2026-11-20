@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0bfd81f7fb7cd2b45a81f92bcdce0b02
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Selection/CircleSelect/ToolProperties.CircleSelect.cs
+  uploadId: 989014

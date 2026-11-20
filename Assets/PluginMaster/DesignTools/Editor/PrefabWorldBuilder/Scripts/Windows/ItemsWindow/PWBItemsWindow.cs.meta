@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 05671df482d9b03478b8c5fc78b81d46
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Windows/ItemsWindow/PWBItemsWindow.cs
+  uploadId: 989014

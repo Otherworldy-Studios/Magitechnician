@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a15f947e438b0c049bc6568679c63c66
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Overlays/ToolBars/PWBToolbarOverlay.Modular.cs
+  uploadId: 989014

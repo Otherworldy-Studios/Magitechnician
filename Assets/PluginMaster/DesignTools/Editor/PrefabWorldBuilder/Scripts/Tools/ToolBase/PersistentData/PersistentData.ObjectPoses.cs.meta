@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2c5d07d8b200d5e4f8488283d0f88dc0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/ToolBase/PersistentData/PersistentData.ObjectPoses.cs
+  uploadId: 989014

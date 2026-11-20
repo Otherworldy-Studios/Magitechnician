@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f37a78f21ac3e6443a6f41a7d53215d0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/PropPlacement/Pin/PWBIO.Pin.cs
+  uploadId: 989014

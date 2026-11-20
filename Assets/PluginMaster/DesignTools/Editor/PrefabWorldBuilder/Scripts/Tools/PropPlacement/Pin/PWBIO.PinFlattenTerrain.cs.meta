@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b3dc6a15261ed7942835bacad5734add
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/PropPlacement/Pin/PWBIO.PinFlattenTerrain.cs
+  uploadId: 989014

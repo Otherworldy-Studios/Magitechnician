@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 502f84f74194ef44f935a5338ac4bff0
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Resources/Materials/TransparentRed2.shader
+  uploadId: 989014

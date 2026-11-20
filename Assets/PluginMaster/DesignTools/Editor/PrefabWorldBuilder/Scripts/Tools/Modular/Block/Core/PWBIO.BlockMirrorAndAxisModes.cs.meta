@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 1874b10357134d244a6d61352da1b336
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Block/Core/PWBIO.BlockMirrorAndAxisModes.cs
+  uploadId: 989014

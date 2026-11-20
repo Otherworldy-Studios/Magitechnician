@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunBarrel
   _partPrefab: {fileID: 2881647987052027899, guid: 15a366c1b1eba5d4696d022d81e1819b, type: 3}
   _partName: TestGun Barrel
-  _range: 100
+  _description: 
+  _icon: {fileID: 21300000, guid: 578a30205236055439d535a8ac849d03, type: 3}
+  rarity: 0
+  statModifiers: []
+  FireMode: 0

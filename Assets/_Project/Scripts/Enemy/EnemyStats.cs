@@ -1,5 +1,11 @@
 using UnityEngine;
 
+/// <summary>
+/// The enemy's tuning values.
+/// </summary>
+// INTEGRATION: no longer used. EnemyBase reads these values from the shared Stats component instead, through the
+// StatDefinitions in its Stats header. Kept so existing EnemyStats assets don't lose their values; safe to delete
+// once every enemy prefab has its Stats set up.
 [CreateAssetMenu(fileName = "EnemyStats", menuName = "Scriptable Objects/EnemyStats")]
 public class EnemyStats : ScriptableObject
 {
@@ -10,4 +16,12 @@ public class EnemyStats : ScriptableObject
     [SerializeField] private float _attackWindUpTime = 2f;
     [SerializeField] private float _attackCooldownTime = 3f;
     [SerializeField] private float _health = 100f;
+
+    public float DetectionRange => _detectionRange;
+    public float GoldilocksRangeMin => _goldilocksRangeMin;
+    public float GoldilocksRangeMax => _goldilocksRangeMax;
+    public float MoveSpeed => _moveSpeed;
+    public float AttackWindUpTime => _attackWindUpTime;
+    public float AttackCooldownTime => _attackCooldownTime;
+    public float Health => _health;
 }

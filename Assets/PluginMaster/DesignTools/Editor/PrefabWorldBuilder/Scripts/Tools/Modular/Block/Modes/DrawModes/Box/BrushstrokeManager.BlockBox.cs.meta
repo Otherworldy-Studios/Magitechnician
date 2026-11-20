@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 344aa21acbc6b00479365d0adbb61b5d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Block/Modes/DrawModes/Box/BrushstrokeManager.BlockBox.cs
+  uploadId: 989014

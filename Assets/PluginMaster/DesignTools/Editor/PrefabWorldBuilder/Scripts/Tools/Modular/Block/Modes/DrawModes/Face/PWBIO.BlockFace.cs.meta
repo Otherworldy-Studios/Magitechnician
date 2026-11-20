@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f58b11ea5b9046f4da16648d9c2785ea
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Block/Modes/DrawModes/Face/PWBIO.BlockFace.cs
+  uploadId: 989014

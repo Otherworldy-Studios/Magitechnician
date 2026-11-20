@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: ab86d7e15e3aeb64384a34f32d9e65b1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Windows/ToolProperties/ToolProperties.Profile.cs
+  uploadId: 989014

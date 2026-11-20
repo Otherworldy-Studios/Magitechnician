@@ -5,33 +5,39 @@ using Random = UnityEngine.Random;
 namespace _Project.Scripts.Dungeon.Utility
 {
     /// <summary>
-    /// A weighted random selector
+    /// Picks items at random, where each item's chance is its weight divided by the total weight.
+    /// RoomCompletionLootPool uses it to roll gun parts by rarity.
     /// </summary>
     /// <typeparam name="T">
     /// The type of item that will be selected
     /// </typeparam>
     class ItemSelector<T> where T : notnull
     {
-        private readonly LinearCongruentialGenerator _random;
-        private readonly Dictionary<T, int> _entries;
-        private int _totalWeight;
+        private readonly LinearCongruentialGenerator _random; // Source of the random numbers for Roll.
+        private readonly Dictionary<T, long> _entries;        // Each item and its weight.
+        private long _totalWeight;                            // Sum of every weight in _entries.
 
-        public int TotalWeight { get { return _totalWeight; } }
+        /// <summary>Sum of every item's weight.</summary>
+        public long TotalWeight { get { return _totalWeight; } }
 
+        /// <summary>How many items can be rolled.</summary>
         public int Size { get { return _entries.Count; } }
 
+        /// <summary>True when there's nothing to roll.</summary>
         public bool Empty { get { return Size == 0; } }
 
+        /// <summary>Creates an empty selector with a random seed.</summary>
         public ItemSelector()
         {
-            _entries = new Dictionary<T, int>();
+            _entries = new Dictionary<T, long>();
             _totalWeight = 0;
-            _random = new LinearCongruentialGenerator(Random.Range(-int.MaxValue, int.MaxValue));
+            _random = new LinearCongruentialGenerator(Random.Range(1, int.MaxValue));
         }
         
-        public ItemSelector(int seed)
+        /// <summary>Creates an empty selector with a fixed seed, so the same rolls repeat.</summary>
+        public ItemSelector(long seed)
         {
-            _entries = new Dictionary<T, int>();
+            _entries = new Dictionary<T, long>();
             _totalWeight = 0;
             _random = new LinearCongruentialGenerator(seed);
         }
@@ -48,7 +54,7 @@ namespace _Project.Scripts.Dungeon.Utility
         /// <exception cref="System.ArgumentException">
         /// If the weight is less than or equal to 0
         /// </exception>
-        public void AddItem(T item, int weight)
+        public void AddItem(T item, long weight)
         {
             if (_entries.ContainsKey(item))
             {
@@ -106,7 +112,7 @@ namespace _Project.Scripts.Dungeon.Utility
         /// <param name="weight">
         /// The weight of the item
         /// </param>
-        public void SetWeight(T item, int weight)
+        public void SetWeight(T item, long weight)
         {
             if (!Contains(item))
                 return;
@@ -143,15 +149,16 @@ namespace _Project.Scripts.Dungeon.Utility
         {
             if(_totalWeight <= 0)
                 return default(T);
-            
+
             long value = _random.Next(_totalWeight);
 
+            // Walks the items, taking each weight off the rolled value. The item that takes it to 0 or below wins.
             foreach (var item in _entries.Keys)
             {
                 long weight = _entries[item];
                 value -= weight;
 
-                if (value < 0)
+                if (value <= 0)
                 {
                     return item;
                 }

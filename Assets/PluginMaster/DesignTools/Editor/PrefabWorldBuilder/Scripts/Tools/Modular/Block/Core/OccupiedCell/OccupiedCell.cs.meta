@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 328ddd4b1b74f80468f93940a4d1e436
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/PrefabWorldBuilder/Scripts/Tools/Modular/Block/Core/OccupiedCell/OccupiedCell.cs
+  uploadId: 989014

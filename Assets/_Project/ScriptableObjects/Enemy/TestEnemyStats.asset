@@ -12,3 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127edb5ec851945429981fd4e94e6f37, type: 3}
   m_Name: TestEnemyStats
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
+  _detectionRange: 20
+  _goldilocksRangeMin: 1
+  _goldilocksRangeMax: 3
+  _moveSpeed: 5
+  _attackWindUpTime: 2
+  _attackCooldownTime: 3
+  _health: 100

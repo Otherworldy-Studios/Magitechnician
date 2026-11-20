@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0d3023d21297c484a977ade6cdfa12c0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 185406
+  packageName: Prefab World Builder
+  packageVersion: 4.12.3
+  assetPath: Assets/PluginMaster/DesignTools/Editor/Common/Scripts/BoundsUtils/BoundsUtils.Geometric.cs
+  uploadId: 989014
