@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// The Hub shop's stock of charms and the buy rule. Not interactable yet; task 11 makes it an IInteractable
@@ -8,29 +7,45 @@ using UnityEngine.Serialization;
 /// </summary>
 public class Shop : MonoBehaviour
 {
-    [Tooltip("Charms for sale.")]
-    [SerializeField, FormerlySerializedAs("Stock")] private List<Charm> _stock;
+    /// <summary>How a purchase went. ShopScreen picks its message from this.</summary>
+    public enum BuyResult
+    {
+        Bought,
+        NotInStock,
+        NotEnoughCrystals,
+        NoRoom,
+    }
 
-    /// <summary>Charms for sale.</summary>
+    [Tooltip("Charms for sale.")]
+    [SerializeField] private List<Charm> _stock;
+
     public List<Charm> Stock => _stock;
 
     /// <summary>
-    /// Buys a charm if it's in stock and the player has enough crystals. Known bugs, fixed in task 11: it never spends
-    /// the crystals, and it removes the charm from stock even when the inventory refuses it.
+    /// Buys a charm if it's in stock, the player has enough crystals, and the inventory takes it.
+    /// The crystals are spent and the charm leaves the stock only after the inventory takes it, so a refused
+    /// purchase costs nothing.
     /// </summary>
     /// <param name="charm">The charm to buy.</param>
     /// <param name="inventory">The buyer's Inventory.</param>
-    public bool TryBuy(Charm charm, Inventory inventory)
+    public BuyResult TryBuy(Charm charm, Inventory inventory)
     {
-        if (_stock == null) return false;
-        if (_stock.Count == 0) return false;
-        if (!_stock.Contains(charm)) return false;
-        if (inventory == null) return false;
-        if (inventory.Crystals < charm.Price) return false;
+        if (charm == null || _stock == null || !_stock.Contains(charm)) return BuyResult.NotInStock;
 
-        if (!inventory.TrySpendCrystals(charm.Price)) return false;
+        if (inventory == null)
+        {
+            Debug.LogError("Shop.TryBuy was called without an Inventory.", this);
+            return BuyResult.NoRoom;
+        }
+
+        if (inventory.Crystals < charm.Price) return BuyResult.NotEnoughCrystals;
+
+        if (!inventory.TryAddItem(charm)) return BuyResult.NoRoom;
+
+        // Can't fail, because the crystals were checked above.
+        inventory.TrySpendCrystals(charm.Price);
         _stock.Remove(charm);
-        inventory.TryAddItem(charm);
-        return true;
+
+        return BuyResult.Bought;
     }
 }

@@ -252,7 +252,8 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1654653529879858094, guid: f7529fa31f785364580e94043da7fd01, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7529fa31f785364580e94043da7fd01, type: 3}
@@ -295,6 +296,7 @@ MonoBehaviour:
   _currentWave: 0
   _alive: []
   _spawningDone: 0
+  _waveRunning: 0
 --- !u!4 &1342687026
 Transform:
   m_ObjectHideFlags: 0

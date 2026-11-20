@@ -1,118 +1,139 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using UnityEngine;
-using _Project.Scripts.Dungeon;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
-/// The screen for picking one of the gun parts a cleared room rolled. Only has a Resume button so far; ShowChoices and
-/// Pick are empty. Hooking it up to Room.OnRoomCleared and the loot pool is task 7.
+/// The screen for picking one of the gun parts a cleared room rolled. UIManager.HandleRewards opens it and calls
+/// ShowChoices. Resume equips the selected part through GameManager.ChooseReward and closes the screen.
+/// If the part can't be equipped, the screen shows why, and pressing Resume again closes it without a part.
 /// </summary>
 public class RewardScreen : UIScreen
 {
-    [SerializeField] private Button resumeButton;
-    [SerializeField] private ItemGridUI itemGrid;
-    [SerializeField] private ItemSlotUI itemSlot1;
-    [SerializeField] private ItemSlotUI itemSlot2;
-    [SerializeField] private ItemSlotUI itemSlot3;
-    private int _selectedRewardIndex = -1;
+    [Header("References")]
+    [SerializeField] private Button _resumeButton;
+    [SerializeField] private ItemGridUI _itemGrid;
+    [SerializeField] private ItemSlotUI _itemSlot1;
+    [SerializeField] private ItemSlotUI _itemSlot2;
+    [SerializeField] private ItemSlotUI _itemSlot3;
+    [Tooltip("Shows why Resume didn't close the screen. Hidden until needed.")]
+    [SerializeField] private TMP_Text _errorText;
+
+    private const string NoSelectionMessage = "Pick a part first.";
+
+    private ItemSlotUI[] _itemSlots;
     private IReadOnlyList<WeightedReward<GunPart>> _rewards;
-    
+    private int _selectedRewardIndex = -1;
+    private bool _equipFailed; // True after ChooseReward fails, so the next Resume closes without a part.
 
-    //item currently selected shows the text
-
-    //send signal to players gun to give them the item
-
-    protected override void OnShown()
-    {
-        //call pause
-    }
-    
-    /// <summary>Connects the Resume button.</summary>
     private void Awake()
     {
-        resumeButton.onClick.AddListener(OnResume);
-        itemGrid.OnSelectionChanged += HandleSelectionChanged;
+        _itemSlots = new[] { _itemSlot1, _itemSlot2, _itemSlot3 };
+
+        _resumeButton.onClick.AddListener(OnResume);
+        _itemGrid.OnSelectionChanged += HandleSelectionChanged;
+    }
+
+    private void OnDestroy()
+    {
+        _resumeButton.onClick.RemoveListener(OnResume);
+        _itemGrid.OnSelectionChanged -= HandleSelectionChanged;
+    }
+
+    /// <summary>Sets and displays all items into the item slots.</summary>
+    public void ShowChoices(IReadOnlyList<WeightedReward<GunPart>> rewards)
+    {
+        _rewards = rewards;
+        _selectedRewardIndex = -1;
+        _equipFailed = false;
+        HideError();
+
+        for (int i = 0; i < _itemSlots.Length; i++)
+        {
+            bool hasReward = i < rewards.Count;
+            _itemSlots[i].gameObject.SetActive(hasReward);
+
+            if (hasReward)
+            {
+                _itemSlots[i].SetItem(rewards[i].Item);
+            }
+        }
     }
 
     private void HandleSelectionChanged(ItemSlotUI selectedSlot)
     {
-        if (_rewards == null || selectedSlot == null)
-        {
-            return;
-        }
+        if (_rewards == null || selectedSlot == null) return;
 
-
-        if (selectedSlot == itemSlot1) //i would turn this into a switch if i knew how to make this static
+        int index = Array.IndexOf(_itemSlots, selectedSlot);
+        if (index >= 0 && index < _rewards.Count)
         {
-            Pick(0);
+            Pick(index);
         }
-        else if (selectedSlot == itemSlot2)
-        {
-            Pick(1);
-        }
-        else if (selectedSlot == itemSlot3)
-        {
-            Pick(2);
-        }
-            
-    }
-    /// <summary>Resume button. Closes the screen and unpauses.</summary>
-    private void OnResume() //handles all the things after picking a screen
-    {
-        if (_selectedRewardIndex < 0) 
-        {
-            return;
-        }
-        
-        bool equipped = GameManager.Instance.ChooseReward(_selectedRewardIndex);
-        
-        Debug.Log($"ChooseReward result: {equipped}");
-        
-        if (!equipped)
-        {
-            Debug.LogWarning("Failed to equip reward");
-            return;
-        }
-        
-        //send info to GM about selected item, GM links to player about the item
-        itemSlot1.Clear();
-        itemSlot2.Clear();
-        itemSlot3.Clear();
-        _rewards = null;
-        //no clear method for the grid?
-        UIManager.Instance.ResumeButtonPressed(); 
     }
 
-     /// <summary>Sets and displays all items into the item slots.</summary>
-    public void ShowChoices(IReadOnlyList<WeightedReward<GunPart>> rewards) //comedically long type
-    {
-        _selectedRewardIndex = -1;
-        _rewards = rewards;
-        
-        //extract the items from the rewards
-        ItemSlotUI[] itemSlots = { itemSlot1, itemSlot2, itemSlot3 };
-
-        for (int i = 0; i < itemSlots.Length; i++) //made into a for loop cause hardcoding it before was stupid
-        {
-            bool hasReward = i < rewards.Count;
-            itemSlots[i].gameObject.SetActive(hasReward); //now automatically disables itself if there isnt an item to put in
-
-            if (hasReward)
-            {
-                itemSlots[i].SetItem(rewards[i].Item); //set it in the actual UI
-            }
-            
-            
-        }
-        
-    }
-
-    /// <summary></summary>
+    /// <summary>Selects a part. Picking a new part after a failed equip lets Resume try that part instead.</summary>
     private void Pick(int index)
     {
-       _selectedRewardIndex = index;
-       
-       Debug.Log($"Selected: {_rewards[index].Item.PartName}");
+        _selectedRewardIndex = index;
+        _equipFailed = false;
+        HideError();
+    }
+
+    private void OnResume()
+    {
+        if (_equipFailed)
+        {
+            GameManager.Instance.SkipReward();
+            Close();
+            return;
+        }
+
+        if (_selectedRewardIndex < 0)
+        {
+            ShowError(NoSelectionMessage);
+            return;
+        }
+
+        if (!GameManager.Instance.ChooseReward(_selectedRewardIndex))
+        {
+            _equipFailed = true;
+            string partName = _rewards[_selectedRewardIndex].Item.PartName;
+            ShowError($"Couldn't equip {partName}. Press Resume to continue without it.");
+            return;
+        }
+
+        Close();
+    }
+
+    /// <summary>Empties the slots, hides the error, and hands control back to the game.</summary>
+    private void Close()
+    {
+        foreach (ItemSlotUI slot in _itemSlots)
+        {
+            slot.Clear();
+        }
+
+        _rewards = null;
+        _selectedRewardIndex = -1;
+        _equipFailed = false;
+        HideError();
+
+        UIManager.Instance.ResumeButtonPressed();
+    }
+
+    private void ShowError(string message)
+    {
+        if (_errorText == null) return;
+
+        _errorText.text = message;
+        _errorText.gameObject.SetActive(true);
+    }
+
+    private void HideError()
+    {
+        if (_errorText == null) return;
+
+        _errorText.gameObject.SetActive(false);
     }
 }

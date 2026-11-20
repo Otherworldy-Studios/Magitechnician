@@ -6,14 +6,25 @@ using UnityEngine;
 /// </summary>
 public abstract class SecondaryFireAbility : ItemAbility
 {
-    [Header("References")]
-    [SerializeField] private PlayerInput _playerInput;
-    [SerializeField] private Shoot _shoot;
-
     [Header("Settings")]
     [SerializeField, Min(0f)] private float _cooldown = 1f;
 
+    // Found through PlayerRoot, because ability prefabs are created under the player at runtime.
+    private PlayerInput _playerInput;
+    private Shoot _shoot;
     private float _nextFireTime;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (Player == null) return;
+
+        _playerInput = Player.GetComponentInChildren<PlayerInput>();
+        _shoot = Player.GetComponentInChildren<Shoot>();
+
+        if (_playerInput == null) Debug.LogError("No PlayerInput found under the player", this);
+        if (_shoot == null) Debug.LogError("No Shoot found under the player", this);
+    }
 
     protected virtual void OnEnable()
     {
@@ -29,19 +40,15 @@ public abstract class SecondaryFireAbility : ItemAbility
 
     private void HandleSecondaryFire()
     {
-        if (InputManager.Instance.Mode != InputMode.Gameplay)
-            return;
-
-        if (Time.time < _nextFireTime)
-            return;
-
-        if (_shoot == null || PlayerGun.Muzzle == null)
-            return;
+        if (InputManager.Instance.Mode != InputMode.Gameplay) return;
+        if (Time.time < _nextFireTime) return;
+        if (_shoot == null || PlayerGun == null || PlayerGun.Muzzle == null) return;
 
         Vector3 origin = PlayerGun.Muzzle.position;
         Vector3 direction = _shoot.LastAim.Direction;
 
         Fire(origin, direction);
+        ReportActivated();
 
         _nextFireTime = Time.time + _cooldown;
     }

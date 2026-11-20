@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Sirenix.OdinInspector;
+using Sirenix.Serialization;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WaveData", menuName = "Dungeon/Waves/Wave Data")]
-public class WaveData : ScriptableObject
+public class WaveData : SerializedScriptableObject
 {
-    [SerializeField]
+    [OdinSerialize]
     private List<Wave> _waves;
-    
-    [SerializeField]
+
+    [OdinSerialize]
     private float _startDelay;
 
     public float StartDelay => _startDelay;

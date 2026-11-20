@@ -1,82 +1,95 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Plays the enemy's animations from its movement, attacks, and Health. Goes on the enemy root, next to EnemyBase.
+/// The Animator needs a Speed float for the Idle, Walk, and Run blend tree, and Attack, Hit, and Dead states.
+/// </summary>
 public class EnemyAnimator : MonoBehaviour
 {
+    private const float CrossFadeTime = 0.25f;
+
     private Animator _animator;
     private NavMeshAgent _agent;
     private EnemyAttack[] _attacks;
-    Health _health;
+    private Health _health;
+    private bool _isDead;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private static readonly int Speed = Animator.StringToHash("Speed");
+
+    private void Awake()
+    {
+        _agent = GetComponentInChildren<NavMeshAgent>();
+        _animator = GetComponentInChildren<Animator>();
+        _attacks = GetComponentsInChildren<EnemyAttack>();
+
+        _health = GetComponent<Health>();
+    }
+
+    private void OnEnable()
     {
         foreach (EnemyAttack attack in _attacks)
         {
             attack.OnAttackWindUpStarted += HandleAttackWindup;
         }
 
-
-
-        EnemyBase enemyBase = GetComponent<EnemyBase>();
-        enemyBase.Health.OnDamaged += HandleDamaged;
-
-        enemyBase.Health.OnDied += HandleDied;
+        if (_health != null)
+        {
+            _health.OnDamaged += HandleDamaged;
+            _health.OnDied += HandleDied;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        _animator.SetFloat("Speed", _agent.velocity.magnitude);
-
-        if (_animator.GetFloat("Speed") > 2.0f)
-        {
-            _animator.CrossFadeInFixedTime("Run", 0.25f); //Run state
-        }
-        else if (_animator.GetFloat("Speed") > 0.1f)
-        {
-            _animator.CrossFadeInFixedTime("Walk", 0.25f); //Walk state
-        }
-        else
-        {
-            _animator.CrossFadeInFixedTime("Idle", 0.25f); //Idle state
-        }
-
-
-    }
-
-    void OnDisable()
+    private void OnDisable()
     {
         foreach (EnemyAttack attack in _attacks)
         {
             attack.OnAttackWindUpStarted -= HandleAttackWindup;
         }
 
-        EnemyBase enemyBase = GetComponent<EnemyBase>();
-        enemyBase.Health.OnDamaged -= HandleDamaged;
+        if (_health != null)
+        {
+            _health.OnDamaged -= HandleDamaged;
+            _health.OnDied -= HandleDied;
+        }
+    }
 
-        enemyBase.Health.OnDied -= HandleDied;
+    private void Update()
+    {
+        if (_isDead)
+            return;
+
+        _animator.SetFloat(Speed, _agent.velocity.magnitude);
     }
 
     private void HandleAttackWindup()
     {
-        _animator.CrossFadeInFixedTime("Attack", 0.25f); //Attack state
-
+        _animator.CrossFadeInFixedTime("Attack", CrossFadeTime);
     }
 
+    /// <summary>Plays Hit, unless an attack is running, so the swing the player sees matches the hit they take.</summary>
     private void HandleDamaged(int current, GameObject owner)
     {
-        _animator.CrossFadeInFixedTime("Hit", 0.25f); //Hit state
+        if (IsAttacking())
+            return;
+
+        _animator.CrossFadeInFixedTime("Hit", CrossFadeTime);
     }
 
     private void HandleDied(GameObject enemy)
     {
-        _animator.CrossFadeInFixedTime("Dead", 0.25f); //Dead state
+        _isDead = true;
+        _animator.CrossFadeInFixedTime("Dead", CrossFadeTime);
     }
 
-    private void HandleStunned()
+    private bool IsAttacking()
     {
-        _animator.CrossFadeInFixedTime("Stunned", 0.25f); //Stunned state
+        foreach (EnemyAttack attack in _attacks)
+        {
+            if (attack != null && attack.IsAttacking)
+                return true;
+        }
+
+        return false;
     }
-    
 }

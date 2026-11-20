@@ -2,40 +2,44 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// A bullet. Moves forward each frame with a sphere cast so it can't skip through thin objects, damages the first
-/// IDamageable it hits, and destroys itself on a hit or once it has traveled its range.
-/// Whoever fires it (the Gun) passes the damage, speed, and range in Initialize.
+/// A bullet. Moves each frame with a sphere cast so it can't skip through thin objects, damages the first
+/// IDamageable it hits, and destroys itself on a hit or once it has traveled its range. Can fall with gravity.
+/// Whoever fires it (the Gun or an enemy attack) passes the damage, speed, and range in Initialize.
 /// </summary>
 public class Projectile : MonoBehaviour
 {
     [Tooltip("The bullet's radius and the layers it can hit.")]
     [SerializeField] private ProjectileSettings _settings;
 
-    private Vector3 _direction; // Set from the spawn rotation in Start. The Gun's spread is already in that rotation.
-    private float _travelTime;  // Seconds since the bullet started, for the range check.
-    private Vector3 _velocity;
-    private bool _useGravity;
-    private float _distanceTraveled;
+    [Header("Impacts")]
+    [Tooltip("Spawned where the projectile hits a wall, the floor, or anything else that can't take damage. " +
+             "Optional. The cannonball uses this for its healing pool.")]
+    [SerializeField] private GameObject _surfaceImpactPrefab;
 
-    // INTEGRATION: new. Initialize fills these from the Gun's stats at the moment of firing, replacing
-    // ProjectileSettings' Speed, MaxDistance, and Damage, which were removed.
-    private DamageInfo _damageInfo;      // The hit to deal. Its DamageSource is the player, so the bullet skips the player.
-    private float _speed;                // Meters per second, from Stat_BulletSpeed.
-    private float _range;                // Meters before the bullet is destroyed, from Stat_Range.
-    private Action<DamageInfo> _onHit;   // Called after a hit. The Gun uses it to fire OnDamageDealt.
+    [Tooltip("Spawned where the projectile hits something that takes damage, such as an enemy. Optional.")]
+    [SerializeField] private GameObject _damageableImpactPrefab;
+
+    private DamageInfo _damageInfo;      // The hit to deal. Its DamageSource is the shooter, so the bullet skips the shooter.
+    private float _speed;                // Meters per second.
+    private float _range;                // Meters before the bullet is destroyed.
+    private bool _useGravity;            // True for arcing projectiles, such as the Skeletal Orc's cannonball.
+    private Action<GameObject, DamageInfo> _onHit; // Called after a hit, with what was hit. The Gun uses it to fire OnDamageDealt.
     private bool _initialized;           // False until Initialize runs. Start destroys an uninitialized bullet.
 
+    private Vector3 _direction; // Set from the spawn rotation in Start. The Gun's spread is already in that rotation.
+    private Vector3 _velocity;  // Used only with gravity.
+    private float _travelTime;  // Seconds since the bullet started, for the range check.
+
     /// <summary>The bullet's radius. CrossHairAim uses it so the aim check matches the bullet's size.</summary>
-    // INTEGRATION: new. Gun.BulletRadius reads it from the prefab, and Shoot passes it to CrossHairAim.Solve.
     public float Radius => _settings != null ? _settings.Radius : 0f;
 
     /// <summary>Sets what this bullet deals and how far and fast it travels. Call right after creating it.</summary>
     /// <param name="damageInfo">The hit, with the shooter as DamageSource.</param>
     /// <param name="speed">Meters per second.</param>
     /// <param name="range">Meters before it's destroyed.</param>
-    /// <param name="onHit">Called after the bullet damages something. Optional.</param>
-    // INTEGRATION: replaces the commented-out Initialize(GameObject attacker). Gun.TryFire calls it.
-    public void Initialize(DamageInfo damageInfo, float speed, float range, Action<DamageInfo> onHit = null, bool useGravity = false)
+    /// <param name="onHit">Called after the bullet damages something, with the object that took the damage. Optional.</param>
+    /// <param name="useGravity">True makes the projectile fall in an arc.</param>
+    public void Initialize(DamageInfo damageInfo, float speed, float range, Action<GameObject, DamageInfo> onHit = null, bool useGravity = false)
     {
         _damageInfo = damageInfo;
         _speed = speed;
@@ -45,10 +49,8 @@ public class Projectile : MonoBehaviour
         _initialized = true;
     }
 
-    /// <summary>Destroys a bullet that wasn't initialized, sets the direction, and sets a 5 second limit as a backup.</summary>
     private void Start()
     {
-        // INTEGRATION: this check was commented out. It's on again because Initialize works.
         if (!_initialized)
         {
             Debug.LogError("Projectile was not initialized!");
@@ -57,21 +59,15 @@ public class Projectile : MonoBehaviour
         }
 
         _direction = transform.forward.normalized;
-
-        // Intial velocity of the projectile.
         _velocity = _direction * _speed;
 
         Destroy(gameObject, 5f); // Backup in case the range check never triggers.
     }
 
-    /// <summary>
-    /// Moves the bullet forward and checks for a hit along the way with a sphere cast, so it can't miss objects
-    /// between frames. Skips the shooter's colliders. Destroys the bullet on a hit or past its range.
-    /// </summary>
     private void Update()
     {
         _travelTime += Time.deltaTime;
-        if (_travelTime * _speed > _range) // INTEGRATION: uses the speed and range from Initialize.
+        if (_travelTime * _speed > _range)
         {
             Destroy(gameObject);
             return;
@@ -82,9 +78,7 @@ public class Projectile : MonoBehaviour
 
         if (_useGravity)
         {
-            displacement = _velocity * Time.deltaTime +
-                        0.5f * Physics.gravity * Time.deltaTime * Time.deltaTime;
-
+            displacement = _velocity * Time.deltaTime + 0.5f * Physics.gravity * Time.deltaTime * Time.deltaTime;
             _velocity += Physics.gravity * Time.deltaTime;
         }
         else
@@ -97,19 +91,19 @@ public class Projectile : MonoBehaviour
         Vector3 newPos = oldPos + displacement;
 
         // Start the cast one radius behind, so the bullet still catches something it's already touching.
-        Vector3 castOrigin = oldPos - _direction * _settings.Radius;
+        Vector3 castOrigin = oldPos - moveDirection * _settings.Radius;
         float castDist = step + _settings.Radius;
 
         if (Physics.SphereCast(
                 castOrigin,
                 _settings.Radius,
-                _direction,
+                moveDirection,
                 out RaycastHit hit,
                 castDist,
                 _settings.BulletCollisionLayer,
                 QueryTriggerInteraction.Collide))
         {
-            // INTEGRATION: the owner check was commented out. A hit on the shooter is skipped and the bullet keeps going.
+            // A hit on the shooter is skipped, and the bullet keeps going.
             if (_damageInfo.DamageSource != null && hit.collider.transform.IsChildOf(_damageInfo.DamageSource.transform))
             {
                 transform.position = newPos;
@@ -118,17 +112,39 @@ public class Projectile : MonoBehaviour
 
             IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
 
-            // INTEGRATION: the damage code was commented out, so bullets didn't deal damage.
             if (damageable != null)
             {
                 damageable.TakeDamage(_damageInfo);
-                _onHit?.Invoke(_damageInfo); // INTEGRATION: lets the Gun fire OnDamageDealt.
+
+                // The object with the IDamageable, such as the enemy root, instead of the child collider that was hit.
+                GameObject target = damageable is Component component ? component.gameObject : hit.collider.gameObject;
+                _onHit?.Invoke(target, _damageInfo);
             }
+
+            SpawnImpact(hit, damageable != null, moveDirection);
 
             Destroy(gameObject);
             return;
         }
 
         transform.position = newPos; // Nothing hit, so move forward.
+    }
+
+    /// <summary>
+    /// Spawns the impact prefab for the kind of thing that was hit, at the hit point, facing out from the surface.
+    /// A cast that starts already touching a collider reports no point or normal, so that case uses the projectile's
+    /// position and faces back along its path.
+    /// </summary>
+    private void SpawnImpact(RaycastHit hit, bool hitDamageable, Vector3 moveDirection)
+    {
+        GameObject prefab = hitDamageable ? _damageableImpactPrefab : _surfaceImpactPrefab;
+        if (prefab == null)
+            return;
+
+        bool startedInside = hit.distance <= 0f;
+        Vector3 point = startedInside ? transform.position : hit.point;
+        Vector3 normal = startedInside || hit.normal == Vector3.zero ? -moveDirection : hit.normal;
+
+        Instantiate(prefab, point, Quaternion.LookRotation(normal));
     }
 }

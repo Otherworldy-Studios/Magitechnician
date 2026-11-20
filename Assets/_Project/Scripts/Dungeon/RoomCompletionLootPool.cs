@@ -7,17 +7,13 @@ using UnityEngine;
 [Serializable]
 public struct WeightedReward<T>
 {
-    [SerializeField]
-    private T _item;
+    [SerializeField] private T _item;
+    [SerializeField] private RarityChance _weight;
 
-    [SerializeField]
-    private RarityChance _weight;
-
-    /// <summary>The item this entry gives.</summary>
-    public T Item { get { return _item; } }
+    public T Item => _item;
 
     /// <summary>The entry's rarity. Its number value is its weight in the roll.</summary>
-    public RarityChance Weight { get { return _weight; } }
+    public RarityChance Weight => _weight;
 }
 
 /// <summary>Rarities and their roll weights. Higher weights are rolled more often.</summary>
@@ -30,38 +26,34 @@ public enum RarityChance
 }
 
 /// <summary>
-/// The gun parts a room can give when cleared, and which ones have already been given.
-/// Room.OnComplete calls PickThree. Create one from Create > Dungeon > Room Completion Loot Pool.
+/// The gun parts a cleared combat room can offer. ItemRolling calls PickThree and keeps track of what was taken.
 /// </summary>
 [CreateAssetMenu(menuName = "Dungeon/Room Completion Loot Pool")]
 public class RoomCompletionLootPool : ScriptableObject
 {
-    [SerializeField]
-    private List<WeightedReward<GunPart>> _rewards; // Every part this pool can give.
-    /// <summary>
-    /// Rolls up to three parts that haven't been obtained, weighted by rarity, and adds them to Obtained.
-    /// Returns fewer than three when the pool runs low.
-    /// </summary>
-    public List<WeightedReward<GunPart>> PickThree(IReadOnlyCollection<GunPart> obtained)
-    {
-        List<WeightedReward<GunPart>> rolledRewards = new List<WeightedReward<GunPart>>();
-        ItemSelector<WeightedReward<GunPart>> rewardPool = new ItemSelector<WeightedReward<GunPart>>();
+    [Tooltip("Every part this pool can give.")]
+    [SerializeField] private List<WeightedReward<GunPart>> _rewards;
 
-        HashSet<GunPart> excluded = new(obtained);
-        
-        int available = obtained.Count;
+    /// <summary>
+    /// Rolls up to three different parts, weighted by rarity, leaving out the excluded ones.
+    /// Returns fewer than three when the pool runs low, and an empty list when it's out.
+    /// </summary>
+    /// <param name="excluded">Parts that can't be rolled, such as parts already taken or equipped.</param>
+    public List<WeightedReward<GunPart>> PickThree(IReadOnlyCollection<GunPart> excluded)
+    {
+        List<WeightedReward<GunPart>> rolledRewards = new();
+        ItemSelector<WeightedReward<GunPart>> rewardPool = new();
+
+        // Also collects each added part, so a part listed twice is only added once.
+        HashSet<GunPart> skipped = new(excluded);
         int availableCount = 0;
 
-        foreach (WeightedReward<GunPart> part in _rewards)
+        foreach (WeightedReward<GunPart> reward in _rewards)
         {
-            if (part.Item == null || excluded.Contains(part.Item))
-            {
-                continue;
-            }
+            if (reward.Item == null || skipped.Contains(reward.Item)) continue;
 
-            rewardPool.AddItem(part, (long)part.Weight);
-            
-            excluded.Add(part.Item);
+            rewardPool.AddItem(reward, (long)reward.Weight);
+            skipped.Add(reward.Item);
             availableCount++;
         }
 
@@ -69,12 +61,9 @@ public class RoomCompletionLootPool : ScriptableObject
 
         for (int i = 0; i < rollCount; i++)
         {
-            WeightedReward<GunPart> roll = rewardPool.RollWithRemoval();
-
-            rolledRewards.Add(roll);
+            rolledRewards.Add(rewardPool.RollWithRemoval());
         }
 
         return rolledRewards;
     }
-    
 }

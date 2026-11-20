@@ -1227,6 +1227,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8374480624223953854}
     m_Modifications:
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[15]._name
+      value: Player_Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[16]._name
+      value: Player_hurt
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[17]._name
+      value: Player_ShieldBreak
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[15]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: f8892e12e4326964d8658f06accc8b94, type: 2}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[16]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: 6b14a2693137f774882ae64d02d888da, type: 2}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[17]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: 012a1ed5076e2ee45b0c671454719b2e, type: 2}
     - target: {fileID: 3007941669605863608, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: m_Name
       value: Sound Controller

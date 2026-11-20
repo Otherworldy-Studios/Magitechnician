@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 /// <summary>
@@ -8,7 +7,6 @@ using UnityEngine;
 public class ArcProjectileAttack : EnemyAttack
 {
     [SerializeField] private Projectile _cannonballPrefab;
-    // [SerializeField] private HealingPool _poolPrefab;
     [SerializeField] private Transform _firePoint;
 
     // Required by projectile initialization and arc calculation.
@@ -27,7 +25,7 @@ public class ArcProjectileAttack : EnemyAttack
 
         if (velocity.sqrMagnitude < 0.001f)
             return;
-        
+
         Vector3 direction = velocity.normalized;
         float speed = velocity.magnitude;
 
