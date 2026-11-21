@@ -8,6 +8,7 @@ using UnityEngine.UI;
 /// The screen for picking one of the gun parts a cleared room rolled. UIManager.HandleRewards opens it and calls
 /// ShowChoices. Resume equips the selected part through GameManager.ChooseReward and closes the screen.
 /// If the part can't be equipped, the screen shows why, and pressing Resume again closes it without a part.
+/// GunStatsPanel shows the gun's stats, and how the selected part would change them.
 /// </summary>
 public class RewardScreen : UIScreen
 {
@@ -17,15 +18,17 @@ public class RewardScreen : UIScreen
     [SerializeField] private ItemSlotUI _itemSlot1;
     [SerializeField] private ItemSlotUI _itemSlot2;
     [SerializeField] private ItemSlotUI _itemSlot3;
-    [Tooltip("Shows why Resume didn't close the screen. Hidden until needed.")]
+
     [SerializeField] private TMP_Text _errorText;
+    
+    [SerializeField] private GunStatsPanel _gunStatsPanel;
 
     private const string NoSelectionMessage = "Pick a part first.";
 
     private ItemSlotUI[] _itemSlots;
     private IReadOnlyList<WeightedReward<GunPart>> _rewards;
     private int _selectedRewardIndex = -1;
-    private bool _equipFailed; // True after ChooseReward fails, so the next Resume closes without a part.
+    private bool _equipFailed; // True after ChooseReward fails, so the next Resume closes evenm if the player didnt choose a part.
 
     private void Awake()
     {
@@ -48,6 +51,8 @@ public class RewardScreen : UIScreen
         _selectedRewardIndex = -1;
         _equipFailed = false;
         HideError();
+
+        if (_gunStatsPanel != null) _gunStatsPanel.Show(FindPlayerGun());
 
         for (int i = 0; i < _itemSlots.Length; i++)
         {
@@ -72,12 +77,17 @@ public class RewardScreen : UIScreen
         }
     }
 
-    /// <summary>Selects a part. Picking a new part after a failed equip lets Resume try that part instead.</summary>
+    /// <summary>
+    /// Selects a part and previews its stat changes. Picking a new part after a failed equip lets Resume try that part
+    /// instead.
+    /// </summary>
     private void Pick(int index)
     {
         _selectedRewardIndex = index;
         _equipFailed = false;
         HideError();
+
+        if (_gunStatsPanel != null) _gunStatsPanel.Preview(_rewards[index].Item);
     }
 
     private void OnResume()
@@ -119,6 +129,8 @@ public class RewardScreen : UIScreen
         _equipFailed = false;
         HideError();
 
+        if (_gunStatsPanel != null) _gunStatsPanel.Hide();
+
         UIManager.Instance.ResumeButtonPressed();
     }
 
@@ -135,5 +147,13 @@ public class RewardScreen : UIScreen
         if (_errorText == null) return;
 
         _errorText.gameObject.SetActive(false);
+    }
+
+    private static Gun FindPlayerGun()
+    {
+        if (!GameManager.HasInstance || GameManager.Instance.Player == null) return null;
+
+        PlayerRoot root = GameManager.Instance.Player.GetComponent<PlayerRoot>();
+        return root != null ? root.Gun : null;
     }
 }

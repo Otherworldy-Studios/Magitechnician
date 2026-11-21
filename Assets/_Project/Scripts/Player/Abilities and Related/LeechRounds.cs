@@ -25,5 +25,6 @@ public class LeechRounds : ItemAbility
         if (Player.Shield == null) return;
 
         Player.Shield.Restore(_shieldPerHit);
+        ReportActivated();
     }
 }

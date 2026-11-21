@@ -1,16 +1,8 @@
-using UnityEngine;
-
-public class SkeletalOrc : MonoBehaviour
+/// <summary>
+/// The longest-range enemy. Fires a cannonball in an arc with ArcProjectileAttack, which can leave a HealingPool where
+/// it lands. High Min Range and Max Range stats make RepositionState back it away when the player closes in. Everything
+/// else is EnemyBase's behavior.
+/// </summary>
+public class SkeletalOrc : EnemyBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

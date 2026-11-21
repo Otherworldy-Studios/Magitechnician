@@ -1,24 +1,32 @@
 using UnityEngine;
+
 /// <summary>
-/// Moves the enemy toward its target using EnemyMovement.cs. Uses Goldilocks range and Line of Sight (LOS) to determine whether to chase, reposition, or attack.
+/// Moves the enemy toward its target using EnemyMovement. Uses the Goldilocks range and line of sight to decide whether
+/// to chase, reposition, or attack. With EnemyBase's Face Target While Chasing on, faces the player instead of its path,
+/// so a directional blend tree plays strafing.
 /// </summary>
 public class ChaseState : IEnemyState
 {
-    private readonly EnemyBase _enemy;
     private const float RepathInterval = 0.2f;
+    private readonly EnemyBase _enemy;
     private float _nextRepathTime; // Time.time of the next path update. Paths update every RepathInterval seconds.
+    private bool _previousFacesPath; // EnemyMovement.FacesPath before Enter, put back in Exit.
 
-    /// <summary>Creates the state for one enemy. EnemyBase.Awake calls this.</summary>
     public ChaseState(EnemyBase enemy)
     {
         _enemy = enemy;
     }
 
-    /// <summary>Allows immediate path recalculation and resumes movement.</summary>
+    /// <summary>Allows immediate path recalculation, resumes movement, and plays Chase.</summary>
     public void Enter()
     {
         _nextRepathTime = 0f;
         _enemy.Movement.ResumeMoving();
+        _enemy.PlayStateAnimation(EnemyAnimation.Chase);
+
+        _previousFacesPath = _enemy.Movement.FacesPath;
+        if (_enemy.FaceTargetWhileChasing)
+            _enemy.Movement.FacesPath = false;
     }
 
     /// <summary>
@@ -32,6 +40,9 @@ public class ChaseState : IEnemyState
             _enemy.ChangeState(_enemy.IdleState);
             return;
         }
+
+        if (_enemy.FaceTargetWhileChasing)
+            _enemy.FaceTarget(dt);
 
         switch (_enemy.CurrentRange)
         {
@@ -48,7 +59,6 @@ public class ChaseState : IEnemyState
 
                 _enemy.Movement.StopMoving();
                 _enemy.ChangeState(_enemy.AttackState);
-
                 return;
 
             case RangeStatus.TooFar:
@@ -61,8 +71,9 @@ public class ChaseState : IEnemyState
         }
     }
 
-    /// <summary>Does nothing.</summary>
+    /// <summary>Puts EnemyMovement.FacesPath back.</summary>
     public void Exit()
     {
+        _enemy.Movement.FacesPath = _previousFacesPath;
     }
 }

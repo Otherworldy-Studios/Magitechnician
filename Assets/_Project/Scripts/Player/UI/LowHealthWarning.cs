@@ -74,6 +74,7 @@ public class LowHealthWarning : MonoBehaviour
 
         _health.OnDamaged += HandleHealthChange;
         _health.OnHealed += HandleHealthChange;
+        _health.OnMaxHealthChanged += HandleHealthChange;
 
         HandleHealthChange(_health.CurrentHealth, _health.gameObject);
     }
@@ -84,6 +85,7 @@ public class LowHealthWarning : MonoBehaviour
         {
             _health.OnDamaged -= HandleHealthChange;
             _health.OnHealed -= HandleHealthChange;
+            _health.OnMaxHealthChanged -= HandleHealthChange;
         }
 
         _health = null;

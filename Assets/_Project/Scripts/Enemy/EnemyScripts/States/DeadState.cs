@@ -1,8 +1,9 @@
-
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
-/// Represents the enemy's terminal state after death. Stops movement and prevents further enemy behavior. Entered through EnemyBase.Die, when Health fires OnDied.
+/// Represents the enemy's terminal state after death. Stops movement and prevents further enemy behavior. Entered
+/// through EnemyBase.Die, when Health fires OnDied.
 /// </summary>
 public class DeadState : IEnemyState
 {
@@ -14,36 +15,33 @@ public class DeadState : IEnemyState
         _enemy = enemy;
     }
 
-    /// <summary>Disables enemy behavior and collisions, then removes the enemy</summary>
+    /// <summary>Plays Dead, disables enemy behavior and collisions, then removes the enemy after its Death Delay.</summary>
     public void Enter()
     {
+        _enemy.PlayStateAnimation(EnemyAnimation.Dead);
+
         _enemy.Movement.StopMoving();
         _enemy.Movement.enabled = false;
 
-        // Disable NavMeshAgent immediately, so the enemy doesn't try to move while waiting for the death delay.
-        UnityEngine.AI.NavMeshAgent agent = _enemy.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        // Turn the NavMeshAgent off right away, so the enemy doesn't try to move while waiting for the death delay.
+        NavMeshAgent agent = _enemy.GetComponent<NavMeshAgent>();
         if (agent != null)
             agent.enabled = false;
 
-        // Disable enemy collisions
         foreach (Collider collider in _enemy.GetComponentsInChildren<Collider>())
         {
             collider.enabled = false;
         }
 
-        // Disable AI
         _enemy.enabled = false;
 
-        // Remove the enemy
         Object.Destroy(_enemy.gameObject, _enemy.DeathDelay);
     }
 
-    /// <summary>Dead enemies perform no further behavior.</summary>
     public void Tick(float dt)
     {
     }
 
-    /// <summary>Does nothing. EnemyBase.ChangeState never leaves DeadState.</summary>
     public void Exit()
     {
     }

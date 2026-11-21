@@ -25,7 +25,7 @@ namespace _Project.Scripts.Dungeon
     /// <summary>
     /// Builds the dungeon in the Level scene when GameManager raises OnGenerateRequested: places a start room, grows
     /// combat rooms out from it on a grid using a seed, links neighbors and portals, puts the End room next to the
-    /// farthest room, completes the start room when it has no enemies, bakes the NavMesh, and fires OnMapGenerated.
+    /// farthest room, bakes the NavMesh, and fires OnMapGenerated.
     /// PlayerSpawner and GameManager start the run from that event.
     /// </summary>
     // Inherits MGR<LevelGenerator> with Should Persist off, so it only exists in the Level scene.
@@ -66,6 +66,9 @@ namespace _Project.Scripts.Dungeon
         [Tooltip("Added to the chance after each room past the minimum.")]
         [SerializeField] private int _generationChanceDelta;
 
+        [Tooltip("Meters of empty space between the bounding boxes of two rooms next to each other.")]
+        [SerializeField, Min(0f)] private float _roomGap = 5f;
+
         [Header("Room Prefabs")]
         [SerializeField] private WeightedRoom[] _startRooms;
         [SerializeField] private WeightedRoom[] _combatRooms;
@@ -75,7 +78,8 @@ namespace _Project.Scripts.Dungeon
         [SerializeField, ReadOnly] private Room _startRoom;
         [SerializeField, ReadOnly] private List<Room> _generatedCombatRooms;
         [SerializeField, ReadOnly] private Room _endRoom;
-        [SerializeField, ReadOnly] private int _generationChance; // Grows with each room past the minimum.
+        [Tooltip("Grows with each room past the minimum.")]
+        [SerializeField, ReadOnly] private int _generationChance;
 
         [ReadOnly]
         public bool GenerationComplete;
@@ -85,7 +89,7 @@ namespace _Project.Scripts.Dungeon
         private Room[,] _roomGrid;                             // Each cell holds a room or null.
 
         /// <summary>
-        /// Fires after the map is built, the start room is handled, and the NavMesh is baked.
+        /// Fires after the map is built and the NavMesh is baked.
         /// PlayerSpawner places the player from it, and that starts the run.
         /// </summary>
         public event Action OnMapGenerated;
@@ -246,10 +250,15 @@ namespace _Project.Scripts.Dungeon
 
                         Room selected = GetRandomCombatRoom(roomRandom.Next());
                         Room nextRoom = Instantiate(selected, room.transform.position, Quaternion.identity, RoomParent);
+                        nextRoom.transform.position = PositionNextTo(room, nextRoom, direction);
 
-                        // Spaced by the room's bounding box diagonal. Still to change to the room prefab standard's size (task 3).
-                        nextRoom.transform.position = room.gameObject.transform.position + (_directions[direction] *
-                            nextRoom.BoundingBox.bounds.size.magnitude);
+                        // Rooms can differ in size, so a room grown from one neighbor can still reach into another.
+                        if (OverlapsPlacedRoom(nextRoom, room))
+                        {
+                            nextRoom.gameObject.SetActive(false); // Destroy waits until the end of the frame, and the bake skips inactive objects.
+                            Destroy(nextRoom.gameObject);
+                            continue;
+                        }
 
                         nextRoom.Id = $"Combat{(nextRoom != null ? _generatedCombatRooms.Count : -1)}";
 
@@ -296,9 +305,10 @@ namespace _Project.Scripts.Dungeon
         }
 
         /// <summary>
-        /// Places the End room next to the room farthest from the start, on the first free side, links the two,
-        /// and points the farthest room's portal at it. Then finishes generation.
-        /// The End room isn't added to the grid yet, so it can overlap another room (task 3).
+        /// Places the End room next to the room farthest from the start, on the first side that's free and where it
+        /// doesn't overlap another room, links the two, and points the farthest room's portal at it. When no side
+        /// fits, such as for a large boss room, places it past every other room instead. The portal teleports the
+        /// player, so the End room doesn't have to touch the farthest room. Then finishes generation.
         /// </summary>
         private void PlaceEndRoom(long seed)
         {
@@ -310,45 +320,46 @@ namespace _Project.Scripts.Dungeon
                 return;
             }
 
-            Direction direction = Direction.North;
-
-            if (farthest.North == null)
-                direction = Direction.North;
-            else if (farthest.South == null)
-                direction = Direction.South;
-            else if (farthest.East == null)
-                direction = Direction.East;
-            else if (farthest.West == null)
-                direction = Direction.West;
-
-            Vector3 dir = _directions[direction];
-
             Room selected = GetRandomEndRoom(seed);
             Room end = Instantiate(selected, farthest.transform.position, Quaternion.identity, RoomParent);
-            end.transform.position = farthest.gameObject.transform.position +
-                                     (dir * end.BoundingBox.bounds.size.magnitude);
+            end.Id = "End1";
 
-            end.Id = $"End{(end != null ? 1 : 0)}";
+            bool placed = false;
+            Direction direction = Direction.North;
 
-            switch (direction)
+            foreach (Direction side in new[] { Direction.North, Direction.South, Direction.East, Direction.West })
             {
-                case Direction.North:
-                    farthest.North = end;
-                    end.South = farthest;
-                    break;
-                case Direction.South:
-                    farthest.South = end;
-                    end.North = farthest;
-                    break;
-                case Direction.East:
-                    farthest.East = end;
-                    end.West = farthest;
-                    break;
-                case Direction.West:
-                    farthest.West = end;
-                    end.East = farthest;
-                    break;
+                if (GetNeighbor(farthest, side) != null)
+                    continue;
+
+                end.transform.position = PositionNextTo(farthest, end, side);
+
+                if (OverlapsPlacedRoom(end, farthest))
+                    continue;
+
+                direction = side;
+                placed = true;
+                break;
             }
+
+            if (!placed)
+            {
+                end.transform.position = PositionPastAllRooms(end);
+
+                // The link only needs a free side on the farthest room. With none free, the portal alone connects them.
+                foreach (Direction side in new[] { Direction.North, Direction.South, Direction.East, Direction.West })
+                {
+                    if (GetNeighbor(farthest, side) != null)
+                        continue;
+
+                    direction = side;
+                    placed = true;
+                    break;
+                }
+            }
+
+            if (placed)
+                LinkNeighbors(farthest, end, direction);
 
             _endRoom = end;
             farthest.Portal.Connected = _endRoom;
@@ -356,21 +367,143 @@ namespace _Project.Scripts.Dungeon
             FinishGeneration();
         }
 
+        private static void LinkNeighbors(Room from, Room to, Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.North:
+                    from.North = to;
+                    to.South = from;
+                    break;
+                case Direction.South:
+                    from.South = to;
+                    to.North = from;
+                    break;
+                case Direction.East:
+                    from.East = to;
+                    to.West = from;
+                    break;
+                case Direction.West:
+                    from.West = to;
+                    to.East = from;
+                    break;
+            }
+        }
+
         /// <summary>
-        /// Runs once every room is placed:
-        /// 1. Completes the start room if it has no RoomEncounter, which opens its portal. A start room with a
-        ///    RoomEncounter has enemies and clears like a combat room instead.
-        /// 2. Bakes the NavMesh over the placed rooms.
-        /// 3. Fires OnMapGenerated, so PlayerSpawner places the player in a finished, baked map.
+        /// Runs once every room is placed. Bakes the NavMesh over the placed rooms, then fires OnMapGenerated, so
+        /// PlayerSpawner places the player in a finished, baked map. The start room isn't completed here, because it
+        /// has enemies and clears through WaveManager like a combat room.
         /// </summary>
         private void FinishGeneration()
         {
-            if (_startRoom != null)
-                _startRoom.OnComplete();
-
             BakeNavMesh();
             GenerationComplete = true;
             OnMapGenerated?.Invoke();
+        }
+
+        /// <summary>
+        /// Where to put a room so its bounding box sits Room Gap past the other room's box in a direction, with the two
+        /// boxes' centers lined up on the other axis and the rooms' origins at the same height. Works for rooms of any size.
+        /// </summary>
+        private Vector3 PositionNextTo(Room from, Room to, Direction direction)
+        {
+            Vector3 axis = _directions[direction];
+            GetFootprint(from, out Vector3 fromCenter, out Vector3 fromHalfSize);
+            GetFootprint(to, out Vector3 toCenter, out Vector3 toHalfSize);
+
+            float spacing = Vector3.Dot(fromHalfSize, Abs(axis)) + Vector3.Dot(toHalfSize, Abs(axis)) + _roomGap;
+            Vector3 toCenterOffset = toCenter - to.transform.position;
+
+            Vector3 position = fromCenter + axis * spacing - toCenterOffset;
+            position.y = from.transform.position.y; // Keeps the floors level when the boxes have different heights.
+            return position;
+        }
+
+        /// <summary>A position east of every placed room, Room Gap past the farthest east edge, level with the start room.</summary>
+        private Vector3 PositionPastAllRooms(Room room)
+        {
+            float eastEdge = float.MinValue;
+
+            foreach (Room placed in PlacedRooms())
+            {
+                GetFootprint(placed, out Vector3 placedCenter, out Vector3 placedHalfSize);
+                eastEdge = Mathf.Max(eastEdge, placedCenter.x + placedHalfSize.x);
+            }
+
+            GetFootprint(room, out Vector3 roomCenter, out Vector3 roomHalfSize);
+            Vector3 centerOffset = roomCenter - room.transform.position;
+
+            Vector3 center = new Vector3(eastEdge + _roomGap + roomHalfSize.x, _startRoom.transform.position.y, _startRoom.transform.position.z);
+            return center - new Vector3(centerOffset.x, 0f, centerOffset.z);
+        }
+
+        /// <summary>True when the room's bounding box, plus half of Room Gap, overlaps any placed room's box other than the one given.</summary>
+        private bool OverlapsPlacedRoom(Room room, Room except)
+        {
+            GetFootprint(room, out Vector3 center, out Vector3 halfSize);
+            Bounds bounds = new Bounds(center, halfSize * 2f + Vector3.one * _roomGap * 0.5f);
+
+            foreach (Room placed in PlacedRooms())
+            {
+                if (placed == room || placed == except)
+                    continue;
+
+                GetFootprint(placed, out Vector3 placedCenter, out Vector3 placedHalfSize);
+
+                if (bounds.Intersects(new Bounds(placedCenter, placedHalfSize * 2f)))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// The room's bounding box in world space, worked out from the BoxCollider's center and size instead of its
+        /// bounds, because a room moved this frame still reports its old bounds until the physics scene updates.
+        /// </summary>
+        private static void GetFootprint(Room room, out Vector3 center, out Vector3 halfSize)
+        {
+            BoxCollider box = room.BoundingBox;
+
+            if (box == null)
+            {
+                center = room.transform.position;
+                halfSize = Vector3.zero;
+                return;
+            }
+
+            Vector3 scale = box.transform.lossyScale;
+            center = box.transform.TransformPoint(box.center);
+            halfSize = Vector3.Scale(box.size * 0.5f, new Vector3(Mathf.Abs(scale.x), Mathf.Abs(scale.y), Mathf.Abs(scale.z)));
+        }
+
+        private IEnumerable<Room> PlacedRooms()
+        {
+            if (_startRoom != null)
+                yield return _startRoom;
+
+            foreach (Room room in _generatedCombatRooms)
+            {
+                if (room != null)
+                    yield return room;
+            }
+        }
+
+        private static Room GetNeighbor(Room room, Direction direction)
+        {
+            return direction switch
+            {
+                Direction.North => room.North,
+                Direction.South => room.South,
+                Direction.East => room.East,
+                _ => room.West
+            };
+        }
+
+        private static Vector3 Abs(Vector3 vector)
+        {
+            return new Vector3(Mathf.Abs(vector.x), Mathf.Abs(vector.y), Mathf.Abs(vector.z));
         }
 
         private void BakeNavMesh()

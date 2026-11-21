@@ -5,9 +5,8 @@ using UnityEngine;
 /// </summary>
 public class MeleeAttack : EnemyAttack
 {
+    [Tooltip("Each melee attack needs its own hitbox, so two swings can have different shapes.")]
     [SerializeField] private EnemyMeleeHitbox _hitbox;
-
-    // INTEGRATION: removed the _damage field. Damage now comes from EnemyBase.AttackDamage, which reads the Stats component.
 
     [Tooltip("Seconds the hitbox stays on after the wind-up.")]
     [SerializeField] private float _activeTime = 0.25f;
@@ -23,7 +22,7 @@ public class MeleeAttack : EnemyAttack
 
         DamageInfo info = new DamageInfo
         {
-            DamageAmount = Mathf.RoundToInt(Owner.AttackDamage), // INTEGRATION: was _damage. Rounded because stats are floats.
+            DamageAmount = Damage,
             DamageSource = Owner.gameObject,
             DamageDirection = Owner.transform.forward,
             DamageType = DamageType.Physical

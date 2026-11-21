@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Stat_FireRate
   m_EditorClassIdentifier: Assembly-CSharp::StatDefinition
   _displayName: FireRate
+  _description: How many shots the gun fires per second
   _icon: {fileID: 0}
+  _higherIsBetter: 1
   _minValue: 0
   _maxValue: 5000

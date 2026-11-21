@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Fires a projectile at the center of the player's body.
-/// Wind-up and cooldown are handled by EnemyAttack.
+/// Fires a projectile at the center of the player's body. Wind-up and cooldown are handled by EnemyAttack.
+/// The Corrupted Insectoid's spike uses this.
 /// </summary>
 public class ProjectileAttack : EnemyAttack
 {
@@ -19,10 +19,7 @@ public class ProjectileAttack : EnemyAttack
 
     protected override void PerformAttack()
     {
-        if (_projectilePrefab == null ||
-            _firePoint == null ||
-            Owner == null ||
-            !Owner.HasTarget)
+        if (_projectilePrefab == null || _firePoint == null || Owner == null || !Owner.HasTarget)
             return;
 
         Vector3 direction = GetAimPoint() - _firePoint.position;
@@ -30,25 +27,17 @@ public class ProjectileAttack : EnemyAttack
         if (direction.sqrMagnitude < 0.001f)
             return;
 
-        Projectile projectile = Instantiate(
-            _projectilePrefab,
-            _firePoint.position,
-            Quaternion.LookRotation(direction)
-        );
+        Projectile projectile = Instantiate(_projectilePrefab, _firePoint.position, Quaternion.LookRotation(direction));
 
         DamageInfo info = new DamageInfo
         {
-            DamageAmount = Mathf.RoundToInt(Owner.AttackDamage),
+            DamageAmount = Damage,
             DamageSource = Owner.gameObject,
             DamageDirection = direction.normalized,
             DamageType = DamageType.Physical
         };
 
-        projectile.Initialize(
-            info,
-            _projectileSpeed,
-            _projectileRange
-        );
+        projectile.Initialize(info, _projectileSpeed, _projectileRange);
     }
 
     /// <summary>

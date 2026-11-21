@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Stat_AmmoType
   m_EditorClassIdentifier: Assembly-CSharp::StatDefinition
   _displayName: AmmoType
+  _description: The element of each bullet, such as Physical.
   _icon: {fileID: 0}
+  _higherIsBetter: 1
   _minValue: 0
   _maxValue: 4

@@ -104,6 +104,7 @@ public class PlayerAudio : MonoBehaviour
             _health.OnDamaged += HandleDamaged;
             _health.OnHealed += HandleHealed;
             _health.OnDied += HandleDied;
+            _health.OnMaxHealthChanged += HandleMaxHealthChanged;
         }
 
         if (_shield != null)
@@ -140,6 +141,7 @@ public class PlayerAudio : MonoBehaviour
             _health.OnDamaged -= HandleDamaged;
             _health.OnHealed -= HandleHealed;
             _health.OnDied -= HandleDied;
+            _health.OnMaxHealthChanged -= HandleMaxHealthChanged;
         }
 
         if (_shield != null)
@@ -252,6 +254,12 @@ public class PlayerAudio : MonoBehaviour
 
         _lastHealTime = Time.time;
         Play(HealSound);
+    }
+
+    // A new max health can move the player above or below the heartbeat threshold.
+    private void HandleMaxHealthChanged(int currentHealth, GameObject sender)
+    {
+        UpdateHeartbeat();
     }
 
     private void HandleGhostRecovered(int amount)

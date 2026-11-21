@@ -6,10 +6,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "WaveData", menuName = "Dungeon/Waves/Wave Data")]
 public class WaveData : SerializedScriptableObject
 {
-    [OdinSerialize]
-    private List<Wave> _waves;
+    [SerializeField]
+    private List<Wave> _waves = new();
 
-    [OdinSerialize]
+    [SerializeField]
     private float _startDelay;
 
     public float StartDelay => _startDelay;

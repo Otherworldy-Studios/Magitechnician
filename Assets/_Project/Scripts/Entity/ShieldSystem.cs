@@ -30,8 +30,8 @@ public class ShieldSystem : MonoBehaviour
 
     private float _regenTimer;     // Seconds left before regeneration starts.
     private bool _isRegenerating;  // True while regenerating, so OnShieldRegenStarted fires once per recharge.
-    private Stats _subscribedTo;   
-    private bool _started;        
+    private Stats _subscribedTo;
+    private bool _started;
     private float _lastMaxShield;  // MaxShield before the latest change, to work out how much it grew.
 
     /// <summary>Fires after the shield takes damage, with the shield left. ShieldBar listens to it.</summary>
@@ -44,6 +44,8 @@ public class ShieldSystem : MonoBehaviour
     public event Action OnShieldHealed;
     /// <summary>Fires once when the shield starts regenerating after the delay. PlayerAudio plays the recharge sound from it.</summary>
     public event Action OnShieldRegenStarted;
+    /// <summary>Fires after MaxShield changes, such as from a charm. ShieldBar updates from it.</summary>
+    public event Action OnMaxShieldChanged;
 
     /// <summary>Shield points left.</summary>
     [field: SerializeField] public float CurrentShield { get; private set; }
@@ -140,17 +142,21 @@ public class ShieldSystem : MonoBehaviour
 
     /// <summary>
     /// Follows changes to Stat_MaxShield. Growth is added to the current shield unless it's broken,
-    /// and the current shield never ends up over the new max.
+    /// and the current shield never ends up over the new max. Fires OnMaxShieldChanged so the HUD updates.
     /// </summary>
     private void HandleStatChanged(StatDefinition stat, float value)
     {
         if (stat != _maxShieldStat || _settings == null) return;
 
         float difference = value - _lastMaxShield;
+        if (Mathf.Approximately(difference, 0f)) return;
+
         _lastMaxShield = value;
 
         if (difference > 0f && !IsBroken) CurrentShield += difference;
         CurrentShield = Mathf.Min(CurrentShield, value);
+
+        OnMaxShieldChanged?.Invoke();
     }
 
     /// <summary>

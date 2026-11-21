@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6453494207154980954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e755e7717f3743ff812ce9d8387135f5, type: 3}
+  m_Name: Knights_Hard_Wave3
+  m_EditorClassIdentifier: Assembly-CSharp::Wave
+  _entries:
+  - {fileID: 1082248601444796019}
+  _spawnInterval: 0.8
+--- !u!114 &-5494643845147268886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387cca2829964038ba3550df319032ee, type: 3}
+  m_Name: Knights_Hard_Wave2_DarkKnight
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEntry
+  _enemy: {fileID: 6587833776491720439, guid: 61bc41f7cc9fac948b46899c9ecc8a0e, type: 3}
+  count: 3
+--- !u!114 &-3536238779267534202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387cca2829964038ba3550df319032ee, type: 3}
+  m_Name: Knights_Hard_Wave2_SkeletalOrc
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEntry
+  _enemy: {fileID: 3057170392453508612, guid: a53576af7e04ffb42895f7bcbb5e486a, type: 3}
+  count: 1
+--- !u!114 &-2956726913688883518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e755e7717f3743ff812ce9d8387135f5, type: 3}
+  m_Name: Knights_Hard_Wave2
+  m_EditorClassIdentifier: Assembly-CSharp::Wave
+  _entries:
+  - {fileID: -5494643845147268886}
+  - {fileID: -3536238779267534202}
+  _spawnInterval: 0.9
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c569d9d0c6d48ecbe53b51b411942e6, type: 3}
+  m_Name: Knights_Hard
+  m_EditorClassIdentifier: Assembly-CSharp::WaveData
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  _waves:
+  - {fileID: 5993086509807059436}
+  - {fileID: -2956726913688883518}
+  - {fileID: -6453494207154980954}
+  _startDelay: 1.5
+--- !u!114 &1082248601444796019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387cca2829964038ba3550df319032ee, type: 3}
+  m_Name: Knights_Hard_Wave3_DarkKnight
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEntry
+  _enemy: {fileID: 6587833776491720439, guid: 61bc41f7cc9fac948b46899c9ecc8a0e, type: 3}
+  count: 4
+--- !u!114 &5993086509807059436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e755e7717f3743ff812ce9d8387135f5, type: 3}
+  m_Name: Knights_Hard_Wave1
+  m_EditorClassIdentifier: Assembly-CSharp::Wave
+  _entries:
+  - {fileID: 7131527889433345614}
+  _spawnInterval: 1
+--- !u!114 &7131527889433345614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387cca2829964038ba3550df319032ee, type: 3}
+  m_Name: Knights_Hard_Wave1_DarkKnight
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEntry
+  _enemy: {fileID: 6587833776491720439, guid: 61bc41f7cc9fac948b46899c9ecc8a0e, type: 3}
+  count: 3

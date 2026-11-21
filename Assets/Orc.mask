@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Orc
+  m_Mask: 00000000010000000100000001000000010000000100000001000000000000000000000000000000000000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 1
+  - m_Path: Armature/Root
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_L/Shoulder_L/Elbow_L/Hand_L/Hand_L_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Clavicle_R/Shoulder_R/Elbow_R/Hand_R/Hand_R_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Neck
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/Spine_01/Spine_02/Spine_03/Neck/Head/Head_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_L/LowerLeg_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_L/LowerLeg_L/Ankle_L/Ball_L/Ball_L_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_R/LowerLeg_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R
+    m_Weight: 1
+  - m_Path: Armature/Root/Hips/UpperLeg_R/LowerLeg_R/Ankle_R/Ball_R/Ball_R_end
+    m_Weight: 1
+  - m_Path: Belt
+    m_Weight: 1
+  - m_Path: Feet
+    m_Weight: 1
+  - m_Path: Hand
+    m_Weight: 1
+  - m_Path: Hea
+    m_Weight: 1
+  - m_Path: Hood Lower
+    m_Weight: 1
+  - m_Path: Hood Upper
+    m_Weight: 1
+  - m_Path: Left Arm
+    m_Weight: 1
+  - m_Path: Legs
+    m_Weight: 1
+  - m_Path: Nec
+    m_Weight: 1
+  - m_Path: Right Arm
+    m_Weight: 1
+  - m_Path: Scarf
+    m_Weight: 1
+  - m_Path: Teeth
+    m_Weight: 1
+  - m_Path: Thigh
+    m_Weight: 1
+  - m_Path: Thigh.001
+    m_Weight: 1
+  - m_Path: Torso
+    m_Weight: 1

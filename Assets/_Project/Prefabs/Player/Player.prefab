@@ -382,14 +382,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShieldSystem
   _settings: {fileID: 11400000, guid: ed24f265d96090a40829f71798e57d4f, type: 2}
-  <CurrentShield>k__BackingField: 0
-  <IsBroken>k__BackingField: 0
+  _playerStats: {fileID: 2538457442136657555}
   _maxShieldStat: {fileID: 11400000, guid: 664aed8d8551e41d2afc694a2660efcd, type: 2}
   _regenRateStat: {fileID: 11400000, guid: 966e8bb65ed5dda41a44a39f4ff9d278, type: 2}
   _regenDelayStat: {fileID: 11400000, guid: 07fd78374c4e44b84a0bd31b118c4a38, type: 2}
   _brokenRegenDelayStat: {fileID: 11400000, guid: 09b23faf8ab944ace9b45aa911aedf78, type: 2}
   _damageReductionStat: {fileID: 11400000, guid: ddb10c6c530d944e9822bc8cd75f9525, type: 2}
-  _playerStats: {fileID: 2538457442136657555}
+  <CurrentShield>k__BackingField: 0
+  <IsBroken>k__BackingField: 0
 --- !u!114 &4293993604866519486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,14 +429,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde2ff205500bc74daeca9b92364b906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shoot
-  _gun: {fileID: 521992841820949502}
+  _gun: {fileID: 4755152884728353199}
   _input: {fileID: 0}
   _camera: {fileID: 2285013190888354012}
   _hitMask:
     serializedVersion: 2
     m_Bits: 768
   _maxMuzzleAngle: 12.7
-  _cameraController: {fileID: 8946386472445388545}
 --- !u!114 &8879478622747076826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,13 +501,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Stats
   _statBlock: {fileID: 11400000, guid: c5b14219c170f43dbaa1694b8111ee0b, type: 2}
   _modifiers: []
-  _testStat: {fileID: 0}
-  _testModifier:
-    _stat: {fileID: 0}
-    _operation: 0
-    _value: 0
-    _duration: 0
-    _permanent: 0
 --- !u!114 &2233296635478493348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,16 +522,16 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _crystals: 0
-  _equippedCharmSlots: 0
-  _charmSlots: 5
+  _crystals: 999
+  _equippedCharmSlots: 5
+  _charmSlots: 20
   _maxConsumables: 3
   _playerStats: {fileID: 2538457442136657555}
   _playerAbilities: {fileID: 0}
   _gunStats: {fileID: 0}
   _health: {fileID: 2470234422445426739}
   _onlyDuringRun: 1
-  _playerRoot: {fileID: 0}
+  _playerRoot: {fileID: 4765447663455402449}
 --- !u!114 &3692322850074084798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,7 +546,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractionDetector
   _player: {fileID: 4765447663455402449}
   _origin: {fileID: 1287622597427531618}
-  _radius: 3.23
+  _radius: 5
   _interactableLayers:
     serializedVersion: 2
     m_Bits: 4096
@@ -570,13 +562,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 575f2fcb8eb41454e94b3aa743fe7e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostHealth
-  health: {fileID: 2470234422445426739}
-  ghostRecoverySource: {fileID: 521992841820949502}
-  damageReceiver: {fileID: 5614074075523072044}
-  useContestedHealth: 1
-  ghostHealthPercent: 0.4
-  ghostDrainTime: 5
-  ghostRecoveryPercent: 0.2
+  _health: {fileID: 0}
+  _ghostRecoverySource: {fileID: 0}
+  _damageReceiver: {fileID: 0}
+  _useContestedHealth: 1
+  _ghostHealthPercent: 0.4
+  _ghostDrainTime: 5
+  _ghostRecoveryPercent: 0.2
 --- !u!1 &3346735939129070630
 GameObject:
   m_ObjectHideFlags: 0
@@ -897,7 +889,7 @@ Transform:
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.633, y: 0.6259999, z: -0.738}
+  m_LocalPosition: {x: -12.38222, y: 1.32172, z: 0.67421}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1047,6 +1039,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6827939487981893994}
+  - component: {fileID: 4755152884728353199}
+  - component: {fileID: 1879946313752925104}
   m_Layer: 0
   m_Name: Gun
   m_TagString: Untagged
@@ -1075,6 +1069,48 @@ Transform:
   - {fileID: 5519022023759868404}
   m_Father: {fileID: 8140326801771750711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4755152884728353199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6733289914950100863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c3ae75ab618248bca7903996a738d99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gun
+  _gunParts:
+  - {fileID: 11400000, guid: 104430a6f9c7a41d4b7152ef34a9a035, type: 2}
+  - {fileID: 11400000, guid: 60637fbe961404da6968720aa6c71ae4, type: 2}
+  - {fileID: 11400000, guid: 159998589347c4f87b3cf294ec8ebcb3, type: 2}
+  - {fileID: 11400000, guid: 8879ff21c14c24a8d8b36da80b650e42, type: 2}
+  - {fileID: 11400000, guid: 0f2e017156cba415780f67fb1d639728, type: 2}
+  _stats: {fileID: 1879946313752925104}
+  _muzzle: {fileID: 8536945881307047410}
+  _projectilePrefab: {fileID: 96595193664342919, guid: 503d231ab675f8045b20d2148539669c, type: 3}
+  _player: {fileID: 4765447663455402449}
+  _damageStat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
+  _fireRateStat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}
+  _rangeStat: {fileID: 11400000, guid: 1273e247e399148f4b50c9746f98b743, type: 2}
+  _spreadStat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}
+  _bulletSpeedStat: {fileID: 11400000, guid: 9a1aa751653564c1eb77b30e5ff5fed0, type: 2}
+  _ammoTypeStat: {fileID: 11400000, guid: afc89de14e2fc5145ac3f9cb2950b0ef, type: 2}
+--- !u!114 &1879946313752925104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6733289914950100863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1290efa99f69c4ad89bc06dd3f95d16a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stats
+  _statBlock: {fileID: 11400000, guid: 3838b8939f49341f483b3ccc8ff2a2e2, type: 2}
+  _modifiers: []
 --- !u!1 &7357744756683246077
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,8 +1167,8 @@ MonoBehaviour:
   _inventory: {fileID: 2233296635478493348}
   _playerStats: {fileID: 2538457442136657555}
   _playerMovement: {fileID: 2796982883176742587}
-  _gun: {fileID: 521992841820949502}
-  _abilities: {fileID: 0}
+  _gun: {fileID: 4755152884728353199}
+  _abilities: {fileID: 6185835534511645459}
 --- !u!114 &6185835534511645459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,14 +1210,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e125d8e0e65694591a73dc004a3748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAudio
-  lowHealthThreshold: 0.25
-  walkVolume: 0.6
-  runVolume: 1
-  minTimeBetweenSteps: 0.15
-  minAirTime: 0.3
-  loudAirTime: 1
-  softLandVolume: 0.4
-  minTimeBetweenHeals: 0.5
+  _lowHealthThreshold: 0.25
+  _minTimeBetweenHurts: 0.2
+  _walkVolume: 0.6
+  _runVolume: 1
+  _minTimeBetweenSteps: 0.15
+  _minAirTime: 0.3
+  _loudAirTime: 1
+  _softLandVolume: 0.4
+  _minTimeBetweenHeals: 0.5
 --- !u!1 &7765213929413278480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1887,14 +1924,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6e125d8e0e65694591a73dc004a3748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAudio
-  lowHealthThreshold: 0.25
-  walkVolume: 0.6
-  runVolume: 1
-  minTimeBetweenSteps: 0.15
-  minAirTime: 0.3
-  loudAirTime: 1
-  softLandVolume: 0.4
-  minTimeBetweenHeals: 0.5
+  _lowHealthThreshold: 0.25
+  _minTimeBetweenHurts: 0.2
+  _walkVolume: 0.6
+  _runVolume: 1
+  _minTimeBetweenSteps: 0.15
+  _minAirTime: 0.3
+  _loudAirTime: 1
+  _softLandVolume: 0.4
+  _minTimeBetweenHeals: 0.5
 --- !u!4 &8140326801771750711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4398040221165394, guid: 869bc2aa529be4d4987badf65386c72f, type: 3}
@@ -1971,69 +2009,8 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4073316784439530, guid: aa1e7dc87991f87449268b020190ad8e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8536945881307047410}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1288179599675324, guid: aa1e7dc87991f87449268b020190ad8e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 521992841820949502}
-    - targetCorrespondingSourceObject: {fileID: 1288179599675324, guid: aa1e7dc87991f87449268b020190ad8e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 805099560847028078}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa1e7dc87991f87449268b020190ad8e, type: 3}
---- !u!1 &9129464918587801012 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1288179599675324, guid: aa1e7dc87991f87449268b020190ad8e, type: 3}
-  m_PrefabInstance: {fileID: 9130710069953098248}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &521992841820949502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9129464918587801012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c3ae75ab618248bca7903996a738d99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Gun
-  _gunParts:
-  - {fileID: 11400000, guid: 104430a6f9c7a41d4b7152ef34a9a035, type: 2}
-  - {fileID: 11400000, guid: 60637fbe961404da6968720aa6c71ae4, type: 2}
-  - {fileID: 11400000, guid: 159998589347c4f87b3cf294ec8ebcb3, type: 2}
-  - {fileID: 11400000, guid: 8879ff21c14c24a8d8b36da80b650e42, type: 2}
-  - {fileID: 11400000, guid: 0f2e017156cba415780f67fb1d639728, type: 2}
-  _stats: {fileID: 2538457442136657555}
-  _muzzle: {fileID: 8536945881307047410}
-  _projectilePrefab: {fileID: 96595193664342919, guid: 503d231ab675f8045b20d2148539669c, type: 3}
-  _player: {fileID: 4765447663455402449}
-  _damageStat: {fileID: 11400000, guid: 081ad46992a80449e9d2f016fada2b40, type: 2}
-  _fireRateStat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}
-  _rangeStat: {fileID: 11400000, guid: 1273e247e399148f4b50c9746f98b743, type: 2}
-  _spreadStat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}
-  _bulletSpeedStat: {fileID: 11400000, guid: 9a1aa751653564c1eb77b30e5ff5fed0, type: 2}
-  _fireTypeStat: {fileID: 11400000, guid: ac0de3d9f0e725748b895e083011a05e, type: 2}
-  _ammoTypeStat: {fileID: 11400000, guid: afc89de14e2fc5145ac3f9cb2950b0ef, type: 2}
---- !u!114 &805099560847028078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9129464918587801012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1290efa99f69c4ad89bc06dd3f95d16a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Stats
-  _statBlock: {fileID: 11400000, guid: 3838b8939f49341f483b3ccc8ff2a2e2, type: 2}
-  _modifiers: []
-  _testStat: {fileID: 0}
-  _testModifier:
-    _stat: {fileID: 0}
-    _operation: 0
-    _value: 0
-    _duration: 0
-    _permanent: 0
 --- !u!4 &9131247008824980194 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4073316784439530, guid: aa1e7dc87991f87449268b020190ad8e, type: 3}

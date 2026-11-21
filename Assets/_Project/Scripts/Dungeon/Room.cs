@@ -9,11 +9,11 @@ namespace _Project.Scripts.Dungeon
     /// <summary>
     /// One room of the dungeon. Goes on the root of a room prefab. Holds the room's type, waves, player spawn point,
     /// bounding box, chest, exit portal, and links to its neighbors. EnterRoom runs when the player arrives, and
-    /// OnComplete when the room is cleared, which opens the portal and fires OnRoomCleared.
+    /// OnComplete when the room is cleared, which rolls the chest, opens the portal, and fires OnRoomCleared. When the
+    /// chest appears, the portal waits until the chest is opened.
     /// </summary>
     public class Room : MonoBehaviour
     {
-      
         public enum RoomType
         {
             Start,
@@ -34,7 +34,7 @@ namespace _Project.Scripts.Dungeon
         [SerializeField] private WaveData _roomWaves;
 
         [Header("Chest")]
-        [Tooltip("The room's chest, turned off in the prefab. RollChest turns it on.")]
+        [Tooltip("The room's chest, turned off in the prefab. RollChest turns it on. Needs a TreasureChest on it or a child.")]
         [SerializeField] private GameObject _chest;
 
         [Tooltip("Chance that the chest appears after the reward is picked, from 0 to 1.")]
@@ -42,16 +42,24 @@ namespace _Project.Scripts.Dungeon
 
         #region DebugFields
         [Header("Debug (Do not edit)"), Space(5)]
-        [SerializeField, ReadOnly] private string _id;            // Set by the generator, such as "Combat2".
-        [SerializeField, ReadOnly] private bool _complete;        // True once OnComplete has run.
+        [Tooltip("Set by the generator, such as \"Combat2\".")]
+        [SerializeField, ReadOnly] private string _id;
+        [Tooltip("True once OnComplete has run.")]
+        [SerializeField, ReadOnly] private bool _complete;
         [SerializeField, ReadOnly] private List<Spawnpoint> _spawnpoints;
-        [SerializeField, ReadOnly] private Portal _portal;        // The exit. Found in children in Awake.
+        [Tooltip("The exit. Found in children in Awake.")]
+        [SerializeField, ReadOnly] private Portal _portal;
+        [Tooltip("The TreasureChest on Chest. Found in Awake.")]
+        [SerializeField, ReadOnly] private TreasureChest _treasureChest;
 
-        // Neighbor links, set by the generator. Null where there's no room.
+        [Tooltip("Neighbor link, set by the generator. Null where there's no room.")]
         [SerializeField, ReadOnly] private Room _north;
-        [SerializeField] private Room _south;
-        [SerializeField] private Room _east;
-        [SerializeField] private Room _west;
+        [Tooltip("Neighbor link, set by the generator. Null where there's no room.")]
+        [SerializeField, ReadOnly] private Room _south;
+        [Tooltip("Neighbor link, set by the generator. Null where there's no room.")]
+        [SerializeField, ReadOnly] private Room _east;
+        [Tooltip("Neighbor link, set by the generator. Null where there's no room.")]
+        [SerializeField, ReadOnly] private Room _west;
         #endregion
 
         public event Action<Room> OnRoomEntered;
@@ -100,13 +108,22 @@ namespace _Project.Scripts.Dungeon
         {
             _portal = GetComponentInChildren<Portal>();
 
-            if (_portal == null)
-                Debug.Log($"{name} has no exit portal");
-            else
+            if (_portal != null)
                 _portal.Parent = this;
 
-            _spawnpoints = GetComponentsInChildren<Spawnpoint>().ToList()
-                .Where(x => x.CanSpawnEnemies).ToList();
+            _spawnpoints = GetComponentsInChildren<Spawnpoint>().ToList().Where(x => x.CanSpawnEnemies).ToList();
+
+            if (_chest != null)
+                _treasureChest = _chest.GetComponentInChildren<TreasureChest>(true);
+
+            if (_treasureChest != null)
+                _treasureChest.OnOpened += OpenPortal;
+        }
+
+        private void OnDestroy()
+        {
+            if (_treasureChest != null)
+                _treasureChest.OnOpened -= OpenPortal;
         }
 
         /// <summary>
@@ -122,8 +139,10 @@ namespace _Project.Scripts.Dungeon
         }
 
         /// <summary>
-        /// Clears the room: opens its portal if it leads somewhere, and fires OnRoomCleared the first time.
-        /// Called by WaveManager when the last Wave is cleared, by LevelGenerator for the start room, and as a debug button.
+        /// Clears the room the first time: rolls the chest, opens the portal unless a chest appeared, and fires
+        /// OnRoomCleared. With a chest, the portal opens when the chest is opened.
+        /// Called by WaveManager when the last Wave is cleared, by LevelGenerator's debug button for the start room, and as
+        /// a debug button.
         /// </summary>
         /// <param name="force">Not used.</param>
         [Button, DisableInEditorMode]
@@ -134,19 +153,30 @@ namespace _Project.Scripts.Dungeon
 
             _complete = true;
 
-            if (_portal != null && _portal.Connected != null)
-                _portal.Active = true;
+            if (!RollChest())
+                OpenPortal();
 
             OnRoomCleared?.Invoke(this);
         }
 
-        /// <summary>Turns on the chest, with a _chestChance chance. GameManager calls this after the reward is picked.</summary>
-        public void RollChest()
+        /// <summary>
+        /// Turns on the chest, with a _chestChance chance. Returns true if a chest appeared that the player has to open.
+        /// A chest without a TreasureChest counts as no chest, so the portal still opens.
+        /// </summary>
+        private bool RollChest()
         {
-            if (UnityEngine.Random.value < _chestChance)
-            {
-                SpawnChest();
-            }
+            if (_chest == null || UnityEngine.Random.value >= _chestChance)
+                return false;
+
+            SpawnChest();
+            return _treasureChest != null;
+        }
+
+        /// <summary>Opens the exit portal if it leads somewhere. Runs from OnComplete, or when the chest is opened.</summary>
+        private void OpenPortal()
+        {
+            if (_portal != null && _portal.Connected != null)
+                _portal.Active = true;
         }
 
         [Button, DisableInEditorMode]

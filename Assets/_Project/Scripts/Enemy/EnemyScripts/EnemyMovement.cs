@@ -9,25 +9,40 @@ using UnityEngine.AI;
 public class EnemyMovement : MonoBehaviour
 {
     private NavMeshAgent _agent;
-    private EnemyBase _enemy; // INTEGRATION: new. Source of the MoveSpeed stat.
+    private EnemyBase _enemy; // Source of the MoveSpeed stat.
 
-    /// <summary>Finds the NavMeshAgent and EnemyBase.</summary>
+    /// <summary>
+    /// Multiplies the MoveSpeed stat, such as 0.3 to slow down or 0 to stop. BlockReaction lowers it while the Dark
+    /// Knight blocks. 1 by default.
+    /// </summary>
+    public float SpeedMultiplier { get; set; } = 1f;
+
+    /// <summary>
+    /// True when the NavMeshAgent turns the enemy toward its path. States that face the player instead, such as
+    /// AttackState and RepositionState, turn it off in Enter and put it back in Exit.
+    /// </summary>
+    public bool FacesPath
+    {
+        get => _agent.updateRotation;
+        set => _agent.updateRotation = value;
+    }
+
+    
+    public Vector3 Velocity => _agent.velocity;
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _enemy = GetComponent<EnemyBase>();
     }
 
-    /// <summary>Keeps the agent's speed equal to the MoveSpeed stat.</summary>
-    // INTEGRATION: new. EnemyBase.MoveSpeed reads the Stats component, which replaced EnemyStats, so slows and buffs
-    // from StatModifiers change the speed while they last.
     private void Update()
     {
+        // Read every frame, so slows and buffs from StatModifiers change the speed while they last.
         if (_enemy != null)
-            _agent.speed = _enemy.MoveSpeed;
+            _agent.speed = _enemy.MoveSpeed * SpeedMultiplier;
     }
 
-    /// <summary>Starts moving toward a point.</summary>
     public void MoveTo(Vector3 destination)
     {
         if (_agent.isOnNavMesh)
@@ -37,7 +52,6 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    /// <summary>Stops in place. The destination is kept, so ResumeMoving continues toward it.</summary>
     public void StopMoving()
     {
         if (_agent.isOnNavMesh)
@@ -46,7 +60,6 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    /// <summary>Continues toward the last destination.</summary>
     public void ResumeMoving()
     {
         if (_agent.isOnNavMesh)
@@ -55,13 +68,11 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    /// <summary>Moves the enemy to a point at once. Returns false if the agent is off the NavMesh or the warp fails.</summary>
     public bool Warp(Vector3 position)
     {
         return _agent.isOnNavMesh && _agent.Warp(position);
     }
 
-    /// <summary>True once the path is worked out, the enemy is within stopping distance, and it has almost stopped.</summary>
     public bool HasReachedDestination()
     {
         if (!_agent.isOnNavMesh || _agent.pathPending)

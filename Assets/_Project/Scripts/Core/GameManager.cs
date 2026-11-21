@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Dungeon;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.SceneManagement;
 /// Owns the game state (Menu, Hub, Playing, Store, Dead, Win), loads scenes, and runs the flow of a run.
 /// Lives in the Managers prefab, so it stays loaded across every scene.
 /// Other systems listen to its events instead of calling into it, except for the few public methods
-/// (LoadScene, RegisterPlayer, InitializeRun, ChangeRoom, RequestGameEnd, ChooseReward, SkipReward).
+/// (LoadScene, RegisterPlayer, InitializeRun, ChangeRoom, RequestGameEnd, TryShowRewards, ChooseReward, SkipReward).
 /// </summary>
 public class GameManager : MGR<GameManager>
 {
@@ -43,7 +44,9 @@ public class GameManager : MGR<GameManager>
 
     private GameState _previousState;     // The state to go back to when the store closes.
     private Room[,] _currentDungeon;      // The generated room grid, copied from LevelGenerator when the run starts.
-    private Room _rewardRoom;             // The cleared room waiting on the reward screen. Gets its chest after the pick.
+    private Room _rewardRoom;             // The cleared room whose rewards wait for the player to use its portal.
+    private IReadOnlyList<WeightedReward<GunPart>> _pendingRewards; // Rolled when _rewardRoom cleared, shown at its portal.
+    private Action _afterRewards;         // The portal's teleport, run once the player picks or skips.
     private bool _hasSavedProgress;       // False until the first save, so the first player keeps the values set on its prefab.
     private bool _isPaused;               // True while the game is paused. Pausing is a flag, not a GameState.
     private bool _isLoading;              // Blocks a second LoadScene call while a scene is loading.
@@ -289,7 +292,7 @@ public class GameManager : MGR<GameManager>
     #region Rewards
 
     /// <summary>
-    /// Equips the reward at the index on the player's gun, marks it obtained, and drops the room's chest.
+    /// Equips the reward at the index on the player's gun, marks it obtained, and runs the portal's teleport.
     /// Returns false if the part couldn't be equipped. RewardScreen then offers SkipReward.
     /// </summary>
     public bool ChooseReward(int index)
@@ -314,22 +317,46 @@ public class GameManager : MGR<GameManager>
         }
 
         _rewardPool.PickReward(index);
-        DropRewardChest();
+        FinishRewards();
         return true;
     }
 
-    /// <summary>Closes the reward without a part. The room still drops its chest. RewardScreen calls this.</summary>
+    /// <summary>Closes the reward without a part, then runs the portal's teleport. RewardScreen calls this.</summary>
     public void SkipReward()
     {
-        DropRewardChest();
+        FinishRewards();
     }
 
-    private void DropRewardChest()
+    /// <summary>
+    /// Opens the reward screen if the room has rewards waiting. Portal calls this before teleporting, and passes the
+    /// teleport as afterRewards, which runs once the player picks or skips.
+    /// </summary>
+    /// <returns>True if the screen opened. False means there's nothing to show, so the portal teleports right away.</returns>
+    public bool TryShowRewards(Room room, Action afterRewards)
     {
-        if (_rewardRoom == null) return;
+        if (room == null || room != _rewardRoom || _pendingRewards == null) return false;
 
-        _rewardRoom.RollChest();
+        IReadOnlyList<WeightedReward<GunPart>> rewards = _pendingRewards;
+        _pendingRewards = null;
+        _afterRewards = afterRewards;
+
+        UIManager.Instance.HandleRewards(rewards);
+        return true;
+    }
+
+    /// <summary>Clears the waiting rewards and runs the portal's teleport, if there is one.</summary>
+    private void FinishRewards()
+    {
+        Action afterRewards = _afterRewards;
+        ClearPendingRewards();
+        afterRewards?.Invoke();
+    }
+
+    private void ClearPendingRewards()
+    {
         _rewardRoom = null;
+        _pendingRewards = null;
+        _afterRewards = null;
     }
 
     private Gun GetPlayerGun()
@@ -391,6 +418,7 @@ public class GameManager : MGR<GameManager>
     {
         _playerSpawner.OnPlayerSpawned -= StartRun;
         _rewardPool.ResetObtained();
+        ClearPendingRewards();
         _currentDungeon = _generator.RoomGrid;
 
         // EnterRoom calls ChangeRoom and fires the room's OnRoomEntered.
@@ -411,29 +439,29 @@ public class GameManager : MGR<GameManager>
     }
 
     /// <summary>
-    /// Rolls rewards for a cleared combat room and opens the reward screen. When the pool has nothing left to offer,
-    /// the room drops its chest right away.
+    /// Rolls the cleared room's rewards. The rewards wait until the player walks into the room's portal (see
+    /// TryShowRewards). A room whose portal leads nowhere, such as the End room, shows them right away. The room rolls
+    /// its own chest in Room.OnComplete.
     /// </summary>
     private void RoomCleared(Room room)
     {
-        if (room == null || room.Type != Room.RoomType.Combat) return;
+        if (room == null) return;
 
-        if (_rewardPool == null)
-        {
-            room.RollChest();
-            return;
-        }
+        if (_rewardPool == null) return;
 
         var rewards = _rewardPool.RollRewards(GetPlayerGun());
 
-        if (rewards.Count == 0)
+        if (rewards.Count == 0) return;
+
+        _rewardRoom = room;
+
+        if (room.Portal == null || room.Portal.Connected == null)
         {
-            room.RollChest();
+            UIManager.Instance.HandleRewards(rewards);
             return;
         }
 
-        _rewardRoom = room;
-        UIManager.Instance.HandleRewards(rewards);
+        _pendingRewards = rewards;
     }
 
     /// <summary>Starts a run by loading the Level scene. RunStartPortal calls this from the Hub.</summary>

@@ -10,7 +10,9 @@ public class WaveManager : MGR<WaveManager>
 {
     [Header("Wave Manager Fields")]
     [SerializeField] private Room _currentRoom;
+    [Tooltip("Most enemies alive at once. Spawning waits while the limit is reached. 0 means no limit.")]
     [SerializeField] private int _maxAlive;
+    [Tooltip("Enemies spawn at least this far from the player on the ground plane, when a spawn point allows it.")]
     [SerializeField] private float _minSpawnDistance;
 
     [Header("Debug (Do not edit)")]
@@ -66,12 +68,12 @@ public class WaveManager : MGR<WaveManager>
         GameManager.OnGameLost -= StopAll;
     }
 
-    /// <summary>Starts listening for the player entering each room except the Start room.</summary>
+    /// <summary>Starts listening for the player entering each room, including the Start room.</summary>
     public void HandleMapGenerated()
     {
         foreach (Room room in LevelGenerator.Instance.RoomGrid)
         {
-            if (room != null && room.Type != Room.RoomType.Start)
+            if (room != null)
             {
                 room.OnRoomEntered -= HandlePlayerEntered;
                 room.OnRoomEntered += HandlePlayerEntered;
@@ -125,7 +127,7 @@ public class WaveManager : MGR<WaveManager>
 
     /// <summary>
     /// Spawns the room's current Wave, one enemy per spawn interval, at random spawn points.
-    /// Sets _spawningDone when every enemy in the Wave has spawned.
+    /// Sets _spawningDone when every enemy in the Wave has spawned, then ends the Wave if those enemies are already dead.
     /// </summary>
     private IEnumerator RunWave(Room room)
     {
@@ -176,6 +178,9 @@ public class WaveManager : MGR<WaveManager>
         }
 
         _spawningDone = true;
+
+        // The player can kill every enemy during the last spawn interval, before _spawningDone was set.
+        TryFinishWave();
     }
 
     private void SpawnEnemy(EnemyBase enemy, Spawnpoint point)
@@ -241,10 +246,7 @@ public class WaveManager : MGR<WaveManager>
         return Vector3.Distance(a, b);
     }
 
-    /// <summary>
-    /// Removes the enemy from the alive list. Ends the run when the boss dies. When the Wave's last enemy dies,
-    /// moves to the next Wave, or completes the room after the last Wave.
-    /// </summary>
+    /// <summary>Removes the enemy from the alive list, and ends the run when the boss dies. Otherwise checks whether the Wave is over.</summary>
     private void HandleEnemyKilled(EnemyBase enemy)
     {
         enemy.OnEnemyKilled -= HandleEnemyKilled;
@@ -258,17 +260,26 @@ public class WaveManager : MGR<WaveManager>
             return;
         }
 
-        if (_alive.Count == 0 && _spawningDone)
+        TryFinishWave();
+    }
+
+    /// <summary>
+    /// When every enemy in the Wave has spawned and died, moves to the next Wave, or completes the room after the last
+    /// Wave. Runs after each kill and once spawning finishes.
+    /// </summary>
+    private void TryFinishWave()
+    {
+        if (_alive.Count > 0 || !_spawningDone)
+            return;
+
+        _currentWave++;
+
+        OnWaveCompleted?.Invoke();
+
+        if (_currentWave >= _currentRoom.RoomWaves.Waves.Count)
         {
-            _currentWave++;
-
-            OnWaveCompleted?.Invoke();
-
-            if (_currentWave >= _currentRoom.RoomWaves.Waves.Count)
-            {
-                _currentRoom.OnComplete();
-                _waveRunning = false;
-            }
+            _currentRoom.OnComplete();
+            _waveRunning = false;
         }
     }
 

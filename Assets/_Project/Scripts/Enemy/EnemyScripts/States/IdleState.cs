@@ -5,16 +5,15 @@ public class IdleState : IEnemyState
 {
     private readonly EnemyBase _enemy;
 
-    /// <summary>Creates the state for one enemy. EnemyBase.Awake calls this.</summary>
     public IdleState(EnemyBase enemy)
     {
         _enemy = enemy;
     }
 
-    /// <summary>Stops enemy movement when entering IdleState.</summary>
     public void Enter()
     {
         _enemy.Movement.StopMoving();
+        _enemy.PlayStateAnimation(EnemyAnimation.Idle);
     }
 
     /// <summary>Waits for a target before transitioning to ChaseState.</summary>
@@ -24,7 +23,6 @@ public class IdleState : IEnemyState
             _enemy.ChangeState(_enemy.ChaseState);
     }
 
-    /// <summary>Does nothing.</summary>
     public void Exit()
     {
     }

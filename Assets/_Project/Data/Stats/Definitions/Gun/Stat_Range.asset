@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Stat_Range
   m_EditorClassIdentifier: Assembly-CSharp::StatDefinition
   _displayName: Range
+  _description: How far a bullet travels before it disappears, in meters.
   _icon: {fileID: 0}
+  _higherIsBetter: 1
   _minValue: 0
   _maxValue: 5000

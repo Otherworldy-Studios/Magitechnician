@@ -2,39 +2,31 @@ using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /// <summary>
-/// One item slot in the UI. Shows an item's icon with a border in its rarity color, highlights when selected, and shows
-/// the tooltip on hover. Only takes items of its assigned category. ItemGridUI and ConsumableSlotsUI fill these slots.
+/// One item slot in the UI. Shows an item's icon with a border in its rarity color, and highlights when selected.
+/// Only takes items of its assigned category. ItemGridUI and ConsumableSlotsUI fill these slots.
 /// </summary>
-// INTEGRATION: rebuilt. Before, it only set an icon and a name label and could never be clicked or hovered. It now
-// implements the pointer interfaces, stores its item, and fires OnClicked and OnCleared, which ItemGridUI (new) uses.
-public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
 {
     [Tooltip("Only items of this category can go in this slot.")]
     [SerializeField] private ItemCategory _assignedCategory;
 
-    // INTEGRATION: replaces the unserialized _icon and _name fields, which were never assigned.
     [SerializeField] private Image _iconImage;
-    [SerializeField] private GameObject _selectedHighlight; // Turned on while the slot is selected.
+    [Tooltip("Turned on while the slot is selected.")]
+    [SerializeField] private GameObject _selectedHighlight;
+    [Tooltip("Colored from GlobalSettings.RarityColorSettings.")]
+    [SerializeField] private Image _rarityBorder;
 
-    // Colored from GlobalSettings.RarityColorSettings.
-    [SerializeField, FormerlySerializedAs("rarityBorder")] private Image _rarityBorder;
+    [Tooltip("Which kind of screen this slot is on. Not read yet.")]
+    [SerializeField] private SlotType _slotType = SlotType.Inventory;
 
-    [Tooltip("Found by ItemGridUI through SetTooltip if empty.")]
-    [SerializeField] private ItemTooltip _tooltip;
-
-    [SerializeField] private SlotType _slotType = SlotType.Inventory; // Which kind of screen this slot is on. Not read yet.
-
-    // INTEGRATION: removed maxCount and currentCount, which nothing read.
+    private IInventoryItem _item;
+    private Color _emptyBorderColor; // The border color set in the prefab, used when empty.
 
     /// <summary>True while the slot is selected. Set by ItemGridUI.</summary>
     [ShowInInspector, ReadOnly] public bool Selected { get; private set; }
-
-    private IInventoryItem _item;    // The item shown, or null.
-    private Color _emptyBorderColor; // INTEGRATION: new. The border color set in the prefab, used when empty.
 
     /// <summary>The item in this slot, or null.</summary>
     public IInventoryItem Item => _item;
@@ -45,20 +37,12 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public event Action<ItemSlotUI> OnClicked;
 
     /// <summary>Fires when a slot that had an item is emptied, with this slot.</summary>
-    // INTEGRATION: new. Lets ItemGridUI deselect a slot that was emptied.
     public event Action<ItemSlotUI> OnCleared;
 
-    /// <summary>Remembers the empty border color and starts unselected.</summary>
     private void Awake()
     {
         if (_rarityBorder != null) _emptyBorderColor = _rarityBorder.color;
         if (_selectedHighlight != null) _selectedHighlight.SetActive(false);
-    }
-
-    /// <summary>Gives the slot a tooltip, unless one is already assigned. ItemGridUI calls this for every slot.</summary>
-    public void SetTooltip(ItemTooltip tooltip)
-    {
-        if (_tooltip == null) _tooltip = tooltip;
     }
 
     /// <summary>
@@ -75,7 +59,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (item.Category != _assignedCategory)
         {
             Debug.LogWarning($"{name}: {item.DisplayName} is a {item.Category}, but this slot only takes {_assignedCategory}.");
-            Clear(); // INTEGRATION: was only a return, which left the old item showing.
+            Clear();
             return;
         }
 
@@ -110,7 +94,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         };
     }
 
-    /// <summary>Empties the slot, resets the border, hides the tooltip, and fires OnCleared if there was an item.</summary>
+    /// <summary>Empties the slot, resets the border, and fires OnCleared if there was an item.</summary>
     public void Clear()
     {
         bool hadItem = _item != null;
@@ -119,7 +103,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         _iconImage.sprite = null;
         _iconImage.enabled = false;
         if (_rarityBorder != null) _rarityBorder.color = _emptyBorderColor;
-        if (_tooltip != null) _tooltip.Hide(); // The tooltip was showing the item that just left.
 
         if (hadItem) OnCleared?.Invoke(this);
     }
@@ -131,29 +114,9 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         if (_selectedHighlight != null) _selectedHighlight.SetActive(selected);
     }
 
-    /// <summary>Fires OnClicked. Called by the EventSystem.</summary>
     public void OnPointerClick(PointerEventData eventData)
     {
         OnClicked?.Invoke(this);
-    }
-
-    /// <summary>Shows the tooltip for this slot's item. Called by the EventSystem.</summary>
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        Debug.Log(
-            $"Hovered {name}, Item: {_item != null}, Tooltip: {_tooltip != null}"
-        );
-        if (_item != null && _tooltip != null)
-        {
-            _tooltip.Show(_item);
-        }
-            
-    }
-
-    /// <summary>Hides the tooltip. Called by the EventSystem.</summary>
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (_tooltip != null) _tooltip.Hide();
     }
 }
 

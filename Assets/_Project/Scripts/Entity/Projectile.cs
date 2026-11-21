@@ -5,6 +5,7 @@ using UnityEngine;
 /// A bullet. Moves each frame with a sphere cast so it can't skip through thin objects, damages the first
 /// IDamageable it hits, and destroys itself on a hit or once it has traveled its range. Can fall with gravity.
 /// Whoever fires it (the Gun or an enemy attack) passes the damage, speed, and range in Initialize.
+/// A collider with an IProjectileBlocker on it, such as the Dark Knight's shield, stops the projectile without damage.
 /// </summary>
 public class Projectile : MonoBehaviour
 {
@@ -12,19 +13,18 @@ public class Projectile : MonoBehaviour
     [SerializeField] private ProjectileSettings _settings;
 
     [Header("Impacts")]
-    [Tooltip("Spawned where the projectile hits a wall, the floor, or anything else that can't take damage. " +
-             "Optional. The cannonball uses this for its healing pool.")]
+    [Tooltip("Spawned where the projectile hits a wall, the floor, a shield, or anything else that can't take damage. Optional.")]
     [SerializeField] private GameObject _surfaceImpactPrefab;
 
     [Tooltip("Spawned where the projectile hits something that takes damage, such as an enemy. Optional.")]
     [SerializeField] private GameObject _damageableImpactPrefab;
 
-    private DamageInfo _damageInfo;      // The hit to deal. Its DamageSource is the shooter, so the bullet skips the shooter.
-    private float _speed;                // Meters per second.
-    private float _range;                // Meters before the bullet is destroyed.
+    private DamageInfo _damageInfo;      
+    private float _speed;               
+    private float _range;             
     private bool _useGravity;            // True for arcing projectiles, such as the Skeletal Orc's cannonball.
-    private Action<GameObject, DamageInfo> _onHit; // Called after a hit, with what was hit. The Gun uses it to fire OnDamageDealt.
-    private bool _initialized;           // False until Initialize runs. Start destroys an uninitialized bullet.
+    private Action<GameObject, DamageInfo> _onHit; 
+    private bool _initialized;        
 
     private Vector3 _direction; // Set from the spawn rotation in Start. The Gun's spread is already in that rotation.
     private Vector3 _velocity;  // Used only with gravity.
@@ -33,12 +33,9 @@ public class Projectile : MonoBehaviour
     /// <summary>The bullet's radius. CrossHairAim uses it so the aim check matches the bullet's size.</summary>
     public float Radius => _settings != null ? _settings.Radius : 0f;
 
-    /// <summary>Sets what this bullet deals and how far and fast it travels. Call right after creating it.</summary>
-    /// <param name="damageInfo">The hit, with the shooter as DamageSource.</param>
-    /// <param name="speed">Meters per second.</param>
-    /// <param name="range">Meters before it's destroyed.</param>
-    /// <param name="onHit">Called after the bullet damages something, with the object that took the damage. Optional.</param>
-    /// <param name="useGravity">True makes the projectile fall in an arc.</param>
+    
+    public event Action<Vector3, Vector3> OnImpact;
+
     public void Initialize(DamageInfo damageInfo, float speed, float range, Action<GameObject, DamageInfo> onHit = null, bool useGravity = false)
     {
         _damageInfo = damageInfo;
@@ -110,6 +107,19 @@ public class Projectile : MonoBehaviour
                 return;
             }
 
+            GetImpactPoint(hit, moveDirection, out Vector3 impactPoint, out Vector3 impactNormal);
+
+            // Only the collider's own object is checked, so a blocker on a shield doesn't block hits on the rest of the enemy.
+            IProjectileBlocker blocker = hit.collider.GetComponent<IProjectileBlocker>();
+            if (blocker != null)
+            {
+                blocker.BlockProjectile(impactPoint, moveDirection);
+                SpawnImpact(false, impactPoint, impactNormal);
+                OnImpact?.Invoke(impactPoint, impactNormal);
+                Destroy(gameObject);
+                return;
+            }
+
             IDamageable damageable = hit.collider.GetComponentInParent<IDamageable>();
 
             if (damageable != null)
@@ -121,7 +131,8 @@ public class Projectile : MonoBehaviour
                 _onHit?.Invoke(target, _damageInfo);
             }
 
-            SpawnImpact(hit, damageable != null, moveDirection);
+            SpawnImpact(damageable != null, impactPoint, impactNormal);
+            OnImpact?.Invoke(impactPoint, impactNormal);
 
             Destroy(gameObject);
             return;
@@ -131,19 +142,22 @@ public class Projectile : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns the impact prefab for the kind of thing that was hit, at the hit point, facing out from the surface.
-    /// A cast that starts already touching a collider reports no point or normal, so that case uses the projectile's
-    /// position and faces back along its path.
+    /// The hit point and the surface normal. A cast that starts already touching a collider reports no point or normal,
+    /// so that case uses the projectile's position and faces back along its path.
     /// </summary>
-    private void SpawnImpact(RaycastHit hit, bool hitDamageable, Vector3 moveDirection)
+    private void GetImpactPoint(RaycastHit hit, Vector3 moveDirection, out Vector3 point, out Vector3 normal)
+    {
+        bool startedInside = hit.distance <= 0f;
+        point = startedInside ? transform.position : hit.point;
+        normal = startedInside || hit.normal == Vector3.zero ? -moveDirection : hit.normal;
+    }
+
+    /// <summary>Spawns the impact prefab for the kind of thing that was hit, at the hit point, facing out from the surface.</summary>
+    private void SpawnImpact(bool hitDamageable, Vector3 point, Vector3 normal)
     {
         GameObject prefab = hitDamageable ? _damageableImpactPrefab : _surfaceImpactPrefab;
         if (prefab == null)
             return;
-
-        bool startedInside = hit.distance <= 0f;
-        Vector3 point = startedInside ? transform.position : hit.point;
-        Vector3 normal = startedInside || hit.normal == Vector3.zero ? -moveDirection : hit.normal;
 
         Instantiate(prefab, point, Quaternion.LookRotation(normal));
     }

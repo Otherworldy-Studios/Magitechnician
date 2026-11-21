@@ -365,4 +365,10 @@ public class Inventory : SerializedMonoBehaviour
                   $"Consumables {Consumables.Count}/{_maxConsumables}, charms {OwnedCharms.Count}/{_totalCharms}, " +
                   $"equipped {EquippedCharms.Count}/{_equippedCharmSlots}.", this);
     }
+
+    [Button, DisableInEditorMode]
+    private void Motherlode(int amount)
+    {
+        SetCrystals(amount);
+    }
 }
