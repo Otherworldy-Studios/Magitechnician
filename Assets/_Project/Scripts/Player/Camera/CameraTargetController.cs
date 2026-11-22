@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 /// <summary>
@@ -77,7 +78,7 @@ public class CameraTargetController : MonoBehaviour
     /// </summary>
     private void HandleRotation()
     {
-        // INTEGRATION: was _input.Player.Look and a Mouse device check. InputManager.LookIsMouse (new) does the check.
+        // INTEGRATION: was _input.Player.Look and a Mouse device check. Now InputManager.LookIsMouse (new) does the check.
         InputManager input = InputManager.Instance;
         Vector2 lookInput = input.Look;
 
