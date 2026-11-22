@@ -10,8 +10,7 @@ public class PlayerAnimator : MonoBehaviour
 {
     [Header("Tuning")]
     [SerializeField] private float _dampTime = 0.1f; // Seconds MoveX and MoveY take to catch up with the input.
-    [SerializeField] private float _idleAnimationMultiplier = 0.7f;   // Not read by this script yet.
-    [SerializeField] private float _sprintAnimationMultiplier = 1.4f; // Not read by this script yet.
+   
 
     [Header("References")]
     [SerializeField] private Animator _animator;

@@ -42,18 +42,17 @@ public class GameManager : MGR<GameManager>
     [Tooltip("Rolls the gun parts offered when a combat room is cleared.")]
     [SerializeField] private ItemRolling _rewardPool;
 
-    private GameState _previousState;     // The state to go back to when the store closes.
-    private Room[,] _currentDungeon;      // The generated room grid, copied from LevelGenerator when the run starts.
-    private Room _rewardRoom;             // The cleared room whose rewards wait for the player to use its portal.
-    private IReadOnlyList<WeightedReward<GunPart>> _pendingRewards; // Rolled when _rewardRoom cleared, shown at its portal.
-    private Action _afterRewards;         // The portal's teleport, run once the player picks or skips.
-    private bool _hasSavedProgress;       // False until the first save, so the first player keeps the values set on its prefab.
-    private bool _isPaused;               // True while the game is paused. Pausing is a flag, not a GameState.
-    private bool _isLoading;              // Blocks a second LoadScene call while a scene is loading.
-    private GameState _stateAfterLoad;    // The state LoadScene was asked to enter once the scene finishes loading.
-    private PlayerSpawner _playerSpawner; // The Level player's spawner. StartRun listens to its OnPlayerSpawned.
-    private LevelGenerator _generator;    // The Level scene's generator. Set in InitReferences or RegisterPlayer.
-
+    private GameState _previousState;    
+    private Room[,] _currentDungeon;      
+    private Room _rewardRoom;          
+    private IReadOnlyList<WeightedReward<GunPart>> _pendingRewards; 
+    private Action _afterRewards;        
+    private bool _hasSavedProgress;       
+    private bool _isPaused;              
+    private bool _isLoading;           
+    private GameState _stateAfterLoad;   
+    private PlayerSpawner _playerSpawner; 
+    private LevelGenerator _generator;    
     /// <summary>Fires when the run ends in a loss. UIManager shows the death screen.</summary>
     public static event Action OnGameLost;
     /// <summary>Fires when the run ends in a victory. UIManager shows the win screen.</summary>
@@ -108,7 +107,7 @@ public class GameManager : MGR<GameManager>
         UIManager.OnExitRequested += ExitGame;
         UIManager.OnStoreRequested += ViewStore;
         Room.OnRoomCleared += RoomCleared;
-        PH_Boss.OnBossDefeated += BossDefeated;
+       
     }
 
     private void Start()

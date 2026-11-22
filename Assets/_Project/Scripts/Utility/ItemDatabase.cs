@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,51 +9,44 @@ using UnityEditor;
 /// <summary>
 /// One asset that lists every item in the game, grouped by category. Each category is a tab, and each item
 /// can be expanded to edit it in place, so items can be found and changed without opening each asset.
-/// An editor tool: nothing reads it during play.
+/// Loaded from Resources through Instance. The buttons that fill and clean the lists only exist in the editor.
 /// </summary>
-// INTEGRATION: new script, made by Lee. The Find All Items In Project button fills the lists from every item asset,
-// including the ones the JSON importer creates.
 [CreateAssetMenu(fileName = "ItemDatabase", menuName = "Database/ItemDatabase")]
 public class ItemDatabase : ScriptableObject
 {
     // One list per item type. Odin draws each as a searchable tab with every item expandable in place.
-    // FormerlySerializedAs keeps the values from when the lists were named AllCharms, AllConsumables, and so on.
 
     [TabGroup("Items", "Charms")]
     [Searchable, InlineEditor(InlineEditorObjectFieldModes.Foldout)]
     [ListDrawerSettings(DraggableItems = true, ShowPaging = true, NumberOfItemsPerPage = 15, ShowIndexLabels = false)]
-    [FormerlySerializedAs("AllCharms")]
     [SerializeField] private List<Charm> _charms = new();
 
     [TabGroup("Items", "Consumables")]
     [Searchable, InlineEditor(InlineEditorObjectFieldModes.Foldout)]
     [ListDrawerSettings(DraggableItems = true, ShowPaging = true, NumberOfItemsPerPage = 15, ShowIndexLabels = false)]
-    [FormerlySerializedAs("AllConsumables")]
     [SerializeField] private List<Consumable> _consumables = new();
 
     [TabGroup("Items", "Barrels")]
     [Searchable, InlineEditor(InlineEditorObjectFieldModes.Foldout)]
     [ListDrawerSettings(DraggableItems = true, ShowPaging = true, NumberOfItemsPerPage = 15, ShowIndexLabels = false)]
-    [FormerlySerializedAs("AllBarrels")]
     [SerializeField] private List<GunBarrel> _barrels = new();
 
     [TabGroup("Items", "Magazines")]
     [Searchable, InlineEditor(InlineEditorObjectFieldModes.Foldout)]
     [ListDrawerSettings(DraggableItems = true, ShowPaging = true, NumberOfItemsPerPage = 15, ShowIndexLabels = false)]
-    [FormerlySerializedAs("AllMagazines")]
     [SerializeField] private List<GunMagazine> _magazines = new();
 
     [TabGroup("Items", "Scopes")]
     [Searchable, InlineEditor(InlineEditorObjectFieldModes.Foldout)]
     [ListDrawerSettings(DraggableItems = true, ShowPaging = true, NumberOfItemsPerPage = 15, ShowIndexLabels = false)]
-    [FormerlySerializedAs("AllScope")]
     [SerializeField] private List<GunScope> _scopes = new();
 
     [TabGroup("Items", "Stocks")]
     [Searchable, InlineEditor(InlineEditorObjectFieldModes.Foldout)]
     [ListDrawerSettings(DraggableItems = true, ShowPaging = true, NumberOfItemsPerPage = 15, ShowIndexLabels = false)]
-    [FormerlySerializedAs("AllStocks")]
     [SerializeField] private List<GunStock> _stocks = new();
+
+    private static ItemDatabase _instance;
 
     public IReadOnlyList<Charm> Charms => _charms;
     public IReadOnlyList<Consumable> Consumables => _consumables;
@@ -71,6 +63,24 @@ public class ItemDatabase : ScriptableObject
     public IEnumerable<IInventoryItem> AllItems =>
         _charms.Cast<IInventoryItem>().Concat(_consumables).Concat(AllGunParts);
 
+    /// <summary>The database asset, loaded once. Null if Item Database isn't in a Resources folder.</summary>
+    public static ItemDatabase Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = Resources.Load<ItemDatabase>("ItemDatabase");
+            }
+            return _instance;
+        }
+    }
+
+    // The item counts shown in the info box above the buttons.
+    private string Summary =>
+        $"{_charms.Count} charms, {_consumables.Count} consumables, " +
+        $"{_barrels.Count} barrels, {_magazines.Count} magazines, {_scopes.Count} scopes, {_stocks.Count} stocks";
+
     /// <summary>Returns the first item with this display name, or null if none has it.</summary>
     public IInventoryItem FindByName(string displayName)
     {
@@ -83,7 +93,8 @@ public class ItemDatabase : ScriptableObject
         return AllItems.Where(item => item != null && item.Rarity == rarity);
     }
 
-    // Editor-only buttons. They use AssetDatabase, which doesn't exist in a build.
+#if UNITY_EDITOR
+    // These buttons use EditorUtility and AssetDatabase, which don't exist in a build.
 
     /// <summary>Fills every list with every asset of its type in the project, sorted by file name, and saves.</summary>
     [PropertyOrder(-1)]
@@ -117,11 +128,6 @@ public class ItemDatabase : ScriptableObject
         EditorUtility.SetDirty(this);
     }
 
-    // The item counts shown in the info box above the buttons.
-    private string Summary =>
-        $"{_charms.Count} charms, {_consumables.Count} consumables, " +
-        $"{_barrels.Count} barrels, {_magazines.Count} magazines, {_scopes.Count} scopes, {_stocks.Count} stocks";
-
     /// <summary>Finds every asset of a type in the project, sorted by file name.</summary>
     private static List<T> FindAll<T>() where T : ScriptableObject
     {
@@ -131,20 +137,5 @@ public class ItemDatabase : ScriptableObject
             .OrderBy(asset => asset.name)
             .ToList();
     }
-
-    private static ItemDatabase _instance; // Cached after the first load.
-
-    /// <summary>The settings asset. Null if Item Database isn't in a Resources folder.</summary>
-    public static ItemDatabase Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = Resources.Load<ItemDatabase>("ItemDatabase");
-            }
-            return _instance;
-        }
-    }
-
+#endif
 }

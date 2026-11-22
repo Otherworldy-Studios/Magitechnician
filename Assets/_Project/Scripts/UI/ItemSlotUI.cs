@@ -19,9 +19,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     [Tooltip("Colored from GlobalSettings.RarityColorSettings.")]
     [SerializeField] private Image _rarityBorder;
 
-    [Tooltip("Which kind of screen this slot is on. Not read yet.")]
-    [SerializeField] private SlotType _slotType = SlotType.Inventory;
-
     private IInventoryItem _item;
     private Color _emptyBorderColor; // The border color set in the prefab, used when empty.
 
@@ -120,11 +117,3 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     }
 }
 
-/// <summary>Which kind of screen a slot is on.</summary>
-enum SlotType
-{
-    Inventory,
-    Reward,
-    Shop,
-    Equipabble
-}

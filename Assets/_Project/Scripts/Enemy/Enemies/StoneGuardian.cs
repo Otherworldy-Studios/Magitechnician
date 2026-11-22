@@ -1,10 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-
+/// <summary>
+/// The boss. WaveManager ends the run as a victory when it dies. Picks between its attacks by the player's distance and
+/// the current phase, with a weighted random roll and no attack twice in a row when another is ready. Each phase starts
+/// below a share of max health. The boss enters a phase change state for Phase Change Duration while its animation
+/// plays, then goes back to chasing, faster and attacking more often, with the new phase's attacks unlocked.
+/// </summary>
 public class StoneGuardian : EnemyBase
 {
     [Serializable]
@@ -51,6 +57,9 @@ public class StoneGuardian : EnemyBase
     [ShowInInspector, ReadOnly]
     public int CurrentPhase { get; private set; } = 1;
 
+    /// <summary>The share of max health where each phase after the first starts, from highest to lowest.</summary>
+    public IEnumerable<float> PhaseThresholds => _phases.Select(phase => phase.HealthThreshold);
+
     /// <summary>Fires when a new phase starts, with its number. For the roar sound, the phase change effect and the music.</summary>
     public event Action<int> OnPhaseChanged;
 
@@ -76,7 +85,10 @@ public class StoneGuardian : EnemyBase
             Health.OnDamaged -= HandleDamaged;
     }
 
-  
+    /// <summary>
+    /// Picks a ready attack that the current phase allows and that fits the player's distance, weighted by Weight.
+    /// Skips the last attack used when another one is ready. Nothing during a phase change.
+    /// </summary>
     public override EnemyAttack SelectAttack()
     {
         if (CurrentState == _phaseChangeState || Target == null)
@@ -109,7 +121,7 @@ public class StoneGuardian : EnemyBase
         return picked;
     }
 
-    
+    /// <summary>Starts the next phase once health drops below its threshold. Skips phases when one hit crosses several.</summary>
     private void HandleDamaged(int currentHealth, GameObject owner)
     {
         if (IsDead || currentHealth <= 0 || Health.MaxHealth <= 0)
@@ -163,7 +175,10 @@ public class StoneGuardian : EnemyBase
         return enemyAnimator != null ? enemyAnimator.GetStateNames() : new[] { "" };
     }
 
-
+    /// <summary>
+    /// Stands still while the phase change animation plays, then goes back to chasing at the new phase's speed. Leaving
+    /// AttackState for this state cancels the running attack.
+    /// </summary>
     private class PhaseChangeState : IEnemyState
     {
         private readonly StoneGuardian _boss;
