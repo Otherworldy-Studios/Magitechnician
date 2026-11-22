@@ -42,17 +42,18 @@ public class GameManager : MGR<GameManager>
     [Tooltip("Rolls the gun parts offered when a combat room is cleared.")]
     [SerializeField] private ItemRolling _rewardPool;
 
-    private GameState _previousState;    
-    private Room[,] _currentDungeon;      
-    private Room _rewardRoom;          
-    private IReadOnlyList<WeightedReward<GunPart>> _pendingRewards; 
-    private Action _afterRewards;        
-    private bool _hasSavedProgress;       
-    private bool _isPaused;              
-    private bool _isLoading;           
-    private GameState _stateAfterLoad;   
-    private PlayerSpawner _playerSpawner; 
-    private LevelGenerator _generator;    
+    private GameState _previousState;
+    private Room[,] _currentDungeon;
+    private Room _rewardRoom;
+    private IReadOnlyList<WeightedReward<GunPart>> _pendingRewards;
+    private Action _afterRewards;
+    private bool _hasSavedProgress;
+    private bool _isPaused;
+    private bool _isLoading;
+    private GameState _stateAfterLoad;
+    private PlayerSpawner _playerSpawner;
+    private LevelGenerator _generator;
+
     /// <summary>Fires when the run ends in a loss. UIManager shows the death screen.</summary>
     public static event Action OnGameLost;
     /// <summary>Fires when the run ends in a victory. UIManager shows the win screen.</summary>
@@ -93,12 +94,6 @@ public class GameManager : MGR<GameManager>
         base.Awake();
         if (Instance != this) return;
 
-        // Pressing Play in the Hub or Level scene skips the menu, so start in Playing there.
-        if (SceneManager.GetActiveScene().buildIndex != Scenes.MainMenu)
-        {
-            ChangeState(GameState.Playing, force: true);
-        }
-
         SceneManager.sceneLoaded += InitReferences;
         UIManager.OnPauseRequested += SetPause;
         UIManager.OnResetRequested += ResetGame;
@@ -107,16 +102,25 @@ public class GameManager : MGR<GameManager>
         UIManager.OnExitRequested += ExitGame;
         UIManager.OnStoreRequested += ViewStore;
         Room.OnRoomCleared += RoomCleared;
-       
     }
 
     private void Start()
     {
         if (Instance != this) return;
 
-        if (SceneManager.GetActiveScene().buildIndex == Scenes.MainMenu)
+        // Pressing Play in the Hub or Level scene skips the menu, so start in that scene's state.
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        if (sceneIndex == Scenes.MainMenu)
         {
             ChangeState(GameState.Menu, force: true);
+        }
+        else if (sceneIndex == Scenes.Hub)
+        {
+            ChangeState(GameState.Hub, force: true);
+        }
+        else
+        {
+            ChangeState(GameState.Playing, force: true);
         }
 
         // Subscribed here, because InputManager may not have run its Awake yet when this Awake runs.
@@ -167,7 +171,7 @@ public class GameManager : MGR<GameManager>
         }
 
         // UIManager.Instance.ShowLoading(false);   // Turn on when the loading screen exists.
-        ChangeState(_stateAfterLoad);
+        ChangeState(_stateAfterLoad, force: true);
     }
 
     /// <summary>
@@ -378,7 +382,7 @@ public class GameManager : MGR<GameManager>
         Application.Quit();
     }
 
-    /// <summary>Closes the store if it's open, does nothing on the reward screen, and toggles pause otherwise.</summary>
+    /// <summary>Closes the store if it's open, ignores the press on the reward screen, and toggles pause otherwise.</summary>
     private void HandleEscapePressed()
     {
         if (_currentState == GameState.Store)
@@ -444,12 +448,9 @@ public class GameManager : MGR<GameManager>
     /// </summary>
     private void RoomCleared(Room room)
     {
-        if (room == null) return;
+        if (room == null || _rewardPool == null) return;
 
-        if (_rewardPool == null) return;
-
-        var rewards = _rewardPool.RollRewards(GetPlayerGun());
-
+        IReadOnlyList<WeightedReward<GunPart>> rewards = _rewardPool.RollRewards(GetPlayerGun());
         if (rewards.Count == 0) return;
 
         _rewardRoom = room;
@@ -489,6 +490,8 @@ public class GameManager : MGR<GameManager>
             SetPause(false); // Unpause when leaving to the menu or the Hub.
         }
 
+        bool returningFromStore = _currentState == GameState.Store && newState == GameState.Hub;
+
         // Only a real change is saved. Entering Store from Store would save Store, and CloseState would stay there.
         if (newState != _currentState)
         {
@@ -500,18 +503,26 @@ public class GameManager : MGR<GameManager>
         {
             case GameState.Menu:
                 EnterMenu();
+                SoundController.Instance.PlayMusic("MenuMusic");
                 break;
             case GameState.Hub:
                 EnterHub();
+                if (!returningFromStore)
+                {
+                    SoundController.Instance.PlayMusic(UnityEngine.Random.value < 0.5f ? "Hub1" : "Hub2");
+                }
                 break;
             case GameState.Playing:
                 EnterPlaying();
+                SoundController.Instance.PlayMusic("FightTheme");
                 break;
             case GameState.Dead:
                 EnterDead();
+                SoundController.Instance.PlayMusic("FightTheme");
                 break;
             case GameState.Win:
                 EnterWin();
+                SoundController.Instance.PlayMusic("FightTheme");
                 break;
             case GameState.Store:
                 EnterStore();
@@ -633,7 +644,7 @@ public class GameManager : MGR<GameManager>
     [Button, DisableInEditorMode]
     public void DEBUGInitializeRun()
     {
-        LoadScene(Scenes.Level, GameState.Playing);
+        InitializeRun();
     }
 
     /// <summary>Debug: freezes time without pausing.</summary>

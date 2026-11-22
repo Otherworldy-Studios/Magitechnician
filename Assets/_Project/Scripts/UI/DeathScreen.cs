@@ -32,6 +32,7 @@ public class DeathScreen : UIScreen
     private float _damageDealtMultiplier = 10f;
     private float _enemiesKilledMultiplier = 50f;
     private int _crystalsToGive;
+    [SerializeField]private int _minCrystalsToGive = 20;
     private void Awake()
     {
         _hubButton.onClick.AddListener(OnHub);
@@ -41,14 +42,14 @@ public class DeathScreen : UIScreen
     {
         RunStats stats = GameManager.Instance.RunStats;
         int score = TotalScoreCalculation(stats);
-
+        _crystalsToGive = Mathf.Max(_minCrystalsToGive, Mathf.RoundToInt(0.44f * Mathf.Sqrt(score))); 
         _runTimeText.text = $"Run Time: {(int)GameManager.Instance.EndTime}";
-        _crystalsCollectedText.text = $"Crystals Collected: {stats.CrystalsCollected}";
+        _crystalsCollectedText.text = $"Crystals Collected: {stats.CrystalsCollected + _crystalsToGive}";
         _damageTakenText.text = $"Damage Taken: {stats.DamageTaken}";
         _damageDealtText.text = $"Damage Dealt: {stats.DamageDealt}";
         _enemiesKilledText.text = $"Enemies Killed: {stats.EnemiesKilled}";
         _totalScoreText.text = $"Total Score: {score}";
-        _crystalsToGive = Mathf.CeilToInt(score * 0.1f);
+        
         _finalRankImage.sprite = GetRankSprite(score);
         GameManager.Instance.Player.GetComponent<PlayerRoot>().Inventory.AddCrystals(_crystalsToGive);
     }

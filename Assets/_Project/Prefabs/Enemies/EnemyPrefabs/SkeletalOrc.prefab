@@ -170,12 +170,12 @@ MonoBehaviour:
   _minRangeStat: {fileID: 11400000, guid: a8ef90889625b4f2bbeb6bab4c7f9bfa, type: 2}
   _maxRangeStat: {fileID: 11400000, guid: 5e5166892305a40f48c67793c8f852b3, type: 2}
   _moveSpeedStat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}
-  _attackDamageStat: {fileID: 11400000, guid: 4f02e9989fb945e4db6d74c819705d40, type: 2}
+  _attackDamageStat: {fileID: 11400000, guid: c1772fa5754ba41ebae3eef31d1b7545, type: 2}
   _windUpTimeStat: {fileID: 11400000, guid: 6f3fdb3b58095443cb0a7b50b5d8b16e, type: 2}
   _cooldownTimeStat: {fileID: 11400000, guid: f2a0d37eb6232464abefec183d060a57, type: 2}
   _turnSpeed: 360
   _faceTargetWhileChasing: 0
-  _deathDelay: 2
+  _deathDelay: 3
 --- !u!114 &1553988822925916350
 MonoBehaviour:
   m_ObjectHideFlags: 0

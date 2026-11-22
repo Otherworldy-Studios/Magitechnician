@@ -16,16 +16,21 @@ public class WaveManager : MGR<WaveManager>
     [SerializeField] private float _minSpawnDistance;
     [Tooltip("How much stronger enemies get in each room. Leave empty for no scaling.")]
     [SerializeField] private DifficultyScaling _difficultyScaling;
+    [SerializeField] GameObject _enemySpawnVFX;
+    [Tooltip("Small Delay Before Enemy Spawns to play VFX.")]
+    [SerializeField] private float _spawnDelay = 0.75f;
 
     [Header("Debug (Do not edit)")]
     [SerializeField] private int _currentWave;
     [SerializeField] private List<EnemyBase> _alive;
     [SerializeField] private bool _spawningDone;
     [SerializeField] private bool _waveRunning;
+  
 
     public event Action<int, int> OnWaveStarted;
     public event Action OnWaveCompleted;
     public event Action<EnemyBase> OnBossSpawned;
+    public event Action<EnemyBase> OnEnemySpawned;
     public event Action<EnemyBase> OnEnemyKilled;
 
     protected override void Awake()
@@ -179,8 +184,12 @@ public class WaveManager : MGR<WaveManager>
             for (int i = 0; i < entry.Count; i++)
             {
                 yield return new WaitUntil(() => _maxAlive <= 0 || _alive.Count < _maxAlive);
-
-                SpawnEnemy(entry.Enemy, room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+                Spawnpoint sp = ChooseSpawnpoint(room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+                GameObject effect = GameObject.Instantiate(_enemySpawnVFX, sp.transform.position, Quaternion.identity);
+                SoundController.Instance.PlaySFX("Enemy Spawn Sound", sp.transform.position);
+                yield return new WaitForSeconds(_spawnDelay);
+                SpawnEnemy(entry.Enemy,sp);
+                Destroy(effect, 0.25f);
                 yield return new WaitForSeconds(waveData[_currentWave].SpawnInterval);
             }
         }
@@ -191,10 +200,11 @@ public class WaveManager : MGR<WaveManager>
         TryFinishWave();
     }
 
-    private void SpawnEnemy(EnemyBase enemy, Spawnpoint point)
+    private void SpawnEnemy(EnemyBase enemy, Spawnpoint spawnpoint)
     {
-        Spawnpoint spawnpoint = ChooseSpawnpoint(point);
-
+        //Spawnpoint spawnpoint = ChooseSpawnpoint(point);
+      
+        
         EnemyBase alive = Instantiate(enemy, spawnpoint.transform.position, spawnpoint.transform.rotation);
         alive.Movement.Warp(spawnpoint.transform.position);
         ApplyDifficulty(alive);
@@ -203,10 +213,12 @@ public class WaveManager : MGR<WaveManager>
         {
             OnBossSpawned?.Invoke(alive);
         }
+     
 
         _alive.Add(alive);
         alive.MakeAggressive();
         alive.OnEnemyKilled += HandleEnemyKilled;
+        OnEnemySpawned?.Invoke(alive);
     }
 
     /// <summary>Adds the difficulty tier's modifiers for the rooms cleared so far to the enemy's Stats.</summary>

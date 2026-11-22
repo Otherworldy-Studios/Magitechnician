@@ -34,6 +34,8 @@ public class EnemyMovement : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _enemy = GetComponent<EnemyBase>();
+        _agent.avoidancePriority = Random.Range(40, 61); //so they dont push each other
+       
     }
 
     private void Update()
@@ -41,6 +43,7 @@ public class EnemyMovement : MonoBehaviour
         // Read every frame, so slows and buffs from StatModifiers change the speed while they last.
         if (_enemy != null)
             _agent.speed = _enemy.MoveSpeed * SpeedMultiplier;
+       // Debug.Log($"Velocity Mag: {_agent.velocity.magnitude}\nDesiredVelocityMag: {_agent.desiredVelocity.magnitude}\nRemaining Distance: {_agent.remainingDistance} ");
     }
 
     public void MoveTo(Vector3 destination)

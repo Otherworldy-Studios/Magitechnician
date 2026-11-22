@@ -30,7 +30,7 @@ MonoBehaviour:
   RecycleAudioSource: {fileID: 0}
   Loop: 1
   Persistent: 0
-  DoNotPlayIfClipAlreadyPlaying: 0
+  DoNotPlayIfClipAlreadyPlaying: 1
   MaximumConcurrentInstances: -1
   StopSoundOnFeedbackStop: 0
   FadeIn: 0
