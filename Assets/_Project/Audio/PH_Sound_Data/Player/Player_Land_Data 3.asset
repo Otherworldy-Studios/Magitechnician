@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cb35ed4e3a7554cbb5cdc5e2bdfd4d, type: 3}
   m_Name: Player_Land_Data 3
   m_EditorClassIdentifier: MoreMountains.Tools::MoreMountains.Feedbacks.MMF_MMSoundManagerSoundData
-  Sfx: {fileID: 8300000, guid: 4ac38f69ea2756b48af8d01de888536c, type: 3}
+  Sfx: {fileID: 8300000, guid: 7099ba9d9b272e7499ea8ac724c57c56, type: 3}
   RandomSfx: []
   SequentialOrder: 0
   SequentialOrderHoldLast: 0
   SequentialOrderHoldCooldownDuration: 2
   RandomUnique: 0
-  MinVolume: 1
-  MaxVolume: 1
+  MinVolume: 0.435
+  MaxVolume: 0.732
   MinPitch: 1
   MaxPitch: 1
   PlaybackTime: {x: 0, y: 0}

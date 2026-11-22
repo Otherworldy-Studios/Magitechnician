@@ -317,7 +317,7 @@ MonoBehaviour:
   _recoveryTime: 0.7
   _projectilePrefab: {fileID: 7954930404170188681, guid: 974e907fa540330418a64fb30ddcaad0, type: 3}
   _firePoint: {fileID: 3223711649901271988}
-  _projectileSpeed: 25
+  _projectileSpeed: 40
   _projectileRange: 100
 --- !u!1 &7207527392656566856
 GameObject:

@@ -38,7 +38,7 @@ public class ItemGridUI : MonoBehaviour
         foreach (ItemSlotUI slot in _slots)
         {
             if (slot == null) continue;
-            slot.OnClicked -= SelectSlot;
+            slot.OnClicked -= HandleSlotClicked;
             slot.OnCleared -= HandleSlotCleared;
         }
     }
@@ -52,11 +52,11 @@ public class ItemGridUI : MonoBehaviour
         if (slot == null || _slots.Contains(slot)) return;
 
         _slots.Add(slot);
-        slot.OnClicked += SelectSlot;
+        slot.OnClicked += HandleSlotClicked;
         slot.OnCleared += HandleSlotCleared;
     }
 
-    /// <summary>Selects a slot and deselects the previous one. Null clears the selection. Runs on each slot's OnClicked.</summary>
+    /// <summary>Selects a slot and deselects the previous one. Null clears the selection.</summary>
     public void SelectSlot(ItemSlotUI slot)
     {
         if (_selected == slot) return;
@@ -68,6 +68,11 @@ public class ItemGridUI : MonoBehaviour
         if (_tooltip != null) _tooltip.Show(_selected != null ? _selected.Item : null, this);
 
         OnSelectionChanged?.Invoke(_selected);
+    }
+
+    private void HandleSlotClicked(ItemSlotUI slot)
+    {
+        SelectSlot(slot == _selected ? null : slot);
     }
 
     /// <summary>Deselects a slot whose item was used, sold, or removed. Runs on each slot's OnCleared.</summary>

@@ -14,13 +14,14 @@ public class RewardScreen : UIScreen
 {
     [Header("References")]
     [SerializeField] private Button _resumeButton;
+    [SerializeField] private Button _skipButton;
     [SerializeField] private ItemGridUI _itemGrid;
     [SerializeField] private ItemSlotUI _itemSlot1;
     [SerializeField] private ItemSlotUI _itemSlot2;
     [SerializeField] private ItemSlotUI _itemSlot3;
 
     [SerializeField] private TMP_Text _errorText;
-    
+
     [SerializeField] private GunStatsPanel _gunStatsPanel;
 
     private const string NoSelectionMessage = "Pick a part first.";
@@ -28,19 +29,21 @@ public class RewardScreen : UIScreen
     private ItemSlotUI[] _itemSlots;
     private IReadOnlyList<WeightedReward<GunPart>> _rewards;
     private int _selectedRewardIndex = -1;
-    private bool _equipFailed; // True after ChooseReward fails, so the next Resume closes evenm if the player didnt choose a part.
+    private bool _equipFailed; // True after ChooseReward fails, so the next Resume closes even if the player didn't choose a part.
 
     private void Awake()
     {
         _itemSlots = new[] { _itemSlot1, _itemSlot2, _itemSlot3 };
 
         _resumeButton.onClick.AddListener(OnResume);
+        if (_skipButton != null) _skipButton.onClick.AddListener(OnSkip);
         _itemGrid.OnSelectionChanged += HandleSelectionChanged;
     }
 
     private void OnDestroy()
     {
         _resumeButton.onClick.RemoveListener(OnResume);
+        if (_skipButton != null) _skipButton.onClick.RemoveListener(OnSkip);
         _itemGrid.OnSelectionChanged -= HandleSelectionChanged;
     }
 
@@ -68,13 +71,20 @@ public class RewardScreen : UIScreen
 
     private void HandleSelectionChanged(ItemSlotUI selectedSlot)
     {
-        if (_rewards == null || selectedSlot == null) return;
+        if (_rewards == null) return;
 
-        int index = Array.IndexOf(_itemSlots, selectedSlot);
+        int index = selectedSlot != null ? Array.IndexOf(_itemSlots, selectedSlot) : -1;
         if (index >= 0 && index < _rewards.Count)
         {
             Pick(index);
+            return;
         }
+
+        _selectedRewardIndex = -1;
+        _equipFailed = false;
+        HideError();
+
+        if (_gunStatsPanel != null) _gunStatsPanel.Preview(null);
     }
 
     /// <summary>
@@ -113,6 +123,12 @@ public class RewardScreen : UIScreen
             return;
         }
 
+        Close();
+    }
+
+    private void OnSkip()
+    {
+        GameManager.Instance.SkipReward();
         Close();
     }
 

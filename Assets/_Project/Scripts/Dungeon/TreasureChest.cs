@@ -54,6 +54,11 @@ public class TreasureChest : MonoBehaviour, IInteractable
         return !IsOpen && player != null && player.Inventory != null;
     }
 
+    private void OnEnable()
+    {
+        SoundController.Instance.PlaySFX("Chest Appears", transform.position);
+    }
+
     /// <summary>Opens the chest into the player's inventory. InteractionDetector calls this when Interact is pressed.</summary>
     public void Interact(PlayerRoot player)
     {

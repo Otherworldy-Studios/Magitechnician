@@ -22,7 +22,7 @@ MonoBehaviour:
   - _stat: {fileID: 11400000, guid: fba8ede919c57410e968a0ddbbc48867, type: 2}
     _baseValue: 2
   - _stat: {fileID: 11400000, guid: 964752eef65874f81ac81c91bcd219d4, type: 2}
-    _baseValue: 150
+    _baseValue: 10
   - _stat: {fileID: 11400000, guid: afc89de14e2fc5145ac3f9cb2950b0ef, type: 2}
     _baseValue: 0
   - _stat: {fileID: 11400000, guid: ac0de3d9f0e725748b895e083011a05e, type: 2}
