@@ -125,6 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0587a6b4278f142840c032c0ef37e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  _settings: {fileID: 11400000, guid: d713706eac4144eb19e526f2aad3dbc2, type: 2}
+  _settings: {fileID: 11400000, guid: a4b2df3aca313554687f8f126b3f20a0, type: 2}
   _surfaceImpactPrefab: {fileID: 0}
   _damageableImpactPrefab: {fileID: 0}

@@ -24,7 +24,7 @@ namespace _Project.Scripts.Dungeon
 
     /// <summary>
     /// Builds the dungeon in the Level scene when GameManager raises OnGenerateRequested: places a start room, grows
-    /// combat rooms out from it on a grid using a seed, links neighbors and portals, puts the End room next to the
+    /// a chain of combat rooms from it on a grid using a seed, links neighbors and portals, puts the End room next to the
     /// farthest room, bakes the NavMesh, and fires OnMapGenerated.
     /// PlayerSpawner and GameManager start the run from that event.
     /// </summary>
@@ -97,6 +97,7 @@ namespace _Project.Scripts.Dungeon
         /// <summary>The map layout. Each cell holds a room or null. GameManager copies it when the run starts.</summary>
         public Room[,] RoomGrid => _roomGrid;
         public Room StartRoom => _startRoom;
+        public Room EndRoom => _endRoom;
 
         // Rooms are created under this transform. When the NavMeshSurface collects only its children, the rooms have to
         // be its children to be baked. With Collect Objects set to All or Volume, rooms stay at the scene root.
@@ -179,9 +180,9 @@ namespace _Project.Scripts.Dungeon
         }
 
         /// <summary>
-        /// Builds the map except for the End room: places a start room in the middle of the grid, then grows combat rooms
-        /// outward, room by room, trying each direction in a random order. A room is added when the chance roll succeeds
-        /// or the minimum isn't reached yet, and each new room links back to the room it grew from.
+        /// Builds the map except for the End room: places a start room in the middle of the grid, then grows a chain of
+        /// combat rooms, each trying the directions in a random order until one room is added. A room is added when the
+        /// chance roll succeeds or the minimum isn't reached yet, and each new room links back to the room it grew from.
         /// </summary>
         private void GenerateMap()
         {
@@ -288,7 +289,6 @@ namespace _Project.Scripts.Dungeon
                                 break;
                         }
 
-                        // Each room has one portal, so a room that grows two children only leads to the last one (task 3 makes generation linear).
                         if (room.Portal != null)
                             room.Portal.Connected = nextRoom;
 
@@ -297,6 +297,9 @@ namespace _Project.Scripts.Dungeon
 
                         _generatedCombatRooms.Add(nextRoom);
                         rooms.Enqueue((nextRoom, added));
+
+                        // One child per room keeps the map a chain, so every portal leads to the next room.
+                        break;
                     }
                 }
             }
@@ -390,11 +393,7 @@ namespace _Project.Scripts.Dungeon
             }
         }
 
-        /// <summary>
-        /// Runs once every room is placed. Bakes the NavMesh over the placed rooms, then fires OnMapGenerated, so
-        /// PlayerSpawner places the player in a finished, baked map. The start room isn't completed here, because it
-        /// has enemies and clears through WaveManager like a combat room.
-        /// </summary>
+        
         private void FinishGeneration()
         {
             BakeNavMesh();

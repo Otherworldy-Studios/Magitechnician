@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb2f7ab99969a14dac231cb8311dd79, type: 3}
   m_Name: SO_GlobalSettings
   m_EditorClassIdentifier: Assembly-CSharp::GlobalSettings
-  RarityColorSettings:
-    Common: {r: 1, g: 1, b: 1, a: 1}
-    Uncommon: {r: 0, g: 1, b: 0.14361954, a: 1}
-    Rare: {r: 0, g: 1, b: 0.796659, a: 1}
-    Epic: {r: 0.6740659, g: 0.11774653, b: 0.9245283, a: 1}
+  _rarityColors:
+    _common: {r: 1, g: 1, b: 1, a: 1}
+    _uncommon: {r: 0.023534894, g: 1, b: 0, a: 1}
+    _rare: {r: 0, g: 1, b: 0.86376, a: 0}
+    _epic: {r: 0.575233, g: 0, b: 1, a: 0}
+  totalCharms: 0

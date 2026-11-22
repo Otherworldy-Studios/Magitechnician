@@ -19,7 +19,8 @@ public class UIManager : MGR<UIManager>
         Gameplay,
         Reward,
         Shop,
-        Charm
+        Charm,
+        ChestLoot
     }
 
     [Tooltip("Filled from the children in Awake.")]
@@ -32,6 +33,7 @@ public class UIManager : MGR<UIManager>
     [SerializeField] private PauseScreen _pauseScreen;
     [SerializeField] private ShopScreen _shopScreen;
     [SerializeField] private CharmScreen _charmScreen;
+    [SerializeField] private ChestLootScreen _chestLootScreen;
     [Tooltip("Found among the child screens if empty.")]
     [SerializeField] private HUDScreen _hudScreen;
     [Tooltip("Shown in the Inspector for debugging. Don't set it by hand.")]
@@ -50,7 +52,8 @@ public class UIManager : MGR<UIManager>
     /// <summary>Quit was pressed. GameManager closes the game.</summary>
     public static event Action OnExitRequested;
 
-    public bool IsRewardOpen => _currentState == UIStates.Reward;
+    /// <summary>True while the reward screen or the chest loot screen is open. Escape doesn't pause during either.</summary>
+    public bool IsRewardOpen => _currentState == UIStates.Reward || _currentState == UIStates.ChestLoot;
 
     protected override void Awake()
     {
@@ -124,6 +127,12 @@ public class UIManager : MGR<UIManager>
                 SetHUDVisible(true);
                 ShowScreen(_charmScreen);
                 break;
+            case UIStates.ChestLoot:
+                HideAllScreens();
+                SetHUDVisible(true);
+                ShowScreen(_chestLootScreen);
+                OnPauseRequested?.Invoke(true);
+                break;
         }
     }
 
@@ -192,13 +201,22 @@ public class UIManager : MGR<UIManager>
 
     #region Screens
 
-    /// <summary>Opens the reward screen with the rolled parts. Does nothing when there are none.</summary>
+    /// <summary>Opens the reward screen with the rolled parts, unless there are none.</summary>
     public void HandleRewards(IReadOnlyList<WeightedReward<GunPart>> rewards)
     {
         if (rewards.Count == 0) return;
 
         ChangeState(UIStates.Reward);
         _rewardScreen.ShowChoices(rewards);
+    }
+
+    /// <summary>Opens the chest loot screen with what a chest gave the player. Pauses the game until it closes.</summary>
+    public void ShowChestLoot(int crystals, Consumable consumable, bool consumableAdded)
+    {
+        if (_chestLootScreen == null) return;
+
+        ChangeState(UIStates.ChestLoot);
+        _chestLootScreen.ShowLoot(crystals, consumable, consumableAdded);
     }
 
     [Button, DisableInEditorMode]
@@ -215,7 +233,7 @@ public class UIManager : MGR<UIManager>
         ChangeState(UIStates.Charm);
     }
 
-    /// <summary>Closes the shop or charm screen through GameManager. Does nothing on other screens.</summary>
+    /// <summary>Closes the shop or charm screen through GameManager. Other screens stay open.</summary>
     public void CloseScreen()
     {
         if (_currentState != UIStates.Shop && _currentState != UIStates.Charm) return;
@@ -314,7 +332,8 @@ public class UIManager : MGR<UIManager>
     /// </summary>
     private void HandlePause(bool isPaused)
     {
-        if (_currentState == UIStates.Reward || _currentState == UIStates.Charm || _currentState == UIStates.Shop) return;
+        if (_currentState == UIStates.Reward || _currentState == UIStates.ChestLoot ||
+            _currentState == UIStates.Charm || _currentState == UIStates.Shop) return;
 
         if (isPaused)
         {

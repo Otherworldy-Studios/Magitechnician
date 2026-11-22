@@ -70,11 +70,14 @@ public class TreasureChest : MonoBehaviour, IInteractable
         if (crystals > 0)
             inventory.AddCrystals(crystals);
 
+        Consumable consumable = null;
+        bool consumableAdded = false;
+
         if (_possibleConsumables.Count > 0 && Random.value < _consumableChance)
         {
-            Consumable consumable = _possibleConsumables[Random.Range(0, _possibleConsumables.Count)];
+            consumable = _possibleConsumables[Random.Range(0, _possibleConsumables.Count)];
             if (consumable != null)
-                inventory.TryAddItem(consumable); // Skipped when the consumable slots are full.
+                consumableAdded = inventory.TryAddItem(consumable); // False when the consumable slots are full.
         }
 
         if (_animator != null && !string.IsNullOrEmpty(_openTrigger))
@@ -85,6 +88,9 @@ public class TreasureChest : MonoBehaviour, IInteractable
 
         _onOpened?.Invoke();
         OnOpened?.Invoke();
+
+        if (UIManager.HasInstance)
+            UIManager.Instance.ShowChestLoot(crystals, consumable, consumableAdded);
     }
 
     /// <summary>Debug: opens the chest for the current player without walking to it.</summary>

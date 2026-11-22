@@ -24,7 +24,7 @@ public class WaveManager : MGR<WaveManager>
     public event Action<int, int> OnWaveStarted;
     public event Action OnWaveCompleted;
     public event Action<EnemyBase> OnBossSpawned;
-    /// <summary>Fires when an enemy this spawned dies, including the boss. RunStats counts kills from it.</summary>
+    
     public event Action<EnemyBase> OnEnemyKilled;
 
     protected override void Awake()
@@ -68,7 +68,7 @@ public class WaveManager : MGR<WaveManager>
         GameManager.OnGameLost -= StopAll;
     }
 
-    /// <summary>Starts listening for the player entering each room, including the Start room.</summary>
+    /// <summary>Starts listening for the player entering each room, including the Start and End rooms.</summary>
     public void HandleMapGenerated()
     {
         foreach (Room room in LevelGenerator.Instance.RoomGrid)
@@ -78,6 +78,14 @@ public class WaveManager : MGR<WaveManager>
                 room.OnRoomEntered -= HandlePlayerEntered;
                 room.OnRoomEntered += HandlePlayerEntered;
             }
+        }
+
+        // The End room isn't in the grid.
+        Room endRoom = LevelGenerator.Instance.EndRoom;
+        if (endRoom != null)
+        {
+            endRoom.OnRoomEntered -= HandlePlayerEntered;
+            endRoom.OnRoomEntered += HandlePlayerEntered;
         }
     }
 
@@ -125,10 +133,7 @@ public class WaveManager : MGR<WaveManager>
         _spawningDone = false;
     }
 
-    /// <summary>
-    /// Spawns the room's current Wave, one enemy per spawn interval, at random spawn points.
-    /// Sets _spawningDone when every enemy in the Wave has spawned, then ends the Wave if those enemies are already dead.
-    /// </summary>
+    
     private IEnumerator RunWave(Room room)
     {
         if (room != _currentRoom || !_waveRunning)
@@ -263,10 +268,6 @@ public class WaveManager : MGR<WaveManager>
         TryFinishWave();
     }
 
-    /// <summary>
-    /// When every enemy in the Wave has spawned and died, moves to the next Wave, or completes the room after the last
-    /// Wave. Runs after each kill and once spawning finishes.
-    /// </summary>
     private void TryFinishWave()
     {
         if (_alive.Count > 0 || !_spawningDone)

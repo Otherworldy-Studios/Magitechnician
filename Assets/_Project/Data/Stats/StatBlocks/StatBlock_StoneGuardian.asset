@@ -16,7 +16,7 @@ MonoBehaviour:
   - _stat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}
     _baseValue: 3.5
   - _stat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
-    _baseValue: 250
+    _baseValue: 2500
   - _stat: {fileID: 11400000, guid: c1772fa5754ba41ebae3eef31d1b7545, type: 2}
     _baseValue: 30
   - _stat: {fileID: 11400000, guid: f6cb34bdd7f2447a9802d51ff5e9fb28, type: 2}

@@ -12953,8 +12953,6 @@ GameObject:
   - component: {fileID: 9128890843461929088}
   - component: {fileID: 1613025400275881569}
   - component: {fileID: 5891500625993931626}
-  - component: {fileID: 6110396516783911679}
-  - component: {fileID: 9218059295825135769}
   m_Layer: 0
   m_Name: FX_Portal_01
   m_TagString: Untagged
@@ -17698,44 +17696,6 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
---- !u!65 &6110396516783911679
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3583000231893134088}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.1490576, y: 2.4068253, z: 0.8648093}
-  m_Center: {x: -0.0050141118, y: -0.15528697, z: -0.17581415}
---- !u!114 &9218059295825135769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3583000231893134088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96f7fa8491084e64b82d80b06c7ab011, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Dungeon.Portal
-  _parent: {fileID: 0}
-  _connected: {fileID: 0}
-  _active: 0
-  _vfx: {fileID: 3583000231893134088}
-  _collider: {fileID: 6110396516783911679}
 --- !u!1 &3587193709590530731
 GameObject:
   m_ObjectHideFlags: 0
@@ -35342,6 +35302,8 @@ GameObject:
   - component: {fileID: 5031380958165628254}
   - component: {fileID: 44486759934530141}
   - component: {fileID: 3379727161326512629}
+  - component: {fileID: 7471503720856241210}
+  - component: {fileID: 9020915418654783744}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -35444,6 +35406,44 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7471503720856241210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114992892747649046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f7fa8491084e64b82d80b06c7ab011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Dungeon.Portal
+  _parent: {fileID: 0}
+  _connected: {fileID: 0}
+  _active: 0
+  _vfx: {fileID: 3583000231893134088}
+  _collider: {fileID: 0}
+--- !u!65 &9020915418654783744
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114992892747649046}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.9074223, y: 1.8692359, z: 1}
+  m_Center: {x: 0.1159082, y: -0.11749237, z: 0}
 --- !u!1 &6156748985244896982
 GameObject:
   m_ObjectHideFlags: 0

@@ -73,7 +73,6 @@ Transform:
   - {fileID: 5430220318058216811}
   - {fileID: 8893645873114391918}
   - {fileID: 8858805912047406342}
-  - {fileID: 3223711649901271988}
   - {fileID: 1030343001922732806}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -0.183, y: -0.234, z: 0.556}
@@ -97,9 +96,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.74
-  m_Height: 3.07
+  m_Height: 3.73
   m_Direction: 1
-  m_Center: {x: 0, y: 1.39, z: 0}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!195 &4585054297617165948
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -119,7 +118,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 3.17
-  m_BaseOffset: -0.04
+  m_BaseOffset: 1.48
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &3283564745717051591
@@ -165,7 +164,6 @@ MonoBehaviour:
   _target: {fileID: 0}
   _stats: {fileID: 8233628497874900800}
   _attacks:
-  - {fileID: 0}
   - {fileID: 8441897681573195082}
   _detectionRangeStat: {fileID: 11400000, guid: f6cb34bdd7f2447a9802d51ff5e9fb28, type: 2}
   _minRangeStat: {fileID: 11400000, guid: a8ef90889625b4f2bbeb6bab4c7f9bfa, type: 2}
@@ -250,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa29d1c4c8eb40b4b721615fb834047, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimator
-  _animator: {fileID: 0}
+  _animator: {fileID: 4966346911752845604}
   _crossFadeTime: 0.15
   _idle: Locomotion
   _chase: Locomotion
@@ -324,7 +322,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8893645873114391918}
   - component: {fileID: 8441897681573195082}
-  - component: {fileID: 4877468726586327994}
   m_Layer: 11
   m_Name: CannonAttack
   m_TagString: Untagged
@@ -356,7 +353,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4793197385016622477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02b06e553427b49d09b00cc32418a1e1, type: 3}
+  m_Script: {fileID: 11500000, guid: a54aca9562ee448acad141d952013d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeAttack
   _animationState: Shoot
@@ -364,37 +361,10 @@ MonoBehaviour:
   _windUpMultiplier: 1
   _cooldownMultiplier: 1.5
   _recoveryTime: 0.7
-  _cannonballPrefab: {fileID: 7954930404170188681, guid: 974e907fa540330418a64fb30ddcaad0, type: 3}
+  _projectilePrefab: {fileID: 7954930404170188681, guid: 974e907fa540330418a64fb30ddcaad0, type: 3}
   _firePoint: {fileID: 3223711649901271988}
-  _launchAngle: 55
+  _projectileSpeed: 15
   _projectileRange: 100
-  _landingMarkerPrefab: {fileID: 0}
-  _healingPoolPrefab: {fileID: 0}
-  _groundLayers:
-    serializedVersion: 2
-    m_Bits: 513
-  _groundCheckDistance: 5
---- !u!65 &4877468726586327994
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4793197385016622477}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7207527392656566856
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,12 +389,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7207527392656566856}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -7.844392e-11, w: 1}
   m_LocalPosition: {x: 1.202, y: 1.682, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8107900298812879262}
+  m_Father: {fileID: 8858805912047406342}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &9041667260628478701
 PrefabInstance:
@@ -480,7 +450,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 89a622c363359734ab6969077ba4d160, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3223711649901271988}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 89a622c363359734ab6969077ba4d160, type: 3}
       insertIndex: -1
