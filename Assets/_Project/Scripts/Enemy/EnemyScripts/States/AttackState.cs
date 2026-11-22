@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// Manages enemy attack behavior. Checks the Goldilocks range and line of sight, faces the player, and starts the
 /// attack EnemyBase.SelectAttack picks whenever no attack is running. Plays CombatIdle between attacks and each
@@ -6,9 +8,9 @@
 public class AttackState : IEnemyState
 {
     private readonly EnemyBase _enemy;
-    private EnemyAttack _currentAttack;   // The attack started last. Null until the first attack starts.
-    private bool _playingAttack;          // True while an attack's animation is playing, so CombatIdle plays once it ends.
-    private bool _previousFacesPath;      // EnemyMovement.FacesPath before Enter, put back in Exit.
+    private EnemyAttack _currentAttack; // The attack started last. Null until the first attack starts.
+    private bool _playingAttack; // True while an attack's animation is playing, so CombatIdle plays once it ends.
+    private bool _previousFacesPath; // EnemyMovement.FacesPath before Enter, put back in Exit.
 
     public AttackState(EnemyBase enemy)
     {
@@ -29,8 +31,9 @@ public class AttackState : IEnemyState
     }
 
     /// <summary>
-    /// Leaves for Idle, Reposition, or Chase when the target is lost, too close, out of sight, or too far.
-    /// Otherwise turns toward the target, and starts the next attack once the last one has finished.
+    /// Leaves for Idle when the target is lost, and for Reposition when too close or out of sight. Otherwise turns
+    /// toward the target and lets the current attack finish. After that, goes back to Chase once the target is more
+    /// than ChaseState.AttackMargin past MaxRange, or starts the next attack.
     /// </summary>
     public void Tick(float dt)
     {
@@ -40,17 +43,9 @@ public class AttackState : IEnemyState
             return;
         }
 
-        RangeStatus rangeStatus = _enemy.CurrentRange;
-
-        if (rangeStatus == RangeStatus.TooClose || !_enemy.HasLineOfSight)
+        if (_enemy.CurrentRange == RangeStatus.TooClose || !_enemy.HasLineOfSight)
         {
             _enemy.ChangeState(_enemy.RepositionState);
-            return;
-        }
-
-        if (rangeStatus == RangeStatus.TooFar)
-        {
-            _enemy.ChangeState(_enemy.ChaseState);
             return;
         }
 
@@ -58,6 +53,14 @@ public class AttackState : IEnemyState
 
         if (_currentAttack != null && _currentAttack.IsAttacking)
             return;
+
+        float distance = Vector3.Distance(_enemy.Target.position, _enemy.transform.position);
+
+        if (distance > _enemy.MaxRange + ChaseState.AttackMargin)
+        {
+            _enemy.ChangeState(_enemy.ChaseState);
+            return;
+        }
 
         if (_playingAttack)
         {

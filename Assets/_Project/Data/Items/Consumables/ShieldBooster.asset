@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Consumable
   _displayName: Shield Booster
   _description: +50 max shield for 30 s.
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 18eb98a42d2616a468dee6ee98dbe543, type: 3}
   _category: 1
-  rarity: 0
-  statModifiers:
-  - Stat: {fileID: 11400000, guid: 664aed8d8551e41d2afc694a2660efcd, type: 2}
-    Operation: 0
-    Value: 50
-    Duration: 30
-    Permanent: 0
-  duration: 30
-  instantHeal: 0
+  _rarity: 0
+  _modifiers:
+  - _stat: {fileID: 11400000, guid: 664aed8d8551e41d2afc694a2660efcd, type: 2}
+    _operation: 0
+    _value: 50
+    _duration: 30
+    _permanent: 0
+  _duration: 30
+  _instantHeal: 0
+  _abilityPrefab: {fileID: 0}

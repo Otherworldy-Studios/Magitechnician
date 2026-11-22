@@ -178,7 +178,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6229954318640080383}
-  - component: {fileID: 8973775475934069338}
   - component: {fileID: 7949047648783363216}
   - component: {fileID: 3915667246851117407}
   - component: {fileID: 40525737687421724}
@@ -188,6 +187,7 @@ GameObject:
   - component: {fileID: 2723949355657789181}
   - component: {fileID: 1859506215673540333}
   - component: {fileID: 7091093756900165589}
+  - component: {fileID: 359884755532899021}
   m_Layer: 8
   m_Name: StoneGuardian
   m_TagString: Untagged
@@ -217,29 +217,6 @@ Transform:
   - {fileID: 95321925210837174}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &8973775475934069338
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4654942853611733274}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.74
-  m_Height: 3.07
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.39, z: 0}
 --- !u!195 &7949047648783363216
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -312,7 +289,7 @@ MonoBehaviour:
   _minRangeStat: {fileID: 11400000, guid: a8ef90889625b4f2bbeb6bab4c7f9bfa, type: 2}
   _maxRangeStat: {fileID: 11400000, guid: 5e5166892305a40f48c67793c8f852b3, type: 2}
   _moveSpeedStat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}
-  _attackDamageStat: {fileID: 11400000, guid: 4f02e9989fb945e4db6d74c819705d40, type: 2}
+  _attackDamageStat: {fileID: 11400000, guid: c1772fa5754ba41ebae3eef31d1b7545, type: 2}
   _windUpTimeStat: {fileID: 11400000, guid: 6f3fdb3b58095443cb0a7b50b5d8b16e, type: 2}
   _cooldownTimeStat: {fileID: 11400000, guid: f2a0d37eb6232464abefec183d060a57, type: 2}
   _turnSpeed: 360
@@ -433,6 +410,29 @@ MonoBehaviour:
   _moveZParameter: MoveZ
   _normalizeBySpeed: 1
   _parameterDampTime: 0.1
+--- !u!136 &359884755532899021
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4654942853611733274}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.82
+  m_Height: 5.9533243
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.4766622, z: 0}
 --- !u!1 &6017891981300505324
 GameObject:
   m_ObjectHideFlags: 0

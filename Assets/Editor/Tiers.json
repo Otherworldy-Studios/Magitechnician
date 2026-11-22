@@ -1,0 +1,196 @@
+{
+  "scalings": [
+    {
+      "name": "DifficultyScaling_Normal",
+      "tiers": [
+        { "modifiers": [] },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.15
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.1
+            }
+          ]
+        },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.3
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.2
+            },
+            {
+              "stat": "Stat_AttackCooldown",
+              "operation": "Multiply",
+              "value": 0.92
+            }
+          ]
+        },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.5
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.3
+            },
+            {
+              "stat": "Stat_AttackCooldown",
+              "operation": "Multiply",
+              "value": 0.85
+            },
+            {
+              "stat": "Stat_AttackWindUp",
+              "operation": "Multiply",
+              "value": 0.92
+            },
+            {
+              "stat": "Stat_Speed",
+              "operation": "Multiply",
+              "value": 1.05
+            }
+          ]
+        },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.2
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.2
+            },
+            {
+              "stat": "Stat_AttackCooldown",
+              "operation": "Multiply",
+              "value": 0.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DifficultyScaling_Hard",
+      "tiers": [
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.1
+            }
+          ]
+        },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.3
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.2
+            },
+            {
+              "stat": "Stat_AttackCooldown",
+              "operation": "Multiply",
+              "value": 0.9
+            }
+          ]
+        },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.5
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.35
+            },
+            {
+              "stat": "Stat_AttackCooldown",
+              "operation": "Multiply",
+              "value": 0.82
+            },
+            {
+              "stat": "Stat_AttackWindUp",
+              "operation": "Multiply",
+              "value": 0.9
+            }
+          ]
+        },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.75
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.5
+            },
+            {
+              "stat": "Stat_AttackCooldown",
+              "operation": "Multiply",
+              "value": 0.75
+            },
+            {
+              "stat": "Stat_AttackWindUp",
+              "operation": "Multiply",
+              "value": 0.85
+            },
+            {
+              "stat": "Stat_Speed",
+              "operation": "Multiply",
+              "value": 1.1
+            }
+          ]
+        },
+        {
+          "modifiers": [
+            {
+              "stat": "Stat_MaxHealth",
+              "operation": "Multiply",
+              "value": 1.35
+            },
+            {
+              "stat": "Stat_BaseDamage",
+              "operation": "Multiply",
+              "value": 1.3
+            },
+            {
+              "stat": "Stat_AttackCooldown",
+              "operation": "Multiply",
+              "value": 0.85
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

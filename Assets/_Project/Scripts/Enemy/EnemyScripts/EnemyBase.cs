@@ -178,7 +178,7 @@ public class EnemyBase : MonoBehaviour
                 }
             }
         }
-
+        
         ChangeState(IdleState);
 
         if (_isAggressive && HasTarget)

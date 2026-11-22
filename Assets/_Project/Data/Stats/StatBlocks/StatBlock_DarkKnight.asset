@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StatBlock
   _entries:
   - _stat: {fileID: 11400000, guid: f16290ba96ad143d0acc8b036247bf25, type: 2}
-    _baseValue: 12
+    _baseValue: 16
   - _stat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
-    _baseValue: 375
+    _baseValue: 150
   - _stat: {fileID: 11400000, guid: c1772fa5754ba41ebae3eef31d1b7545, type: 2}
     _baseValue: 30
   - _stat: {fileID: 11400000, guid: f6cb34bdd7f2447a9802d51ff5e9fb28, type: 2}
@@ -28,4 +28,4 @@ MonoBehaviour:
   - _stat: {fileID: 11400000, guid: 6f3fdb3b58095443cb0a7b50b5d8b16e, type: 2}
     _baseValue: 0.33
   - _stat: {fileID: 11400000, guid: f2a0d37eb6232464abefec183d060a57, type: 2}
-    _baseValue: 1.5
+    _baseValue: 0.75

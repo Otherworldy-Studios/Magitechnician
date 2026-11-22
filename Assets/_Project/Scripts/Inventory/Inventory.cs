@@ -18,8 +18,6 @@ public class Inventory : SerializedMonoBehaviour
     [SerializeField] private int _crystals;
     [Tooltip("How many charms the player can equip at once. 0 prevents equipping any charm.")]
     [SerializeField] private int _equippedCharmSlots;
-    [Tooltip("How many charms the player can own. 0 refuses every charm.")]
-    [SerializeField] private int _charmSlots;
     [Tooltip("How many consumables the player can carry, one per key. 0 refuses every consumable.")]
     [SerializeField] private int _maxConsumables;
 
@@ -28,8 +26,6 @@ public class Inventory : SerializedMonoBehaviour
     public int Crystals => _crystals;
     /// <summary>How many charms the player can equip at once.</summary>
     public int EquippedCharmSlots => _equippedCharmSlots;
-    /// <summary>How many charms the player can own.</summary>
-    public int CharmSlots => _charmSlots;
     public int TotalCharms => _totalCharms;
     /// <summary>How many consumables the player can carry.</summary>
     public int MaxConsumables => _maxConsumables;
@@ -47,15 +43,13 @@ public class Inventory : SerializedMonoBehaviour
     [ShowInInspector, ReadOnly]
     public IReadOnlyList<Consumable> Consumables => _consumables;
 
-    /// <summary>Fires when crystals change, with the new total. CurrencyDisplay listens to it.</summary>
+    /// <summary>Fires when crystals change, with the new total.</summary>
     public event Action<int> OnCrystalsChanged;
-    /// <summary>Fires when charms or consumables are added, removed, equipped, or used. ConsumableSlotsUI listens to it.</summary>
+    /// <summary>Fires when charms or consumables are added, removed, replaced, equipped, or used.</summary>
     public event Action OnInventoryChanged;
     /// <summary>Fires when a consumable is used, with that consumable.</summary>
-    // AUDIO: new. PlayerAudio plays the use sound from it.
     public event Action<Consumable> OnConsumableUsed;
     /// <summary>Fires when a timed consumable's modifiers are removed at the end of its duration.</summary>
-    // AUDIO: new. PlayerAudio plays the effect-ends sound from it.
     public event Action<Consumable> OnConsumableEnded;
 
     [SerializeField] private Stats _playerStats;
@@ -199,6 +193,21 @@ public class Inventory : SerializedMonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
+    /// <summary>
+    /// Discards the consumable at a slot without using it, and puts the replacement in that slot, so it keeps the same
+    /// key. Returns false if the slot is empty or the replacement is null. ChestLootScreen calls this when the slots
+    /// are full.
+    /// </summary>
+    /// <param name="index">The slot, 0 to 2.</param>
+    public bool ReplaceConsumable(int index, Consumable replacement)
+    {
+        if (replacement == null || index < 0 || index >= _consumables.Count) return false;
+
+        _consumables[index] = replacement;
+        OnInventoryChanged?.Invoke();
+        return true;
+    }
+
     /// <summary>Sets the crystal total directly and fires OnCrystalsChanged. PersistentProgress.LoadInto uses it.</summary>
     /// <param name="amount">The new total.</param>
     public void SetCrystals(int amount)
@@ -214,12 +223,12 @@ public class Inventory : SerializedMonoBehaviour
         OnCrystalsChanged?.Invoke(_crystals);
     }
 
-    /// <summary>Removes crystals and fires OnCrystalsChanged. Known bug, fixed in task 11: it can go below 0.</summary>
+    /// <summary>Removes crystals and fires OnCrystalsChanged. Returns false and spends nothing if there are too few.</summary>
     public bool TrySpendCrystals(int amount)
     {
         if (amount > _crystals)
             return false;
-        
+
         _crystals -= amount;
         OnCrystalsChanged?.Invoke(_crystals);
         return true;
@@ -299,20 +308,19 @@ public class Inventory : SerializedMonoBehaviour
 
         // Mark consumable modifiers Permanent, so Stats doesn't remove them before this does.
         if (consumable.Duration > 0f && consumable.Modifiers.Count > 0)
-            StartCoroutine(RemoveAfter(source, consumable.Duration, consumable)); // AUDIO: passes the consumable for OnConsumableEnded.
+            StartCoroutine(RemoveAfter(source, consumable.Duration, consumable));
 
         _consumables.RemoveAt(index);
         OnInventoryChanged?.Invoke();
-        OnConsumableUsed?.Invoke(consumable); // AUDIO: new.
+        OnConsumableUsed?.Invoke(consumable);
     }
 
     /// <summary>Waits in game time, so pausing pauses the timer, then removes one use's modifiers.</summary>
-    // AUDIO: the consumable parameter is new, for OnConsumableEnded.
     private IEnumerator RemoveAfter(object source, float seconds, Consumable consumable)
     {
         yield return new WaitForSeconds(seconds);
         RemoveModifiers(source);
-        OnConsumableEnded?.Invoke(consumable); // AUDIO: new.
+        OnConsumableEnded?.Invoke(consumable);
     }
 
     /// <summary>Returns the assigned Health, or finds the player's through PlayerRoot.</summary>
@@ -350,7 +358,7 @@ public class Inventory : SerializedMonoBehaviour
         if (_gunStats != null) _gunStats.RemoveAllFromSource(source);
     }
 
-    /// <summary>Debug: adds any item asset dragged into the field, and logs whether it was added with the current counts.</summary>
+    /// <summary>Debug: adds any item asset dragged into the field.</summary>
     [Button, DisableInEditorMode]
     private void DEBUGAddItem(ScriptableObject item)
     {
@@ -360,10 +368,7 @@ public class Inventory : SerializedMonoBehaviour
             return;
         }
 
-        bool added = TryAddItem(inventoryItem);
-        Debug.Log($"Add {inventoryItem.DisplayName} ({inventoryItem.Category}): {(added ? "added" : "refused")}. " +
-                  $"Consumables {Consumables.Count}/{_maxConsumables}, charms {OwnedCharms.Count}/{_totalCharms}, " +
-                  $"equipped {EquippedCharms.Count}/{_equippedCharmSlots}.", this);
+        TryAddItem(inventoryItem);
     }
 
     [Button, DisableInEditorMode]
