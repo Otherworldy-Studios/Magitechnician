@@ -27,11 +27,15 @@ public class BlockReaction : MonoBehaviour
     [SerializeField, Range(0f, 180f)] private float _maxAngleToPlayer = 60f;
     [Tooltip("Times the move speed while blocking. 0 stops the Dark Knight.")]
     [SerializeField, Range(0f, 1f)] private float _speedMultiplierWhileBlocking = 0.2f;
+    [SerializeField] private GameObject _physicalShield;
+    [SerializeField] private Animator _physicalShieldAC;
 
     private EnemyBase _enemy;
     private Gun _playerGun;      // The registered player's gun, whose OnFired starts a block roll.
     private float _blockEndTime; // Time.time when the current block ends.
     private float _nextBlockTime; // Time.time when the cooldown ends.
+
+
 
     public bool IsBlocking { get; private set; }
 
@@ -44,6 +48,7 @@ public class BlockReaction : MonoBehaviour
     private void Awake()
     {
         _enemy = GetComponent<EnemyBase>();
+        _physicalShieldAC = _physicalShield.GetComponent<Animator>();
         SetShield(false);
     }
 
@@ -132,7 +137,7 @@ public class BlockReaction : MonoBehaviour
         SetShield(true);
         _enemy.Movement.SpeedMultiplier = _speedMultiplierWhileBlocking;
         _enemy.PlayAnimation(EnemyAnimation.Block);
-
+        _physicalShieldAC.Play("Block");
         OnBlockStarted?.Invoke();
     }
 
@@ -160,5 +165,6 @@ public class BlockReaction : MonoBehaviour
     {
         if (_shieldCollider != null)
             _shieldCollider.enabled = on;
+        _physicalShield.SetActive(on);
     }
 }

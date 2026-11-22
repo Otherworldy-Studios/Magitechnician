@@ -176,7 +176,11 @@ namespace _Project.Scripts.Dungeon
         private void OpenPortal()
         {
             if (_portal != null && _portal.Connected != null)
+            {
                 _portal.Active = true;
+                SoundController.Instance.PlaySFX("Portal Opens", _portal.transform.position);
+            }
+               
         }
 
         [Button, DisableInEditorMode]

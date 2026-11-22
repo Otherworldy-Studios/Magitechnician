@@ -38,6 +38,7 @@ namespace _Project.Scripts.Dungeon
             _collider = GetComponent<BoxCollider>();
         }
 
+
         private void Update()
         {
             if (_vfx != null && _vfx.activeSelf != Active)
