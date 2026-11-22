@@ -1,30 +1,52 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// Base class for enemy attacks. Runs one attack as wind-up, hit, active time, then cooldown, and can cancel it.
-/// AttackState calls StartAttack when CanAttack is true, and CancelAttack when it exits.
+/// Base class for enemy attacks. Runs one attack as wind-up, hit, active time, recovery, then cooldown, and can cancel it.
+/// AttackState starts the attack EnemyBase.SelectAttack picks, plays its Animation State, and calls CancelAttack when it
+/// exits. Damage, wind-up, and cooldown come from the enemy's stats, times this attack's multipliers, so one enemy's
+/// attacks can differ, such as the Dark Knight's quick and overhead swings.
 /// </summary>
 public abstract class EnemyAttack : MonoBehaviour
 {
-    /// <summary>The enemy this attack belongs to. Set by EnemyBase.Awake through Initialize.</summary>
-    protected EnemyBase Owner { get; private set; }
-
-    /// <summary>True when no attack is running and the cooldown has passed.</summary>
-    public bool CanAttack => !IsAttacking && Time.time >= _nextAttackTime;
-
-    /// <summary>True from the start of the wind-up until the attack finishes or is canceled.</summary>
-    public bool IsAttacking { get; private set; }
-
-    /// <summary>Fires when an attack's wind-up starts. For warning animations and sounds.</summary>
-    // Nothing listens yet.
-    public event Action OnAttackWindUpStarted;
+    [Header("Attack")]
+    [Tooltip("The Animator state AttackState plays when this attack starts. It should cover the wind-up and the hit. The dropdown lists the states in the enemy's Animator Controller.")]
+    [SerializeField, ValueDropdown(nameof(GetStateNames), AppendNextDrawer = true)] private string _animationState = "Attack";
+    [Tooltip("Times the enemy's Attack Damage stat.")]
+    [SerializeField, Min(0f)] private float _damageMultiplier = 1f;
+    [Tooltip("Times the enemy's Wind Up Time stat. Above 1 makes a slower, easier to dodge attack.")]
+    [SerializeField, Min(0f)] private float _windUpMultiplier = 1f;
+    [Tooltip("Times the enemy's Cooldown Time stat. The cooldown starts after the recovery.")]
+    [SerializeField, Min(0f)] private float _cooldownMultiplier = 1f;
+    [Tooltip("Seconds the attack keeps running after the hit, so the rest of the animation plays before the enemy goes back to CombatIdle. Set it to the clip's length minus the time the hit ends.")]
+    [SerializeField, Min(0f)] private float _recoveryTime;
 
     private float _nextAttackTime;     // Time.time when the cooldown ends.
     private Coroutine _attackRoutine;  // The running AttackRoutine, kept so CancelAttack can stop it.
 
-    /// <summary>Sets the owning enemy. EnemyBase.Awake calls this for each of its attacks.</summary>
+    /// <summary>The enemy this attack belongs to. Set by EnemyBase.Awake through Initialize.</summary>
+    protected EnemyBase Owner { get; private set; }
+
+    public string AnimationState => _animationState;
+
+    /// <summary>True when no attack is running and the cooldown has passed.</summary>
+    public bool CanAttack => !IsAttacking && Time.time >= _nextAttackTime;
+
+    /// <summary>True from the start of the wind-up until the recovery ends or the attack is canceled.</summary>
+    public bool IsAttacking { get; private set; }
+
+    /// <summary>This attack's damage: the enemy's Attack Damage stat times Damage Multiplier, rounded.</summary>
+    protected int Damage => Mathf.RoundToInt(Owner.AttackDamage * _damageMultiplier);
+
+    /// <summary>Seconds before this attack can start again: the Cooldown Time stat times Cooldown Multiplier and the enemy's CooldownScale.</summary>
+    private float Cooldown => Owner.CooldownTime * _cooldownMultiplier * Owner.CooldownScale;
+
+    /// <summary>Fires when an attack's wind-up starts. DarkKnight counts its swings from it.</summary>
+    public event Action OnAttackWindUpStarted;
+
     public void Initialize(EnemyBase owner)
     {
         Owner = owner;
@@ -39,29 +61,31 @@ public abstract class EnemyAttack : MonoBehaviour
         _attackRoutine = StartCoroutine(AttackRoutine());
     }
 
-    /// <summary>Waits the wind-up, hits, waits the active time, then finishes and starts the cooldown.</summary>
+    /// <summary>Waits the wind-up, hits, waits the active time, finishes, waits the recovery, then starts the cooldown.</summary>
     private IEnumerator AttackRoutine()
     {
         IsAttacking = true;
 
+        StartWindUp();
         OnAttackWindUpStarted?.Invoke();
 
-        // INTEGRATION: was Owner.Stats.AttackWindUpTime from EnemyStats. EnemyBase.WindUpTime reads the Stats component.
-        yield return new WaitForSeconds(Owner.WindUpTime);
+        yield return new WaitForSeconds(Owner.WindUpTime * _windUpMultiplier);
         PerformAttack();
 
         // Keeps the attack active for its duration, such as a melee hitbox staying on.
         yield return new WaitForSeconds(AttackDuration);
         FinishAttack();
 
+        // The rest of the animation plays out. The enemy still faces the player but doesn't start another attack.
+        if (_recoveryTime > 0f)
+            yield return new WaitForSeconds(_recoveryTime);
+
         IsAttacking = false;
-
-        _nextAttackTime = Time.time + Owner.CooldownTime;
-
+        _nextAttackTime = Time.time + Cooldown;
         _attackRoutine = null;
     }
 
-    /// <summary>Stops a running attack, ends it, and starts the cooldown. Does nothing if no attack is running.</summary>
+    /// <summary>Stops a running attack, ends it, and starts the cooldown. Only acts while an attack is running.</summary>
     public void CancelAttack()
     {
         if (!IsAttacking)
@@ -74,8 +98,11 @@ public abstract class EnemyAttack : MonoBehaviour
         FinishAttack();
 
         IsAttacking = false;
-        _nextAttackTime = Time.time + Owner.CooldownTime;
+        _nextAttackTime = Time.time + Cooldown;
     }
+
+    /// <summary>Runs when the wind-up starts, before OnAttackWindUpStarted, such as to show a telegraph.</summary>
+    protected virtual void StartWindUp() { }
 
     /// <summary>Deals the attack's damage. Each attack type decides how.</summary>
     protected abstract void PerformAttack();
@@ -86,9 +113,14 @@ public abstract class EnemyAttack : MonoBehaviour
     /// <summary>Ends the attack, such as turning a hitbox off. Runs when the attack finishes or is canceled.</summary>
     protected virtual void FinishAttack() { }
 
-    /// <summary>Cancels a running attack when the object is turned off.</summary>
     protected virtual void OnDisable()
     {
         CancelAttack();
+    }
+
+    private IEnumerable<string> GetStateNames()
+    {
+        EnemyAnimator enemyAnimator = GetComponentInParent<EnemyAnimator>(true);
+        return enemyAnimator != null ? enemyAnimator.GetStateNames() : new[] { "" };
     }
 }

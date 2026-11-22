@@ -1,21 +1,14 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.Dungeon;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using _Project.Scripts.Dungeon;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Shows and hides the UI screens, and sets the cursor for each. Screen buttons call the ButtonPressed methods, which
 /// raise static request events that GameManager handles. Listens to GameManager for game over, win, pause, and state
 /// changes.
 /// </summary>
-// INTEGRATION: now an MGR singleton (was a MonoBehaviour with a public static instance), so it persists between scenes
-// with the other managers and is reached through UIManager.Instance.
 public class UIManager : MGR<UIManager>
 {
     /// <summary>Which group of screens is showing.</summary>
@@ -26,29 +19,31 @@ public class UIManager : MGR<UIManager>
         Gameplay,
         Reward,
         Shop,
-        Charm
+        Charm,
+        ChestLoot
     }
-    
-    public bool IsRewardOpen => _currentState == UIStates.Reward;
 
-    [SerializeField, FormerlySerializedAs("screenList")] private List<UIScreen> _screenList; // Filled from children in Awake.
-    [SerializeField, FormerlySerializedAs("menuScreen")] private MenuScreen _menuScreen;
-    [SerializeField, FormerlySerializedAs("rewardScreen")] private RewardScreen _rewardScreen;
-    [SerializeField, FormerlySerializedAs("settingsScreen")] private SettingsScreen _settingsScreen;
-    [SerializeField, FormerlySerializedAs("deathScreen")] private DeathScreen _deathScreen;
-    [SerializeField, FormerlySerializedAs("winScreen")] private WinScreen _winScreen;
-    [SerializeField, FormerlySerializedAs("pauseScreen")] private PauseScreen _pauseScreen;
+    [Tooltip("Filled from the children in Awake.")]
+    [SerializeField] private List<UIScreen> _screenList;
+    [SerializeField] private MenuScreen _menuScreen;
+    [SerializeField] private RewardScreen _rewardScreen;
+    [SerializeField] private SettingsScreen _settingsScreen;
+    [SerializeField] private DeathScreen _deathScreen;
+    [SerializeField] private WinScreen _winScreen;
+    [SerializeField] private PauseScreen _pauseScreen;
     [SerializeField] private ShopScreen _shopScreen;
     [SerializeField] private CharmScreen _charmScreen;
+    [SerializeField] private ChestLootScreen _chestLootScreen;
+    [Tooltip("Found among the child screens if empty.")]
     [SerializeField] private HUDScreen _hudScreen;
-    [SerializeField, FormerlySerializedAs("currentState")] private UIStates _currentState;
+    [Tooltip("Shown in the Inspector for debugging. Don't set it by hand.")]
+    [SerializeField] private UIStates _currentState;
 
-    // Requests from the screen buttons. GameManager subscribes to each.
     /// <summary>Resume was pressed. GameManager toggles the pause.</summary>
     public static event Action<bool> OnPauseRequested;
     /// <summary>Start was pressed on the main menu. GameManager loads the Hub.</summary>
     public static event Action OnStartRequested;
-    
+    /// <summary>The shop or charm screen opened. GameManager enters Store.</summary>
     public static event Action OnStoreRequested;
     /// <summary>Restart was pressed. GameManager returns to the Hub.</summary>
     public static event Action OnResetRequested;
@@ -57,23 +52,20 @@ public class UIManager : MGR<UIManager>
     /// <summary>Quit was pressed. GameManager closes the game.</summary>
     public static event Action OnExitRequested;
 
-    private UIScreen _activeScreen; // Not set yet.
-    private bool _cursorVisible;    // The last value ToggleCursor set.
+    /// <summary>True while the reward screen or the chest loot screen is open. Escape doesn't pause during either.</summary>
+    public bool IsRewardOpen => _currentState == UIStates.Reward || _currentState == UIStates.ChestLoot;
 
-    /// <summary>Finds every screen, hides them, and starts listening to GameManager.</summary>
     protected override void Awake()
     {
-        // INTEGRATION: MGR.Awake sets Instance and destroys duplicates, so a second UIManager from the next scene stops here.
+        // MGR.Awake sets Instance and destroys duplicates, so a second UIManager from the next scene stops here.
         base.Awake();
-        if (Instance != this)
-        {
-            return;
-        }
+        if (Instance != this) return;
+
         _screenList = new List<UIScreen>(GetComponentsInChildren<UIScreen>(true));
+        FindHUD();
         HideAllScreens();
 
-        // INTEGRATION: new. Starting Play mode in any scene other than the main menu goes straight to gameplay, which
-        // locks the cursor.
+        // Starting Play mode in any scene other than the main menu goes straight to gameplay, which locks the cursor.
         if (SceneManager.GetActiveScene().buildIndex != Scenes.MainMenu)
         {
             ChangeState(UIStates.Gameplay);
@@ -86,15 +78,17 @@ public class UIManager : MGR<UIManager>
         GameManager.Instance.OnGameStateChanged += HandleStateChanged;
     }
 
-    /// <summary>Debug: switches to a UI state.</summary>
-    // INTEGRATION: the G debug key became this Inspector button.
-    [Button, DisableInEditorMode]
-    private void DEBUGChangeUIState(UIStates state)
+    // A duplicate destroyed by MGR still needs to unsubscribe.
+    private void OnDestroy()
     {
-        ChangeState(state);
+        GameManager.OnGameLost -= GameOver;
+        GameManager.OnGameWon -= GameWin;
+        GameManager.OnPauseToggled -= HandlePause;
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
+        }
     }
-
-    
 
     /// <summary>Hides every screen except the HUD and shows the ones for the new state.</summary>
     private void ChangeState(UIStates state)
@@ -133,32 +127,52 @@ public class UIManager : MGR<UIManager>
                 SetHUDVisible(true);
                 ShowScreen(_charmScreen);
                 break;
-            
+            case UIStates.ChestLoot:
+                HideAllScreens();
+                SetHUDVisible(true);
+                ShowScreen(_chestLootScreen);
+                OnPauseRequested?.Invoke(true);
+                break;
         }
     }
 
-    #region ButtonHandlers
+    /// <summary>
+    /// Matches the UI to GameManager's state: the start menu in Menu, gameplay in Hub and Playing. Dead and Win are
+    /// handled by GameOver and GameWin. Runs on GameManager.OnGameStateChanged.
+    /// </summary>
+    private void HandleStateChanged(GameManager.GameState newState)
+    {
+        switch (newState)
+        {
+            case GameManager.GameState.Menu:
+                ChangeState(UIStates.StartMenu);
+                break;
+            case GameManager.GameState.Hub:
+            case GameManager.GameState.Playing:
+                ChangeState(UIStates.Gameplay);
+                break;
+        }
+    }
+
+    #region Button Handlers
 
     /// <summary>Returns to gameplay and asks GameManager to unpause.</summary>
     public void ResumeButtonPressed()
     {
-        OnPauseRequested?.Invoke(false); 
+        OnPauseRequested?.Invoke(false);
         ChangeState(UIStates.Gameplay);
     }
 
-    /// <summary>Asks GameManager to start the game.</summary>
     public void StartButtonPressed()
     {
         OnStartRequested?.Invoke();
     }
 
-    /// <summary>Asks GameManager to go to the main menu.</summary>
     public void MenuButtonPressed()
     {
         OnMenuRequested?.Invoke();
     }
 
-    /// <summary>Asks GameManager to close the game.</summary>
     public void QuitButtonPressed()
     {
         OnExitRequested?.Invoke();
@@ -177,6 +191,7 @@ public class UIManager : MGR<UIManager>
         ShowScreen(_settingsScreen);
     }
 
+    /// <summary>Leaves Settings by showing the current state's screens again.</summary>
     public void BackButtonPressed()
     {
         ChangeState(_currentState);
@@ -184,51 +199,51 @@ public class UIManager : MGR<UIManager>
 
     #endregion
 
-    /// <summary>Shows the death screen. Runs on GameManager.OnGameLost, and as a debug button.</summary>
-    // INTEGRATION: the J debug key became the Inspector button.
-    [Button, DisableInEditorMode]
-    private void GameOver()
-    {
-        HideAllScreens();
-        ShowScreen(_deathScreen);
-    }
+    #region Screens
 
-    /// <summary>Shows the win screen. Runs on GameManager.OnGameWon, and as a debug button.</summary>
-    // INTEGRATION: the M debug key became the Inspector button.
-    [Button, DisableInEditorMode]
-    private void GameWin()
-    {
-        HideAllScreens();
-        ShowScreen(_winScreen);
-    }
-
-    private void SetHUDVisible(bool visible)
-    {
-        if (visible)
-        {
-            _hudScreen.Show();
-        }
-        else
-        {
-            _hudScreen.Hide();
-        }
-    }
-    
+    /// <summary>Opens the reward screen with the rolled parts, unless there are none.</summary>
     public void HandleRewards(IReadOnlyList<WeightedReward<GunPart>> rewards)
     {
-        if (rewards.Count == 0)
-        {
-            return;
-        }
-        
+        if (rewards.Count == 0) return;
+
         ChangeState(UIStates.Reward);
-        
         _rewardScreen.ShowChoices(rewards);
+    }
+
+    /// <summary>Opens the chest loot screen with what a chest gave the player. Pauses the game until it closes.</summary>
+    public void ShowChestLoot(int crystals, Consumable consumable, bool consumableAdded)
+    {
+        if (_chestLootScreen == null) return;
+
+        ChangeState(UIStates.ChestLoot);
+        _chestLootScreen.ShowLoot(crystals, consumable, consumableAdded);
+    }
+
+    [Button, DisableInEditorMode]
+    public void OpenShop()
+    {
+        OnStoreRequested?.Invoke();
+        ChangeState(UIStates.Shop);
+    }
+
+    [Button, DisableInEditorMode]
+    public void OpenCharmScreen()
+    {
+        OnStoreRequested?.Invoke();
+        ChangeState(UIStates.Charm);
+    }
+
+    /// <summary>Closes the shop or charm screen through GameManager. Other screens stay open.</summary>
+    public void CloseScreen()
+    {
+        if (_currentState != UIStates.Shop && _currentState != UIStates.Charm) return;
+
+        GameManager.Instance.CloseState();
     }
 
     /// <summary>Shows a screen and sets the cursor to match it.</summary>
     /// <param name="givenScreen">Which screen to be shown</param>
-    public void ShowScreen(UIScreen givenScreen) 
+    public void ShowScreen(UIScreen givenScreen)
     {
         givenScreen.Show();
         ToggleCursor(givenScreen.ShowsCursor);
@@ -241,8 +256,6 @@ public class UIManager : MGR<UIManager>
     }
 
     /// <summary>Hides every screen. The HUD stays up unless hideHUD is true.</summary>
-    // INTEGRATION: the hideHUD option is new. HUDScreen is now a UIScreen, so it's in _screenList, and switching screens
-    // would otherwise hide it.
     public void HideAllScreens(bool hideHUD = false)
     {
         foreach (UIScreen screen in _screenList)
@@ -254,114 +267,90 @@ public class UIManager : MGR<UIManager>
         }
     }
 
-    #region misc
-    
-    /// <summary>
-        /// Toggle cursor visibility, used implicitly when changing screens
-        /// </summary>
-    private void ToggleCursor(bool isVisible)
+    /// <summary>Shows the death screen. Runs on GameManager.OnGameLost, and as a debug button.</summary>
+    [Button, DisableInEditorMode]
+    private void GameOver()
+    {
+        HideAllScreens();
+        ShowScreen(_deathScreen);
+    }
+
+    /// <summary>Shows the win screen. Runs on GameManager.OnGameWon, and as a debug button.</summary>
+    [Button, DisableInEditorMode]
+    private void GameWin()
+    {
+        HideAllScreens();
+        ShowScreen(_winScreen);
+    }
+
+    /// <summary>Uses the HUDScreen among the children when none is assigned.</summary>
+    private void FindHUD()
+    {
+        if (_hudScreen != null) return;
+
+        foreach (UIScreen screen in _screenList)
         {
-            if (!isVisible)
+            if (screen is HUDScreen hud)
             {
-               Cursor.visible = false;
-               Cursor.lockState = CursorLockMode.Locked;
-               _cursorVisible = false;
-            }
-            else
-            {
-                Cursor.visible = true; 
-                Cursor.lockState = CursorLockMode.None;
-                _cursorVisible = true;
+                _hudScreen = hud;
+                return;
             }
         }
-    
-        /// <summary>
-        /// Called when GM invokes the pause request
-        /// </summary>
-        /// <param name="isPaused"></param>
-        private void HandlePause(bool isPaused)
+
+        Debug.LogWarning("UIManager has no HUDScreen. Assign one in the Managers prefab.", this);
+    }
+
+    private void SetHUDVisible(bool visible)
+    {
+        if (_hudScreen == null) return;
+
+        if (visible)
         {
-            if (_currentState == UIStates.Reward || _currentState == UIStates.Charm || _currentState == UIStates.Shop) //dont go to pause menu if in certain states already
-            {
-                return; 
-            }
-            
-            if (isPaused)
-            { 
-                ChangeState(UIStates.PauseMenu);
-            }
-            else
-            {
-                ChangeState(UIStates.Gameplay);
-                ToggleCursor(false);
-            }
-            
+            _hudScreen.Show();
         }
-    
-    
+        else
+        {
+            _hudScreen.Hide();
+        }
+    }
+
     #endregion
 
+    #region Misc
+
     /// <summary>
-    /// Matches the UI to GameManager's state: the start menu in Menu, gameplay in Hub and Playing. Dead and Win are
-    /// handled by GameOver and GameWin. Runs on GameManager.OnGameStateChanged.
+    /// Toggle cursor visibility, used implicitly when changing screens
     /// </summary>
-    private void HandleStateChanged(GameManager.GameState newState)
+    private void ToggleCursor(bool isVisible)
     {
-        switch (newState)
+        Cursor.visible = isVisible;
+        Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
+    /// <summary>
+    /// Called when GM invokes the pause request
+    /// </summary>
+    private void HandlePause(bool isPaused)
+    {
+        if (_currentState == UIStates.Reward || _currentState == UIStates.ChestLoot ||
+            _currentState == UIStates.Charm || _currentState == UIStates.Shop) return;
+
+        if (isPaused)
         {
-            case GameManager.GameState.Menu:
-                ChangeState(UIStates.StartMenu);
-                break;
-            case GameManager.GameState.Hub:
-                ChangeState(UIStates.Gameplay);
-                break;
-            case GameManager.GameState.Playing:
-                ChangeState(UIStates.Gameplay);
-                break;
-            case GameManager.GameState.Dead:
-                break;
-            case GameManager.GameState.Win:
-                break;
-            case GameManager.GameState.Store:
-                //store and charm will independently decide this behavior rather than gamemanager automatically doing it 
-                break;
-            
+            ChangeState(UIStates.PauseMenu);
+        }
+        else
+        {
+            ChangeState(UIStates.Gameplay);
         }
     }
 
-    /// <summary>Stops listening to GameManager.</summary>
-    // INTEGRATION: new. UIManager now persists, but a duplicate destroyed by MGR still needs to unsubscribe.
-    private void OnDestroy()
-    {
-        GameManager.OnGameLost -= GameOver;
-        GameManager.OnGameWon -= GameWin;
-        GameManager.OnPauseToggled -= HandlePause;
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.OnGameStateChanged -= HandleStateChanged;
-        }
-    }
+    /// <summary>Debug: switches to a UI state.</summary>
     [Button, DisableInEditorMode]
-    public void OpenShop()
+    private void DEBUGChangeUIState(UIStates state)
     {
-        OnStoreRequested?.Invoke();
-        ChangeState(UIStates.Shop);
-    }
-    [Button, DisableInEditorMode]
-    public void OpenCharmScreen()
-    {
-        OnStoreRequested?.Invoke();
-        ChangeState(UIStates.Charm);
+        ChangeState(state);
     }
 
-    public void CloseScreen()
-    {
-        if (_currentState != UIStates.Shop &&
-            _currentState != UIStates.Charm)
-        {
-            return;
-        }
-
-        GameManager.Instance.CloseState();
-    }
+    #endregion
 }

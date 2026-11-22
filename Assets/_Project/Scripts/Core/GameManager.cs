@@ -1,18 +1,16 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Dungeon;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Owns the game state (Menu, Hub, Playing, Store, Dead, Win), loads scenes, and runs the flow of a run.
 /// Lives in the Managers prefab, so it stays loaded across every scene.
 /// Other systems listen to its events instead of calling into it, except for the few public methods
-/// (LoadScene, RegisterPlayer, InitializeRun, ChangeRoom, RequestGameEnd).
+/// (LoadScene, RegisterPlayer, InitializeRun, ChangeRoom, RequestGameEnd, TryShowRewards, ChooseReward, SkipReward).
 /// </summary>
-// INTEGRATION: was a MonoBehaviour with its own Instance and DontDestroyOnLoad. Now inherits MGR<GameManager>,
-// and ManagerBootstrap creates it from the Managers prefab before the first scene loads.
 public class GameManager : MGR<GameManager>
 {
     /// <summary>The states the whole game can be in. Pausing is a flag inside Hub and Playing, not a state.</summary>
@@ -23,7 +21,7 @@ public class GameManager : MGR<GameManager>
         Playing, // A run in the Dungeon.
         Store,   // The shop or charm screen is open in the Hub.
         Dead,    // The player died. The death screen is showing.
-        Win,      // The boss is defeated. The win screen is showing.
+        Win,     // The boss is defeated. The win screen is showing.
     }
 
     /// <summary>How a run ended. Passed to RequestGameEnd.</summary>
@@ -32,6 +30,29 @@ public class GameManager : MGR<GameManager>
         Victory,
         Lose,
     }
+
+    [Tooltip("Shown in the Inspector for debugging. Don't set it by hand.")]
+    [SerializeField] private GameState _currentState;
+    [Tooltip("The registered player's Health. Set by RegisterPlayer.")]
+    [SerializeField] private Health _playerHealth;
+    [Tooltip("The registered player's root object. Set by RegisterPlayer.")]
+    [SerializeField] private GameObject _player;
+    [Tooltip("The Level scene's WaveManager. Found when the Level loads.")]
+    [SerializeField] private WaveManager _waveManager;
+    [Tooltip("Rolls the gun parts offered when a combat room is cleared.")]
+    [SerializeField] private ItemRolling _rewardPool;
+
+    private GameState _previousState;     // The state to go back to when the store closes.
+    private Room[,] _currentDungeon;      // The generated room grid, copied from LevelGenerator when the run starts.
+    private Room _rewardRoom;             // The cleared room whose rewards wait for the player to use its portal.
+    private IReadOnlyList<WeightedReward<GunPart>> _pendingRewards; // Rolled when _rewardRoom cleared, shown at its portal.
+    private Action _afterRewards;         // The portal's teleport, run once the player picks or skips.
+    private bool _hasSavedProgress;       // False until the first save, so the first player keeps the values set on its prefab.
+    private bool _isPaused;               // True while the game is paused. Pausing is a flag, not a GameState.
+    private bool _isLoading;              // Blocks a second LoadScene call while a scene is loading.
+    private GameState _stateAfterLoad;    // The state LoadScene was asked to enter once the scene finishes loading.
+    private PlayerSpawner _playerSpawner; // The Level player's spawner. StartRun listens to its OnPlayerSpawned.
+    private LevelGenerator _generator;    // The Level scene's generator. Set in InitReferences or RegisterPlayer.
 
     /// <summary>Fires when the run ends in a loss. UIManager shows the death screen.</summary>
     public static event Action OnGameLost;
@@ -45,8 +66,6 @@ public class GameManager : MGR<GameManager>
     public static event Action<bool> OnPauseToggled;
     /// <summary>Fires after every state change, with the new state.</summary>
     public event Action<GameState> OnGameStateChanged;
-    // INTEGRATION: new. The HUD bars, CurrencyDisplay, ConsumableSlotsUI, and InteractPrompt connect to each new player through this,
-    // because the Hub and the Dungeon each create their own player.
     /// <summary>Fires when a scene's player registers, with its PlayerRoot.</summary>
     public event Action<PlayerRoot> OnPlayerRegistered;
     public event Action<Room> OnRoomEntered;
@@ -58,53 +77,30 @@ public class GameManager : MGR<GameManager>
     /// <summary>Seconds since the current run started.</summary>
     public float RunTime => Time.time - StartTime;
 
+    /// <summary>The current or last run's damage, kills, and crystals. The death and win screens read it.</summary>
+    public RunStats RunStats { get; } = new RunStats();
+
     /// <summary>The room the player is in. Room.EnterRoom sets it.</summary>
     public Room CurrentRoom { get; private set; }
-    private Room _rewardRoom;
-    public GameState CurrentState => _currentState; // INTEGRATION: new, so other scripts can read the state without the event.
-    // INTEGRATION: new. Enemies and debug buttons find the player through this instead of GameObject.Find("Player").
+    public GameState CurrentState => _currentState;
     /// <summary>The registered player's root object, the one with PlayerRoot.</summary>
     public GameObject Player => _player;
 
-    // INTEGRATION: new. Carries crystals and charms between scenes. LoadScene saves into it and RegisterPlayer loads from it.
     /// <summary>Progress kept between runs and scenes for this play session.</summary>
     public PersistentProgress Progress { get; private set; } = new PersistentProgress();
 
-    [Tooltip("Shown in the Inspector for debugging. Don't set it by hand.")]
-    [SerializeField, FormerlySerializedAs("currentState")] private GameState _currentState;
-    [Tooltip("The registered player's Health. Set by RegisterPlayer.")]
-    [SerializeField, FormerlySerializedAs("_playerHealthbar")] private Health _playerHealth;
-    [Tooltip("The registered player's root object. Set by RegisterPlayer.")]
-    [SerializeField, FormerlySerializedAs("player")] private GameObject _player; // INTEGRATION: set by RegisterPlayer instead of GameObject.Find.
-    [Tooltip("Placeholder until the wave manager is built in Sprint 3.")]
-    [SerializeField, FormerlySerializedAs("waveManager")] private WaveManager _waveManager;
-    [SerializeField] private ItemRolling rewardPool;
-
-    private GameState _previousState; // for use in leaving the store state
-    private Room[,] _currentDungeon;   // The generated room grid, copied from LevelGenerator when the run starts.
-    private bool _hasSavedProgress;    // INTEGRATION: new. False until the first save, so the first player keeps the values set on its prefab.
-    private bool _isPaused;            // True while the game is paused. Pausing is a flag, not a GameState.
-    private bool _isLoading;           // INTEGRATION: new. Blocks a second LoadScene call while a scene is loading.
-    private GameState _stateAfterLoad; // INTEGRATION: new. The state LoadScene was asked to enter once the scene finishes loading.
-    private PlayerSpawner _playerSpawner; // INTEGRATION: new. The Level player's spawner. StartRun listens to its OnPlayerSpawned.
-    private LevelGenerator _generator; // The Level scene's generator. Set in InitReferences or RegisterPlayer.
-
-    /// <summary>Subscribes to scene loads and to the UI's request events.</summary>
     protected override void Awake()
     {
         base.Awake();
-        if (Instance != this)
-        {
-            return;
-        }
+        if (Instance != this) return;
 
-        // INTEGRATION: pressing Play in the Hub or Level scene skips the menu, so start in Playing there.
+        // Pressing Play in the Hub or Level scene skips the menu, so start in Playing there.
         if (SceneManager.GetActiveScene().buildIndex != Scenes.MainMenu)
         {
             ChangeState(GameState.Playing, force: true);
         }
 
-        SceneManager.sceneLoaded += InitReferences; // INTEGRATION: new. Finishes each scene change after the scene loads.
+        SceneManager.sceneLoaded += InitReferences;
         UIManager.OnPauseRequested += SetPause;
         UIManager.OnResetRequested += ResetGame;
         UIManager.OnStartRequested += StartHub;
@@ -113,28 +109,21 @@ public class GameManager : MGR<GameManager>
         UIManager.OnStoreRequested += ViewStore;
         Room.OnRoomCleared += RoomCleared;
         PH_Boss.OnBossDefeated += BossDefeated;
-
     }
 
-    /// <summary>Enters the Menu state when the game starts in the menu, and listens to the pause key.</summary>
     private void Start()
     {
-        if (Instance != this)
-        {
-            return;
-        }
+        if (Instance != this) return;
 
         if (SceneManager.GetActiveScene().buildIndex == Scenes.MainMenu)
         {
             ChangeState(GameState.Menu, force: true);
         }
 
-        // INTEGRATION: replaces reading the Escape key in Update. Subscribed in Start because InputManager
-        // may not have run its Awake yet when this Awake runs.
+        // Subscribed here, because InputManager may not have run its Awake yet when this Awake runs.
         InputManager.Instance.OnPausePressed += HandleEscapePressed;
     }
 
-    /// <summary>Listens to the player's death, if a player was assigned before this component turned on.</summary>
     private void OnEnable()
     {
         if (_playerHealth != null)
@@ -143,11 +132,30 @@ public class GameManager : MGR<GameManager>
         }
     }
 
+    // HasInstance guards against InputManager quitting first.
+    private void OnDisable()
+    {
+        if (InputManager.HasInstance)
+        {
+            InputManager.Instance.OnPausePressed -= HandleEscapePressed;
+        }
+        if (_playerHealth != null)
+        {
+            _playerHealth.OnDied -= PlayerDied;
+        }
+        if (_playerSpawner != null)
+        {
+            _playerSpawner.OnPlayerSpawned -= StartRun;
+        }
+        SceneManager.sceneLoaded -= InitReferences;
+        Room.OnRoomCleared -= RoomCleared;
+        RunStats.Stop();
+    }
+
     /// <summary>
-    /// Runs after every scene load. In the Level scene, it only stores the generator, because the run starts
-    /// later from StartRun. In the Hub and the menu, it enters the state LoadScene asked for.
+    /// Runs after every scene load. In the Level scene, it only stores the generator and WaveManager, because the run
+    /// starts later from StartRun. In the Hub and the menu, it enters the state LoadScene asked for.
     /// </summary>
-    // INTEGRATION: new. Changing state after the load, never before, means the new scene's objects hear the change.
     private void InitReferences(Scene scene, LoadSceneMode mode)
     {
         _isLoading = false;
@@ -168,7 +176,6 @@ public class GameManager : MGR<GameManager>
     /// loads saved progress, and raises OnPlayerRegistered. In the Level, it also starts generation.
     /// </summary>
     /// <param name="newPlayer">The PlayerRoot of the player that just started.</param>
-    // INTEGRATION: new. Replaces GameObject.Find("Player") and finding Health in Start.
     public void RegisterPlayer(PlayerRoot newPlayer)
     {
         _player = newPlayer.gameObject;
@@ -188,7 +195,7 @@ public class GameManager : MGR<GameManager>
             }
         }
 
-        // INTEGRATION: loads the crystals and charms saved by the last LoadScene. Skipped until the first save.
+        // Loads the crystals and charms saved by the last LoadScene. Skipped until the first save.
         if (_hasSavedProgress && newPlayer.Inventory != null)
         {
             Progress.LoadInto(newPlayer.Inventory);
@@ -197,11 +204,11 @@ public class GameManager : MGR<GameManager>
 
         if (SceneManager.GetActiveScene().buildIndex == Scenes.Level)
         {
-            // INTEGRATION: sceneLoaded can run after PlayerRoot.Start, so find the generator here if InitReferences hasn't yet.
+            // sceneLoaded can run after PlayerRoot.Start, so find the generator here if InitReferences hasn't yet.
             if (_generator == null) _generator = LevelGenerator.Instance;
 
-            // INTEGRATION: PlayerSpawner replaces the temporary generator.OnMapGenerated subscription. It places the player
-            // in the start room once the map is built and the NavMesh is baked, then fires OnPlayerSpawned, which starts the run.
+            // PlayerSpawner places the player in the start room once the map is built and the NavMesh is baked,
+            // then fires OnPlayerSpawned, which starts the run.
             if (_playerSpawner != null) _playerSpawner.OnPlayerSpawned -= StartRun;
             _playerSpawner = newPlayer.GetComponentInChildren<PlayerSpawner>();
             if (_playerSpawner == null)
@@ -209,6 +216,7 @@ public class GameManager : MGR<GameManager>
                 Debug.LogError("GameManager: the player has no PlayerSpawner, so the run can't start.", newPlayer);
                 return;
             }
+
             // Everything has to be listening before the request, because generation finishes in the same frame.
             _playerSpawner.OnPlayerSpawned += StartRun;
             _playerSpawner.SpawnWhenMapReady(_generator);
@@ -217,7 +225,6 @@ public class GameManager : MGR<GameManager>
     }
 
     /// <summary>Copies the current player's crystals and charms into Progress.</summary>
-    // INTEGRATION: new. LoadScene calls it before the old scene and its player unload. PersistentProgress.SaveFrom does the copy.
     private void SaveProgress()
     {
         if (_player == null) return;
@@ -234,9 +241,7 @@ public class GameManager : MGR<GameManager>
     public void ChangeRoom(Room newRoom)
     {
         CurrentRoom = newRoom;
-
         OnRoomEntered?.Invoke(newRoom);
-
     }
 
     /// <summary>
@@ -245,10 +250,7 @@ public class GameManager : MGR<GameManager>
     /// <param name="result">Victory enters Win, and Lose enters Dead.</param>
     public void RequestGameEnd(RunResult result)
     {
-        if (_currentState != GameState.Playing && _currentState != GameState.Store) // Only during a run.
-        {
-            return;
-        }
+        if (_currentState != GameState.Playing && _currentState != GameState.Store) return;
 
         switch (result)
         {
@@ -267,96 +269,130 @@ public class GameManager : MGR<GameManager>
     /// </summary>
     /// <param name="buildIndex">A value from <see cref="Scenes"/>.</param>
     /// <param name="stateAfterLoad">The state to enter after the scene loads. Ignored for the Level, where StartRun sets the state.</param>
-    // INTEGRATION: new. Before this, state changes didn't load scenes at all.
     public void LoadScene(int buildIndex, GameState stateAfterLoad)
     {
         if (_isLoading) return;
         _isLoading = true;
         _stateAfterLoad = stateAfterLoad;
 
-        SaveProgress(); // INTEGRATION: saves before the player is unloaded with the scene.
+        SaveProgress();
+        RunStats.Stop(); // Leaving mid-run from the pause menu never reaches EnterDead or EnterWin.
 
-        // Clear the pause without running TogglePause, which would turn the old player's input back on.
+        // Clear the pause without running SetPause, which would turn the old player's input back on.
         _isPaused = false;
         Time.timeScale = 1f;
         OnPauseToggled?.Invoke(false);
 
-        InputManager.Instance.SetMode(InputMode.Disabled); // INTEGRATION: no input while loading. Each state sets its mode again.
+        InputManager.Instance.SetMode(InputMode.Disabled); // Each state sets its own mode again after the load.
         // UIManager.Instance.ShowLoading(true);   // Turn on when the loading screen exists.
 
         SceneManager.LoadSceneAsync(buildIndex);
     }
 
-    public bool ChooseReward(int index) //having it be a bool is useful for knowing it actually succeeded
-    {
-        Room room = CurrentRoom;
+    #region Rewards
 
-        if (rewardPool == null || index < 0 || index >= rewardPool.RewardOptions.Count || _player == null )
-        {
-            return false;
-        }
-        
-        GunPart part = rewardPool.RewardOptions[index].Item;
-        Gun gun = _player.GetComponentInChildren<Gun>();
-        
-        if (part == null || gun == null)
-        {
-            return false;
-        }
-        
+    /// <summary>
+    /// Equips the reward at the index on the player's gun, marks it obtained, and runs the portal's teleport.
+    /// Returns false if the part couldn't be equipped. RewardScreen then offers SkipReward.
+    /// </summary>
+    public bool ChooseReward(int index)
+    {
+        if (_rewardPool == null || index < 0 || index >= _rewardPool.RewardOptions.Count) return false;
+
+        GunPart part = _rewardPool.RewardOptions[index].Item;
+        Gun gun = GetPlayerGun();
+
+        if (part == null || gun == null) return false;
+
         if (!gun.HasSocket(part.PartType))
         {
-            Debug.LogError($"Gun has no socket for {part.PartType}");
+            Debug.LogError($"Gun has no socket for {part.PartType}", gun);
             return false;
         }
 
         if (!gun.EquipPart(part))
         {
-            Debug.LogError($"EquipPart failed for {part.PartName}");
+            Debug.LogError($"EquipPart failed for {part.PartName}", gun);
             return false;
         }
-        
-        
-        rewardPool.PickReward(index);
 
-        if (_rewardRoom != null)
-        {
-            _rewardRoom.RollChest();
-            _rewardRoom = null;
-        }
+        _rewardPool.PickReward(index);
+        FinishRewards();
         return true;
     }
 
-    #region EventHandlers
+    /// <summary>Closes the reward without a part, then runs the portal's teleport. RewardScreen calls this.</summary>
+    public void SkipReward()
+    {
+        FinishRewards();
+    }
+
+    /// <summary>
+    /// Opens the reward screen if the room has rewards waiting. Portal calls this before teleporting, and passes the
+    /// teleport as afterRewards, which runs once the player picks or skips.
+    /// </summary>
+    /// <returns>True if the screen opened. False means there's nothing to show, so the portal teleports right away.</returns>
+    public bool TryShowRewards(Room room, Action afterRewards)
+    {
+        if (room == null || room != _rewardRoom || _pendingRewards == null) return false;
+
+        IReadOnlyList<WeightedReward<GunPart>> rewards = _pendingRewards;
+        _pendingRewards = null;
+        _afterRewards = afterRewards;
+
+        UIManager.Instance.HandleRewards(rewards);
+        return true;
+    }
+
+    /// <summary>Clears the waiting rewards and runs the portal's teleport, if there is one.</summary>
+    private void FinishRewards()
+    {
+        Action afterRewards = _afterRewards;
+        ClearPendingRewards();
+        afterRewards?.Invoke();
+    }
+
+    private void ClearPendingRewards()
+    {
+        _rewardRoom = null;
+        _pendingRewards = null;
+        _afterRewards = null;
+    }
+
+    private Gun GetPlayerGun()
+    {
+        return _player != null ? _player.GetComponentInChildren<Gun>() : null;
+    }
+
+    #endregion
+
+    #region Event Handlers
 
     private void ViewStore()
     {
         ChangeState(GameState.Store);
     }
-    
+
     /// <summary>Quits the game. Raised by the menu's Quit button through UIManager.</summary>
     private void ExitGame()
     {
         Application.Quit();
     }
 
-    private void HandleEscapePressed() //RENAMED from HandlePausePressed to track its new gate beforehand, handling closing screens
+    /// <summary>Closes the store if it's open, does nothing on the reward screen, and toggles pause otherwise.</summary>
+    private void HandleEscapePressed()
     {
-        if (_currentState == GameState.Store) //checks first if it needs to simply close a screen
+        if (_currentState == GameState.Store)
         {
-            UIManager.Instance.CloseScreen(); 
+            UIManager.Instance.CloseScreen();
             return;
         }
 
-        if (UIManager.Instance.IsRewardOpen)
-        {
-            return;
-        }
-        
-        SetPause(!_isPaused); //pauses otherwise
+        if (UIManager.Instance.IsRewardOpen) return;
+
+        SetPause(!_isPaused);
     }
 
-    /// <summary>Ends the run as a loss when the player's Health fires OnDied.</summary>
     private void PlayerDied(GameObject player)
     {
         RequestGameEnd(RunResult.Lose);
@@ -365,32 +401,34 @@ public class GameManager : MGR<GameManager>
     /// <summary>Loads the Hub. Raised by the menu's Start button through UIManager.</summary>
     private void StartHub()
     {
-        LoadScene(Scenes.Hub, GameState.Hub); // INTEGRATION: loads the Hub scene instead of only changing the state.
+        LoadScene(Scenes.Hub, GameState.Hub);
     }
 
     /// <summary>Loads the main menu. Raised by the pause screen's Menu button through UIManager.</summary>
     private void MainMenu()
     {
-        LoadScene(Scenes.MainMenu, GameState.Menu); // INTEGRATION: loads the menu scene instead of only changing the state.
+        LoadScene(Scenes.MainMenu, GameState.Menu);
     }
 
     /// <summary>
-    /// Starts the run once PlayerSpawner has placed the player in the start room. Stores the dungeon,
-    /// enters the start room, switches to Playing, and starts the run timer.
+    /// Starts the run once PlayerSpawner has placed the player in the start room. Resets the reward pool, stores the
+    /// dungeon, enters the start room, switches to Playing, and starts RunStats and the run timer.
     /// </summary>
     private void StartRun()
     {
-        _playerSpawner.OnPlayerSpawned -= StartRun; // INTEGRATION: listens to PlayerSpawner instead of LevelGenerator.OnMapGenerated.
-        rewardPool.ResetObtained(); //make sure the data asset is cleared
+        _playerSpawner.OnPlayerSpawned -= StartRun;
+        _rewardPool.ResetObtained();
+        ClearPendingRewards();
         _currentDungeon = _generator.RoomGrid;
+
+        // EnterRoom calls ChangeRoom and fires the room's OnRoomEntered.
         Room startRoom = _generator.StartRoom;
-        // INTEGRATION: was "CurrentRoom = startRoom". EnterRoom calls ChangeRoom and fires the room's OnRoomEntered,
-        // which starts a RoomEncounter if the start room has enemies.
         startRoom.EnterRoom();
 
         // UIManager.Instance.ShowLoading(false);   // Turn on when the loading screen exists.
         ChangeState(GameState.Playing);
-        StartTime = Time.time; // The run timer counts from here.
+        RunStats.Begin(_player.GetComponent<PlayerRoot>(), _waveManager);
+        StartTime = Time.time;
         OnRunStarted?.Invoke();
     }
 
@@ -400,23 +438,33 @@ public class GameManager : MGR<GameManager>
         RequestGameEnd(RunResult.Victory);
     }
 
-    /// <summary>Handles directing ItemsRolling and passes the info to UImanager</summary>
+    /// <summary>
+    /// Rolls the cleared room's rewards. The rewards wait until the player walks into the room's portal (see
+    /// TryShowRewards). A room whose portal leads nowhere, such as the End room, shows them right away. The room rolls
+    /// its own chest in Room.OnComplete.
+    /// </summary>
     private void RoomCleared(Room room)
     {
-        if (room == null || room.Type != Room.RoomType.Combat)
+        if (room == null) return;
+
+        if (_rewardPool == null) return;
+
+        var rewards = _rewardPool.RollRewards(GetPlayerGun());
+
+        if (rewards.Count == 0) return;
+
+        _rewardRoom = room;
+
+        if (room.Portal == null || room.Portal.Connected == null)
         {
+            UIManager.Instance.HandleRewards(rewards);
             return;
         }
 
-        var rewards = rewardPool.RollRewards();
-        
-        _rewardRoom = room;
-
-        UIManager.Instance.HandleRewards(rewards);
+        _pendingRewards = rewards;
     }
 
     /// <summary>Starts a run by loading the Level scene. RunStartPortal calls this from the Hub.</summary>
-    // INTEGRATION: made public, so RunStartPortal can call it.
     public void InitializeRun()
     {
         LoadScene(Scenes.Level, GameState.Playing);
@@ -424,7 +472,7 @@ public class GameManager : MGR<GameManager>
 
     #endregion
 
-    #region StateManagement
+    #region State Management
 
     /// <summary>
     /// Switches to a new state and runs its Enter method. Ignores a switch to the current state
@@ -433,19 +481,20 @@ public class GameManager : MGR<GameManager>
     /// <param name="newState">The state to switch to.</param>
     /// <param name="force">True runs the Enter method even if the state is already newState.</param>
     [Button, DisableInEditorMode]
-    private void ChangeState(GameState newState, bool force = false) // INTEGRATION: force parameter added for startup.
+    private void ChangeState(GameState newState, bool force = false)
     {
-        if (_currentState == newState && !force)
-        {
-            return;
-        }
+        if (_currentState == newState && !force) return;
 
         if (_isPaused)
         {
             SetPause(false); // Unpause when leaving to the menu or the Hub.
         }
 
-        _previousState = _currentState;
+        // Only a real change is saved. Entering Store from Store would save Store, and CloseState would stay there.
+        if (newState != _currentState)
+        {
+            _previousState = _currentState;
+        }
         _currentState = newState;
 
         switch (newState)
@@ -469,25 +518,22 @@ public class GameManager : MGR<GameManager>
                 EnterStore();
                 break;
         }
+
         OnGameStateChanged?.Invoke(_currentState);
     }
 
-    // INTEGRATION: each Enter method sets the input mode, which replaces turning player components on and off.
-    // InputManager's Gameplay mode turns the Player action map on, and UI mode turns the UI map on.
+    // Each Enter method sets the input mode. Gameplay mode turns the Player action map on, and UI mode turns the UI map on.
 
-    /// <summary>Gives the player control during a run.</summary>
     private void EnterPlaying()
     {
         InputManager.Instance.SetMode(InputMode.Gameplay);
     }
 
-    /// <summary>Hands input to the menu UI.</summary>
     private void EnterMenu()
     {
         InputManager.Instance.SetMode(InputMode.UI);
     }
 
-    /// <summary>Gives the player control in the Hub.</summary>
     private void EnterHub()
     {
         InputManager.Instance.SetMode(InputMode.Gameplay);
@@ -509,12 +555,10 @@ public class GameManager : MGR<GameManager>
         OnGameWon?.Invoke();
     }
 
-    /// <summary>Hands input to the shop or charm screen.</summary>
     private void EnterStore()
     {
         InputManager.Instance.SetMode(InputMode.UI);
     }
-    
 
     #endregion
 
@@ -527,29 +571,21 @@ public class GameManager : MGR<GameManager>
     [Button, DisableInEditorMode]
     private void SetPause(bool pauseIntended)
     {
-        // INTEGRATION: pause also works in the Hub now.
-        if (_currentState != GameState.Playing && _currentState != GameState.Hub)
-        {
-            return;
-        }
-        if (_player == null)
-        {
-            return; // No player registered yet, so there's nothing to freeze.
-        }
+        if (_currentState != GameState.Playing && _currentState != GameState.Hub) return;
+        if (_player == null) return; // No player registered yet, so there's nothing to freeze.
 
-        bool pauseChanged = _isPaused != pauseIntended; //i love bools
-
+        bool pauseChanged = _isPaused != pauseIntended;
         _isPaused = pauseIntended;
 
-        if (!pauseIntended)
-        {
-            InputManager.Instance.SetMode(InputMode.Gameplay);
-            Time.timeScale = 1;
-        }
-        else
+        if (pauseIntended)
         {
             InputManager.Instance.SetMode(InputMode.UI);
             Time.timeScale = 0;
+        }
+        else
+        {
+            InputManager.Instance.SetMode(InputMode.Gameplay);
+            Time.timeScale = 1;
         }
 
         if (pauseChanged)
@@ -563,53 +599,29 @@ public class GameManager : MGR<GameManager>
     /// </summary>
     public void CloseState()
     {
-        if (_currentState != GameState.Store)
-        {
-            return;
-        }
+        if (_currentState != GameState.Store) return;
 
         ChangeState(_previousState);
     }
-    
+
     /// <summary>Returns to the Hub. Raised by the death, win, and pause screens' Hub buttons through UIManager.</summary>
     private void ResetGame()
     {
-        LoadScene(Scenes.Hub, GameState.Hub); // INTEGRATION: loads the Hub scene instead of only changing the state.
+        LoadScene(Scenes.Hub, GameState.Hub);
     }
 
-    #endregion
-
-    #region Stats
-
-    /// <summary>Stores how long the run took, for the death and win screens.</summary>
+    /// <summary>Stores how long the run took and stops counting RunStats, for the death and win screens.</summary>
     private void CaptureTime()
     {
         EndTime = Time.time - StartTime;
+        RunStats.Stop();
     }
 
     #endregion
 
-    /// <summary>Removes every subscription this manager made. HasInstance guards against InputManager quitting first.</summary>
-    private void OnDisable()
-    {
-        if (InputManager.HasInstance)
-        {
-            InputManager.Instance.OnPausePressed -= HandleEscapePressed;
-        }
-        if (_playerHealth != null)
-        {
-            _playerHealth.OnDied -= PlayerDied;
-        }
-        if (_playerSpawner != null)
-        {
-            _playerSpawner.OnPlayerSpawned -= StartRun;
-        }
-        SceneManager.sceneLoaded -= InitReferences;
-        Room.OnRoomCleared -= RoomCleared;
-    }
-
     #region Debug
-    // INTEGRATION: the slash, K, and TimeDebug keys became these Inspector buttons. Select the Managers object in Play mode.
+
+    // Select the Managers object in Play mode to use these buttons.
 
     /// <summary>Debug: enters Playing without starting a run.</summary>
     [Button, DisableInEditorMode]
@@ -646,6 +658,7 @@ public class GameManager : MGR<GameManager>
     {
         Time.timeScale = 1f;
     }
+
     #endregion
 }
 

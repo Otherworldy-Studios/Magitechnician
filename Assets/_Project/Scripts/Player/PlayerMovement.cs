@@ -18,34 +18,23 @@ public class PlayerMovement : MonoBehaviour
         Dashing,
         Aiming
     }
-    /// <summary>The movement state picked this frame.</summary>
-    public MovementStates CurrentState { get; private set; }
 
     [SerializeField] private PlayerMovementSettings _settings;
 
     [Header("References")]
     [SerializeField] private Transform _cameraTransform;
+    [Tooltip("Found on this object if empty.")]
     [SerializeField] private PlayerInput _input;
+    [Tooltip("Found in the scene if empty.")]
     [SerializeField] private PlayerCameraController _cameraController;
+    [Tooltip("Found on this object if empty.")]
     [SerializeField] private Dash _dash;
 
-    /// <summary>Vertical velocity from gravity and jumping. Horizontal movement isn't stored here.</summary>
-    public Vector3 Velocity => _velocity;
-    public bool IsRising => _isRising;
-    public bool IsFalling => _isFalling;
-    public bool IsGrounded => _controller.isGrounded;
-    /// <summary>Top walking speed. Same as MoveSpeed.</summary>
-    public float MaxSpeed => MoveSpeed;
-
-    /// <summary>
-    /// The move speed stat from the player's Stats, or _settings.LocomotionSpeed if the stat isn't set.
-    /// </summary>
-    // INTEGRATION: new. Charms and consumables change speed through StatModifiers on Stats, which PlayerRoot hands over
-    // through SetStats.
-    public float MoveSpeed => ReadStat(_moveSpeedStat, _settings.LocomotionSpeed);
-
-    /// <summary>Fires when a jump starts. PlayerAnimator plays the jump animation.</summary>
-    public event Action OnJumped;
+    [Header("Stats")]
+    [Tooltip("Source of the move speed stat. Set here, or by PlayerRoot through SetStats.")]
+    [SerializeField] private Stats _playerStats;
+    [Tooltip("Which stat in Player Stats is the move speed.")]
+    [SerializeField] private StatDefinition _moveSpeedStat;
 
     private CharacterController _controller;
     private Vector2 _moveInput;          // This frame's Move input.
@@ -55,17 +44,35 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isRising;
     private bool _isFalling;
+    private float _airTime;              // Seconds since the player left the ground. Passed to OnLanded.
 
     private float _jumpBufferTimer; // Time left in which a Jump press still counts. Lets a press just before landing jump.
     private float _coyoteTimeTimer; // Time left in which a jump still works after walking off a ledge.
     private bool _jumpHold;         // True while Jump is held. Lowers gravity while rising, for a higher jump.
 
-    // INTEGRATION: new. Source of the move speed stat. Set here or by PlayerRoot through SetStats.
-    [SerializeField] private Stats _playerStats;
-    [SerializeField] private StatDefinition _moveSpeedStat; // Which stat in _playerStats is the move speed.
+    /// <summary>Fires when a jump starts. PlayerAnimator plays the jump animation.</summary>
+    public event Action OnJumped;
 
-    /// <summary>Hands over the player's Stats, unless one is already assigned.</summary>
-    // INTEGRATION: new. PlayerRoot calls this in Awake, so the stat source is set in one place.
+    /// <summary>
+    /// Fires on the frame the player touches the ground, with how many seconds they were in the air.
+    /// Fires after every short drop too, so listeners pick their own minimum air time.
+    /// </summary>
+    public event Action<float> OnLanded;
+
+    public MovementStates CurrentState { get; private set; }
+
+    /// <summary>Vertical velocity from gravity and jumping. Horizontal movement isn't stored here.</summary>
+    public Vector3 Velocity => _velocity;
+    public bool IsRising => _isRising;
+    public bool IsFalling => _isFalling;
+    public bool IsGrounded => _controller.isGrounded;
+    /// <summary>Top walking speed. Same as MoveSpeed.</summary>
+    public float MaxSpeed => MoveSpeed;
+
+    /// <summary>The move speed stat from the player's Stats, or the settings' LocomotionSpeed if the stat isn't set.</summary>
+    public float MoveSpeed => ReadStat(_moveSpeedStat, _settings.LocomotionSpeed);
+
+    /// <summary>Hands over the player's Stats, unless one is already assigned. PlayerRoot calls this in Awake.</summary>
     public void SetStats(Stats playerStats)
     {
         if (_playerStats == null)
@@ -74,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    /// <summary>Finds any references left empty.</summary>
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -87,7 +93,21 @@ public class PlayerMovement : MonoBehaviour
             _dash = GetComponent<Dash>();
     }
 
-    /// <summary>Runs one frame of movement, in order: air state, gravity, jump, dash, state, then the move.</summary>
+    private void OnEnable()
+    {
+        _input.OnJumpPressed += HandleJumpPressed;
+        _input.OnJumpReleased += HandleJumpReleased;
+        _input.OnDashPressed += IntendToDash;
+    }
+
+    private void OnDisable()
+    {
+        _input.OnJumpPressed -= HandleJumpPressed;
+        _input.OnJumpReleased -= HandleJumpReleased;
+        _input.OnDashPressed -= IntendToDash;
+    }
+
+    // One frame of movement, in order: air state, gravity, jump, dash, state, the move, then the landing check.
     private void Update()
     {
         _moveInput = _input.Move;
@@ -98,27 +118,10 @@ public class PlayerMovement : MonoBehaviour
         _dash.HandleDash(GetMovementDirection(), IsGrounded);
         StateController();
         ApplyMovement();
+        CheckLanding();
     }
 
-    /// <summary>Listens to PlayerInput's jump and dash events.</summary>
-    private void OnEnable()
-    {
-        _input.OnJumpPressed += HandleJumpPressed;
-        _input.OnJumpReleased += HandleJumpReleased;
-        _input.OnDashPressed += IntendToDash;
-    }
-
-    /// <summary>Stops listening to PlayerInput.</summary>
-    private void OnDisable()
-    {
-        _input.OnJumpPressed -= HandleJumpPressed;
-        _input.OnJumpReleased -= HandleJumpReleased;
-        _input.OnDashPressed -= IntendToDash;
-    }
-
-    /// <summary>
-    /// Converts movement input into a horizontal, camera-relative direction.
-    /// </summary>
+    /// <summary>Converts movement input into a horizontal, camera-relative direction.</summary>
     private Vector3 GetMovementDirection()
     {
         Vector3 forward = _cameraTransform.forward;
@@ -160,8 +163,25 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Applies gravity and reduces it while the jump button is held during ascent.
+    /// Counts the time in the air, and fires OnLanded on the first grounded frame after it.
+    /// Runs after ApplyMovement, because the CharacterController updates isGrounded in Move.
     /// </summary>
+    private void CheckLanding()
+    {
+        if (!_controller.isGrounded)
+        {
+            _airTime += Time.deltaTime;
+            return;
+        }
+
+        if (_airTime > 0f)
+        {
+            OnLanded?.Invoke(_airTime);
+            _airTime = 0f;
+        }
+    }
+
+    /// <summary>Applies gravity, and reduces it while the jump button is held during the rise.</summary>
     private void HandleGravity()
     {
         if (_controller.isGrounded && _velocity.y < 0f)
@@ -169,20 +189,15 @@ public class PlayerMovement : MonoBehaviour
 
         float gravity = _settings.Gravity;
 
-        if (_isRising)
+        if (_isRising && _jumpHold)
         {
-            if (_jumpHold)
-            {
-                gravity *= _settings.MinJumpHeight / _settings.MaxJumpHeight;
-            }
+            gravity *= _settings.MinJumpHeight / _settings.MaxJumpHeight;
         }
 
         _velocity.y += gravity * Time.deltaTime;
     }
 
-    /// <summary>
-    /// Selects the movement state by priority: dash, airborne, aim, sprint, walk, idle.
-    /// </summary>
+    /// <summary>Selects the movement state by priority: dash, airborne, aim, walk, idle.</summary>
     private void StateController()
     {
         if (_dash.IsDashing)
@@ -198,8 +213,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Smoothly approaches the speed allowed by the current movement state.
-    /// Airborne movement retains the previous target speed.
+    /// Eases toward the speed the current movement state allows. Airborne movement keeps the walking speed.
     /// </summary>
     private float SpeedControl()
     {
@@ -213,8 +227,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
 
             case MovementStates.Aiming:
-                // INTEGRATION: was AimingAcceleration and AimSpeed. Aiming now moves at full speed, so the speed stat
-                // applies while aiming too.
+                // Aiming moves at full speed, so the speed stat applies while aiming too.
                 currentAcceleration = _settings.LocomotionAcceleration;
                 _currentMaxSpeed = MoveSpeed;
                 break;
@@ -230,16 +243,14 @@ public class PlayerMovement : MonoBehaviour
                 break;
         }
 
-        _currentSpeed = Mathf.MoveTowards(_currentSpeed,
-            _currentMaxSpeed,
-            currentAcceleration * Time.deltaTime);
+        _currentSpeed = Mathf.MoveTowards(_currentSpeed, _currentMaxSpeed, currentAcceleration * Time.deltaTime);
 
         return _currentSpeed;
     }
 
     /// <summary>
-    /// Starts a jump when buffered input and coyote time overlap.
-    /// Initial upward velocity is calculated from the minimum jump height.
+    /// Starts a jump when the jump buffer and coyote time overlap. The starting upward velocity comes from the
+    /// minimum jump height. Holding Jump lowers gravity for a higher jump (see HandleGravity).
     /// </summary>
     private void HandleJump()
     {
@@ -254,23 +265,18 @@ public class PlayerMovement : MonoBehaviour
         _velocity.y = Mathf.Sqrt(_settings.MinJumpHeight * -2f * _settings.Gravity);
     }
 
-    /// <summary>
-    /// Refreshes coyote time while grounded and counts down the jump input buffer.
-    /// </summary>
+    /// <summary>Refreshes coyote time while grounded, and counts down the jump buffer.</summary>
     private void JumpTimers()
     {
-        // Coyote timer
         if (_controller.isGrounded)
             _coyoteTimeTimer = _settings.CoyoteTime;
         else
             _coyoteTimeTimer = Mathf.Max(0f, _coyoteTimeTimer - Time.deltaTime);
 
-        // Jump buffer timer
         if (_jumpBufferTimer > 0f)
             _jumpBufferTimer = Mathf.Max(0f, _jumpBufferTimer - Time.deltaTime);
     }
 
-    /// <summary>Sets _isRising and _isFalling from the vertical velocity.</summary>
     private void AirState()
     {
         _isRising = !_controller.isGrounded && _velocity.y > 0.1f;
@@ -287,17 +293,14 @@ public class PlayerMovement : MonoBehaviour
         _jumpBufferTimer = _settings.JumpBufferTime;
     }
 
-    /// <summary>Marks Jump as released, which ends the lower gravity of a held jump.</summary>
     private void HandleJumpReleased()
     {
         _jumpHold = false;
     }
 
-    /// <summary>Passes a Dash press to Dash, which decides whether it can dash.</summary>
     private void IntendToDash() => _dash.IntendToDash();
 
     /// <summary>Returns a stat from _playerStats, or the fallback when the stat or Stats isn't set.</summary>
-    // INTEGRATION: new. The same lookup as EnemyBase.ReadStat.
     private float ReadStat(StatDefinition stat, float fallback)
     {
         if (_playerStats == null || stat == null || !_playerStats.HasStat(stat))

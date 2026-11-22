@@ -1,7 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 /// <summary>
 /// Manages abilities granted by inventory items, including permanent and timed abilities.
@@ -10,30 +10,47 @@ public class PlayerAbilities : MonoBehaviour
 {
     private struct AbilityEntry
     {
-        public IInventoryItem _item;
-        public GameObject _instance;
-        public bool _hasDuration;
+        public IInventoryItem Item;
+        public GameObject Instance;
+        public bool HasDuration;
+        public float EndTime; // Time.time when a timed ability wears off.
     }
-
-    private List<AbilityEntry> _abilities = new List<AbilityEntry>();
 
     [Title("Ability Testing")]
     [SerializeField] private GunPart _testItem;
     [SerializeField] private float _testDuration = 5f;
+
+    private readonly List<AbilityEntry> _abilities = new();
+
+    /// <summary>Fires each time one of the player's abilities does its effect, with the item that granted it.</summary>
+    public event Action<IInventoryItem> OnAbilityActivated;
+
+    // Checked every frame, so a timed ability still ends on time after this component is turned off and on.
+    // Time.time stops while the game is paused, so paused time doesn't count.
+    private void Update()
+    {
+        for (int i = _abilities.Count - 1; i >= 0; i--)
+        {
+            AbilityEntry entry = _abilities[i];
+            if (!entry.HasDuration || Time.time < entry.EndTime) continue;
+
+            DestroyAbility(entry.Instance);
+            _abilities.RemoveAt(i);
+        }
+    }
 
     /// <summary>
     /// Adds a permanent ability from the given item.
     /// </summary>
     public void Add(IInventoryItem item)
     {
-        if (!item.AbilityPrefab)
-            return;
+        if (!item.AbilityPrefab) return;
 
-        _abilities.Add(new AbilityEntry()
+        _abilities.Add(new AbilityEntry
         {
-            _item = item,
-            _instance = Instantiate(item.AbilityPrefab, transform),
-            _hasDuration = false
+            Item = item,
+            Instance = CreateAbility(item),
+            HasDuration = false
         });
     }
 
@@ -43,18 +60,15 @@ public class PlayerAbilities : MonoBehaviour
     /// </summary>
     public void Add(IInventoryItem item, float duration)
     {
-        if (!item.AbilityPrefab || duration <= 0)
-            return;
+        if (!item.AbilityPrefab || duration <= 0) return;
 
-        GameObject instance = Instantiate(item.AbilityPrefab, transform);
-        _abilities.Add(new AbilityEntry()
+        _abilities.Add(new AbilityEntry
         {
-            _item = item,
-            _instance = instance,
-            _hasDuration = true
+            Item = item,
+            Instance = CreateAbility(item),
+            HasDuration = true,
+            EndTime = Time.time + duration
         });
-
-        StartCoroutine(HandleTimedAbility(duration, instance));
     }
 
     /// <summary>
@@ -63,50 +77,66 @@ public class PlayerAbilities : MonoBehaviour
     /// </summary>
     public void Remove(IInventoryItem item)
     {
-        int oldestTimedItemIndex = -1;
+        int oldestTimedIndex = -1;
 
         for (int i = 0; i < _abilities.Count; i++)
         {
-            if (_abilities[i]._item != item)
-                continue;
+            if (_abilities[i].Item != item) continue;
 
-            if (!_abilities[i]._hasDuration)
+            if (!_abilities[i].HasDuration)
             {
-                Destroy(_abilities[i]._instance);
-                _abilities.RemoveAt(i);
+                RemoveAt(i);
                 return;
             }
 
-            if (oldestTimedItemIndex == -1)
+            if (oldestTimedIndex == -1)
             {
-                oldestTimedItemIndex = i;
+                oldestTimedIndex = i;
             }
         }
 
-        if (oldestTimedItemIndex != -1)
+        if (oldestTimedIndex != -1)
         {
-            Destroy(_abilities[oldestTimedItemIndex]._instance);
-            _abilities.RemoveAt(oldestTimedItemIndex);
+            RemoveAt(oldestTimedIndex);
         }
     }
 
-    /// <summary>
-    /// Waits for the specified duration before removing the exact ability instance.
-    /// </summary>
-    private IEnumerator HandleTimedAbility(float duration, GameObject instance)
+    /// <summary>Creates the item's ability prefab, and passes on activations from every ItemAbility on it.</summary>
+    private GameObject CreateAbility(IInventoryItem item)
     {
-        yield return new WaitForSeconds(duration);
+        GameObject instance = Instantiate(item.AbilityPrefab, transform);
 
-        for (int i = 0; i < _abilities.Count; i++)
+        foreach (ItemAbility ability in instance.GetComponentsInChildren<ItemAbility>(true))
         {
-            if (_abilities[i]._instance == instance)
-            {
-                Destroy(_abilities[i]._instance);
-                _abilities.RemoveAt(i);
-                yield break;
-            }
+            ability.SetSourceItem(item);
+            ability.OnActivated += HandleAbilityActivated;
         }
+
+        return instance;
     }
+
+    private void RemoveAt(int index)
+    {
+        DestroyAbility(_abilities[index].Instance);
+        _abilities.RemoveAt(index);
+    }
+
+    private void DestroyAbility(GameObject instance)
+    {
+        foreach (ItemAbility ability in instance.GetComponentsInChildren<ItemAbility>(true))
+        {
+            ability.OnActivated -= HandleAbilityActivated;
+        }
+
+        Destroy(instance);
+    }
+
+    private void HandleAbilityActivated(ItemAbility ability)
+    {
+        OnAbilityActivated?.Invoke(ability.SourceItem);
+    }
+
+    #region Debug
 
     /// <summary>
     /// Adds the selected test item's ability for the specified duration.
@@ -115,8 +145,7 @@ public class PlayerAbilities : MonoBehaviour
     [EnableIf("@UnityEngine.Application.isPlaying")]
     private void AddTestItem()
     {
-        if (!_testItem)
-            return;
+        if (!_testItem) return;
 
         Add(_testItem, _testDuration);
     }
@@ -128,9 +157,10 @@ public class PlayerAbilities : MonoBehaviour
     [EnableIf("@UnityEngine.Application.isPlaying")]
     private void RemoveTestItem()
     {
-        if (!_testItem)
-            return;
+        if (!_testItem) return;
 
         Remove(_testItem);
     }
+
+    #endregion
 }

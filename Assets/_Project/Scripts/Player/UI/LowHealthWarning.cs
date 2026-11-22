@@ -1,36 +1,32 @@
 using UnityEngine;
 
-// Shows a pulsing red vignette and loops a heartbeat while the player's health is below the threshold.
-// Only updates when Health.OnDamaged or OnHealed fires, not every frame.
-// Lives on the HUD next to HealthBar and connects to each player GameManager registers, the same way HealthBar does.
+/// <summary>
+/// Shows a pulsing red vignette while the player's health is below the threshold. PlayerAudio plays the heartbeat.
+/// Only updates when Health.OnDamaged or OnHealed fires, not every frame.
+/// Lives on the HUD next to HealthBar, and connects to each player GameManager registers, the same way HealthBar does.
+/// </summary>
 public class LowHealthWarning : MonoBehaviour
 {
     [Header("Settings")]
-    [Range(0f, 1f)]
-    [SerializeField] private float threshold = 0.25f; // warning turns on below this much health (0.25 = 25%)
+    [Tooltip("The warning turns on below this fraction of max health. 0.25 is 25%.")]
+    [SerializeField, Range(0f, 1f)] private float _threshold = 0.25f;
 
     [Header("References")]
-    [SerializeField] private Animator vignetteAnimator; // the Animator on FX_FantasyWarrior_Damage_Vignette_01
-    [SerializeField] private AudioSource heartbeatSource; // AudioSource with the heartbeat clip
+    [Tooltip("The Animator on FX_FantasyWarrior_Damage_Vignette_01.")]
+    [SerializeField] private Animator _vignetteAnimator;
 
-    private static readonly int Active = Animator.StringToHash("Active"); // bool parameter on the vignette's animator
+    private static readonly int Active = Animator.StringToHash("Active"); // Bool parameter on the vignette's Animator.
 
-    private Health health;
+    private Health _health;
 
-    void Awake()
+    private void Awake()
     {
-        if (heartbeatSource != null)
-        {
-            heartbeatSource.loop = true;
-            heartbeatSource.playOnAwake = false;
-        }
-
         GameManager.Instance.OnPlayerRegistered += HandlePlayerRegistered;
     }
 
-    void Start()
+    private void Start()
     {
-        // If the player registered before this existed, connect to it now
+        // If the player registered before this existed, connect to it now.
         if (GameManager.Instance.Player != null)
         {
             HandlePlayerRegistered(GameManager.Instance.Player.GetComponent<PlayerRoot>());
@@ -41,22 +37,22 @@ public class LowHealthWarning : MonoBehaviour
         }
     }
 
-    // The HUD turns off while a menu is open (like pause), and that resets the vignette's animator.
+    // The HUD turns off while a menu is open, such as pause, and that resets the vignette's Animator.
     // When the HUD comes back, this turns the warning back on if health is still low.
-    void OnEnable()
+    private void OnEnable()
     {
-        if (vignetteAnimator != null)
+        if (_vignetteAnimator != null)
         {
-            vignetteAnimator.keepAnimatorStateOnDisable = true;
+            _vignetteAnimator.keepAnimatorStateOnDisable = true;
         }
 
-        if (health != null)
+        if (_health != null)
         {
-            HandleHealthChange(health.CurrentHealth, health.gameObject);
+            HandleHealthChange(_health.CurrentHealth, _health.gameObject);
         }
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         if (GameManager.HasInstance)
         {
@@ -66,75 +62,64 @@ public class LowHealthWarning : MonoBehaviour
         Unbind();
     }
 
-    void HandlePlayerRegistered(PlayerRoot player)
+    /// <summary>Moves the health listeners to the new player, and shows the right state for it right away.</summary>
+    private void HandlePlayerRegistered(PlayerRoot player)
     {
         Unbind();
 
         if (player == null) return;
 
-        health = player.PlayerHealth;
-        if (health == null) return;
+        _health = player.PlayerHealth;
+        if (_health == null) return;
 
-        health.OnDamaged += HandleHealthChange;
-        health.OnHealed += HandleHealthChange;
+        _health.OnDamaged += HandleHealthChange;
+        _health.OnHealed += HandleHealthChange;
+        _health.OnMaxHealthChanged += HandleHealthChange;
 
-        // Show the right state for the new player right away
-        HandleHealthChange(health.CurrentHealth, health.gameObject);
+        HandleHealthChange(_health.CurrentHealth, _health.gameObject);
     }
 
-    void Unbind()
+    private void Unbind()
     {
-        if (health != null)
+        if (_health != null)
         {
-            health.OnDamaged -= HandleHealthChange;
-            health.OnHealed -= HandleHealthChange;
+            _health.OnDamaged -= HandleHealthChange;
+            _health.OnHealed -= HandleHealthChange;
+            _health.OnMaxHealthChanged -= HandleHealthChange;
         }
 
-        health = null;
+        _health = null;
     }
 
-    // Runs on Health.OnDamaged and OnHealed
-    void HandleHealthChange(int currentHealth, GameObject sender)
+    private void HandleHealthChange(int currentHealth, GameObject sender)
     {
-        if (health == null || health.MaxHealth <= 0) return;
+        if (_health == null || _health.MaxHealth <= 0) return;
 
-        float percent = (float)currentHealth / health.MaxHealth;
+        float percent = (float)currentHealth / _health.MaxHealth;
 
-        // At 0 the player is dead, so the death screen shows without the warning
-        bool shouldWarn = currentHealth > 0 && percent < threshold;
+        // At 0 the player is dead, so the death screen shows without the warning.
+        bool shouldWarn = currentHealth > 0 && percent < _threshold;
 
         SetWarning(shouldWarn);
     }
 
-    void SetWarning(bool on)
+    private void SetWarning(bool on)
     {
-        if (vignetteAnimator != null)
+        if (_vignetteAnimator != null)
         {
-            vignetteAnimator.SetBool(Active, on);
-        }
-
-        if (heartbeatSource != null)
-        {
-            if (on && !heartbeatSource.isPlaying)
-            {
-                heartbeatSource.Play();
-            }
-            else if (!on && heartbeatSource.isPlaying)
-            {
-                heartbeatSource.Stop();
-            }
+            _vignetteAnimator.SetBool(Active, on);
         }
     }
 
-    // Right-click the component > Test Warning On / Off while playing
+    // Right-click the component > Test Warning On or Test Warning Off while playing.
     [ContextMenu("Test Warning On")]
-    void TestWarningOn()
+    private void TestWarningOn()
     {
         SetWarning(true);
     }
 
     [ContextMenu("Test Warning Off")]
-    void TestWarningOff()
+    private void TestWarningOff()
     {
         SetWarning(false);
     }

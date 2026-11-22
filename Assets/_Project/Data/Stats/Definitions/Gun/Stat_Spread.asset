@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Stat_Spread
   m_EditorClassIdentifier: Assembly-CSharp::StatDefinition
   _displayName: Spread
+  _description: How far shots can stray from the crosshair, in degrees. Lower is
+    more accurate.
   _icon: {fileID: 0}
+  _higherIsBetter: 0
   _minValue: 0
   _maxValue: 5000

@@ -1,53 +1,36 @@
-using UnityEngine;
-using UnityEngine.AI;
-
 /// <summary>
-/// Manages enemy attack behavior.
-/// Checks goldilocks range and LOS, faces the player,
-/// and starts attack when their cooldown is ready.
+/// Manages enemy attack behavior. Checks the Goldilocks range and line of sight, faces the player, and starts the
+/// attack EnemyBase.SelectAttack picks whenever no attack is running. Plays CombatIdle between attacks and each
+/// attack's own animation while it runs.
 /// </summary>
 public class AttackState : IEnemyState
 {
-    private const float RotationSpeed = 360f; // Degrees per second the enemy turns to face the target.
     private readonly EnemyBase _enemy;
-    private NavMeshAgent _agent;          // Its rotation is turned off while attacking, so this state can face the target.
-    private EnemyAttack _currentAttack;   // The first active attack, picked in Enter.
-    private bool _previousUpdateRotation; // The agent's rotation setting before Enter, put back in Exit.
+    private EnemyAttack _currentAttack;   // The attack started last. Null until the first attack starts.
+    private bool _playingAttack;          // True while an attack's animation is playing, so CombatIdle plays once it ends.
+    private bool _previousFacesPath;      // EnemyMovement.FacesPath before Enter, put back in Exit.
 
-    /// <summary>Creates the state for one enemy. EnemyBase.Awake calls this.</summary>
     public AttackState(EnemyBase enemy)
     {
         _enemy = enemy;
-        _agent = _enemy.GetComponent<NavMeshAgent>();
     }
 
-    /// <summary>Stops moving, picks the first active attack, and takes over rotation from the NavMeshAgent.</summary>
+    /// <summary>Stops moving, plays CombatIdle, and takes over rotation from the NavMeshAgent.</summary>
     public void Enter()
     {
         _enemy.Movement.StopMoving();
+        _enemy.PlayStateAnimation(EnemyAnimation.CombatIdle);
 
         _currentAttack = null;
+        _playingAttack = false;
 
-        foreach (EnemyAttack attack in _enemy.Attacks)
-        {
-            if (attack != null && attack.isActiveAndEnabled)
-            {
-                _currentAttack = attack;
-                break;
-            }
-        }
-
-        // AttackState controls rotation while attacking.
-        if (_agent != null)
-        {
-            _previousUpdateRotation = _agent.updateRotation;
-            _agent.updateRotation = false;
-        }
+        _previousFacesPath = _enemy.Movement.FacesPath;
+        _enemy.Movement.FacesPath = false;
     }
 
     /// <summary>
     /// Leaves for Idle, Reposition, or Chase when the target is lost, too close, out of sight, or too far.
-    /// Otherwise turns toward the target and starts the attack when its cooldown is ready.
+    /// Otherwise turns toward the target, and starts the next attack once the last one has finished.
     /// </summary>
     public void Tick(float dt)
     {
@@ -70,35 +53,41 @@ public class AttackState : IEnemyState
             _enemy.ChangeState(_enemy.ChaseState);
             return;
         }
-        
-        // Face the player while attacking.
-        Vector3 direction = _enemy.Target.position - _enemy.transform.position;
-        direction.y = 0f;
 
-        if (direction.sqrMagnitude > 0.001f)
+        _enemy.FaceTarget(dt);
+
+        if (_currentAttack != null && _currentAttack.IsAttacking)
+            return;
+
+        if (_playingAttack)
         {
-            _enemy.transform.rotation = Quaternion.RotateTowards(
-                _enemy.transform.rotation,
-                Quaternion.LookRotation(direction),
-                RotationSpeed * dt
-            );
+            _playingAttack = false;
+            _enemy.ReturnToStateAnimation();
         }
 
-        if (_currentAttack != null && _currentAttack.CanAttack)
-            _currentAttack.StartAttack();
+        EnemyAttack next = _enemy.SelectAttack();
+        if (next == null || !next.CanAttack)
+            return;
+
+        _currentAttack = next;
+        _currentAttack.StartAttack();
+
+        if (_currentAttack.IsAttacking)
+        {
+            _playingAttack = true;
+            _enemy.PlayAnimation(_currentAttack.AnimationState);
+        }
     }
 
     /// <summary>Cancels an unfinished attack and gives rotation back to the NavMeshAgent.</summary>
     public void Exit()
     {
-        // Stops an unfinished attack when leaving AttackState
         if (_currentAttack != null)
             _currentAttack.CancelAttack();
 
-        // Restore the NavMeshAgent's original rotation setting
-        if  (_agent != null)
-            _agent.updateRotation = _previousUpdateRotation;
+        _enemy.Movement.FacesPath = _previousFacesPath;
 
         _currentAttack = null;
+        _playingAttack = false;
     }
 }

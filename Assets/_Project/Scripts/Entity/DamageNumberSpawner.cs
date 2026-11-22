@@ -6,27 +6,26 @@ using UnityEngine;
 /// </summary>
 public class DamageNumberSpawner : MonoBehaviour
 {
-    [SerializeField] private DamageNumber prefab;
+    [SerializeField] private DamageNumbers _prefab;
 
     [Tooltip("Height above the enemy's pivot where numbers appear, in world units.")]
-    [SerializeField] private float height = 2f;
+    [SerializeField] private float _height = 2f;
 
     [Tooltip("Hits closer together than this add into one number instead of spawning more. " +
              "This keeps damage over time, which ticks every frame, readable.")]
-    [SerializeField] private float mergeWindow = 0.2f;
+    [SerializeField] private float _mergeWindow = 0.2f;
 
     private Health _health;
-    private float _lastHealth;
-    private DamageNumber _current;
-    private int _currentSerial;
+    private DamageNumbers _current; // The number the latest hit went into, so quick hits can merge into it.
+    private int _currentSerial;     // _current's Serial when it was spawned. A different Serial means it was reused.
 
     private void Awake()
     {
         _health = GetComponentInParent<Health>();
 
-        if (_health == null || prefab == null)
+        if (_health == null || _prefab == null)
         {
-            Debug.LogError($"{name}: DamageNumberSpawner needs a Health on itself or a parent, and a DamageNumber prefab.", this);
+            Debug.LogError($"{name}: DamageNumberSpawner needs a Health on itself or a parent, and a DamageNumbers prefab.", this);
             enabled = false;
         }
     }
@@ -35,39 +34,29 @@ public class DamageNumberSpawner : MonoBehaviour
     {
         if (_health == null) return;
 
-        _lastHealth = _health.CurrentHealth;
-        _health.OnDamaged += HandleDamaged;
-        _health.OnHealed += HandleHealed;
-    }
-
-    // Health sets CurrentHealth in its own Awake, which may run after our OnEnable,
-    // so read it again once every Awake has finished.
-    private void Start()
-    {
-        if (_health != null)
-            _lastHealth = _health.CurrentHealth;
+        _health.OnDamageInstance += HandleDamageInstance;
     }
 
     private void OnDisable()
     {
         if (_health == null) return;
 
-        _health.OnDamaged -= HandleDamaged;
-        _health.OnHealed -= HandleHealed;
+        _health.OnDamageInstance -= HandleDamageInstance;
     }
 
-    // Health.OnDamaged passes the new health rather than the hit,
-    // so the damage is how far health dropped since last time.
-    private void HandleDamaged(float currentHealth, GameObject source)
+    /// <summary>
+    /// Shows the hit's damage. A hit that lands within the merge window of the last one adds to its number instead.
+    /// Runs on Health.OnDamageInstance, which passes the whole hit, so overkill shows the full damage.
+    /// </summary>
+    private void HandleDamageInstance(DamageInfo info)
     {
-        float damage = _lastHealth - currentHealth;
-        _lastHealth = currentHealth;
-        if (damage <= 0f) return;
+        int damage = info.DamageAmount;
+        if (damage <= 0) return;
 
         bool canMerge = _current != null
                         && _current.isActiveAndEnabled
                         && _current.Serial == _currentSerial
-                        && _current.Age < mergeWindow;
+                        && _current.Age < _mergeWindow;
 
         if (canMerge)
         {
@@ -75,19 +64,16 @@ public class DamageNumberSpawner : MonoBehaviour
             return;
         }
 
-        _current = DamageNumber.Spawn(prefab, _health.transform.position + Vector3.up * height, damage);
+        _current = DamageNumbers.Spawn(_prefab, _health.transform.position + Vector3.up * _height, damage);
         _currentSerial = _current.Serial;
     }
 
-    private void HandleHealed(float currentHealth, GameObject source) => _lastHealth = currentHealth;
-
-    // Shows where numbers will appear when this is selected in the editor.
     private void OnDrawGizmosSelected()
     {
         Health health = GetComponentInParent<Health>();
         if (health == null) return;
 
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(health.transform.position + Vector3.up * height, 0.1f);
+        Gizmos.DrawWireSphere(health.transform.position + Vector3.up * _height, 0.1f);
     }
 }

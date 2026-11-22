@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Sirenix.OdinInspector;
 
 /// <summary>
-/// Controls the enemy's state machine, target detection, attack timing, and death.
-/// Connects to EnemyMovement, Health, GoldilocksRange (through IEnemyRange), and LineOfSight (through IEnemyLineOfSight).
+/// Controls the enemy's state machine, target detection, attack timing, animations, and death.
+/// Connects to EnemyMovement, Health, GoldilocksRange (through IEnemyRange), LineOfSight (through IEnemyLineOfSight),
+/// and EnemyAnimator. Each state plays its animation in Enter through PlayStateAnimation. Enemy types such as DarkKnight inherit this
+/// class and override its Unity methods, SelectAttack, and Die, calling the base version first.
 /// </summary>
 [RequireComponent(typeof(EnemyMovement))]
 [RequireComponent(typeof(Health))]
@@ -14,78 +15,105 @@ public class EnemyBase : MonoBehaviour
 {
     [Header("References")]
     [Tooltip("What the enemy chases. Leave empty to use the player's CharacterController.")]
-    [SerializeField, FormerlySerializedAs("target")] private Transform _target;
+    [SerializeField] private Transform _target;
 
-    // INTEGRATION: was EnemyStats. Now the shared Stats component, so items and effects can modify enemies the same way
-    // as the player, and Health reads its max health from the same component (see Awake).
-    [SerializeField, FormerlySerializedAs("stats")] private Stats _stats;
+    [Tooltip("Leave empty to use the Stats on this object. Health reads its max health from it too.")]
+    [SerializeField] private Stats _stats;
 
     [Tooltip("Leave empty to find every EnemyAttack in children.")]
-    [SerializeField, FormerlySerializedAs("attacks")] private EnemyAttack[] _attacks;
+    [SerializeField] private EnemyAttack[] _attacks;
 
-    // INTEGRATION: new. Which stats in _stats hold each value. The properties below read them through ReadStat.
     [Header("Stats")]
     [SerializeField] private StatDefinition _detectionRangeStat;
-    [SerializeField] private StatDefinition _minRangeStat;     // Closest the enemy wants to be. Read by GoldilocksRange.
-    [SerializeField] private StatDefinition _maxRangeStat;     // Farthest the enemy wants to be. Read by GoldilocksRange.
-    [SerializeField] private StatDefinition _moveSpeedStat;    // Read by EnemyMovement every frame.
-    [SerializeField] private StatDefinition _attackDamageStat; // Read by MeleeAttack.
+    [Tooltip("Closest the enemy wants to be. Read by GoldilocksRange.")]
+    [SerializeField] private StatDefinition _minRangeStat;
+    [Tooltip("Farthest the enemy wants to be. Read by GoldilocksRange.")]
+    [SerializeField] private StatDefinition _maxRangeStat;
+    [Tooltip("Read by EnemyMovement every frame.")]
+    [SerializeField] private StatDefinition _moveSpeedStat;
+    [Tooltip("Read by every attack, times the attack's Damage Multiplier.")]
+    [SerializeField] private StatDefinition _attackDamageStat;
+    [Tooltip("Read by every attack, times the attack's Wind Up Multiplier.")]
     [SerializeField] private StatDefinition _windUpTimeStat;
+    [Tooltip("Read by every attack, times the attack's Cooldown Multiplier.")]
     [SerializeField] private StatDefinition _cooldownTimeStat;
 
+    [Header("Facing")]
+    [Tooltip("Degrees per second the enemy turns while it faces the player, in AttackState, RepositionState, and ChaseState when Face Target While Chasing is on.")]
+    [SerializeField, Min(0f)] private float _turnSpeed = 360f;
+    [Tooltip("On: faces the player while chasing, so it strafes in. Needs a directional locomotion blend tree. Off: faces the way it walks.")]
+    [SerializeField] private bool _faceTargetWhileChasing;
+
     [Header("Death")]
-    [SerializeField, Min(0f)] private float _deathDelay = 2f; // Seconds to wait before removing the enemy after death.
-    public float DeathDelay => _deathDelay;
+    [Tooltip("Seconds to wait before removing the enemy after death, so the death animation can play.")]
+    [SerializeField, Min(0f)] private float _deathDelay = 2f;
 
-    /// <summary>Moves the enemy on the NavMesh.</summary>
+    private IEnemyState _currentState;
+    private bool _isLockedOn; // Set every frame in Update.
+    private bool _isDead;
+    private bool _isAggressive;
+
+    /// <summary>Fires once when the enemy dies, with this enemy. WaveManager listens to count the enemies left.</summary>
+    public event Action<EnemyBase> OnEnemyKilled;
+    public event Action<IEnemyState> OnStateChanged;
+
     public EnemyMovement Movement { get; private set; }
-
-    /// <summary>The enemy's stats.</summary>
-    public Stats Stats => _stats;
-
-    /// <summary>The enemy's health. Its OnDied event kills the enemy.</summary>
     public Health Health { get; private set; }
+    /// <summary>Plays the animations. Null when the enemy has no EnemyAnimator, and then nothing animates.</summary>
+    public EnemyAnimator Animations { get; private set; }
+    public Stats Stats => _stats;
+    public float DeathDelay => _deathDelay;
+    public bool FaceTargetWhileChasing => _faceTargetWhileChasing;
 
-    // INTEGRATION: new. These replace the EnemyStats fields. Each falls back to the old EnemyStats default when the stat
-    // isn't set, so prefabs keep working before their stats are filled in.
+    // Each stat falls back to a default when it isn't set, so prefabs keep working before their stats are filled in.
     /// <summary>How close the target must be to be noticed.</summary>
     public float DetectionRange => ReadStat(_detectionRangeStat, 10f);
     /// <summary>Closest preferred distance to the target.</summary>
     public float MinRange => ReadStat(_minRangeStat, 0f);
     /// <summary>Farthest preferred distance to the target.</summary>
     public float MaxRange => ReadStat(_maxRangeStat, 1f);
-    /// <summary>NavMeshAgent speed.</summary>
     public float MoveSpeed => ReadStat(_moveSpeedStat, 5f);
-    /// <summary>Damage per attack hit.</summary>
+    /// <summary>Damage per attack hit, before the attack's multiplier.</summary>
     public float AttackDamage => ReadStat(_attackDamageStat, 10f);
-    /// <summary>Seconds between starting an attack and its hit.</summary>
+    /// <summary>Seconds between starting an attack and its hit, before the attack's multiplier.</summary>
     public float WindUpTime => ReadStat(_windUpTimeStat, 2f);
-    /// <summary>Seconds after an attack before the next one.</summary>
+    /// <summary>Seconds after an attack before the same attack can start again, before the attack's multiplier.</summary>
     public float CooldownTime => ReadStat(_cooldownTimeStat, 3f);
+
+    /// <summary>
+    /// Multiplies every attack's cooldown, on top of the stat and the attack's multiplier. 1 by default. StoneGuardian
+    /// lowers it in later phases, so the boss attacks more often.
+    /// </summary>
+    public virtual float CooldownScale => 1f;
 
     /// <summary>Tells whether the target is too close, too far, or in range.</summary>
     public IEnemyRange Range { get; private set; }
-    /// <summary>Tells whether the target can be seen.</summary>
     public IEnemyLineOfSight LineOfSight { get; private set; }
-    /// <summary>The enemy's attacks.</summary>
     public IReadOnlyList<EnemyAttack> Attacks => _attacks;
 
-    /// <summary>What the enemy chases.</summary>
     public Transform Target => _target;
-    /// <summary>True while the target is within detection range and in sight.</summary>
+    /// <summary>True while the enemy is locked on: in range and in sight, or aggressive.</summary>
     public bool HasTarget => _isLockedOn && _target != null;
-    /// <summary>True once Die has run.</summary>
     public bool IsDead => _isDead;
+    public bool HasLineOfSight => LineOfSight?.HasLineOfSight() ?? false;
+    public IEnemyState CurrentState => _currentState;
 
-    /// <summary>True if the LineOfSight component can see the target.</summary>
-    public bool HasLineOfSight =>
-        LineOfSight?.HasLineOfSight() ?? false;
+    public bool IsAttacking
+    {
+        get
+        {
+            foreach (EnemyAttack attack in _attacks)
+            {
+                if (attack != null && attack.IsAttacking)
+                    return true;
+            }
+
+            return false;
+        }
+    }
 
     /// <summary>Where the target is compared to the preferred distance. TooFar when there's no target.</summary>
-    public RangeStatus CurrentRange =>
-        HasTarget && Range != null
-            ? Range.GetRangeStatus()
-            : RangeStatus.TooFar;
+    public RangeStatus CurrentRange => HasTarget && Range != null ? Range.GetRangeStatus() : RangeStatus.TooFar;
 
     public IEnemyState IdleState { get; private set; }
     public IEnemyState ChaseState { get; private set; }
@@ -94,29 +122,17 @@ public class EnemyBase : MonoBehaviour
     public IEnemyState DeadState { get; private set; }
     public StunnedState StunnedState { get; private set; }
 
-    /// <summary>Fires once when the enemy dies, with this enemy. RoomEncounter listens to count the enemies left.</summary>
-    public event Action<EnemyBase> OnEnemyKilled;
-
-    private IEnemyState _currentState;
-    private bool _isLockedOn; // Set every frame in Update.
-    private bool _isDead;
-    private bool _isAggressive;
-
-    /// <summary>Finds the components, creates the states, and hands each attack this enemy.</summary>
-    private void Awake()
+    protected virtual void Awake()
     {
         Movement = GetComponent<EnemyMovement>();
         Health = GetComponent<Health>();
+        Animations = GetComponent<EnemyAnimator>();
 
-        // INTEGRATION: new. Health reads its max health from the same Stats component, the same as on the player.
         if (!_stats) _stats = GetComponent<Stats>();
         if (_stats) Health.SetStats(_stats);
 
         Range = GetComponent(typeof(IEnemyRange)) as IEnemyRange;
-
-        LineOfSight =
-            GetComponent(typeof(IEnemyLineOfSight))
-            as IEnemyLineOfSight;
+        LineOfSight = GetComponent(typeof(IEnemyLineOfSight)) as IEnemyLineOfSight;
 
         IdleState = new IdleState(this);
         ChaseState = new ChaseState(this);
@@ -140,14 +156,12 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    /// <summary>Starts listening for death.</summary>
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         Health.OnDied += HandleDeath;
     }
 
-    /// <summary>Finds the target if none is set, and starts in IdleState.</summary>
-    private void Start()
+    protected virtual void Start()
     {
         if (GameManager.HasInstance)
         {
@@ -155,9 +169,6 @@ public class EnemyBase : MonoBehaviour
 
             if (_target == null)
             {
-                // INTEGRATION: was FindGameObjectWithTag("Player"). GameManager.Player is the player root, which stays at the
-                // spawn point, so the target is the CharacterController's transform, which is the part that moves.
-                // LineOfSight and GoldilocksRange read this through Target.
                 GameObject player = GameManager.Instance.Player;
                 if (player != null)
                 {
@@ -168,34 +179,13 @@ public class EnemyBase : MonoBehaviour
             }
         }
 
-        // INTEGRATION: removed the "die if health is 0" check here. Health now gets its max from Stats in Awake.
         ChangeState(IdleState);
 
         if (_isAggressive && HasTarget)
             ChangeState(ChaseState);
     }
 
-     private void HandlePlayerRegistered(PlayerRoot player)
-    {
-        if (player == null)
-            return;
-
-        CharacterController controller =
-            player.GetComponentInChildren<CharacterController>();
-
-        _target = controller != null
-            ? controller.transform
-            : player.transform;
-
-        if (_isAggressive && !_isDead)
-        {
-            _isLockedOn = true;
-            ChangeState(ChaseState);
-        }
-    }
-
-    /// <summary>Locks on when the target is in range and in sight, and updates the current state.</summary>
-    private void Update()
+    protected virtual void Update()
     {
         if (_isDead)
             return;
@@ -206,10 +196,7 @@ public class EnemyBase : MonoBehaviour
         }
         else if (_target != null)
         {
-            float distance = Vector3.Distance(
-                transform.position,
-                _target.position
-            );
+            float distance = Vector3.Distance(transform.position, _target.position);
 
             bool inRange = distance <= DetectionRange;
             bool canSeePlayer = inRange && HasLineOfSight;
@@ -228,14 +215,13 @@ public class EnemyBase : MonoBehaviour
         _currentState?.Tick(Time.deltaTime);
     }
 
-    /// <summary>Stops listening for death.</summary>
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         if (Health != null)
             Health.OnDied -= HandleDeath;
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if (GameManager.HasInstance)
         {
@@ -243,15 +229,34 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    /// <summary>Runs when Health fires OnDied.</summary>
+    /// <summary>
+    /// Targets the player's CharacterController, which is the part of the player that moves. The PlayerRoot stays where
+    /// the prefab was placed. Locks on right away if the enemy is aggressive.
+    /// </summary>
+    private void HandlePlayerRegistered(PlayerRoot player)
+    {
+        if (player == null)
+            return;
+
+        CharacterController controller = player.GetComponentInChildren<CharacterController>();
+
+        _target = controller != null ? controller.transform : player.transform;
+
+        if (_isAggressive && !_isDead)
+        {
+            _isLockedOn = true;
+            ChangeState(ChaseState);
+        }
+    }
+
     private void HandleDeath(GameObject deadObject)
     {
         Die();
     }
 
     /// <summary>
-    /// Exits the current state and enters a new one. Ignores the change if it's the same state, and once dead, only
-    /// DeadState is allowed. DeadState is only allowed through Die.
+    /// Exits the current state and enters a new one, then fires OnStateChanged. Ignores the change if it's the same
+    /// state, and once dead, only DeadState is allowed. DeadState is only allowed through Die.
     /// </summary>
     public void ChangeState(IEnemyState newState)
     {
@@ -267,9 +272,43 @@ public class EnemyBase : MonoBehaviour
         _currentState?.Exit();
         _currentState = newState;
         _currentState.Enter();
+
+        OnStateChanged?.Invoke(_currentState);
     }
 
-    /// <summary>Interrupts the enemy for a time. Called by parry and other combat systems. Needs a target.</summary>
+    /// <summary>
+    /// Picks the attack AttackState starts next, or null to wait. AttackState calls this whenever no attack is running.
+    /// By default, returns the first active attack whose CanAttack is true. Enemy types override it to choose between
+    /// their attacks.
+    /// </summary>
+    public virtual EnemyAttack SelectAttack()
+    {
+        foreach (EnemyAttack attack in _attacks)
+        {
+            if (attack != null && attack.isActiveAndEnabled && attack.CanAttack)
+                return attack;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Turns toward the target on the ground plane, at Turn Speed. States that face the player call this every Tick,
+    /// after turning off EnemyMovement.FacesPath.
+    /// </summary>
+    public void FaceTarget(float dt)
+    {
+        if (_target == null)
+            return;
+
+        Vector3 direction = _target.position - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude > 0.001f)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), _turnSpeed * dt);
+    }
+
+    /// <summary>Interrupts the enemy for a time. Needs a target.</summary>
     public void Stun(float duration)
     {
         if (_isDead || duration <= 0f || !HasTarget)
@@ -280,7 +319,7 @@ public class EnemyBase : MonoBehaviour
     }
 
     /// <summary>Kills the enemy: enters DeadState and fires OnEnemyKilled. Runs only once.</summary>
-    public void Die()
+    public virtual void Die()
     {
         if (_isDead)
             return;
@@ -290,15 +329,41 @@ public class EnemyBase : MonoBehaviour
         OnEnemyKilled?.Invoke(this);
     }
 
+    /// <summary>Plays a state's animation through EnemyAnimator and remembers it. States call this in Enter.</summary>
+    public void PlayStateAnimation(EnemyAnimation animation)
+    {
+        if (Animations != null) Animations.PlayState(animation);
+    }
+
+    /// <summary>Plays a one-off animation, such as Block, without changing the state's animation.</summary>
+    public void PlayAnimation(EnemyAnimation animation)
+    {
+        if (Animations != null) Animations.Play(animation);
+    }
+
+    public void PlayAnimation(string stateName)
+    {
+        if (Animations != null) Animations.Play(stateName);
+    }
+
+    public void ReturnToStateAnimation()
+    {
+        if (Animations != null) Animations.ReturnToState();
+    }
+
+    /// <summary>
+    /// Locks on to the player without waiting for the detection range or line of sight, and starts chasing.
+    /// WaveManager calls this on every enemy it spawns.
+    /// </summary>
     [Button("Make Aggressive")]
     public void MakeAggressive()
     {
-        if(!Application.isPlaying || _isDead)
+        if (!Application.isPlaying || _isDead)
             return;
-        
+
         _isAggressive = true;
 
-        if(_target == null && GameManager.HasInstance)
+        if (_target == null && GameManager.HasInstance)
         {
             GameObject player = GameManager.Instance.Player;
             if (player != null)
@@ -308,16 +373,13 @@ public class EnemyBase : MonoBehaviour
             }
         }
 
-        _isLockedOn = _target !=null;
+        _isLockedOn = _target != null;
 
         if (HasTarget)
             ChangeState(ChaseState);
     }
 
-    /// <summary>
-    /// Returns a stat's value from _stats, or the fallback outside Play mode or when the stat isn't set or found.
-    /// </summary>
-    // INTEGRATION: new. Used by the stat properties above, which replaced the EnemyStats fields.
+    /// <summary>Returns a stat's value from _stats, or the fallback outside Play mode or when the stat isn't set or found.</summary>
     private float ReadStat(StatDefinition stat, float fallback)
     {
         if (!Application.isPlaying || _stats == null || stat == null || !_stats.HasStat(stat))
@@ -326,13 +388,9 @@ public class EnemyBase : MonoBehaviour
         return _stats.GetValue(stat);
     }
 
-    /// <summary>Draws the detection range in the Scene view.</summary>
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(
-            transform.position,
-            DetectionRange
-        );
+        Gizmos.DrawWireSphere(transform.position, DetectionRange);
     }
 }

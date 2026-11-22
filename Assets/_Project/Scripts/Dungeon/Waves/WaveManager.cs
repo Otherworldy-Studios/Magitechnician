@@ -1,56 +1,64 @@
-﻿using System;
+﻿using _Project.Scripts.Dungeon;
+using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using _Project.Scripts.Dungeon;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class WaveManager : MGR<WaveManager>
 {
     [Header("Wave Manager Fields")]
-    [SerializeField]
-    private List<WaveData> _waves;
-    
-    [SerializeField]
-    private Room _currentRoom;
-
-    [SerializeField]
-    private int _maxAlive;
-
-    [SerializeField]
-    private float minSpawnDistance;
+    [SerializeField] private Room _currentRoom;
+    [Tooltip("Most enemies alive at once. Spawning waits while the limit is reached. 0 means no limit.")]
+    [SerializeField] private int _maxAlive;
+    [Tooltip("Enemies spawn at least this far from the player on the ground plane, when a spawn point allows it.")]
+    [SerializeField] private float _minSpawnDistance;
 
     [Header("Debug (Do not edit)")]
-    [SerializeField] 
-    private int _currentWave;
-    
-    [SerializeField]
-    private List<EnemyBase> _alive;
+    [SerializeField] private int _currentWave;
+    [SerializeField] private List<EnemyBase> _alive;
+    [SerializeField] private bool _spawningDone;
+    [SerializeField] private bool _waveRunning;
 
-    [SerializeField]
-    private bool _spawningDone;
-
-    [SerializeField]
-    private bool _waveRunning;
-    
     public event Action<int, int> OnWaveStarted;
     public event Action OnWaveCompleted;
     public event Action<EnemyBase> OnBossSpawned;
-    public event Action<Room> OnRoomCleared;
     
-    override protected void Awake()
+    public event Action<EnemyBase> OnEnemyKilled;
+
+    protected override void Awake()
     {
         base.Awake();
-        
+        if (Instance != this)
+        {
+            return;
+        }
+
         _currentWave = 0;
         OnWaveCompleted += StartWave;
-        GameManager.OnGameLost += StopAll;
     }
 
-    void Start()
+    private void OnEnable()
     {
         LevelGenerator.Instance.OnMapGenerated += HandleMapGenerated;
+    }
+
+    private void OnDisable()
+    {
+        if (LevelGenerator.HasInstance)
+        {
+            LevelGenerator.Instance.OnMapGenerated -= HandleMapGenerated;
+        }
+    }
+
+    private void Start()
+    {
+        if (LevelGenerator.Instance.GenerationComplete)
+        {
+            HandleMapGenerated();
+        }
+
         GameManager.OnGameLost += StopAll;
     }
 
@@ -58,19 +66,26 @@ public class WaveManager : MGR<WaveManager>
     {
         OnWaveCompleted -= StartWave;
         GameManager.OnGameLost -= StopAll;
-        LevelGenerator.Instance.OnMapGenerated -= HandleMapGenerated;
-        GameManager.OnGameLost -= StopAll;
     }
 
+    /// <summary>Starts listening for the player entering each room, including the Start and End rooms.</summary>
     public void HandleMapGenerated()
     {
         foreach (Room room in LevelGenerator.Instance.RoomGrid)
         {
-            if (room != null && room.Type != Room.RoomType.Start)
+            if (room != null)
             {
+                room.OnRoomEntered -= HandlePlayerEntered;
                 room.OnRoomEntered += HandlePlayerEntered;
-                Debug.Log("Attempting to listen for room enter");
             }
+        }
+
+        // The End room isn't in the grid.
+        Room endRoom = LevelGenerator.Instance.EndRoom;
+        if (endRoom != null)
+        {
+            endRoom.OnRoomEntered -= HandlePlayerEntered;
+            endRoom.OnRoomEntered += HandlePlayerEntered;
         }
     }
 
@@ -78,16 +93,15 @@ public class WaveManager : MGR<WaveManager>
     {
         if (_waveRunning)
             return;
-        
+
         SetActiveRoom(room);
-        Debug.Log($"Entered {room.name}");
-        
+
         _waveRunning = true;
-        
+
         StartCoroutine(RunWave(_currentRoom));
         room.OnRoomEntered -= HandlePlayerEntered;
     }
-    
+
     public void StopAll()
     {
         StopAllCoroutines();
@@ -105,109 +119,183 @@ public class WaveManager : MGR<WaveManager>
             DamageSource = null
         };
 
-        foreach (EnemyBase enemy in _alive)
+        List<EnemyBase> aliveCopy = new List<EnemyBase>(_alive);
+
+        foreach (EnemyBase enemy in aliveCopy)
         {
             enemy.OnEnemyKilled -= HandleEnemyKilled;
             enemy.Health.TakeDamage(instantKill);
             Destroy(enemy.gameObject);
         }
+
+        _alive.Clear();
+        _waveRunning = false;
+        _spawningDone = false;
     }
 
-    IEnumerator RunWave(Room room)
+    
+    private IEnumerator RunWave(Room room)
     {
         if (room != _currentRoom || !_waveRunning)
-            yield return null;
-        
-        _spawningDone = false;
-        Debug.Log($"Spawning wave {_currentWave}");
-
-        if (_currentWave >= _waves.Count)
             yield break;
-        
-        WaveData waveData = _waves[_currentWave];
-        Debug.Log($"Wave data: {waveData.name}");
-        
+
+        if (room.Spawnpoints.Count == 0)
+        {
+            Debug.LogWarning($"{room.gameObject.name} doesn't have any spawn points assigned.");
+            room.OnComplete();
+            _waveRunning = false;
+            yield break;
+        }
+
+        if (!room.RoomWaves)
+        {
+            Debug.LogWarning($"{room.gameObject.name} has no RoomWaves assigned.");
+            room.OnComplete();
+            _waveRunning = false;
+            yield break;
+        }
+
+        _spawningDone = false;
+
+        if (_currentWave >= room.RoomWaves.Waves.Count)
+        {
+            Debug.LogWarning($"{room.gameObject.name} has no wave at index {_currentWave}.");
+            room.OnComplete();
+            _waveRunning = false;
+            yield break;
+        }
+
+        OnWaveStarted?.Invoke(_currentWave, room.RoomWaves.Waves.Count);
+
+        WaveData waveData = room.RoomWaves;
+
         yield return new WaitForSeconds(waveData.StartDelay);
 
-        for (int current = 0; current < waveData.Waves.Count; current++)
+        foreach (WaveEntry entry in waveData[_currentWave].Entries)
         {
-            foreach (WaveEntry entry in waveData[current].Entries)
+            for (int i = 0; i < entry.Count; i++)
             {
-                for (int i = 0; i < entry.Count; i++)
-                {
-                    if (entry.Enemy is PH_Boss)
-                        OnBossSpawned?.Invoke(entry.Enemy);
+                yield return new WaitUntil(() => _maxAlive <= 0 || _alive.Count < _maxAlive);
 
-                    SpawnEnemy(entry.Enemy, room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
-                    yield return new WaitForSeconds(waveData[current].SpawnInterval);
-                }
-
-                yield return new WaitForSeconds(waveData[current].SpawnInterval);
+                SpawnEnemy(entry.Enemy, room.Spawnpoints[Random.Range(0, room.Spawnpoints.Count)]);
+                yield return new WaitForSeconds(waveData[_currentWave].SpawnInterval);
             }
         }
 
         _spawningDone = true;
+
+        // The player can kill every enemy during the last spawn interval, before _spawningDone was set.
+        TryFinishWave();
     }
 
-    void SpawnEnemy(EnemyBase enemy, Spawnpoint point)
+    private void SpawnEnemy(EnemyBase enemy, Spawnpoint point)
     {
-        if (enemy.IsDead)
-            return;
-        
-        EnemyBase alive = Instantiate(enemy, point.transform.position, point.transform.rotation);
-        alive.Movement.Warp(point.transform.position);
+        Spawnpoint spawnpoint = ChooseSpawnpoint(point);
+
+        EnemyBase alive = Instantiate(enemy, spawnpoint.transform.position, spawnpoint.transform.rotation);
+        alive.Movement.Warp(spawnpoint.transform.position);
+
+        if (alive is StoneGuardian)
+        {
+            OnBossSpawned?.Invoke(alive);
+        }
+
         _alive.Add(alive);
-        
+        alive.MakeAggressive();
         alive.OnEnemyKilled += HandleEnemyKilled;
-        
-        Debug.Log($"Spawned {alive.name}");
     }
 
-    void HandleEnemyKilled(EnemyBase enemy)
+    /// <summary>
+    /// Returns the given spawn point if it's at least _minSpawnDistance from the player on the ground plane.
+    /// Otherwise returns a random spawn point in the room that is, or the farthest one if none are.
+    /// </summary>
+    private Spawnpoint ChooseSpawnpoint(Spawnpoint preferred)
+    {
+        GameObject player = GameManager.HasInstance ? GameManager.Instance.Player : null;
+
+        if (player == null || _minSpawnDistance <= 0f)
+            return preferred;
+
+        // The PlayerRoot stays where the prefab was placed. The CharacterController is the part that moves.
+        CharacterController controller = player.GetComponentInChildren<CharacterController>();
+        Vector3 playerPosition = controller != null ? controller.transform.position : player.transform.position;
+
+        if (GroundDistance(preferred.transform.position, playerPosition) >= _minSpawnDistance)
+            return preferred;
+
+        List<Spawnpoint> farEnough = new List<Spawnpoint>();
+        Spawnpoint farthest = preferred;
+        float farthestDistance = GroundDistance(preferred.transform.position, playerPosition);
+
+        foreach (Spawnpoint candidate in _currentRoom.Spawnpoints)
+        {
+            float distance = GroundDistance(candidate.transform.position, playerPosition);
+
+            if (distance >= _minSpawnDistance)
+                farEnough.Add(candidate);
+
+            if (distance > farthestDistance)
+            {
+                farthest = candidate;
+                farthestDistance = distance;
+            }
+        }
+
+        return farEnough.Count > 0 ? farEnough[Random.Range(0, farEnough.Count)] : farthest;
+    }
+
+    private static float GroundDistance(Vector3 a, Vector3 b)
+    {
+        a.y = 0f;
+        b.y = 0f;
+        return Vector3.Distance(a, b);
+    }
+
+    /// <summary>Removes the enemy from the alive list, and ends the run when the boss dies. Otherwise checks whether the Wave is over.</summary>
+    private void HandleEnemyKilled(EnemyBase enemy)
     {
         enemy.OnEnemyKilled -= HandleEnemyKilled;
-        
-        _alive.Remove(enemy);
-        Debug.Log($"{enemy.name} has been killed. {_alive.Count} enemies remain");
 
-        if (enemy is PH_Boss) // Replace with actual boss
+        _alive.Remove(enemy);
+        OnEnemyKilled?.Invoke(enemy);
+
+        if (enemy is StoneGuardian)
         {
             GameManager.Instance.RequestGameEnd(GameManager.RunResult.Victory);
             return;
         }
 
-        if (_alive.Count == 0 && _spawningDone)
+        TryFinishWave();
+    }
+
+    private void TryFinishWave()
+    {
+        if (_alive.Count > 0 || !_spawningDone)
+            return;
+
+        _currentWave++;
+
+        OnWaveCompleted?.Invoke();
+
+        if (_currentWave >= _currentRoom.RoomWaves.Waves.Count)
         {
-            Debug.Log($"Wave {_currentWave} has been completed");
-            _currentWave++;
-            
-            OnWaveCompleted?.Invoke();
-            
-            if (_currentWave >= _waves.Count)
-            {
-                Debug.Log($"{_currentRoom.Id} has been cleared.");
-                
-                _currentRoom.OnComplete();
-                _waveRunning = false;
-                //doubled OnRoomCleared event invoke
-            }
+            _currentRoom.OnComplete();
+            _waveRunning = false;
         }
     }
 
-    void StartWave()
+    private void StartWave()
     {
         if (_currentRoom.Complete || !_waveRunning)
             return;
-        
-        if (_currentWave < _waves.Count)
+
+        if (_currentWave < _currentRoom.RoomWaves.Waves.Count)
         {
-            OnWaveStarted?.Invoke(_currentWave, _waves.Count);
-            Debug.Log($"Started wave {_currentWave}");
             StartCoroutine(RunWave(_currentRoom));
         }
     }
 
-    void SetActiveRoom(Room room)
+    private void SetActiveRoom(Room room)
     {
         _currentRoom = room;
         _currentWave = 0;

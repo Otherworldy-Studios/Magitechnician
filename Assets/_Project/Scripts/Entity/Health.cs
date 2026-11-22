@@ -23,8 +23,13 @@ public class Health : MonoBehaviour
     public event Action<int, GameObject> OnHealed;
     /// <summary>Fires once when health reaches 0, with this object. GameManager ends the run on the player's; EnemyBase dies on an enemy's.</summary>
     public event Action<GameObject> OnDied;
-    //NEW: Sends the DamageInfo whenever health takes damage.
+    /// <summary>Fires after damage, with the DamageInfo. RunStats counts damage taken from it.</summary>
     public event Action<DamageInfo> OnDamageInstance;
+    /// <summary>
+    /// Fires after MaxHealth changes, with the new current health and this object. Same arguments as OnDamaged and
+    /// OnHealed, so HealthBar and LowHealthWarning use the same handler.
+    /// </summary>
+    public event Action<int, GameObject> OnMaxHealthChanged;
 
     // Healing over time. RegenHealthOverTime sets these, and Update spreads the total across the duration.
     private float _healAccumulator;   // Fractional healing not applied yet, because health is whole numbers.
@@ -36,19 +41,17 @@ public class Health : MonoBehaviour
     // so one source ending doesn't cancel another. The entity is invincible while any token is held.
     private readonly HashSet<object> _invincibilityTokens = new();
 
-    private object _debugInvincibilityToken; // INTEGRATION: new. The token held by the Toggle Invincibility debug button.
+    private object _debugInvincibilityToken; // The token held by the Toggle Invincibility debug button.
 
     private bool IsInvincible => _invincibilityTokens.Count > 0;
 
-    // INTEGRATION: MaxHealth reads this stat. PlayerRoot.AssignStats (on the player) or EnemyBase.Awake (on an enemy)
-    // hands this component its Stats through SetStats.
+    // PlayerRoot.AssignStats (on the player) or EnemyBase.Awake (on an enemy) hands this component its Stats through SetStats.
     [Tooltip("The Stats to read MaxHealth from. PlayerRoot or EnemyBase fills this in Awake if it's empty.")]
     [SerializeField] private Stats _stats;
     [Tooltip("Stat_MaxHealth. Without it, the Max Health value above is used.")]
     [SerializeField] private StatDefinition _maxHealthStat;
 
     /// <summary>Gives this component the Stats to read from. Keeps a Stats already assigned in the Inspector.</summary>
-    // INTEGRATION: new. Called by PlayerRoot.AssignStats and EnemyBase.Awake.
     public void SetStats(Stats playerStats)
     {
         if (_stats == null)
@@ -61,8 +64,6 @@ public class Health : MonoBehaviour
     /// Sets MaxHealth from the stat, starts listening for changes to it, and fills health.
     /// Runs in Start, after every Awake, so Stats has its values and SetStats has run.
     /// </summary>
-    // INTEGRATION: was Awake, which filled health from the serialized MaxHealth. EnemyBase used to check for 0 health in its
-    // Start, which could run before this one; that check was removed, and death only comes through OnDied.
     private void Start()
     {
         if (_stats != null && _maxHealthStat != null)
@@ -118,8 +119,6 @@ public class Health : MonoBehaviour
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
 
         OnDamaged?.Invoke(CurrentHealth, gameObject);
-
-        //NEW: Notify listeners and provide the DamageInfo.
         OnDamageInstance?.Invoke(damageInfo);
 
         if (CurrentHealth <= 0)
@@ -197,22 +196,25 @@ public class Health : MonoBehaviour
     /// <summary>
     /// Follows changes to Stat_MaxHealth, such as from a charm, stock, or consumable. Gaining max health adds the
     /// difference to current health. Losing it only lowers current health if it's now over the max.
+    /// Fires OnMaxHealthChanged so the HUD updates.
     /// </summary>
-    // INTEGRATION: new. Listens to Stats.OnStatChanged, which fires when PlayerRoot or Inventory adds or removes a modifier.
     private void HandleStatChanged(StatDefinition stat, float value)
     {
         if (stat != _maxHealthStat) return;
 
         int newMax = Mathf.RoundToInt(value);
         int difference = newMax - MaxHealth;
+        if (difference == 0) return;
+
         MaxHealth = newMax;
 
         if (difference > 0) CurrentHealth += difference;
         CurrentHealth = Mathf.Min(CurrentHealth, MaxHealth);
+
+        OnMaxHealthChanged?.Invoke(CurrentHealth, gameObject);
     }
 
     #region Debug
-    // INTEGRATION: HealthDebug's F1, F4, and F5 keys became these Inspector buttons, and HealthDebug.cs was deleted.
 
     /// <summary>Debug: heals by an amount.</summary>
     [Button, DisableInEditorMode]
@@ -251,4 +253,3 @@ public class Health : MonoBehaviour
     }
     #endregion
 }
-

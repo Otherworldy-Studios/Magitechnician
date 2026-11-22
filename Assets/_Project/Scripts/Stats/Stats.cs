@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Holds one object's stats: reads the base values from a StatBlock, keeps copies of the modifiers added to it,
@@ -17,16 +16,12 @@ public class Stats : MonoBehaviour
     [Tooltip("The modifiers currently applied. Filled at run time.")]
     [SerializeField] private List<StatModifier> _modifiers;
 
-    // Final value of every stat in the StatBlock, after modifiers. Shown read-only in the Inspector.
+    // Final value of every stat in the StatBlock, after modifiers
     [ShowInInspector, ReadOnly]
     private Dictionary<StatDefinition, float> _finalValues;
 
     /// <summary>Fires when a stat's final value changes, with the stat and its new value.</summary>
     public event Action<StatDefinition, float> OnStatChanged;
-
-    // Test fields for the debug buttons below. Still to remove in cleanup.
-    [SerializeField, FormerlySerializedAs("testStat")] private StatDefinition _testStat;        
-    [SerializeField, FormerlySerializedAs("TestModifier")] private StatModifier _testModifier;  
 
     /// <summary>Reads the StatBlock and works out the starting values. Runs before any other script reads a stat in Start.</summary>
     private void Awake()
@@ -38,31 +33,6 @@ public class Stats : MonoBehaviour
     private void Update()
     {
         RemoveExpiredModifiers();
-    }
-
-    // INTEGRATION: the T, R, and N debug keys became these Inspector buttons. They use this component as the
-    // modifier's source, so Remove Test Modifier removes exactly what Add Test Modifier added.
-
-    /// <summary>Debug: adds the test modifier.</summary>
-    [Button, DisableInEditorMode]
-    private void AddTestModifier()
-    {
-        Debug.Log($"Adding modifier {_testModifier} to {gameObject.name}.");
-        AddModifier(_testModifier, this);
-    }
-
-    /// <summary>Debug: removes what Add Test Modifier added.</summary>
-    [Button, DisableInEditorMode]
-    private void RemoveTestModifier()
-    {
-        RemoveAllFromSource(this);
-    }
-
-    /// <summary>Debug: reads the test stat.</summary>
-    [Button, DisableInEditorMode]
-    private void GetTestStatValue()
-    {
-        GetValue(_testStat);
     }
 
     /// <summary>Removes every modifier and returns each stat to its base value.</summary>
@@ -85,13 +55,44 @@ public class Stats : MonoBehaviour
     {
         if (HasStat(stat))
         {
-            return _finalValues[stat]; // INTEGRATION: no longer logs on every read.
+            return _finalValues[stat];
         }
         else
         {
             Debug.LogWarning($"Stat {stat.name} isn't assigned to this StatBlock. Please check the StatBlock assigned to {gameObject.name}.");
             return 0f;
         }
+    }
+
+    /// <summary>
+    /// Returns what a stat's final value would be with one source's modifiers taken off and other modifiers added,
+    /// without changing anything. The reward screen uses it to show how a gun part would change a stat.
+    /// Returns 0 for a stat this object's StatBlock doesn't list.
+    /// </summary>
+    /// <param name="stat">The stat to preview.</param>
+    /// <param name="removedSource">The source whose modifiers are left out, such as the part being replaced. Can be null.</param>
+    /// <param name="addedModifiers">Modifiers to include as if they were added, such as the new part's. Can be null.</param>
+    public float PreviewValue(StatDefinition stat, object removedSource, IReadOnlyList<StatModifier> addedModifiers)
+    {
+        if (!HasStat(stat)) return 0f;
+
+        List<StatModifier> modifiers = new List<StatModifier>();
+
+        foreach (StatModifier modifier in _modifiers)
+        {
+            if (removedSource == null || modifier.Source != removedSource)
+                modifiers.Add(modifier);
+        }
+
+        if (addedModifiers != null)
+        {
+            foreach (StatModifier modifier in addedModifiers)
+            {
+                if (modifier != null) modifiers.Add(modifier);
+            }
+        }
+
+        return CalculateValue(stat, modifiers);
     }
 
     /// <summary>Returns the list of modifiers currently applied.</summary>
@@ -119,8 +120,6 @@ public class Stats : MonoBehaviour
     /// </summary>
     /// <param name="modifier">The modifier from an item asset.</param>
     /// <param name="source">The item adding it. RemoveAllFromSource(source) removes it later. Optional, but without it nothing can remove the modifier by source.</param>
-    // INTEGRATION: takes a source, stores a copy, refuses empty modifiers and missing stats, and returns the copy.
-    // Before, it stored the asset's own modifier, so a timed modifier used up the asset's duration for good.
     public StatModifier AddModifier(StatModifier modifier, object source = null)
     {
         if (modifier == null || modifier.Stat == null)
@@ -154,7 +153,6 @@ public class Stats : MonoBehaviour
         {
             _modifiers.Remove(modifier);
             Recalculate(modifier.Stat);
-            Debug.Log($"Modifier {modifier} removed from {gameObject.name}. Recalculated stat {modifier.Stat.name}."); // Still to remove in cleanup.
         }
     }
 
@@ -163,7 +161,6 @@ public class Stats : MonoBehaviour
     /// Inventory call this when an item comes off.
     /// </summary>
     /// <param name="source">The item or object that added the modifiers.</param>
-    // INTEGRATION: walks the list backward and removes in place, instead of collecting a second list and recalculating twice.
     public void RemoveAllFromSource(object source)
     {
         if (source == null) return;
@@ -179,7 +176,6 @@ public class Stats : MonoBehaviour
     }
 
     /// <summary>Counts down every timed modifier and removes the ones that ran out.</summary>
-    // INTEGRATION: counts down the stored copies only, and recalculates each expired stat once.
     private void RemoveExpiredModifiers()
     {
         for (int i = _modifiers.Count - 1; i >= 0; i--)
@@ -192,17 +188,29 @@ public class Stats : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Works out one stat's final value: (base + every Add) × every Multiply, or the latest Set if there is one,
-    /// then clamps it to the stat's range. Fires OnStatChanged only if the value changed.
-    /// </summary>
+    /// <summary>Stores one stat's final value from CalculateValue. Fires OnStatChanged only if the value changed.</summary>
     /// <param name="stat">The stat to recalculate.</param>
-    // INTEGRATION: rewritten. The old version worked out the value inside the modifier loop, reported the wrong stat in
-    // OnStatChanged, and kept the boosted value after the last modifier was removed. Also handles the new Set operation.
     private void Recalculate(StatDefinition stat)
     {
         if (!HasStat(stat)) return;
 
+        float finalValue = CalculateValue(stat, _modifiers);
+
+        _finalValues.TryGetValue(stat, out float oldValue);
+        _finalValues[stat] = finalValue;
+
+        if (!Mathf.Approximately(oldValue, finalValue))
+        {
+            OnStatChanged?.Invoke(stat, finalValue);
+        }
+    }
+
+    /// <summary>
+    /// Works out one stat's final value from a list of modifiers: (base + every Add) × every Multiply, or the latest
+    /// Set if there is one, then clamps it to the stat's range.
+    /// </summary>
+    private float CalculateValue(StatDefinition stat, IReadOnlyList<StatModifier> modifiers)
+    {
         float baseValue = 0f;
         float additiveValue = 0f;
         float multiplicativeValue = 1f;
@@ -217,7 +225,7 @@ public class Stats : MonoBehaviour
             }
         }
 
-        foreach (StatModifier modifier in _modifiers)
+        foreach (StatModifier modifier in modifiers)
         {
             if (modifier.Stat != stat)
             {
@@ -241,15 +249,7 @@ public class Stats : MonoBehaviour
         }
 
         float finalValue = hasSet ? setValue : (baseValue + additiveValue) * multiplicativeValue;
-        finalValue = stat.Clamp(finalValue);
-
-        _finalValues.TryGetValue(stat, out float oldValue);
-        _finalValues[stat] = finalValue;
-
-        if (!Mathf.Approximately(oldValue, finalValue))
-        {
-            OnStatChanged?.Invoke(stat, finalValue);
-        }
+        return stat.Clamp(finalValue);
     }
 
     /// <summary>Fills the final values from the StatBlock's base values and starts with no modifiers.</summary>

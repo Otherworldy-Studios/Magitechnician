@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-1238505502492116255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e755e7717f3743ff812ce9d8387135f5, type: 3}
+  m_Name: Orcs_Medium_Wave2
+  m_EditorClassIdentifier: Assembly-CSharp::Wave
+  _entries:
+  - {fileID: 7165788519493626022}
+  - {fileID: 6063770906023938002}
+  _spawnInterval: 1.2
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c569d9d0c6d48ecbe53b51b411942e6, type: 3}
+  m_Name: Orcs_Medium
+  m_EditorClassIdentifier: Assembly-CSharp::WaveData
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  _waves:
+  - {fileID: 8402729079434161299}
+  - {fileID: -1238505502492116255}
+  _startDelay: 2
+--- !u!114 &6063770906023938002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387cca2829964038ba3550df319032ee, type: 3}
+  m_Name: Orcs_Medium_Wave2_SkeletalOrc
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEntry
+  _enemy: {fileID: 3057170392453508612, guid: a53576af7e04ffb42895f7bcbb5e486a, type: 3}
+  count: 1
+--- !u!114 &7165788519493626022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387cca2829964038ba3550df319032ee, type: 3}
+  m_Name: Orcs_Medium_Wave2_DarkKnight
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEntry
+  _enemy: {fileID: 6587833776491720439, guid: 61bc41f7cc9fac948b46899c9ecc8a0e, type: 3}
+  count: 2
+--- !u!114 &7277365356752157972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 387cca2829964038ba3550df319032ee, type: 3}
+  m_Name: Orcs_Medium_Wave1_SkeletalOrc
+  m_EditorClassIdentifier: Assembly-CSharp::WaveEntry
+  _enemy: {fileID: 3057170392453508612, guid: a53576af7e04ffb42895f7bcbb5e486a, type: 3}
+  count: 2
+--- !u!114 &8402729079434161299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e755e7717f3743ff812ce9d8387135f5, type: 3}
+  m_Name: Orcs_Medium_Wave1
+  m_EditorClassIdentifier: Assembly-CSharp::Wave
+  _entries:
+  - {fileID: 7277365356752157972}
+  _spawnInterval: 1.3

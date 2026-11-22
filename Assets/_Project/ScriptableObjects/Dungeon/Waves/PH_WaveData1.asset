@@ -12,5 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c569d9d0c6d48ecbe53b51b411942e6, type: 3}
   m_Name: PH_WaveData1
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   _waves:
   - {fileID: 11400000, guid: b20a840e1ba0c9a4db17b5f73a5f0a3a, type: 2}
+  - {fileID: 11400000, guid: b20a840e1ba0c9a4db17b5f73a5f0a3a, type: 2}
+  _startDelay: 0

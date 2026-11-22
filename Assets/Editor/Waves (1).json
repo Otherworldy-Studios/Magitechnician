@@ -1,0 +1,408 @@
+{
+  "waveSets": [
+    {
+      "name": "Vanguard",
+      "startDelay": 2,
+      "difficulties": [
+        {
+          "difficulty": "Easy",
+          "startDelay": 2.5,
+          "waves": [
+            {
+              "spawnInterval": 1.5,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Medium",
+          "startDelay": 2,
+          "waves": [
+            {
+              "spawnInterval": 1.2,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 1.2,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Hard",
+          "startDelay": 1.5,
+          "waves": [
+            {
+              "spawnInterval": 1.0,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.9,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 3
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.8,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Artillery",
+      "startDelay": 2,
+      "difficulties": [
+        {
+          "difficulty": "Easy",
+          "startDelay": 2.5,
+          "waves": [
+            {
+              "spawnInterval": 1.5,
+              "entries": [
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                },
+                {
+                  "enemy": "DarkKnight",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Medium",
+          "startDelay": 2,
+          "waves": [
+            {
+              "spawnInterval": 1.3,
+              "entries": [
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 1.2,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Hard",
+          "startDelay": 1.5,
+          "waves": [
+            {
+              "spawnInterval": 1.0,
+              "entries": [
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.9,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.8,
+              "entries": [
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 3
+                },
+                {
+                  "enemy": "DarkKnight",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Skirmish",
+      "startDelay": 2,
+      "difficulties": [
+        {
+          "difficulty": "Easy",
+          "startDelay": 2.5,
+          "waves": [
+            {
+              "spawnInterval": 1.5,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 1
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "spawnInterval": 1.5,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Medium",
+          "startDelay": 2,
+          "waves": [
+            {
+              "spawnInterval": 1.2,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "spawnInterval": 1.1,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 1
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Hard",
+          "startDelay": 1.5,
+          "waves": [
+            {
+              "spawnInterval": 1.0,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.9,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 3
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.8,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Siege",
+      "startDelay": 2,
+      "difficulties": [
+        {
+          "difficulty": "Easy",
+          "startDelay": 2.5,
+          "waves": [
+            {
+              "spawnInterval": 1.5,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 1.5,
+              "entries": [
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Medium",
+          "startDelay": 2,
+          "waves": [
+            {
+              "spawnInterval": 1.2,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 1.2,
+              "entries": [
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 1.1,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "difficulty": "Hard",
+          "startDelay": 1.5,
+          "waves": [
+            {
+              "spawnInterval": 1.0,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.9,
+              "entries": [
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 3
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.8,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 3
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 2
+                }
+              ]
+            },
+            {
+              "spawnInterval": 0.7,
+              "entries": [
+                {
+                  "enemy": "DarkKnight",
+                  "count": 2
+                },
+                {
+                  "enemy": "SkeletalOrc",
+                  "count": 3
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

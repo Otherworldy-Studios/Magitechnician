@@ -1,0 +1,24 @@
+{
+  "waveSets": [
+    {
+      "name": "End",
+      "startDelay": 3,
+      "difficulties": [
+        {
+          "difficulty": "Boss",
+          "waves": [
+            {
+              "spawnInterval": 1,
+              "entries": [
+                {
+                  "enemy": "StoneGuardian",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

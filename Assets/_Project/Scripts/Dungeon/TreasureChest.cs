@@ -1,18 +1,20 @@
+using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// A chest the player opens with Interact. Gives crystals and sometimes one consumable.
-/// Needs a trigger collider on the Interactable layer.
+/// Needs a trigger collider on the Interactable layer. Room listens to OnOpened to open its portal.
 /// </summary>
-// INTEGRATION: new. Implements IInteractable, so InteractionDetector finds it. Adds crystals and consumables through
-// Inventory.AddCrystals and Inventory.TryAddItem, which update CurrencyDisplay and ConsumableSlotsUI through their events.
+// Adds crystals and consumables through Inventory.AddCrystals and Inventory.TryAddItem, which update CurrencyDisplay and
+// ConsumableSlotsUI through their events.
 public class TreasureChest : MonoBehaviour, IInteractable
 {
-    [SerializeField] private string _promptText = "Open chest"; // Shown by InteractPrompt while the player is in range.
+    [Tooltip("Shown by InteractPrompt while the player is in range.")]
+    [SerializeField] private string _promptText = "Open chest";
 
     [Header("Contents")]
     [Tooltip("Crystals given, from X to Y, both included.")]
@@ -26,14 +28,18 @@ public class TreasureChest : MonoBehaviour, IInteractable
 
     [Header("Visuals (optional)")]
     [SerializeField] private Animator _animator;
-    [SerializeField] private string _openTrigger = "Open"; // Animator trigger set when the chest opens.
+    [Tooltip("Animator trigger set when the chest opens.")]
+    [SerializeField] private string _openTrigger = "Open";
     [Tooltip("Turned off when opened, for example the closed lid.")]
     [SerializeField] private GameObject _closedVisual;
     [Tooltip("Turned on when opened, for example the open lid.")]
     [SerializeField] private GameObject _openVisual;
 
     [Tooltip("For sounds and effects.")]
-    [SerializeField, FormerlySerializedAs("OnOpened")] private UnityEvent _onOpened;
+    [SerializeField] private UnityEvent _onOpened;
+
+    /// <summary>Fires once when the chest opens. The chest's Room opens its portal from it.</summary>
+    public event Action OnOpened;
 
     /// <summary>True once the chest has been opened. A chest opens only once.</summary>
     [ShowInInspector, ReadOnly]
@@ -55,7 +61,7 @@ public class TreasureChest : MonoBehaviour, IInteractable
         Open(player.Inventory);
     }
 
-    /// <summary>Gives the contents, plays the visuals, and fires _onOpened.</summary>
+    /// <summary>Gives the contents, plays the visuals, and fires _onOpened and OnOpened.</summary>
     private void Open(Inventory inventory)
     {
         IsOpen = true;
@@ -64,11 +70,14 @@ public class TreasureChest : MonoBehaviour, IInteractable
         if (crystals > 0)
             inventory.AddCrystals(crystals);
 
+        Consumable consumable = null;
+        bool consumableAdded = false;
+
         if (_possibleConsumables.Count > 0 && Random.value < _consumableChance)
         {
-            Consumable consumable = _possibleConsumables[Random.Range(0, _possibleConsumables.Count)];
-            if (consumable != null && !inventory.TryAddItem(consumable))
-                Debug.Log($"{name}: consumable slots are full, so {consumable.DisplayName} was skipped.", this);
+            consumable = _possibleConsumables[Random.Range(0, _possibleConsumables.Count)];
+            if (consumable != null)
+                consumableAdded = inventory.TryAddItem(consumable); // False when the consumable slots are full.
         }
 
         if (_animator != null && !string.IsNullOrEmpty(_openTrigger))
@@ -78,6 +87,10 @@ public class TreasureChest : MonoBehaviour, IInteractable
         if (_openVisual != null) _openVisual.SetActive(true);
 
         _onOpened?.Invoke();
+        OnOpened?.Invoke();
+
+        if (UIManager.HasInstance)
+            UIManager.Instance.ShowChestLoot(crystals, consumable, consumableAdded);
     }
 
     /// <summary>Debug: opens the chest for the current player without walking to it.</summary>

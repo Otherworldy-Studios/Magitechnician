@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: Stat_BulletSpeed
   m_EditorClassIdentifier: Assembly-CSharp::StatDefinition
   _displayName: BulletSpeed
+  _description: How fast bullets travel, in meters per second. Faster bullets reach
+    far targets sooner and are easier to land.
   _icon: {fileID: 0}
+  _higherIsBetter: 1
   _minValue: 0
   _maxValue: 5000
