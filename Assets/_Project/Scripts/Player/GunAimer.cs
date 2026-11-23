@@ -36,8 +36,9 @@ public class GunAimer : MonoBehaviour
     [SerializeField, Min(0.1f)] private float _followSpeed = 20f;
 
     [Header("Aiming and Shooting")]
-    [Tooltip("Seconds the aim stays on after the last shot, so it doesn't drop between shots.")]
-    [SerializeField, Min(0f)] private float _holdTime = 0.6f;
+    [SerializeField] private PlayerCombatState _combatState;
+    [Tooltip("How long GunAimer stays active after shooting. Set to a negative value to use HipFireDuration from PlayerCombatState.")]
+    [SerializeField] private float _holdTime = -1f;
     [Tooltip("Seconds to blend fully in or out.")]
     [SerializeField, Min(0.01f)] private float _blendTime = 0.12f;
 
@@ -56,6 +57,15 @@ public class GunAimer : MonoBehaviour
 
         if (_cameraController == null)
             _cameraController = GetComponentInChildren<PlayerCameraController>();
+        
+        if (_combatState == null)
+            _combatState = GetComponentInChildren<PlayerCombatState>();
+    }
+    
+    private void Start()
+    {
+        if (_holdTime < 0f && _combatState != null)
+            _holdTime = _combatState.HipFireDuration;
     }
 
     private void OnEnable()

@@ -23,6 +23,8 @@ public class PlayerCombatState : MonoBehaviour
     [SerializeField] private PlayerCameraController _playerCameraController;
     [SerializeField] private Dash _dash;
 
+    public float HipFireDuration => _hipFireDuration;
+
     /// <summary>The current combat state. PlayerAnimator sends it to the Animator as CombatState.</summary>
     [field: SerializeField] public PlayerCombatStates CurrentCombatState { get; private set; }
 

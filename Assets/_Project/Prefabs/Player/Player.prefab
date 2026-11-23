@@ -200,6 +200,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
   _dampTime: 0.1
+  _layerName: BodyStabilization
+  _targetLayerWeight: 0.7
+  _layerTransitionSpeed: 2
   _animator: {fileID: 8189033687314075097}
   _playerMovement: {fileID: 2796982883176742587}
   _cameraController: {fileID: 8946386472445388545}
@@ -836,8 +839,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6520596184316209257}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.00000003396727, y: 0.75243455, z: -0.000000038802842, w: 0.658667}
-  m_LocalPosition: {x: -1.2168007, y: -13.80828, z: -11.263781}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.633, y: 0.6259999, z: -0.738}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1192,7 +1195,8 @@ MonoBehaviour:
   _weight: 1
   _maxAngle: 60
   _followSpeed: 20
-  _holdTime: 0.6
+  _combatState: {fileID: 0}
+  _holdTime: -1
   _blendTime: 0.12
 --- !u!1 &7765213929413278480
 GameObject:
