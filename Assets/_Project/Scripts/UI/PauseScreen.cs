@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ public class PauseScreen : UIScreen
     [SerializeField, FormerlySerializedAs("settingsButton")] private Button _settingsButton;
     [SerializeField, FormerlySerializedAs("hubButton")] private Button _hubButton;
     [SerializeField, FormerlySerializedAs("pauseImage")] private Image _pauseImage; // The background. Not read by this script.
+    [SerializeField] private TextMeshProUGUI _pauseText;
 
     /// <summary>Connects the buttons.</summary>
     private void Awake()
@@ -18,6 +20,11 @@ public class PauseScreen : UIScreen
         _menuButton.onClick.AddListener(OnMenu);
         _hubButton.onClick.AddListener(OnHub);
         _settingsButton.onClick.AddListener(OnSettings);
+    }
+
+    void Update()
+    {
+        _pauseText.text = $"PAUSED - Run Time: {GameManager.Instance.RunTime:F2} Seconds";
     }
 
     /// <summary>Resume button. Pressing Pause again does the same through GameManager.</summary>
