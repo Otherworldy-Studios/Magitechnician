@@ -5,6 +5,7 @@ public class RoomClearedBanner : MonoBehaviour
 {
     void Start()
     {
+        SoundController.Instance.PlaySFX("Gun Shot", transform.position);
         StartCoroutine(Display());
     }
 
