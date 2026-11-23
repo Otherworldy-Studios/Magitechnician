@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cb35ed4e3a7554cbb5cdc5e2bdfd4d, type: 3}
   m_Name: Player_AimOut_Data
   m_EditorClassIdentifier: MoreMountains.Tools::MoreMountains.Feedbacks.MMF_MMSoundManagerSoundData
-  Sfx: {fileID: 8300000, guid: abffaa46f321acc4a8c69631e6b76489, type: 3}
-  RandomSfx: []
+  Sfx: {fileID: 0}
+  RandomSfx:
+  - {fileID: 8300000, guid: af1923b94682e1247bc47abb462419a6, type: 3}
+  - {fileID: 8300000, guid: fc5faa45d608df4458b3447552b716ad, type: 3}
   SequentialOrder: 0
   SequentialOrderHoldLast: 0
   SequentialOrderHoldCooldownDuration: 2

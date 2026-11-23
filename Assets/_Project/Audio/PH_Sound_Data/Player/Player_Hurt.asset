@@ -12,16 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93cb35ed4e3a7554cbb5cdc5e2bdfd4d, type: 3}
   m_Name: Player_Hurt
   m_EditorClassIdentifier: MoreMountains.Tools::MoreMountains.Feedbacks.MMF_MMSoundManagerSoundData
-  Sfx: {fileID: 8300000, guid: aaec52655cdd3be49a3d1de598d2fb8c, type: 3}
-  RandomSfx: []
+  Sfx: {fileID: 0}
+  RandomSfx:
+  - {fileID: 8300000, guid: 5131b309fc882b94e9a7b80e7b1467f2, type: 3}
+  - {fileID: 8300000, guid: 88b2e3e9e0c3c76469914f2512146eed, type: 3}
+  - {fileID: 8300000, guid: dbd82271c4c990a4a8105baba88cf3a9, type: 3}
+  - {fileID: 8300000, guid: 2f43cfd627b7c4248889c1b6b300a97f, type: 3}
+  - {fileID: 8300000, guid: 52090f573648e644f8f65604fca5080e, type: 3}
+  - {fileID: 8300000, guid: 641f061b4bccf2140bd52e6c22b946e2, type: 3}
+  - {fileID: 8300000, guid: 0bdb7798e02f5ed47b5e45914e4a22c5, type: 3}
+  - {fileID: 8300000, guid: 4f98a269f1ee45e4ea308928fbf37fa4, type: 3}
+  - {fileID: 8300000, guid: 74520aaaccd36fc438327f752b8aab73, type: 3}
+  - {fileID: 8300000, guid: 5c6b9b870f6fc264fb06d1f88937e4d7, type: 3}
   SequentialOrder: 0
   SequentialOrderHoldLast: 0
   SequentialOrderHoldCooldownDuration: 2
-  RandomUnique: 0
-  MinVolume: 1
-  MaxVolume: 1
-  MinPitch: 1
-  MaxPitch: 1
+  RandomUnique: 1
+  MinVolume: 0.891
+  MaxVolume: 0.986
+  MinPitch: 0.61
+  MaxPitch: 0.85
   PlaybackTime: {x: 0, y: 0}
   PlaybackDuration: {x: 0, y: 0}
   MmSoundManagerTrack: 0

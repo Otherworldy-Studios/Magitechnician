@@ -565,9 +565,9 @@ MonoBehaviour:
   _combatRooms:
   - _room: {fileID: 5478190382994246210, guid: f2db4268560807245b9da39ec96c2c2a, type: 3}
     _weight: 1
-  - _room: {fileID: 7120266461264190368, guid: 1d32f8e97096fea448fb85aaf4bd7454, type: 3}
-    _weight: 1
   - _room: {fileID: 4394230894082809392, guid: 68e4a6a3e8c889242b74e735ed46cc20, type: 3}
+    _weight: 1
+  - _room: {fileID: 7120266461264190368, guid: 1d32f8e97096fea448fb85aaf4bd7454, type: 3}
     _weight: 1
   _endRooms:
   - _room: {fileID: 3265660490941873329, guid: 262dede70e1875d419dd53a449b97d70, type: 3}

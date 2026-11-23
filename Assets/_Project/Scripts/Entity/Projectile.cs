@@ -125,7 +125,10 @@ public class Projectile : MonoBehaviour
             if (damageable != null)
             {
                 damageable.TakeDamage(_damageInfo);
-
+                if(!hit.collider.CompareTag("Player"))
+                {
+                    SoundController.Instance.PlaySFX("Hit Marker", impactPoint);
+                }
                 // The object with the IDamageable, such as the enemy root, instead of the child collider that was hit.
                 GameObject target = damageable is Component component ? component.gameObject : hit.collider.gameObject;
                 _onHit?.Invoke(target, _damageInfo);
