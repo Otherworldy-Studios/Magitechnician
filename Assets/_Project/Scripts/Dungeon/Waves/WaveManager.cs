@@ -32,6 +32,7 @@ public class WaveManager : MGR<WaveManager>
     public event Action<EnemyBase> OnBossSpawned;
     public event Action<EnemyBase> OnEnemySpawned;
     public event Action<EnemyBase> OnEnemyKilled;
+    public event Action OnCurrentRoomCleared;
 
     protected override void Awake()
     {
@@ -314,6 +315,7 @@ public class WaveManager : MGR<WaveManager>
         if (_currentWave >= _currentRoom.RoomWaves.Waves.Count)
         {
             _currentRoom.OnComplete();
+            OnCurrentRoomCleared?.Invoke();
             _waveRunning = false;
         }
     }
