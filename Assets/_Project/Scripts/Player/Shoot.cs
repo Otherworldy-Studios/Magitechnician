@@ -69,8 +69,10 @@ public class Shoot : MonoBehaviour
 
         // The gun's fire mode, from its barrel, decides whether this frame shoots.
         if (_gun.TryFire(LastAim))
+        {
             SoundController.Instance.PlaySFX("Gun Shot", _gun.Muzzle.position);
             OnFired?.Invoke();
+        }
     }
 
     private void PullTrigger()

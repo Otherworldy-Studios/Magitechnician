@@ -200,8 +200,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
   _dampTime: 0.1
-  _idleAnimationMultiplier: 0.7
-  _sprintAnimationMultiplier: 1.3
+  _layerName: BodyStabilization
+  _targetLayerWeight: 0.7
+  _layerTransitionSpeed: 2
   _animator: {fileID: 8189033687314075097}
   _playerMovement: {fileID: 2796982883176742587}
   _cameraController: {fileID: 8946386472445388545}
@@ -524,7 +525,6 @@ MonoBehaviour:
     SerializationNodes: []
   _crystals: 0
   _equippedCharmSlots: 5
-  _charmSlots: 20
   _maxConsumables: 3
   _playerStats: {fileID: 2538457442136657555}
   _playerAbilities: {fileID: 0}
@@ -718,7 +718,7 @@ Transform:
   m_GameObject: {fileID: 6124366050051757803}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.403, y: 0.6259999, z: -1.688}
+  m_LocalPosition: {x: 1.4829999, y: 0.576, z: -1.438}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -779,11 +779,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
-  Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 0.47, y: 0.15, z: 0}
+  Damping: {x: 0.01, y: 0.05, z: 0.01}
+  ShoulderOffset: {x: 0.55, y: 0.1, z: 0}
   VerticalArmLength: 0.4
   CameraSide: 1
-  CameraDistance: 1.65
+  CameraDistance: 1.4
   AvoidObstacles:
     Enabled: 1
     CollisionFilter:
@@ -1195,7 +1195,8 @@ MonoBehaviour:
   _weight: 1
   _maxAngle: 60
   _followSpeed: 20
-  _holdTime: 0.6
+  _combatState: {fileID: 0}
+  _holdTime: -1
   _blendTime: 0.12
 --- !u!1 &7765213929413278480
 GameObject:

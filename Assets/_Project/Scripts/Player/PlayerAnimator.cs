@@ -10,7 +10,13 @@ public class PlayerAnimator : MonoBehaviour
 {
     [Header("Tuning")]
     [SerializeField] private float _dampTime = 0.1f; // Seconds MoveX and MoveY take to catch up with the input.
-   
+    
+    [Header("Layer Weights")]
+    [SerializeField] private string _layerName = "BodyStabilization";
+    [SerializeField, Range(0f, 1f)] private float _targetLayerWeight = 0.65f;
+    [SerializeField, Min(0f)] private float _layerTransitionSpeed = 2f;
+
+    private int _layerIndex;
 
     [Header("References")]
     [SerializeField] private Animator _animator;
@@ -73,6 +79,8 @@ public class PlayerAnimator : MonoBehaviour
             _shoot = FindFirstObjectByType<Shoot>();
         if (!_combatState)
             _combatState = FindFirstObjectByType<PlayerCombatState>();
+        
+        _layerIndex = _animator.GetLayerIndex(_layerName);
     }
 
     /// <summary>
@@ -93,6 +101,29 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetBool(IsGrounded, _playerMovement.IsGrounded);
         _animator.SetFloat(AimPitch, _cameraTargetController.AimPitch);
         _animator.SetInteger(CombatState, (int)_combatState.CurrentCombatState);
+        
+        UpdateLayerWeight();
+    }
+    
+    /// <summary>Smoothly adjusts the animation layer weight based on combat state.</summary>
+    private void UpdateLayerWeight()
+    {
+        if (_layerIndex < 0)
+            return;
+        
+        float targetWeight = _combatState.CurrentCombatState == PlayerCombatStates.Aiming
+            ? _targetLayerWeight
+            : 0f;
+
+        float currentWeight = _animator.GetLayerWeight(_layerIndex);
+
+        float newWeight = Mathf.MoveTowards(
+            currentWeight,
+            targetWeight,
+            _layerTransitionSpeed * Time.deltaTime
+        );
+
+        _animator.SetLayerWeight(_layerIndex, newWeight);
     }
     
     /// <summary>Sets the dash direction relative to the player and triggers the dash animation. Runs on Dash.OnDashed.</summary>
