@@ -823,6 +823,18 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
+    m_Name: Body Stabilization
+    m_StateMachine: {fileID: -5960064996802845357}
+    m_Mask: {fileID: 31900000, guid: 4b0b1a1cf738678489235fb421371c62, type: 2}
+    m_Motions: []
+    m_Behaviours: []
+    m_BlendingMode: 0
+    m_SyncedLayerIndex: -1
+    m_DefaultWeight: 0.4
+    m_IKPass: 0
+    m_SyncedLayerAffectsTiming: 0
+    m_Controller: {fileID: 9100000}
+  - serializedVersion: 5
     m_Name: VerticaAim
     m_StateMachine: {fileID: -9053793487424584843}
     m_Mask: {fileID: 31900000, guid: 6fb497b565e8cf94c95614780860bcc8, type: 2}
@@ -838,18 +850,6 @@ AnimatorController:
     m_Name: Combat Arms
     m_StateMachine: {fileID: -1515381999421630579}
     m_Mask: {fileID: 31900000, guid: 94708128a5ca86049af742e681abcd05, type: 2}
-    m_Motions: []
-    m_Behaviours: []
-    m_BlendingMode: 0
-    m_SyncedLayerIndex: -1
-    m_DefaultWeight: 1
-    m_IKPass: 0
-    m_SyncedLayerAffectsTiming: 0
-    m_Controller: {fileID: 9100000}
-  - serializedVersion: 5
-    m_Name: Body Stabilization
-    m_StateMachine: {fileID: -5960064996802845357}
-    m_Mask: {fileID: 31900000, guid: 4b0b1a1cf738678489235fb421371c62, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
