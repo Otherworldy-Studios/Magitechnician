@@ -4918,7 +4918,7 @@ GameObject:
   - component: {fileID: 198258887974599854}
   - component: {fileID: 199395711183504554}
   m_Layer: 0
-  m_Name: ConsumableUseParticle
+  m_Name: PH_ConsumableUseParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
