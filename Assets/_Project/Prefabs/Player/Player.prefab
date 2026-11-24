@@ -200,8 +200,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
   _dampTime: 0.1
-  _idleAnimationMultiplier: 0.7
-  _sprintAnimationMultiplier: 1.3
   _animator: {fileID: 8189033687314075097}
   _playerMovement: {fileID: 2796982883176742587}
   _cameraController: {fileID: 8946386472445388545}
@@ -524,7 +522,6 @@ MonoBehaviour:
     SerializationNodes: []
   _crystals: 0
   _equippedCharmSlots: 5
-  _charmSlots: 20
   _maxConsumables: 3
   _playerStats: {fileID: 2538457442136657555}
   _playerAbilities: {fileID: 0}
@@ -532,6 +529,7 @@ MonoBehaviour:
   _health: {fileID: 2470234422445426739}
   _onlyDuringRun: 1
   _playerRoot: {fileID: 4765447663455402449}
+  _consumableUseParticles: {fileID: 198258887974599854, guid: 2f2a8beb53c572149bd0d00854a6a068, type: 3}
 --- !u!114 &3692322850074084798
 MonoBehaviour:
   m_ObjectHideFlags: 0

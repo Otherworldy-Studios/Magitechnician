@@ -59,6 +59,7 @@ public class Inventory : SerializedMonoBehaviour
     [Tooltip("Only use consumables during a run. Off allows them in the Hub too.")]
     [SerializeField] private bool _onlyDuringRun = true;
     [SerializeField] private PlayerRoot _playerRoot;
+    [SerializeField] private ParticleSystem _consumableUseParticles;
 
     private bool _subscribed;
 
@@ -310,6 +311,9 @@ public class Inventory : SerializedMonoBehaviour
         if (consumable.Duration > 0f && consumable.Modifiers.Count > 0)
             StartCoroutine(RemoveAfter(source, consumable.Duration, consumable));
 
+        if(_consumableUseParticles != null)
+            Instantiate(_consumableUseParticles, transform.position, Quaternion.identity);
+        
         _consumables.RemoveAt(index);
         OnInventoryChanged?.Invoke();
         OnConsumableUsed?.Invoke(consumable);
