@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -26,6 +27,7 @@ public class Gun : MonoBehaviour
 
     [Tooltip("Found in parents if empty. Equipping goes through PlayerRoot.ApplyModifiers and AddAbility.")]
     [SerializeField] private PlayerRoot _player;
+    [SerializeField] private MMF_Player _shootFeedback;
 
     // The gun reads these stats from its own Stats.
     [Header("Stats")]
@@ -264,7 +266,7 @@ public class Gun : MonoBehaviour
             DamageDirection = rotation * Vector3.forward,
             DamageType = GetDamageType()
         };
-
+        _shootFeedback?.PlayFeedbacks();
         // Instantiate until projectiles are pooled. The callback fires OnDamageDealt when the bullet hits.
         Projectile projectile = Instantiate(_projectilePrefab, aim.Origin, rotation);
         projectile.Initialize(damageInfo, bulletSpeed, range, (target, info) => OnDamageDealt?.Invoke(target, info));

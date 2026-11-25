@@ -19,6 +19,7 @@ public class ProjectileAttack : EnemyAttack
 
     protected override void PerformAttack()
     {
+        base.PerformAttack();
         if (_projectilePrefab == null || _firePoint == null || Owner == null || !Owner.HasTarget)
             return;
 

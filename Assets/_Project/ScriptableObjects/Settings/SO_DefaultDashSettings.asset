@@ -15,6 +15,6 @@ MonoBehaviour:
   <DashDistance>k__BackingField: 4
   <DashDuration>k__BackingField: 0.25
   <DashCooldown>k__BackingField: 0.6
-  <InvincibilityStart>k__BackingField: 0.1
-  <InvincibilityDuration>k__BackingField: 0.1
+  <InvincibilityStart>k__BackingField: 0.02
+  <InvincibilityDuration>k__BackingField: 0.18
   <InvincibilityEnabled>k__BackingField: 1

@@ -150,6 +150,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   _stats: {fileID: 8233628497874900800}
   _maxHealthStat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
+  _damageSound: Orc Hurt
 --- !u!114 &3057170392453508612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +316,8 @@ MonoBehaviour:
   _windUpMultiplier: 1
   _cooldownMultiplier: 1.5
   _recoveryTime: 0.7
+  _attackSoundName: Orc Attack
+  _windUpSoundName: Orc Wind Up
   _projectilePrefab: {fileID: 7954930404170188681, guid: 974e907fa540330418a64fb30ddcaad0, type: 3}
   _firePoint: {fileID: 3223711649901271988}
   _projectileSpeed: 40

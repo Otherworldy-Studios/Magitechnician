@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// Moves the enemy toward its target using EnemyMovement. Uses the Goldilocks range and line of sight to decide whether
@@ -14,11 +15,13 @@ public class ChaseState : IEnemyState
     public const float AttackMargin = 0.75f;
 
     private const float RepathInterval = 0.2f;
+    private const float SampleRadius = 2f;
 
     private readonly EnemyBase _enemy;
     private float _nextRepathTime; // Time.time of the next path update. Paths update every RepathInterval seconds.
     private bool _previousFacesPath; // EnemyMovement.FacesPath before Enter, put back in Exit.
     private float _desiredAngle; // Angle in radians on the circle around the player that this enemy walks to.
+    private bool _moveStraightAtTarget;
 
     public ChaseState(EnemyBase enemy)
     {
@@ -29,6 +32,7 @@ public class ChaseState : IEnemyState
     public void Enter()
     {
         _nextRepathTime = Time.time + Random.Range(0f, RepathInterval);
+        _moveStraightAtTarget = false;
 
         _enemy.Movement.ResumeMoving();
         _enemy.PlayStateAnimation(EnemyAnimation.Chase);
@@ -97,7 +101,6 @@ public class ChaseState : IEnemyState
         }
     }
 
- 
     private float GetAttackDistance()
     {
         float middleOfRange = (_enemy.MinRange + _enemy.MaxRange) / 2f;
@@ -110,7 +113,11 @@ public class ChaseState : IEnemyState
             return;
 
         _nextRepathTime = Time.time + RepathInterval;
-        _enemy.Movement.MoveTo(GetPointAroundPlayer());
+
+        if (!_moveStraightAtTarget && _enemy.Movement.HasReachedDestination())
+            _moveStraightAtTarget = true;
+
+        _enemy.Movement.MoveTo(_moveStraightAtTarget ? _enemy.Target.position : GetPointAroundPlayer());
     }
 
     private Vector3 GetPointAroundPlayer()
@@ -121,10 +128,13 @@ public class ChaseState : IEnemyState
         desiredPoint.x = _enemy.Target.position.x + radius * Mathf.Cos(_desiredAngle);
         desiredPoint.y = _enemy.Target.position.y;
         desiredPoint.z = _enemy.Target.position.z + radius * Mathf.Sin(_desiredAngle);
-        return desiredPoint;
+
+        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit hit, SampleRadius, NavMesh.AllAreas))
+            return hit.position;
+
+        return _enemy.Target.position;
     }
 
-   
     public void Exit()
     {
         _enemy.Movement.FacesPath = _previousFacesPath;

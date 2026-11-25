@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
 
 /// <summary>
@@ -50,6 +51,7 @@ public class Health : MonoBehaviour
     [SerializeField] private Stats _stats;
     [Tooltip("Stat_MaxHealth. Without it, the Max Health value above is used.")]
     [SerializeField] private StatDefinition _maxHealthStat;
+    [SerializeField] private string _damageSound;
 
     /// <summary>Gives this component the Stats to read from. Keeps a Stats already assigned in the Inspector.</summary>
     public void SetStats(Stats playerStats)
@@ -120,7 +122,10 @@ public class Health : MonoBehaviour
 
         OnDamaged?.Invoke(CurrentHealth, gameObject);
         OnDamageInstance?.Invoke(damageInfo);
-
+        if(!_damageSound.IsNullOrWhitespace())
+        {
+            SoundController.Instance.PlaySFX(_damageSound);
+        }
         if (CurrentHealth <= 0)
         {
             OnDied?.Invoke(gameObject);

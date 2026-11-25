@@ -10,7 +10,7 @@ public class Shoot : MonoBehaviour
     [Tooltip("Found in children if empty.")]
     [SerializeField] private Gun _gun;
     [Tooltip("Uses InputManager.Instance if empty.")]
-    [SerializeField] private InputManager _input;
+     private InputManager _input;
     [Tooltip("Uses Camera.main if empty. The crosshair is the center of this camera's view.")]
     [SerializeField] private Camera _camera;
     [Tooltip("Layers the aim ray and the shot collide with.")]

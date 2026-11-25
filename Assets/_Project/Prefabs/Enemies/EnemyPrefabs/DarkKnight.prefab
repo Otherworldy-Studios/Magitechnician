@@ -172,6 +172,8 @@ MonoBehaviour:
   _windUpMultiplier: 2.2
   _cooldownMultiplier: 1.5
   _recoveryTime: 0.9
+  _attackSoundName: Knight Attack
+  _windUpSoundName: 
   _hitbox: {fileID: 6840558486220668373}
   _activeTime: 0.43
 --- !u!65 &356809054525563834
@@ -577,6 +579,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 100
   _stats: {fileID: 7706114376306198988}
   _maxHealthStat: {fileID: 11400000, guid: f0df77d7a2ada4e8a8500c77798eeeb1, type: 2}
+  _damageSound: Knight Hurt
 --- !u!114 &6587833776491720439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -769,6 +772,8 @@ MonoBehaviour:
   _windUpMultiplier: 1
   _cooldownMultiplier: 0.5
   _recoveryTime: 0.4
+  _attackSoundName: Knight Attack
+  _windUpSoundName: 
   _hitbox: {fileID: 4303179377743861959}
   _activeTime: 0.3
 --- !u!65 &6361295727018718663

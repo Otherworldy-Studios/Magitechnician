@@ -32,7 +32,7 @@ MonoBehaviour:
   - _stat: {fileID: 11400000, guid: 02a58a434da923544b08a65eeb30b504, type: 2}
     _baseValue: 0.22
   - _stat: {fileID: 11400000, guid: ee42ef04fce3caa40bac6d541f1a6cb1, type: 2}
-    _baseValue: 7
+    _baseValue: 10
   - _stat: {fileID: 11400000, guid: 2e296ec3cea10574e81970ff06817b46, type: 2}
     _baseValue: 0.8
   - _stat: {fileID: 11400000, guid: 966e8bb65ed5dda41a44a39f4ff9d278, type: 2}

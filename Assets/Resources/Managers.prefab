@@ -531,6 +531,8 @@ MonoBehaviour:
   _player: {fileID: 0}
   _waveManager: {fileID: 0}
   _rewardPool: {fileID: 6009511643452073481}
+  _killHitstopDuration: 0.05
+  _bossHitstopDuration: 0.2
 --- !u!1 &1611539247669148079
 GameObject:
   m_ObjectHideFlags: 0
@@ -8268,7 +8270,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: _sfxSounds.Array.size
-      value: 23
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: _musicTracks.Array.size
@@ -8280,7 +8282,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: _sfxSounds.Array.data[16]._name
-      value: Player_hurt
+      value: Player_Hurt
       objectReference: {fileID: 0}
     - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: _sfxSounds.Array.data[17]._name
@@ -8305,6 +8307,26 @@ PrefabInstance:
     - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: _sfxSounds.Array.data[22]._name
       value: Hit Marker
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[23]._name
+      value: Knight Hurt
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[24]._name
+      value: Knight Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[25]._name
+      value: Orc Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[26]._name
+      value: Orc Wind Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[27]._name
+      value: Orc Hurt
       objectReference: {fileID: 0}
     - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: _musicTracks.Array.data[0]._name
@@ -8358,6 +8380,26 @@ PrefabInstance:
       propertyPath: _sfxSounds.Array.data[22]._soundData
       value: 
       objectReference: {fileID: 11400000, guid: f9b10fc5f03cecb45894fb9524ea4b2c, type: 2}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[23]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: d0442d9d56a489d499452343c239d308, type: 2}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[24]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: 21a53cbb95ea59a4d845b658ddbd3104, type: 2}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[25]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: 5553523d629d23a42a587053c8d6d202, type: 2}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[26]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: 544036768d5d17847979b32aa8a009de, type: 2}
+    - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
+      propertyPath: _sfxSounds.Array.data[27]._soundData
+      value: 
+      objectReference: {fileID: 11400000, guid: dc0c83213c099984ea629c2a20ca1245, type: 2}
     - target: {fileID: 118638666250879593, guid: ab8b1b57453865441877f687ce962c3c, type: 3}
       propertyPath: _musicTracks.Array.data[0]._soundData
       value: 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
 
 /// <summary>
@@ -23,6 +24,8 @@ public abstract class EnemyAttack : MonoBehaviour
     [SerializeField, Min(0f)] private float _cooldownMultiplier = 1f;
     [Tooltip("Seconds the attack keeps running after the hit, so the rest of the animation plays before the enemy goes back to CombatIdle. Set it to the clip's length minus the time the hit ends.")]
     [SerializeField, Min(0f)] private float _recoveryTime;
+    [SerializeField] private string _attackSoundName;
+    [SerializeField] private string _windUpSoundName;
 
     private float _nextAttackTime;     // Time.time when the cooldown ends.
     private Coroutine _attackRoutine;  // The running AttackRoutine, kept so CancelAttack can stop it.
@@ -102,10 +105,19 @@ public abstract class EnemyAttack : MonoBehaviour
     }
 
     /// <summary>Runs when the wind-up starts, before OnAttackWindUpStarted, such as to show a telegraph.</summary>
-    protected virtual void StartWindUp() { }
+    protected virtual void StartWindUp() 
+    {
+        if(!_windUpSoundName.IsNullOrWhitespace())
+        {
+            SoundController.Instance.PlaySFX(_windUpSoundName, gameObject.transform.position);
+        }
+    }
 
     /// <summary>Deals the attack's damage. Each attack type decides how.</summary>
-    protected abstract void PerformAttack();
+    protected virtual void PerformAttack()
+    {
+        SoundController.Instance.PlaySFX(_attackSoundName, gameObject.transform.position);
+    }
 
     /// <summary>Seconds the attack stays active after PerformAttack. 0 by default.</summary>
     protected virtual float AttackDuration => 0f;

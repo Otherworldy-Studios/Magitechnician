@@ -1,26 +1,36 @@
 using System;
 using ScriptableSettings;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 /// <summary>
 /// The player's dash. PlayerMovement passes Dash presses to IntendToDash and calls HandleDash every frame. A dash
-/// moves a set distance over a set time, slowing down as it goes, with an invincibility window partway through.
+/// moves a set distance over a set time at a constant speed, with an invincibility window partway through.
 /// </summary>
 public class Dash : MonoBehaviour
 {
+    private static readonly int FadeId = Shader.PropertyToID("_Fade");
+
     [SerializeField] private DashSettings _settings;
 
     [Header("References")]
     // Reference direction used when dashing without movement input, usually camera orientation.
     [SerializeField] private Transform _orientation;
     [SerializeField] private Health _health;
+    [SerializeField] private Stats _playerStats;
+    [SerializeField] private MMF_Player _dashFeedbacks;
 
-    // INTEGRATION: new. Which stats in _playerStats hold each dash value. The properties below read them.
     [Header("Stats")]
     [SerializeField] private StatDefinition _dashDistanceStat;
     [SerializeField] private StatDefinition _dashDurationStat;
     [SerializeField] private StatDefinition _dashCooldownStat;
     [SerializeField] private StatDefinition _dashInvincibilityStat;
+
+    [Header("VFX")]
+    [SerializeField] private TrailRenderer[] _dashTrails;
+    [SerializeField] private Material _ghostMaterial;
+    [SerializeField] private Renderer[] _ghostRenderers;
+    [SerializeField] private float _ghostFadeOutTime = 0.1f;
 
     /// <summary>True during a dash. PlayerMovement uses the dash velocity instead of walking while this is true.</summary>
     public bool IsDashing { get; private set; }
@@ -28,8 +38,6 @@ public class Dash : MonoBehaviour
     /// <summary>The direction of the current dash, locked when it starts. PlayerAnimator reads it.</summary>
     public Vector3 DashDirection { get; private set; }
 
-    // INTEGRATION: new. Each was read straight from _settings. Now each reads its stat, falling back to _settings when
-    // the stat isn't set, so charms and consumables can change the dash through StatModifiers.
     /// <summary>How far a dash goes.</summary>
     public float DashDistance => ReadStat(_dashDistanceStat, _settings.DashDistance);
     /// <summary>How long a dash lasts, in seconds.</summary>
@@ -38,8 +46,6 @@ public class Dash : MonoBehaviour
     public float InvincibilityDuration => ReadStat(_dashInvincibilityStat, _settings.InvincibilityDuration);
 
     /// <summary>Seconds from the start of a dash until the next one: the cooldown stat plus the dash's duration.</summary>
-    // INTEGRATION: was a property set once in Awake from _settings. Now worked out each time, so stat changes apply.
-    // DashCooldownIcon reads it to fill the icon.
     public float DashCooldown => ReadStat(_dashCooldownStat, _settings.DashCooldown) + DashDuration;
 
     /// <summary>Fires when a dash starts. PlayerAnimator plays the dash, and DashCooldownIcon starts its countdown.</summary>
@@ -52,13 +58,14 @@ public class Dash : MonoBehaviour
     // This dash's invincibility token. Health stays invincible while any token is held, so this dash only removes its
     // own.
     private object _invincibilityToken;
-    private bool _wasInvincible = false; // Last frame's invincibility, so the token is only added or removed on a change.
+    private bool _wasInvincible; // Last frame's invincibility, so the token is only added or removed on a change.
 
-    // INTEGRATION: new. Source of the dash stats. Set here or by PlayerRoot through SetStats.
-    [SerializeField] private Stats _playerStats;
+    private Material[][] _originalMaterials;
+    private MaterialPropertyBlock _ghostBlock;
+    private bool _ghostActive;
+    private float _ghostFadeTimer;
 
     /// <summary>Hands over the player's Stats, unless one is already assigned.</summary>
-    // INTEGRATION: new. PlayerRoot calls this in Awake.
     public void SetStats(Stats playerStats)
     {
         if (_playerStats == null)
@@ -76,22 +83,27 @@ public class Dash : MonoBehaviour
         if (!_health)
             _health = GetComponent<Health>();
 
-        // INTEGRATION: removed setting DashCooldown here. It's now a property that reads the stat.
+        _ghostBlock = new MaterialPropertyBlock();
     }
 
     /// <summary>Ends a dash in progress, so its invincibility doesn't stay on.</summary>
     private void OnDisable()
     {
         CancelDash();
+        SetTrailsEmitting(false);
+        RestoreMaterials();
     }
 
-    /// <summary>
-    /// Calculates dash velocity using a linear slowdown over its duration.
-    /// The initial speed is doubled to maintain the configured dash distance.
-    /// </summary>
+    private void LateUpdate()
+    {
+        SetTrailsEmitting(IsDashing);
+        UpdateGhost();
+    }
+
+    /// <summary>Returns the dash velocity: the dash distance over its duration, in the dash direction.</summary>
     public Vector3 GetDashVelocity()
     {
-        float dashSpeed = DashDistance / DashDuration; 
+        float dashSpeed = DashDistance / DashDuration;
 
         return DashDirection * dashSpeed;
     }
@@ -109,10 +121,7 @@ public class Dash : MonoBehaviour
             _dashTimer += Time.deltaTime;
 
             if (_dashTimer >= DashDuration)
-            {
                 CancelDash();
-                IsDashing = false;
-            }
 
             HandleInvincibility();
             return;
@@ -137,9 +146,8 @@ public class Dash : MonoBehaviour
         _dashTimer = 0f;
         IsDashing = true;
 
-        // INTEGRATION: was _settings.DashDuration + _settings.DashCooldown. DashCooldown now includes the duration.
         _nextDashTime = Time.time + DashCooldown;
-
+        _dashFeedbacks.PlayFeedbacks();
         OnDashed?.Invoke();
     }
 
@@ -154,6 +162,117 @@ public class Dash : MonoBehaviour
         IsDashing = false;
         StopDashInvincibility();
         _wasInvincible = false;
+    }
+
+    public void ClearTrails()
+    {
+        if (_dashTrails == null)
+            return;
+
+        foreach (TrailRenderer trail in _dashTrails)
+        {
+            if (trail != null)
+                trail.Clear();
+        }
+    }
+
+    private void SetTrailsEmitting(bool emitting)
+    {
+        if (_dashTrails == null)
+            return;
+
+        foreach (TrailRenderer trail in _dashTrails)
+        {
+            if (trail != null)
+                trail.emitting = emitting;
+        }
+    }
+
+    private void UpdateGhost()
+    {
+        if (IsDashing)
+        {
+            if (!_ghostActive)
+                ApplyGhost();
+
+            _ghostFadeTimer = _ghostFadeOutTime;
+            SetGhostFade(1f);
+            return;
+        }
+
+        if (!_ghostActive)
+            return;
+
+        _ghostFadeTimer -= Time.deltaTime;
+
+        if (_ghostFadeTimer <= 0f)
+        {
+            RestoreMaterials();
+            return;
+        }
+
+        SetGhostFade(_ghostFadeTimer / _ghostFadeOutTime);
+    }
+
+    private void ApplyGhost()
+    {
+        if (_ghostMaterial == null || _ghostRenderers == null || _ghostRenderers.Length == 0)
+            return;
+
+        _originalMaterials = new Material[_ghostRenderers.Length][];
+
+        for (int i = 0; i < _ghostRenderers.Length; i++)
+        {
+            Renderer ghostRenderer = _ghostRenderers[i];
+            if (ghostRenderer == null)
+                continue;
+
+            Material[] original = ghostRenderer.sharedMaterials;
+            _originalMaterials[i] = original;
+
+            Material[] ghost = new Material[original.Length];
+            for (int j = 0; j < ghost.Length; j++)
+            {
+                ghost[j] = _ghostMaterial;
+            }
+
+            ghostRenderer.sharedMaterials = ghost;
+        }
+
+        _ghostActive = true;
+    }
+
+    private void SetGhostFade(float fade)
+    {
+        if (!_ghostActive)
+            return;
+
+        _ghostBlock.SetFloat(FadeId, fade);
+
+        foreach (Renderer ghostRenderer in _ghostRenderers)
+        {
+            if (ghostRenderer != null)
+                ghostRenderer.SetPropertyBlock(_ghostBlock);
+        }
+    }
+
+    private void RestoreMaterials()
+    {
+        if (!_ghostActive)
+            return;
+
+        for (int i = 0; i < _ghostRenderers.Length; i++)
+        {
+            Renderer ghostRenderer = _ghostRenderers[i];
+            if (ghostRenderer == null || _originalMaterials[i] == null)
+                continue;
+
+            ghostRenderer.sharedMaterials = _originalMaterials[i];
+            ghostRenderer.SetPropertyBlock(null);
+        }
+
+        _originalMaterials = null;
+        _ghostActive = false;
     }
 
     /// <summary>
@@ -203,7 +322,6 @@ public class Dash : MonoBehaviour
     public void IntendToDash() => _intendToDash = true;
 
     /// <summary>Returns a stat from _playerStats, or the fallback when the stat or Stats isn't set.</summary>
-    // INTEGRATION: new. The same lookup as PlayerMovement.ReadStat.
     private float ReadStat(StatDefinition stat, float fallback)
     {
         if (_playerStats == null || stat == null || !_playerStats.HasStat(stat))

@@ -44,6 +44,7 @@ public class AreaAttack : EnemyAttack
 
     protected override void PerformAttack()
     {
+        base.PerformAttack();
         DamageInfo damageInfo = new DamageInfo
         {
             DamageAmount = Damage,

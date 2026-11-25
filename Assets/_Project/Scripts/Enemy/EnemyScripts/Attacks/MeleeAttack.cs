@@ -17,6 +17,7 @@ public class MeleeAttack : EnemyAttack
     /// <summary>Builds the damage and turns the hitbox on with it.</summary>
     protected override void PerformAttack()
     {
+        base.PerformAttack();
         if (_hitbox == null)
             return;
 

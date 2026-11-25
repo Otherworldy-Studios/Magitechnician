@@ -42,8 +42,13 @@ public class GameManager : MGR<GameManager>
     [Tooltip("Rolls the gun parts offered when a combat room is cleared.")]
     [SerializeField] private ItemRolling _rewardPool;
 
+    [Header("Hitstop")]
+    [Tooltip("Seconds of frozen time when the player's bullet kills an enemy. 0 turns it off.")]
+    [SerializeField] private float _killHitstopDuration = 0.05f;
+    [Tooltip("Seconds of frozen time when the player's bullet kills the boss.")]
+    [SerializeField] private float _bossHitstopDuration = 0.2f;
+
     private GameState _previousState;
-    private Room[,] _currentDungeon;
     private Room _rewardRoom;
     private IReadOnlyList<WeightedReward<GunPart>> _pendingRewards;
     private Action _afterRewards;
@@ -53,6 +58,9 @@ public class GameManager : MGR<GameManager>
     private GameState _stateAfterLoad;
     private PlayerSpawner _playerSpawner;
     private LevelGenerator _generator;
+    private Gun _playerGun;
+    private bool _isHitstopActive;
+    private float _hitstopEndTime;
 
     /// <summary>Fires when the run ends in a loss. UIManager shows the death screen.</summary>
     public static event Action OnGameLost;
@@ -133,6 +141,10 @@ public class GameManager : MGR<GameManager>
         {
             _playerHealth.OnDied += PlayerDied;
         }
+        if (_playerGun != null)
+        {
+            _playerGun.OnDamageDealt += HandleDamageDealt;
+        }
     }
 
     // HasInstance guards against InputManager quitting first.
@@ -146,6 +158,10 @@ public class GameManager : MGR<GameManager>
         {
             _playerHealth.OnDied -= PlayerDied;
         }
+        if (_playerGun != null)
+        {
+            _playerGun.OnDamageDealt -= HandleDamageDealt;
+        }
         if (_playerSpawner != null)
         {
             _playerSpawner.OnPlayerSpawned -= StartRun;
@@ -153,6 +169,14 @@ public class GameManager : MGR<GameManager>
         SceneManager.sceneLoaded -= InitReferences;
         Room.OnRoomCleared -= RoomCleared;
         RunStats.Stop();
+    }
+
+    private void Update()
+    {
+        if (_isHitstopActive && Time.unscaledTime >= _hitstopEndTime)
+        {
+            EndHitstop();
+        }
     }
 
     /// <summary>
@@ -195,6 +219,20 @@ public class GameManager : MGR<GameManager>
             if (_playerHealth != null)
             {
                 _playerHealth.OnDied += PlayerDied;
+            }
+        }
+
+        Gun newGun = newPlayer.Gun;
+        if (newGun != _playerGun)
+        {
+            if (_playerGun != null)
+            {
+                _playerGun.OnDamageDealt -= HandleDamageDealt;
+            }
+            _playerGun = newGun;
+            if (_playerGun != null)
+            {
+                _playerGun.OnDamageDealt += HandleDamageDealt;
             }
         }
 
@@ -283,6 +321,7 @@ public class GameManager : MGR<GameManager>
 
         // Clear the pause without running SetPause, which would turn the old player's input back on.
         _isPaused = false;
+        _isHitstopActive = false;
         Time.timeScale = 1f;
         OnPauseToggled?.Invoke(false);
 
@@ -422,7 +461,6 @@ public class GameManager : MGR<GameManager>
         _playerSpawner.OnPlayerSpawned -= StartRun;
         _rewardPool.ResetObtained();
         ClearPendingRewards();
-        _currentDungeon = _generator.RoomGrid;
 
         // EnterRoom calls ChangeRoom and fires the room's OnRoomEntered.
         Room startRoom = _generator.StartRoom;
@@ -433,12 +471,6 @@ public class GameManager : MGR<GameManager>
         RunStats.Begin(_player.GetComponent<PlayerRoot>(), _waveManager);
         StartTime = Time.time;
         OnRunStarted?.Invoke();
-    }
-
-    /// <summary>Ends the run as a victory. Placeholder: PH_Boss raises this until the boss exists.</summary>
-    private void BossDefeated()
-    {
-        RequestGameEnd(RunResult.Victory);
     }
 
     /// <summary>
@@ -586,6 +618,7 @@ public class GameManager : MGR<GameManager>
 
         bool pauseChanged = _isPaused != pauseIntended;
         _isPaused = pauseIntended;
+        _isHitstopActive = false;
 
         if (pauseIntended)
         {
@@ -604,9 +637,7 @@ public class GameManager : MGR<GameManager>
         }
     }
 
-    /// <summary>
-    /// for other scripts to decide a more "minimal" state should end
-    /// </summary>
+    /// <summary>Leaves the Store and returns to the state before it.</summary>
     public void CloseState()
     {
         if (_currentState != GameState.Store) return;
@@ -625,6 +656,41 @@ public class GameManager : MGR<GameManager>
     {
         EndTime = Time.time - StartTime;
         RunStats.Stop();
+    }
+
+    #endregion
+
+    #region Hitstop
+
+    private void HandleDamageDealt(GameObject target, DamageInfo damageInfo)
+    {
+        if (_currentState != GameState.Playing && _currentState != GameState.Win) return;
+        if (target == null || !target.TryGetComponent(out Health health) || health.CurrentHealth > 0) return;
+
+        bool isBoss = target.TryGetComponent(out StoneGuardian _);
+        if (_currentState == GameState.Win && !isBoss) return;
+
+        StartHitstop(isBoss ? _bossHitstopDuration : _killHitstopDuration);
+    }
+
+    public void StartHitstop(float duration)
+    {
+        if (_isPaused || duration <= 0f) return;
+
+        float endTime = Time.unscaledTime + duration;
+        _hitstopEndTime = _isHitstopActive ? Mathf.Max(_hitstopEndTime, endTime) : endTime;
+        _isHitstopActive = true;
+        Time.timeScale = 0f;
+    }
+
+    private void EndHitstop()
+    {
+        _isHitstopActive = false;
+
+        if (!_isPaused)
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     #endregion
