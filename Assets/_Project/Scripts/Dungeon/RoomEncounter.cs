@@ -101,6 +101,8 @@ namespace _Project.Scripts.Dungeon
             enemy.OnEnemyKilled -= HandleEnemyKilled;
             _aliveEnemies.Remove(enemy);
 
+            GameManager.Instance.AddEnemyKill();
+
             if (_aliveEnemies.Count == 0)
                 ClearRoom();
         }

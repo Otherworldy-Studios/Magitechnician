@@ -38,7 +38,11 @@ public class HealthBar : MonoBehaviour
         {
             HandlePlayerRegistered(GameManager.Instance.Player.GetComponent<PlayerRoot>());
         }
+<<<<<<< Updated upstream
         _healthCounter.text = _health.CurrentHealth.ToString("F0");
+=======
+
+>>>>>>> Stashed changes
     }
 
     /// <summary>Stops listening to GameManager and the player.</summary>

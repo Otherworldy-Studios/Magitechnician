@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Dungeon;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -57,6 +59,15 @@ public class GameManager : MGR<GameManager>
     /// <summary>Seconds since the current run started.</summary>
     public float RunTime => Time.time - StartTime;
 
+    // Run statistics
+    public int EnemiesKilled { get; private set; }
+    public float DamageTaken { get; private set; }
+    public int RoomsCleared { get; private set; }
+    public List<float> RoomTimes { get; private set; } = new List<float>();
+
+    private float _previousHealth;
+    private float _roomStartTime;
+
     /// <summary>The room the player is in. Room.EnterRoom sets it.</summary>
     public Room CurrentRoom { get; private set; }
     public GameState CurrentState => _currentState; // INTEGRATION: new, so other scripts can read the state without the event.
@@ -89,6 +100,7 @@ public class GameManager : MGR<GameManager>
     protected override void Awake()
     {
         base.Awake();
+        Room.OnRoomCleared += RoomCleared;
         if (Instance != this)
         {
             return;
@@ -173,11 +185,14 @@ public class GameManager : MGR<GameManager>
             if (_playerHealth != null)
             {
                 _playerHealth.OnDied -= PlayerDied;
+                _playerHealth.OnDamaged -= TrackDamage;
             }
             _playerHealth = newHealth;
             if (_playerHealth != null)
             {
                 _playerHealth.OnDied += PlayerDied;
+                _playerHealth.OnDamaged += TrackDamage;
+                _previousHealth = _playerHealth.CurrentHealth;
             }
         }
 
@@ -227,6 +242,37 @@ public class GameManager : MGR<GameManager>
     public void ChangeRoom(Room newRoom)
     {
         CurrentRoom = newRoom;
+        _roomStartTime = Time.time;
+
+    }
+
+    // Records one enemy kill.
+    public void AddEnemyKill()
+    {
+        EnemiesKilled++;
+    }
+
+    private void HandleEnemyKilled(EnemyBase enemy)
+    {
+        AddEnemyKill();
+    }
+
+    // Adds damage taken by the player.
+    public void AddDamageTaken(float amount)
+    {
+        if (amount > 0f)
+            DamageTaken += amount;
+    }
+
+    // Tracks damage reported by the player's Health component.
+    private void TrackDamage(int currentHealth, GameObject damagedObject)
+    {
+        float damage = _previousHealth - currentHealth;
+
+        if (damage > 0f)
+            AddDamageTaken(damage);
+
+        _previousHealth = currentHealth;
     }
 
     /// <summary>
@@ -310,6 +356,15 @@ public class GameManager : MGR<GameManager>
     private void StartRun()
     {
         _playerSpawner.OnPlayerSpawned -= StartRun; // INTEGRATION: listens to PlayerSpawner instead of LevelGenerator.OnMapGenerated.
+<<<<<<< Updated upstream
+=======
+        _lootPool.ResetObtained(); //make sure the data asset is cleared
+        EnemiesKilled = 0;
+        DamageTaken = 0f;
+        RoomsCleared = 0;
+        RoomTimes.Clear();
+        _roomStartTime = Time.time;
+>>>>>>> Stashed changes
         _currentDungeon = _generator.RoomGrid;
         Room startRoom = _generator.StartRoom;
         // INTEGRATION: was "CurrentRoom = startRoom". EnterRoom calls ChangeRoom and fires the room's OnRoomEntered,
@@ -329,8 +384,12 @@ public class GameManager : MGR<GameManager>
     }
 
     /// <summary>Placeholder for room clears. Empty: rooms clear through Room.OnRoomCleared now.</summary>
-    private void RoomCleared()
+    private void RoomCleared(Room room)
     {
+        float roomTime = Time.time - _roomStartTime;
+
+        RoomTimes.Add(roomTime);
+        RoomsCleared++;
     }
 
     /// <summary>Starts a run by loading the Level scene. RunStartPortal calls this from the Hub.</summary>
@@ -495,11 +554,14 @@ public class GameManager : MGR<GameManager>
         if (_playerHealth != null)
         {
             _playerHealth.OnDied -= PlayerDied;
+            _playerHealth.OnDamaged -= TrackDamage;
         }
         if (_playerSpawner != null)
         {
             _playerSpawner.OnPlayerSpawned -= StartRun;
         }
+        Room.OnRoomCleared -= RoomCleared;
+
         SceneManager.sceneLoaded -= InitReferences;
     }
 

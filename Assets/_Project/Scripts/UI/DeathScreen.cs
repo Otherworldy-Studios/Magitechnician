@@ -8,6 +8,7 @@ public class DeathScreen : UIScreen
 {
     [SerializeField, FormerlySerializedAs("hubButton")] private Button _hubButton;
     [SerializeField, FormerlySerializedAs("runTimeText")] private TMP_Text _runTimeText;
+    [SerializeField] private TMP_Text _statsText;
     [SerializeField, FormerlySerializedAs("deathImage")] private Image _deathImage; // The background. Not read by this script.
 
     /// <summary>Connects the Hub button.</summary>
@@ -19,7 +20,20 @@ public class DeathScreen : UIScreen
     /// <summary>Shows the run time when the screen opens.</summary>
     protected override void OnShown()
     {
-        _runTimeText.text = $"Run Time: {CollectEndTime()}";
+        Debug.Log("DEATH SCREEN OnShown IS RUNNING");
+
+        _runTimeText.text = $"Run Time: {CollectEndTime():F1} seconds";
+
+        GameManager gm = GameManager.Instance;
+
+        string roomTimes = string.Join(", ", gm.RoomTimes);
+
+        _statsText.text =
+            $"Enemies Killed: {gm.EnemiesKilled}\n" +
+            $"Damage Taken: {gm.DamageTaken:F0}\n" +
+            $"Rooms Cleared: {gm.RoomsCleared}\n" +
+            $"Room Times: {roomTimes}";
+
     }
 
     /// <summary>Hub button.</summary>
