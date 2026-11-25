@@ -9,6 +9,7 @@ public class HUDScreen : UIScreen
     [SerializeField] private ShieldBar _shieldBar;
     [SerializeField] private CurrencyDisplay _currencyDisplay;
     [SerializeField] private DashCooldownIcon _dashCooldown;
+    [SerializeField] private RoomClearedBanner _roomClearedBanner;
 
     [Header("Gun Parts")]
     [SerializeField] private ItemSlotUI _barrelSlot;
@@ -29,6 +30,8 @@ public class HUDScreen : UIScreen
             _dashCooldown = GetComponentInChildren<DashCooldownIcon>();
         if (!_currencyDisplay)
             _currencyDisplay = GetComponentInChildren<CurrencyDisplay>();
+        if(!_roomClearedBanner)
+            _roomClearedBanner = GetComponentInChildren<RoomClearedBanner>();
     }
 
     private void Start()
@@ -36,10 +39,16 @@ public class HUDScreen : UIScreen
         if (!GameManager.HasInstance) return;
 
         GameManager.Instance.OnPlayerRegistered += BindGun;
+        GameManager.Instance.OnRoomClear += EnableRoomClearBanner;
 
         GameObject player = GameManager.Instance.Player;
         if (player != null) BindGun(player.GetComponent<PlayerRoot>());
         else RefreshParts();
+    }
+
+    private void EnableRoomClearBanner()
+    {
+        _roomClearedBanner.gameObject.SetActive(true);
     }
 
     private void OnDestroy()
