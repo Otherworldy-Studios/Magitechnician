@@ -200,6 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
   _dampTime: 0.1
+  _animator: {fileID: 8189033687314075097}
   _layerName: BodyStabilization
   _targetLayerWeight: 0.7
   _layerTransitionSpeed: 2
@@ -532,6 +533,7 @@ MonoBehaviour:
   _health: {fileID: 2470234422445426739}
   _onlyDuringRun: 1
   _playerRoot: {fileID: 4765447663455402449}
+  _consumableUseParticles: {fileID: 198258887974599854, guid: 2f2a8beb53c572149bd0d00854a6a068, type: 3}
 --- !u!114 &3692322850074084798
 MonoBehaviour:
   m_ObjectHideFlags: 0

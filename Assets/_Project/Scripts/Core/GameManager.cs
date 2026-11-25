@@ -69,6 +69,7 @@ public class GameManager : MGR<GameManager>
     /// <summary>Fires when a scene's player registers, with its PlayerRoot.</summary>
     public event Action<PlayerRoot> OnPlayerRegistered;
     public event Action<Room> OnRoomEntered;
+    public event Action OnRoomClear;
 
     /// <summary>Time.time when the current run started.</summary>
     public float StartTime { get; private set; }
@@ -460,6 +461,8 @@ public class GameManager : MGR<GameManager>
             UIManager.Instance.HandleRewards(rewards);
             return;
         }
+        
+        OnRoomClear?.Invoke();
 
         _pendingRewards = rewards;
     }
