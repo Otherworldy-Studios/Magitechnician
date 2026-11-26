@@ -2,6 +2,7 @@ using Sirenix.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 /// <summary>Shown when the run ends in a win. Shows the run time and several other
 /// stats during gameplay which is used in a calculation which determines player ranking.
@@ -18,6 +19,7 @@ public class WinScreen : UIScreen
     [SerializeField] private TMP_Text _damageDealtText;
     [SerializeField] private TMP_Text _enemiesKilledText;
     [SerializeField] private TMP_Text _totalScoreText;
+    [SerializeField] private TMP_Text _statsText;
 
     [Header("Image Objects")]
     [SerializeField] private Image _finalRankImage;
@@ -53,6 +55,17 @@ public class WinScreen : UIScreen
         _damageDealtText.text = $"Damage Dealt: {stats.DamageDealt}";
         _enemiesKilledText.text = $"Enemies Killed: {stats.EnemiesKilled}";
         _totalScoreText.text = $"Total Score: {score}";
+        if (stats.RoomTimes.Count == 0)
+        {
+            _statsText.text = "Room Times: N/A";
+        }
+        else
+        {
+            string roomTimes = string.Join(", ",
+                stats.RoomTimes.Select(time => $"{time:F1}s"));
+
+            _statsText.text = $"Room Times: {roomTimes}";
+        }
 
         _finalRankImage.sprite = GetRankSprite(score);
     }

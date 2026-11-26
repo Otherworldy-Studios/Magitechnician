@@ -425,13 +425,14 @@ public class GameManager : MGR<GameManager>
         ClearPendingRewards();
         _currentDungeon = _generator.RoomGrid;
 
+        RunStats.Begin(_player.GetComponent<PlayerRoot>(), _waveManager);
+        
         // EnterRoom calls ChangeRoom and fires the room's OnRoomEntered.
         Room startRoom = _generator.StartRoom;
         startRoom.EnterRoom();
 
         // UIManager.Instance.ShowLoading(false);   // Turn on when the loading screen exists.
         ChangeState(GameState.Playing);
-        RunStats.Begin(_player.GetComponent<PlayerRoot>(), _waveManager);
         StartTime = Time.time;
         OnRunStarted?.Invoke();
     }

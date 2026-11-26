@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using _Project.Scripts.Dungeon;
 using UnityEngine;
 
@@ -8,6 +9,9 @@ using UnityEngine;
 /// </summary>
 public class RunStats
 {
+    public List<float> RoomTimes { get; private set; } = new List<float>();
+    
+    private readonly List<float> _roomTimes = new();
     private Health _health;
     private Gun _gun;
     private Inventory _inventory;
@@ -50,6 +54,7 @@ public class RunStats
         EnemiesKilled = 0;
         CrystalsCollected = 0;
         RoomsCleared = 0;
+        RoomTimes.Clear();
         CharmActivations = 0;
         ConsumablesUsed = 0;
         _timedRoom = null;
@@ -170,8 +175,12 @@ public class RunStats
         RoomsCleared++;
 
         if (room != _timedRoom) return;
+        
+        float roomTime = Time.time - _roomEnterTime;
+        
+        RoomTimes.Add(roomTime);
 
-        _totalRoomTime += Time.time - _roomEnterTime;
+        _totalRoomTime += roomTime;
         _timedRoomCount++;
         _timedRoom = null;
     }
