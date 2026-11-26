@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using MoreMountains.Feedbacks;
 
 /// <summary>Shows the player's crystal count, and updates when it changes.</summary>
 // INTEGRATION: new. Listens to Inventory.OnCrystalsChanged. Connects to each player GameManager registers, because the
@@ -9,7 +10,8 @@ public class CurrencyDisplay : MonoBehaviour
 {
     [SerializeField] private TMP_Text _currencyText;
     [SerializeField] private Inventory _inventory; // Set from the registered player. Shown in the Inspector for debugging.
-
+    [SerializeField] private MMF_Player _crystalPopFeedback;
+    
     /// <summary>Starts listening for player registration.</summary>
     private void Awake()
     {
@@ -62,6 +64,7 @@ public class CurrencyDisplay : MonoBehaviour
     private void HandleCrystalsChanged(int newAmount)
     {
         _currencyText.text = newAmount.ToString();
+        _crystalPopFeedback.PlayFeedbacks(); //trigger bump animation
     }
 
     /// <summary>Disconnects from the current player, if any.</summary>
