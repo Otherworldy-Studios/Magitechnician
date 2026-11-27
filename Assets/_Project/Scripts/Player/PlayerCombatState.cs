@@ -71,9 +71,13 @@ public class PlayerCombatState : MonoBehaviour
     /// <summary>Records the shot time and switches to Aiming or HipFire at once.</summary>
     private void HandleFire()
     {
+        if (_playerCameraController.IsAiming)
+        {
+            CurrentCombatState = PlayerCombatStates.Aiming;
+            return;
+        }
+
         _lastShotTime = Time.time;
-        CurrentCombatState = _playerCameraController.IsAiming
-            ? PlayerCombatStates.Aiming
-            : PlayerCombatStates.HipFire;
+        CurrentCombatState = PlayerCombatStates.HipFire;
     }
 }

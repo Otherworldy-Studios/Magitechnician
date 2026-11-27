@@ -22,8 +22,6 @@ public class GunAimer : MonoBehaviour
     [SerializeField] private Shoot _shoot;
     [Tooltip("Found in children if empty. Its Muzzle's blue (Z) axis has to point out of the barrel.")]
     [SerializeField] private Gun _gun;
-    [Tooltip("Found in children if empty. Its IsAiming turns the aim on.")]
-    [SerializeField] private PlayerCameraController _cameraController;
 
     [Tooltip("Bones turned toward the aim point, from the hips up, such as Spine 0.3, Chest 0.5, Right Hand 1. Turning the spine first keeps both hands on a two-handed gun.")]
     [SerializeField] private AimBone[] _bones = Array.Empty<AimBone>();
@@ -37,14 +35,11 @@ public class GunAimer : MonoBehaviour
 
     [Header("Aiming and Shooting")]
     [SerializeField] private PlayerCombatState _combatState;
-    [Tooltip("How long GunAimer stays active after shooting. Set to a negative value to use HipFireDuration from PlayerCombatState.")]
-    [SerializeField] private float _holdTime = -1f;
     [Tooltip("Seconds to blend fully in or out.")]
     [SerializeField, Min(0.01f)] private float _blendTime = 0.12f;
 
     private Vector3 _smoothedAimPoint;
     private bool _hasSmoothedAimPoint;
-    private float _lastShotTime = float.NegativeInfinity;
     private float _blend; // 0 while not aiming or shooting, 1 while either. Eases between them over Blend Time.
 
     private void Awake()
@@ -54,35 +49,9 @@ public class GunAimer : MonoBehaviour
 
         if (_gun == null)
             _gun = GetComponentInChildren<Gun>();
-
-        if (_cameraController == null)
-            _cameraController = GetComponentInChildren<PlayerCameraController>();
         
         if (_combatState == null)
             _combatState = GetComponentInChildren<PlayerCombatState>();
-    }
-    
-    private void Start()
-    {
-        if (_holdTime < 0f && _combatState != null)
-            _holdTime = _combatState.HipFireDuration;
-    }
-
-    private void OnEnable()
-    {
-        if (_shoot != null)
-            _shoot.OnFired += HandleFired;
-    }
-
-    private void OnDisable()
-    {
-        if (_shoot != null)
-            _shoot.OnFired -= HandleFired;
-    }
-
-    private void HandleFired()
-    {
-        _lastShotTime = Time.time;
     }
 
     // Runs after the Animator has posed the skeleton this frame, so the correction is added on top of the animation.
@@ -91,9 +60,11 @@ public class GunAimer : MonoBehaviour
         if (_shoot == null || !_shoot.HasAim || _gun == null || _gun.Muzzle == null || _weight <= 0f)
             return;
 
-        bool isAiming = _cameraController != null && _cameraController.IsAiming;
-        bool shotRecently = Time.time - _lastShotTime <= _holdTime;
-        float target = isAiming || shotRecently ? 1f : 0f;
+        bool isInCombat =
+            _combatState.CurrentCombatState == PlayerCombatStates.Aiming ||
+            _combatState.CurrentCombatState == PlayerCombatStates.HipFire;
+
+        float target = isInCombat ? 1f : 0f;
         _blend = Mathf.MoveTowards(_blend, target, Time.deltaTime / _blendTime);
 
         Vector3 aimPoint = _shoot.LastAim.AimPoint;
