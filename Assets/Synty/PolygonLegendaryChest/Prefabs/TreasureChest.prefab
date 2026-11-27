@@ -82,6 +82,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c4ce11eb466c448459fa4e1ecda0647c, type: 2}
   - {fileID: 11400000, guid: 68afb630c6dffbf4da233fee1eb54dcb, type: 2}
   - {fileID: 11400000, guid: cdb04cc649509014f9ba17ec51360bb1, type: 2}
+  - {fileID: 11400000, guid: decfdaee1d4903443929c68395417373, type: 2}
   _animator: {fileID: 0}
   _openTrigger: Open
   _closedVisual: {fileID: 0}
