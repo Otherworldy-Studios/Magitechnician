@@ -1593,6 +1593,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _deathImage: {fileID: 0}
+  _minCrystalsToGive: 20
 --- !u!114 &63745124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1881,8 +1882,6 @@ MonoBehaviour:
   _iconImage: {fileID: 2073653183}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1842267522}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &71192477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3162,8 +3161,6 @@ MonoBehaviour:
   _iconImage: {fileID: 382107087}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1268234626}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &107297271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4157,8 +4154,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1991058532}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 643991827}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &119519072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4530,8 +4525,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1068133410}
   _selectedHighlight: {fileID: 712131903}
   _rarityBorder: {fileID: 1057222028}
-  _tooltip: {fileID: 1316001511}
-  _slotType: 1
 --- !u!114 &123739371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4812,6 +4805,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemTooltip
   _name: {fileID: 2077756503}
   _description: {fileID: 980636950}
+  _rarity: {fileID: 0}
   _icon: {fileID: 1910195174}
 --- !u!114 &132505917
 MonoBehaviour:
@@ -7121,8 +7115,6 @@ MonoBehaviour:
   _iconImage: {fileID: 125960460}
   _selectedHighlight: {fileID: 192703562}
   _rarityBorder: {fileID: 1654989232}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &173215631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7927,8 +7919,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1167770359}
   _selectedHighlight: {fileID: 644617906}
   _rarityBorder: {fileID: 1288112304}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &181947909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9922,8 +9912,6 @@ MonoBehaviour:
   _iconImage: {fileID: 2003558501}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1689668285}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &249276378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11207,8 +11195,6 @@ MonoBehaviour:
   _iconImage: {fileID: 2122347916}
   _selectedHighlight: {fileID: 1637817776}
   _rarityBorder: {fileID: 159526836}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &275370418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11644,8 +11630,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1072310742}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 2010661662}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &284834413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11869,8 +11853,6 @@ MonoBehaviour:
   _iconImage: {fileID: 829903283}
   _selectedHighlight: {fileID: 276132166}
   _rarityBorder: {fileID: 714511415}
-  _tooltip: {fileID: 0}
-  _slotType: 1
 --- !u!114 &290602851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14035,8 +14017,6 @@ MonoBehaviour:
   _iconImage: {fileID: 200331221}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 166864020}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &368393615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14575,8 +14555,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1037271828}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1912282523}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &380233062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14686,8 +14664,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1687715797}
   _selectedHighlight: {fileID: 1501007409}
   _rarityBorder: {fileID: 1935027724}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &380969050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14948,8 +14924,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1450431087}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 628001026}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &391194497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16120,8 +16094,6 @@ MonoBehaviour:
   _iconImage: {fileID: 753125083}
   _selectedHighlight: {fileID: 1587928383}
   _rarityBorder: {fileID: 1774960391}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &435673897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17880,8 +17852,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1276078476}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1235494924}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &548985350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18883,8 +18853,6 @@ MonoBehaviour:
   _iconImage: {fileID: 545234474}
   _selectedHighlight: {fileID: 1375311246}
   _rarityBorder: {fileID: 1010554810}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &561213527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19910,8 +19878,6 @@ MonoBehaviour:
   _iconImage: {fileID: 888160226}
   _selectedHighlight: {fileID: 839927545}
   _rarityBorder: {fileID: 326761653}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &602818478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21854,6 +21820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemTooltip
   _name: {fileID: 2058025181}
   _description: {fileID: 20722302}
+  _rarity: {fileID: 0}
   _icon: {fileID: 1909557188}
 --- !u!114 &651916026
 MonoBehaviour:
@@ -23312,8 +23279,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1689956267}
   _selectedHighlight: {fileID: 1868395275}
   _rarityBorder: {fileID: 775412327}
-  _tooltip: {fileID: 0}
-  _slotType: 1
 --- !u!114 &712388998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24732,6 +24697,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopScreen
   _showsCursor: 1
+  _grid: {fileID: 0}
+  _slotPrefab: {fileID: 0}
+  _buyButton: {fileID: 0}
+  _buyButtonLabel: {fileID: 0}
+  _closeButton: {fileID: 0}
+  _crystalsText: {fileID: 0}
+  _messageText: {fileID: 0}
+  _priceText: {fileID: 0}
 --- !u!1 &753125081
 GameObject:
   m_ObjectHideFlags: 0
@@ -24866,8 +24839,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1174527034}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 390489157}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &761551476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26356,8 +26327,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1905775322}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 313232274}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &806771210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26763,8 +26732,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1148445319}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 652652221}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &818197323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27944,8 +27911,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1517000402}
   _selectedHighlight: {fileID: 1032030698}
   _rarityBorder: {fileID: 302738371}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &862350518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28055,8 +28020,6 @@ MonoBehaviour:
   _iconImage: {fileID: 661926933}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 9019836}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &862365040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29808,8 +29771,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1381007942}
   _selectedHighlight: {fileID: 1818642567}
   _rarityBorder: {fileID: 1755031948}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &921171569
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31656,8 +31617,6 @@ MonoBehaviour:
   _iconImage: {fileID: 2089071509}
   _selectedHighlight: {fileID: 43681295}
   _rarityBorder: {fileID: 1812503788}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &989123997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37436,8 +37395,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1685978790}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1543080735}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &1110278657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39788,8 +39745,6 @@ MonoBehaviour:
   _iconImage: {fileID: 563998038}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 928347777}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1194881279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39978,8 +39933,6 @@ MonoBehaviour:
   _iconImage: {fileID: 166941261}
   _selectedHighlight: {fileID: 1630036774}
   _rarityBorder: {fileID: 1785236328}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &1216078945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40356,8 +40309,6 @@ MonoBehaviour:
   _iconImage: {fileID: 968300022}
   _selectedHighlight: {fileID: 1995499595}
   _rarityBorder: {fileID: 968160647}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &1224204363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42714,8 +42665,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1979992832}
   _selectedHighlight: {fileID: 528389185}
   _rarityBorder: {fileID: 663128204}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1278332074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43500,6 +43449,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemTooltip
   _name: {fileID: 1645859385}
   _description: {fileID: 391513675}
+  _rarity: {fileID: 0}
   _icon: {fileID: 0}
 --- !u!114 &1316001512
 MonoBehaviour:
@@ -44211,11 +44161,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RewardScreen
   _showsCursor: 1
-  resumeButton: {fileID: 0}
-  itemGrid: {fileID: 0}
-  itemSlot1: {fileID: 0}
-  itemSlot2: {fileID: 0}
-  itemSlot3: {fileID: 0}
+  _resumeButton: {fileID: 0}
+  _skipButton: {fileID: 0}
+  _itemGrid: {fileID: 0}
+  _itemSlot1: {fileID: 0}
+  _itemSlot2: {fileID: 0}
+  _itemSlot3: {fileID: 0}
+  _errorText: {fileID: 0}
+  _gunStatsPanel: {fileID: 0}
 --- !u!1 &1375311246
 GameObject:
   m_ObjectHideFlags: 0
@@ -45285,8 +45238,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1560142735}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 110341348}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1381569748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46256,8 +46207,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1264453802}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 576606753}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &1430751209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48023,6 +47972,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopScreen
   _showsCursor: 1
+  _grid: {fileID: 0}
+  _slotPrefab: {fileID: 0}
+  _buyButton: {fileID: 0}
+  _buyButtonLabel: {fileID: 0}
+  _closeButton: {fileID: 0}
+  _crystalsText: {fileID: 0}
+  _messageText: {fileID: 0}
+  _priceText: {fileID: 0}
 --- !u!1 &1529235287
 GameObject:
   m_ObjectHideFlags: 0
@@ -48289,8 +48246,6 @@ MonoBehaviour:
   _iconImage: {fileID: 160829323}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1837106539}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1533633936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48539,8 +48494,6 @@ MonoBehaviour:
   _iconImage: {fileID: 543840710}
   _selectedHighlight: {fileID: 1163665356}
   _rarityBorder: {fileID: 2127560913}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &1540866729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52084,8 +52037,6 @@ MonoBehaviour:
   _iconImage: {fileID: 2004866677}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1283786137}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1662027793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52195,8 +52146,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1118799869}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 405840630}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1664151883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52821,8 +52770,6 @@ MonoBehaviour:
   _iconImage: {fileID: 369231467}
   _selectedHighlight: {fileID: 1940380609}
   _rarityBorder: {fileID: 696925032}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &1690207304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53228,7 +53175,11 @@ MonoBehaviour:
   _shieldBar: {fileID: 334545381}
   _currencyDisplay: {fileID: 362098805}
   _dashCooldown: {fileID: 904452847}
-  _inventory: {fileID: 0}
+  _barrelSlot: {fileID: 0}
+  _magazineSlot: {fileID: 0}
+  _scopeSlot: {fileID: 0}
+  _stockSlot: {fileID: 0}
+  _underbarrelSlot: {fileID: 0}
 --- !u!1 &1725542903
 GameObject:
   m_ObjectHideFlags: 0
@@ -54996,8 +54947,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1130349741}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1462860929}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1768243606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59367,8 +59316,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1491558312}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1645917153}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &1906327112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63325,6 +63272,10 @@ MonoBehaviour:
   _deathScreen: {fileID: 63745123}
   _winScreen: {fileID: 1053996019}
   _pauseScreen: {fileID: 1822107841}
+  _shopScreen: {fileID: 0}
+  _charmScreen: {fileID: 0}
+  _chestLootScreen: {fileID: 0}
+  _hudScreen: {fileID: 0}
   _currentState: 0
 --- !u!114 &2001066895
 MonoBehaviour:
@@ -64537,8 +64488,6 @@ MonoBehaviour:
   _iconImage: {fileID: 306892961}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 338002220}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &2036915677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64648,8 +64597,6 @@ MonoBehaviour:
   _iconImage: {fileID: 2006549445}
   _selectedHighlight: {fileID: 1828966377}
   _rarityBorder: {fileID: 170423164}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &2041026900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64759,8 +64706,6 @@ MonoBehaviour:
   _iconImage: {fileID: 1736282532}
   _selectedHighlight: {fileID: 903424097}
   _rarityBorder: {fileID: 95410254}
-  _tooltip: {fileID: 651916025}
-  _slotType: 3
 --- !u!114 &2043245243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65704,8 +65649,6 @@ MonoBehaviour:
   _iconImage: {fileID: 160529866}
   _selectedHighlight: {fileID: 0}
   _rarityBorder: {fileID: 1927937488}
-  _tooltip: {fileID: 0}
-  _slotType: 0
 --- !u!114 &2066455389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68705,6 +68648,86 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 661960749120884419, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 661960749120884419, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 661960749120884419, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 661960749120884419, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 828215664037642427, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 828215664037642427, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 828215664037642427, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 828215664037642427, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3183883452754106387, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3183883452754106387, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3183883452754106387, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3183883452754106387, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972643775522966321, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972643775522966321, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972643775522966321, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972643775522966321, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287711742597085954, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287711742597085954, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287711742597085954, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4287711742597085954, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4361185353812026739, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -68749,11 +68772,132 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5023615144491540216, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023615144491540216, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023615144491540216, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023615144491540216, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5063486794273625804, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5063486794273625804, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5063486794273625804, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5063486794273625804, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5513135224544621481, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5513135224544621481, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5513135224544621481, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5513135224544621481, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698164502065581071, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698164502065581071, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698164502065581071, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6698164502065581071, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afe123071108c9642a5f66b8003c8df0, type: 3}
+--- !u!1001 &4605675603854826701
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7923070401229855370, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8980205761218506036, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
+      propertyPath: m_Name
+      value: TornPaperOfMagicSpellbook
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab80c304325633c4789a7bd4e661fbff, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -68766,3 +68910,4 @@ SceneRoots:
   - {fileID: 2001066898}
   - {fileID: 2098731976}
   - {fileID: 2139014045}
+  - {fileID: 4605675603854826701}

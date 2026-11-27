@@ -17,7 +17,9 @@ public class PlayerAbilities : MonoBehaviour
     }
 
     [Title("Ability Testing")]
-    [SerializeField] private GunPart _testItem;
+    [SerializeField] private GunPart _testGunPart;
+    [SerializeField] private Consumable _testConsumable;
+    [SerializeField] private Charm _testCharm;
     [SerializeField] private float _testDuration = 5f;
 
     private readonly List<AbilityEntry> _abilities = new();
@@ -141,25 +143,52 @@ public class PlayerAbilities : MonoBehaviour
     /// <summary>
     /// Adds the selected test item's ability for the specified duration.
     /// </summary>
-    [Button("Add Test Item")]
+    [Button("Add Test Gun Part")]
     [EnableIf("@UnityEngine.Application.isPlaying")]
-    private void AddTestItem()
+    private void AddTestGunPart()
     {
-        if (!_testItem) return;
+        if (!_testGunPart) return;
 
-        Add(_testItem, _testDuration);
+        Add(_testGunPart, _testDuration);
+    }
+    
+    /// <summary>
+    /// Adds the selected test item's ability for the specified duration.
+    /// </summary>
+    [Button("Add Test Charm")]
+    [EnableIf("@UnityEngine.Application.isPlaying")]
+    private void AddTestCharm()
+    {
+        if (!_testCharm) return;
+
+        Add(_testCharm, _testDuration);
+    }
+    
+    /// <summary>
+    /// Adds the selected test item's ability for the specified duration.
+    /// </summary>
+    [Button("Add Test Consumable")]
+    [EnableIf("@UnityEngine.Application.isPlaying")]
+    private void AddTestConsumable()
+    {
+        if (!_testConsumable) return;
+
+        Add(_testConsumable, _testDuration);
     }
 
     /// <summary>
     /// Removes an ability associated with the selected test item.
     /// </summary>
-    [Button("Remove Test Item")]
+    [Button("Remove Test Items")]
     [EnableIf("@UnityEngine.Application.isPlaying")]
-    private void RemoveTestItem()
+    private void RemoveTestItems()
     {
-        if (!_testItem) return;
-
-        Remove(_testItem);
+        if (_testGunPart)
+            Remove(_testGunPart);
+        else if (_testCharm)
+            Remove(_testCharm);
+        else if (_testConsumable)
+            Remove(_testConsumable);
     }
 
     #endregion
