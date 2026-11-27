@@ -155,7 +155,11 @@ public class HealthBar : MonoBehaviour
         _targetHealth = HealthPercent();
         UpdateCounter();
         OnHealthChanged(_targetHealth);
-        _damageFeedback.PlayFeedbacks();
+
+        if (_damageFeedback != null)
+        {
+            _damageFeedback.PlayFeedbacks();
+        }
     }
 
     private void HandleGhostHealthChange(float ghostHealth)
