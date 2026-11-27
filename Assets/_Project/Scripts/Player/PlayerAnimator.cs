@@ -27,6 +27,7 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Dash _playerDash;
     [SerializeField] private Shoot _shoot;
     [SerializeField] private PlayerCombatState _combatState;
+    [SerializeField] private LeftHandIK _leftHandIK;
 
     // Animator parameter IDs. Static readonly, so they're named like constants.
     private static readonly int MoveX = Animator.StringToHash("MoveX");
@@ -79,6 +80,8 @@ public class PlayerAnimator : MonoBehaviour
             _shoot = FindFirstObjectByType<Shoot>();
         if (!_combatState)
             _combatState = FindFirstObjectByType<PlayerCombatState>();
+        if (!_leftHandIK)
+            _leftHandIK = GetComponentInChildren<LeftHandIK>();
         
         _layerIndex = _animator.GetLayerIndex(_layerName);
     }
@@ -103,6 +106,7 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetInteger(CombatState, (int)_combatState.CurrentCombatState);
         
         UpdateLayerWeight();
+        HandleIK();
     }
     
     /// <summary>Smoothly adjusts the animation layer weight based on combat state.</summary>
@@ -135,6 +139,17 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetFloat(DashY, localDirection.z);
 
         _animator.SetTrigger(DashTrigger);
+    }
+    
+    private void HandleIK()
+    {
+        bool isInCombat =
+            _combatState.CurrentCombatState == PlayerCombatStates.Aiming ||
+            _combatState.CurrentCombatState == PlayerCombatStates.HipFire;
+
+        bool useIK = _playerMovement.IsGrounded && isInCombat;
+
+        _leftHandIK.SetWeight(useIK ? 1f : 0f);
     }
 
     /// <summary>Triggers the jump animation. Runs on PlayerMovement.OnJumped.</summary>
