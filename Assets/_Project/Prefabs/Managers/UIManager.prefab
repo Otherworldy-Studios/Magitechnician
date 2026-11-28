@@ -43230,11 +43230,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5663853943508573297, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5663853943508573297, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayUI
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5663853943508573297, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -43427,11 +43427,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5663853943508573297, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5663853943508573297, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayUI
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5663853943508573297, guid: 72f0ec0ac8b931c498594e189c6f6d64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

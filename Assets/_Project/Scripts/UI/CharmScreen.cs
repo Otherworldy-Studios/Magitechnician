@@ -182,10 +182,12 @@ public class CharmScreen : UIScreen
         if (_inventory.EquippedCharms.Contains(charm))
         {
             _inventory.UnequipCharm(charm);
+            SoundController.Instance.PlayUI("UI Confirm");
             SetMessage("");
         }
         else if (_inventory.EquipCharm(charm))
         {
+            SoundController.Instance.PlayUI("UI Confirm");
             SetMessage("");
         }
         else

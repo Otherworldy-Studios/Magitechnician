@@ -82,3 +82,8 @@ MonoBehaviour:
   _uiSounds:
   - _name: UI Click
     _soundData: {fileID: 11400000, guid: befc4c35c172f2249b71636696125fa7, type: 2}
+  - _name: UI Confirm
+    _soundData: {fileID: 11400000, guid: befc4c35c172f2249b71636696125fa7, type: 2}
+  - _name: UI Buy Confirm
+    _soundData: {fileID: 11400000, guid: befc4c35c172f2249b71636696125fa7, type: 2}
+  _musicFadeDuration: 1

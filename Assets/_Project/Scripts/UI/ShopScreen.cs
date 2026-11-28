@@ -150,6 +150,7 @@ public class ShopScreen : UIScreen
         switch (result)
         {
             case Shop.BuyResult.Bought:
+                SoundController.Instance.PlayUI("UI Buy Confirm");
                 SetMessage($"Bought {charm.DisplayName}.");
                 Refresh();
                 break;

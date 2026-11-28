@@ -123,6 +123,7 @@ public class RewardScreen : UIScreen
             return;
         }
 
+        SoundController.Instance.PlayUI("UI Confirm");
         Close();
     }
 
