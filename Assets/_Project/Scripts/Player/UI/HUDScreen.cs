@@ -1,4 +1,5 @@
 using System;
+using _Project.Scripts.Dungeon;
 using UnityEngine;
 
 /// <summary>The in-game HUD: health, shield, dash cooldown, and crystals.</summary>
@@ -40,10 +41,16 @@ public class HUDScreen : UIScreen
 
         GameManager.Instance.OnPlayerRegistered += BindGun;
         GameManager.Instance.OnRoomClear += EnableRoomClearBanner;
+        GameManager.Instance.OnRoomEntered += ForceHideRoomClearBanner;
 
         GameObject player = GameManager.Instance.Player;
         if (player != null) BindGun(player.GetComponent<PlayerRoot>());
         else RefreshParts();
+    }
+
+    private void ForceHideRoomClearBanner(Room _)
+    {
+        _roomClearedBanner.gameObject.SetActive(false);
     }
 
     private void EnableRoomClearBanner()
