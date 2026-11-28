@@ -18,6 +18,7 @@ public class CrosshairUI : MonoBehaviour
     [SerializeField] private float _pulseDistance = 10f;
     [SerializeField] private float _pulseHoldTime = 0.06f;
     [SerializeField] private float _recoveryDuration = 0.12f;
+    [SerializeField] private float _jiggleDistance = 2f;
     
     [Header("Hit Marker")]
     [SerializeField] private Image _hitMarker;
@@ -28,6 +29,7 @@ public class CrosshairUI : MonoBehaviour
 
     private float _lastShotTime;
     private float _currentPulse;
+    private bool _jiggleAtMax;
     private Gun _gun;
 
     private void Awake()
@@ -52,15 +54,29 @@ public class CrosshairUI : MonoBehaviour
 
         float elapsed = Time.time - _lastShotTime;
 
-        if (elapsed < _pulseHoldTime) return;
+        if (elapsed < _pulseHoldTime)
+        {
+            if (_jiggleAtMax)
+            {
+                float progress = elapsed / _pulseHoldTime;
 
-        float progress = (elapsed - _pulseHoldTime)
+                _currentPulse = Mathf.Max(0f,
+                    _pulseDistance -
+                    Mathf.Sin(progress * Mathf.PI) * _jiggleDistance
+                );
+            }
+
+            UpdateSpread();
+            return;
+        }
+
+        float recovery = (elapsed - _pulseHoldTime)
                          / Mathf.Max(0.001f, _recoveryDuration);
 
         _currentPulse = Mathf.SmoothStep(
             _pulseDistance,
             0f,
-            Mathf.Clamp01(progress)
+            Mathf.Clamp01(recovery)
         );
 
         UpdateSpread();
@@ -108,6 +124,8 @@ public class CrosshairUI : MonoBehaviour
 
     private void HandleFired()
     {
+        _jiggleAtMax = _currentPulse >= _pulseDistance * 0.8f;
+
         _lastShotTime = Time.time;
         _currentPulse = _pulseDistance;
 

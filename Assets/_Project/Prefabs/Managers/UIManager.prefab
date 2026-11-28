@@ -16247,7 +16247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7208189328394727708
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16265,7 +16265,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 30, y: 30}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2762480186088894088
 CanvasRenderer:
@@ -16425,7 +16425,7 @@ MonoBehaviour:
   PerformanceMode: 0
   RestoreInitialValuesOnDisable: 0
   StopFeedbacksOnDisable: 0
-  PlayCount: 0
+  PlayCount: 10
   MMF_ChannelMode: 0
   MMF_Channel: 0
   MMF_ChannelDefinition: {fileID: 0}
@@ -16453,7 +16453,7 @@ MonoBehaviour:
           NumberOfRepeats: 0
           RepeatForever: 0
           DelayBetweenRepeats: 1
-          PlayCount: 0
+          PlayCount: 10
           LimitPlayCount: 0
           MaxPlayCount: 3
           SetPlayCountToZeroOnReset: 0
@@ -27028,8 +27028,9 @@ MonoBehaviour:
   _baseDistance: 10
   _spreadMultiplier: 2
   _pulseDistance: 10
-  _pulseHoldTime: 0.06
+  _pulseHoldTime: 0.15
   _recoveryDuration: 0.12
+  _jiggleDistance: 2
   _hitMarker: {fileID: 8060192049348277056}
   _hitFeedback: {fileID: 1643437954980501787}
   _killMarkerMultiplier: 1.4
