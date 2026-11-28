@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 public class CrosshairUI : MonoBehaviour
 {
@@ -14,14 +16,24 @@ public class CrosshairUI : MonoBehaviour
 
     [Header("Shot Pulse")]
     [SerializeField] private float _pulseDistance = 10f;
-    [SerializeField] private float _recoverySpeed = 60f;
+    [SerializeField] private float _pulseHoldTime = 0.06f;
+    [SerializeField] private float _recoveryDuration = 0.12f;
+    
+    [Header("Hit Marker")]
+    [SerializeField] private Image _hitMarker;
+    [SerializeField] private MMF_Player _hitFeedback;
+    [SerializeField] private float _killMarkerMultiplier = 1.4f;
 
+    private Vector3 _hitMarkerBaseScale;
+
+    private float _lastShotTime;
     private float _currentPulse;
     private Gun _gun;
 
     private void Awake()
     {
         GameManager.Instance.OnPlayerRegistered += HandlePlayerRegistered;
+        _hitMarkerBaseScale = _hitMarker.rectTransform.localScale;
     }
 
     private void Start()
@@ -36,16 +48,22 @@ public class CrosshairUI : MonoBehaviour
 
     private void Update()
     {
-        if (_currentPulse > 0f)
-        {
-            _currentPulse = Mathf.MoveTowards(
-                _currentPulse,
-                0f,
-                _recoverySpeed * Time.deltaTime
-            );
+        if (_currentPulse <= 0f) return;
 
-            UpdateSpread();
-        }
+        float elapsed = Time.time - _lastShotTime;
+
+        if (elapsed < _pulseHoldTime) return;
+
+        float progress = (elapsed - _pulseHoldTime)
+                         / Mathf.Max(0.001f, _recoveryDuration);
+
+        _currentPulse = Mathf.SmoothStep(
+            _pulseDistance,
+            0f,
+            Mathf.Clamp01(progress)
+        );
+
+        UpdateSpread();
     }
 
     private void OnDestroy()
@@ -70,6 +88,7 @@ public class CrosshairUI : MonoBehaviour
 
         _gun.OnFired += HandleFired;
         _gun.OnStatsChanged += UpdateSpread;
+        _gun.OnDamageDealt += HandleDamageDealt;
 
         UpdateSpread();
     }
@@ -80,6 +99,7 @@ public class CrosshairUI : MonoBehaviour
         {
             _gun.OnFired -= HandleFired;
             _gun.OnStatsChanged -= UpdateSpread;
+            _gun.OnDamageDealt -= HandleDamageDealt;
         }
 
         _gun = null;
@@ -88,7 +108,9 @@ public class CrosshairUI : MonoBehaviour
 
     private void HandleFired()
     {
+        _lastShotTime = Time.time;
         _currentPulse = _pulseDistance;
+
         UpdateSpread();
     }
 
@@ -104,5 +126,58 @@ public class CrosshairUI : MonoBehaviour
         _bottom.anchoredPosition = new Vector2(0, -distance);
         _left.anchoredPosition = new Vector2(-distance, 0);
         _right.anchoredPosition = new Vector2(distance, 0);
+    }
+    
+    private void HandleDamageDealt(GameObject target, DamageInfo damageInfo)
+    {
+        Debug.Log("Crosshair received OnDamageDealt");
+
+        if (target == null || !isActiveAndEnabled) return;
+
+        Debug.Log("Hit target: " + target.name);
+        Debug.Log("Hit feedback assigned: " + (_hitFeedback != null));
+        Debug.Log("Hit marker assigned: " + (_hitMarker != null));
+
+        EnemyBase enemy = target.GetComponentInParent<EnemyBase>();
+
+        if (enemy == null)
+        {
+            Debug.Log("EnemyBase not found");
+            return;
+        }
+
+        Health health = enemy.GetComponentInChildren<Health>(true);
+
+        if (health == null)
+        {
+            Debug.Log("Health not found");
+            return;
+        }
+
+        Debug.Log("Enemy health: " + health.CurrentHealth);
+
+        if (_hitFeedback == null || _hitMarker == null) return;
+
+        _hitFeedback.StopFeedbacks();
+        _hitFeedback.RestoreInitialValues();
+
+        if (health.CurrentHealth <= 0)
+        {
+            _hitMarker.color = Color.red;
+
+            _hitMarker.rectTransform.localScale =
+                _hitMarkerBaseScale * _killMarkerMultiplier;
+        }
+        else
+        {
+            _hitMarker.color = Color.white;
+
+            _hitMarker.rectTransform.localScale =
+                _hitMarkerBaseScale;
+        }
+
+        Debug.Log("Playing hit marker feedback");
+
+        _hitFeedback.PlayFeedbacks();
     }
 }
