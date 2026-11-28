@@ -1,0 +1,297 @@
+fileFormatVersion: 2
+guid: b00a081a0e74ef54b856b9d27abe2d3b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_2
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 1061
+        width: 206
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2900f203089e1748bd1923325005f56
+      internalID: -2064522105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_5
+      rect:
+        serializedVersion: 2
+        x: 1475
+        y: 947
+        width: 465
+        height: 155
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86872e178029d7843b7399bf392062d4
+      internalID: -1644045500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_11
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 1005
+        width: 40
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43da9d7d84bc9634b9c6677b329610ac
+      internalID: 1494923160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_17
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 909
+        width: 206
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7a66e1aa9202c0144be73b7b0e73d934
+      internalID: 1200564838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_21
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 302
+        width: 462
+        height: 79
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fa38be79f8838a4d9b155d076e6b435
+      internalID: -1476058125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_22
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 307
+        width: 440
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0842b9a715ddc9847bd65882b9118a5d
+      internalID: 1898283065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_23
+      rect:
+        serializedVersion: 2
+        x: 1420
+        y: 248
+        width: 578
+        height: 183
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7092182691a754a449c3bb8c561b0b64
+      internalID: 1419314323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 3c9ce14aaa739c1459eadf79ded05301
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_0: 953310075
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_1: -628231229
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_10: 186018169
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_11: 1494923160
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_12: -44840159
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_13: -1491161917
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_14: 420319448
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_15: -353825262
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_16: -2090910046
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_17: 1200564838
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_18: 1966446786
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_19: -1682081246
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_2: -2064522105
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_20: -168843632
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_21: -1476058125
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_22: 1898283065
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_23: 1419314323
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_3: 181452787
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_4: -15772421
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_5: -1644045500
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_6: 2076952897
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_7: 944920724
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_8: 247968643
+      Spritesheet_of_Text_Panel_Scroll_Bar_and_Slider_9: -755741655
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,697 @@
+fileFormatVersion: 2
+guid: b6920dac467cc07408975697376371f7
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_0
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 1227
+        width: 217
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8454423a176331b4d8122d73454701ab
+      internalID: -1453716676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_4
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 1226
+        width: 218
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a81c5d6c1002234e974e09669b55181
+      internalID: 1901346244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_5
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1227
+        width: 35
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3a7c68a48ce85c489b4248502676072
+      internalID: -1938498739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_6
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 1225
+        width: 32
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8af44eecd37af5e47babd364f014b5b6
+      internalID: 464347713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_7
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 1227
+        width: 33
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0337623bbe2a66843bd65aaf17d61afd
+      internalID: 1365406349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_8
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 1227
+        width: 35
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28e98b39a447c504ca81d8729b4d6fde
+      internalID: 239449781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_9
+      rect:
+        serializedVersion: 2
+        x: 1006
+        y: 1171
+        width: 63
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c95fbd3580a276940aa0d39e9a3361bb
+      internalID: 1835484173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_10
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 978
+        width: 55
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bbc3e7523af0e947923d9ba711bde7e
+      internalID: 1028422107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_11
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 979
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6bd726e9fd976eb45a3cf03bb5efefd5
+      internalID: 1759450867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_12
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 979
+        width: 52
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 370318f04cbb4f541a3fbb4d16971e20
+      internalID: 1850760511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_13
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 978
+        width: 55
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae9a2547dd9bc1d40a47aaab710ab4c8
+      internalID: 2127322208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_14
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 995
+        width: 218
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 23eb88161d5b9d041912c06acd888a96
+      internalID: -55163158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_15
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 994
+        width: 35
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb2613ebb890b7443927b9551555afef
+      internalID: 422440697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_16
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 994
+        width: 32
+        height: 21
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee2cb570719b12042a7fbc39784071d0
+      internalID: 552390756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_17
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 994
+        width: 33
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e469d3ee654988d438eaff925d73301d
+      internalID: -1275707630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_18
+      rect:
+        serializedVersion: 2
+        x: 863
+        y: 994
+        width: 35
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4535bf19be6a8564a95e2a98a11b1cbe
+      internalID: -1571214273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_19
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 851
+        width: 108
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aec95055dfda2d443bf001d78857d4e0
+      internalID: -1877889624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_20
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 645
+        width: 62
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e7d1267aa774114ab25e23be627d781
+      internalID: 1804606047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_21
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 645
+        width: 108
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fae0a5f4b48b3a4a8171eb7c1e877cc
+      internalID: 37080866
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_22
+      rect:
+        serializedVersion: 2
+        x: 851
+        y: 654
+        width: 62
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dac1860f4568de14e857925e65d646e8
+      internalID: -1976951075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_23
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 426
+        width: 58
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2eb2f54b07ef5fc4db5d5ce7aa937918
+      internalID: 193806617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_24
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 426
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1acbdc9f0109a3c4186324b49e4e3aac
+      internalID: -1396797615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_25
+      rect:
+        serializedVersion: 2
+        x: 851
+        y: 426
+        width: 58
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0ad9e5f0f823ff469666666a921b1d6
+      internalID: -768151571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_26
+      rect:
+        serializedVersion: 2
+        x: 1171
+        y: 531
+        width: 63
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6db0f967565655e4ab290f9712a79559
+      internalID: -1103133920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_of_Panel_and_its_Gears_27
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 5
+        width: 228
+        height: 308
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 619f422f98d9eec4c9d73e3261048b6a
+      internalID: 759589085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: be459dc0185a8584e9b1dc5d3a590424
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Spritesheet_of_Panel_and_its_Gears_0: -1453716676
+      Spritesheet_of_Panel_and_its_Gears_1: 1754652744
+      Spritesheet_of_Panel_and_its_Gears_10: 1028422107
+      Spritesheet_of_Panel_and_its_Gears_11: 1759450867
+      Spritesheet_of_Panel_and_its_Gears_12: 1850760511
+      Spritesheet_of_Panel_and_its_Gears_13: 2127322208
+      Spritesheet_of_Panel_and_its_Gears_14: -55163158
+      Spritesheet_of_Panel_and_its_Gears_15: 422440697
+      Spritesheet_of_Panel_and_its_Gears_16: 552390756
+      Spritesheet_of_Panel_and_its_Gears_17: -1275707630
+      Spritesheet_of_Panel_and_its_Gears_18: -1571214273
+      Spritesheet_of_Panel_and_its_Gears_19: -1877889624
+      Spritesheet_of_Panel_and_its_Gears_2: -856498850
+      Spritesheet_of_Panel_and_its_Gears_20: 1804606047
+      Spritesheet_of_Panel_and_its_Gears_21: 37080866
+      Spritesheet_of_Panel_and_its_Gears_22: -1976951075
+      Spritesheet_of_Panel_and_its_Gears_23: 193806617
+      Spritesheet_of_Panel_and_its_Gears_24: -1396797615
+      Spritesheet_of_Panel_and_its_Gears_25: -768151571
+      Spritesheet_of_Panel_and_its_Gears_26: -1103133920
+      Spritesheet_of_Panel_and_its_Gears_27: 759589085
+      Spritesheet_of_Panel_and_its_Gears_3: -2094269642
+      Spritesheet_of_Panel_and_its_Gears_4: 1901346244
+      Spritesheet_of_Panel_and_its_Gears_5: -1938498739
+      Spritesheet_of_Panel_and_its_Gears_6: 464347713
+      Spritesheet_of_Panel_and_its_Gears_7: 1365406349
+      Spritesheet_of_Panel_and_its_Gears_8: 239449781
+      Spritesheet_of_Panel_and_its_Gears_9: 1835484173
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

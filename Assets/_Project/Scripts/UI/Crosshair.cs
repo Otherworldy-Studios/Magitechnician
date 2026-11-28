@@ -1,0 +1,182 @@
+using UnityEngine;
+using UnityEngine.UI;
+using MoreMountains.Feedbacks;
+
+public class CrosshairUI : MonoBehaviour
+{
+    [Header("Crosshair Arms")]
+    [SerializeField] private RectTransform _top;
+    [SerializeField] private RectTransform _bottom;
+    [SerializeField] private RectTransform _left;
+    [SerializeField] private RectTransform _right;
+
+    [Header("Spread")]
+    [SerializeField] private float _baseDistance = 15f;
+    [SerializeField] private float _spreadMultiplier = 3f;
+
+    [Header("Shot Pulse")]
+    [SerializeField] private float _pulseDistance = 10f;
+    [SerializeField] private float _pulseHoldTime = 0.06f;
+    [SerializeField] private float _recoveryDuration = 0.12f;
+    [SerializeField] private float _jiggleDistance = 2f;
+    
+    [Header("Hit Marker")]
+    [SerializeField] private Image _hitMarker;
+    [SerializeField] private MMF_Player _hitFeedback;
+    [SerializeField] private float _killMarkerMultiplier = 1.4f;
+
+    private Vector3 _hitMarkerBaseScale;
+
+    private float _lastShotTime;
+    private float _currentPulse;
+    private bool _jiggleAtMax;
+    private Gun _gun;
+
+    private void Awake()
+    {
+        GameManager.Instance.OnPlayerRegistered += HandlePlayerRegistered;
+        _hitMarkerBaseScale = _hitMarker.rectTransform.localScale;
+    }
+
+    private void Start()
+    {
+        if (GameManager.Instance.Player != null)
+        {
+            HandlePlayerRegistered(
+                GameManager.Instance.Player.GetComponent<PlayerRoot>()
+            );
+        }
+    }
+
+    private void Update()
+    {
+        if (_currentPulse <= 0f) return;
+
+        float elapsed = Time.time - _lastShotTime;
+
+        if (elapsed < _pulseHoldTime)
+        {
+            if (_jiggleAtMax)
+            {
+                float progress = elapsed / _pulseHoldTime;
+
+                _currentPulse = Mathf.Max(0f,
+                    _pulseDistance -
+                    Mathf.Sin(progress * Mathf.PI) * _jiggleDistance
+                );
+            }
+
+            UpdateSpread();
+            return;
+        }
+
+        float recovery = (elapsed - _pulseHoldTime)
+                         / Mathf.Max(0.001f, _recoveryDuration);
+
+        _currentPulse = Mathf.SmoothStep(
+            _pulseDistance,
+            0f,
+            Mathf.Clamp01(recovery)
+        );
+
+        UpdateSpread();
+    }
+
+    private void OnDestroy()
+    {
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.OnPlayerRegistered -= HandlePlayerRegistered;
+        }
+
+        Unbind();
+    }
+
+    private void HandlePlayerRegistered(PlayerRoot player)
+    {
+        Unbind();
+
+        if (player == null) return;
+
+        _gun = player.Gun;
+
+        if (_gun == null) return;
+
+        _gun.OnFired += HandleFired;
+        _gun.OnStatsChanged += UpdateSpread;
+        _gun.OnDamageDealt += HandleDamageDealt;
+
+        UpdateSpread();
+    }
+
+    private void Unbind()
+    {
+        if (_gun != null)
+        {
+            _gun.OnFired -= HandleFired;
+            _gun.OnStatsChanged -= UpdateSpread;
+            _gun.OnDamageDealt -= HandleDamageDealt;
+        }
+
+        _gun = null;
+        _currentPulse = 0f;
+    }
+
+    private void HandleFired()
+    {
+        _jiggleAtMax = _currentPulse >= _pulseDistance * 0.8f;
+
+        _lastShotTime = Time.time;
+        _currentPulse = _pulseDistance;
+
+        UpdateSpread();
+    }
+
+    private void UpdateSpread()
+    {
+        if (_gun == null) return;
+
+        float distance = _baseDistance
+            + (_gun.Spread * _spreadMultiplier)
+            + _currentPulse;
+
+        _top.anchoredPosition = new Vector2(0, distance);
+        _bottom.anchoredPosition = new Vector2(0, -distance);
+        _left.anchoredPosition = new Vector2(-distance, 0);
+        _right.anchoredPosition = new Vector2(distance, 0);
+    }
+    
+    private void HandleDamageDealt(GameObject target, DamageInfo damageInfo)
+    {
+        if (target == null || !isActiveAndEnabled) return;
+        if (_hitFeedback == null || _hitMarker == null) return;
+
+        EnemyBase enemy = target.GetComponentInParent<EnemyBase>();
+
+        if (enemy == null) return;
+
+        Health health = enemy.GetComponentInChildren<Health>(true);
+
+        if (health == null) return;
+
+        _hitFeedback.StopFeedbacks();
+        _hitFeedback.RestoreInitialValues();
+
+        if (health.CurrentHealth <= 0)
+        {
+            _hitMarker.color = Color.red;
+
+            _hitMarker.rectTransform.localScale =
+                _hitMarkerBaseScale * _killMarkerMultiplier;
+        }
+        else
+        {
+            _hitMarker.color = Color.white;
+
+            _hitMarker.rectTransform.localScale =
+                _hitMarkerBaseScale;
+        }
+
+        _hitFeedback.PlayFeedbacks();
+    }
+}

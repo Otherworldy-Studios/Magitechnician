@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 /// <summary>
 /// The Hub shop screen, where the player buys charms with crystals. UIManager.OpenShop shows it. Lists the charms
@@ -28,6 +29,8 @@ public class ShopScreen : UIScreen
     [SerializeField] private TMP_Text _messageText;
     [Tooltip("The selected charm's price. Empty when nothing is selected.")]
     [SerializeField] private TMP_Text _priceText;
+    
+    [SerializeField] private MMF_Player _errorFeedback;
 
     private readonly List<ItemSlotUI> _slots = new(); // Created as needed and reused. Extra slots are turned off.
     private Shop _shop;
@@ -150,17 +153,18 @@ public class ShopScreen : UIScreen
         switch (result)
         {
             case Shop.BuyResult.Bought:
+                SoundController.Instance.PlayUI("UI Buy Confirm");
                 SetMessage($"Bought {charm.DisplayName}.");
                 Refresh();
                 break;
             case Shop.BuyResult.NotEnoughCrystals:
-                SetMessage("Not enough crystals.");
+                ShowError("Not enough crystals.");
                 break;
             case Shop.BuyResult.NoRoom:
-                SetMessage("You can't carry that charm.");
+                ShowError("You can't carry that charm.");
                 break;
             case Shop.BuyResult.NotInStock:
-                SetMessage("That charm is sold out.");
+                ShowError("That charm is sold out.");
                 Refresh();
                 break;
         }
@@ -210,5 +214,18 @@ public class ShopScreen : UIScreen
 
         PlayerRoot root = GameManager.Instance.Player.GetComponent<PlayerRoot>();
         return root != null ? root.Inventory : null;
+    }
+    
+    //Replaces direct editing of the error text with giving the given text in string and handling sound
+    private void ShowError(string message)
+    {
+        SetMessage(message);
+
+        SoundController.Instance.PlayUI("UI Error");
+
+        if (_errorFeedback != null)
+        {
+            _errorFeedback.PlayFeedbacks();
+        }
     }
 }

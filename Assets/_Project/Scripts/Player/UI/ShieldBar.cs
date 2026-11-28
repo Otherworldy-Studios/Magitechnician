@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 /// <summary>Shows the player's shield as a fill and a number. The fill eases toward the new value.</summary>
 // Connects to each player GameManager registers, because the HUD lives in the persistent UI while each scene has its
@@ -12,6 +13,7 @@ public class ShieldBar : MonoBehaviour
     [SerializeField] private ShieldSystem _shieldSystem;
     [SerializeField] private Image _fill;
     [SerializeField] private TMP_Text _shieldCounter;
+    [SerializeField] private MMF_Player _shieldBreakFeedback;
 
     [Header("Settings")]
     [Tooltip("Seconds the fill takes to catch up.")]
@@ -62,8 +64,9 @@ public class ShieldBar : MonoBehaviour
         if (_shieldSystem == null) return;
 
         _shieldSystem.OnShieldDamaged += HandleShieldDamaged;
-        _shieldSystem.OnShieldHealed += Refresh;
+        _shieldSystem.OnShieldHealed += HandleShieldHealed;
         _shieldSystem.OnMaxShieldChanged += Refresh;
+        _shieldSystem.OnShieldBroken += HandleShieldBroken;
 
         // Snap to the new player's shield with no smoothing.
         Refresh();
@@ -77,8 +80,9 @@ public class ShieldBar : MonoBehaviour
         if (_shieldSystem != null)
         {
             _shieldSystem.OnShieldDamaged -= HandleShieldDamaged;
-            _shieldSystem.OnShieldHealed -= Refresh;
+            _shieldSystem.OnShieldHealed -= HandleShieldHealed;
             _shieldSystem.OnMaxShieldChanged -= Refresh;
+            _shieldSystem.OnShieldBroken -= HandleShieldBroken;
         }
 
         _shieldSystem = null;
@@ -97,6 +101,17 @@ public class ShieldBar : MonoBehaviour
     {
         Refresh();
     }
+    
+    private void HandleShieldHealed()
+    {
+        Refresh();
+
+        if (_shieldBreakFeedback != null)
+        {
+            _shieldBreakFeedback.StopFeedbacks();
+            _shieldBreakFeedback.RestoreInitialValues();
+        }
+    }
 
     /// <summary>Sets the new target and number. Runs on OnShieldDamaged, OnShieldHealed, and OnMaxShieldChanged.</summary>
     private void Refresh()
@@ -106,5 +121,13 @@ public class ShieldBar : MonoBehaviour
         float maxShield = _shieldSystem.MaxShield;
         _targetShield = maxShield > 0f ? _shieldSystem.CurrentShield / maxShield : 0f;
         _shieldCounter.text = _shieldSystem.CurrentShield.ToString("F0");
+    }
+    
+    private void HandleShieldBroken()
+    {
+        if (_shieldBreakFeedback != null)
+        {
+            _shieldBreakFeedback.PlayFeedbacks();
+        }
     }
 }

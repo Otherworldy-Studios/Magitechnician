@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 /// <summary>Shows the player's health as a fill and a number. The fill eases toward the new value.</summary>
 // Connects to each player GameManager registers, because the HUD lives in the persistent UI while each scene has its
@@ -19,6 +20,8 @@ public class HealthBar : MonoBehaviour
     [Header("Settings")]
     [Tooltip("Seconds the fill takes to catch up.")]
     [SerializeField] private float _smoothDuration = 0.08f;
+    
+    [SerializeField] private MMF_Player _damageFeedback;
 
     private float _visualHealth = 1f; // The fill shown now, from 0 to 1.
     private float _targetHealth = 1f; // The fill to ease toward: current health over max health.
@@ -152,6 +155,11 @@ public class HealthBar : MonoBehaviour
         _targetHealth = HealthPercent();
         UpdateCounter();
         OnHealthChanged(_targetHealth);
+
+        if (_damageFeedback != null)
+        {
+            _damageFeedback.PlayFeedbacks();
+        }
     }
 
     private void HandleGhostHealthChange(float ghostHealth)

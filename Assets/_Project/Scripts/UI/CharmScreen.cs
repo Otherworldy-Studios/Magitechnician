@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 /// <summary>
 /// The charm screen, where the player equips charms into charm slots. CharmStation opens it through
@@ -30,6 +31,8 @@ public class CharmScreen : UIScreen
     [SerializeField] private TMP_Text _slotsText;
     [Tooltip("Why the last equip didn't work.")]
     [SerializeField] private TMP_Text _messageText;
+    
+    [SerializeField] private MMF_Player _errorFeedback;
 
     // Created as needed and reused for each grid. Extra slots are turned off.
     private readonly List<ItemSlotUI> _ownedSlots = new();
@@ -182,15 +185,17 @@ public class CharmScreen : UIScreen
         if (_inventory.EquippedCharms.Contains(charm))
         {
             _inventory.UnequipCharm(charm);
+            SoundController.Instance.PlayUI("UI Confirm");
             SetMessage("");
         }
         else if (_inventory.EquipCharm(charm))
         {
+            SoundController.Instance.PlayUI("UI Confirm");
             SetMessage("");
         }
         else
         {
-            SetMessage("No free charm slots.");
+            ShowError("No free charm slots.");
         }
     }
 
@@ -248,5 +253,18 @@ public class CharmScreen : UIScreen
 
         PlayerRoot root = GameManager.Instance.Player.GetComponent<PlayerRoot>();
         return root != null ? root.Inventory : null;
+    }
+    
+    //Replaces direct editing of the error text with giving the given text in string and handling sound
+    private void ShowError(string message)
+    {
+        SetMessage(message);
+
+        SoundController.Instance.PlayUI("UI Error");
+
+        if (_errorFeedback != null)
+        {
+            _errorFeedback.PlayFeedbacks();
+        }
     }
 }

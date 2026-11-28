@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 /// <summary>
 /// One item slot in the UI. Shows an item's icon with a border in its rarity color, and highlights when selected.
@@ -18,6 +19,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject _selectedHighlight;
     [Tooltip("Colored from GlobalSettings.RarityColorSettings.")]
     [SerializeField] private Image _rarityBorder;
+    [SerializeField] private MMF_Player _selectionFeedback;
 
     private IInventoryItem _item;
     private Color _emptyBorderColor; // The border color set in the prefab, used when empty.
@@ -109,6 +111,19 @@ public class ItemSlotUI : MonoBehaviour, IPointerClickHandler
     {
         Selected = selected;
         if (_selectedHighlight != null) _selectedHighlight.SetActive(selected);
+
+        if (_selectionFeedback != null)
+        {
+            if (selected)
+            {
+                _selectionFeedback.PlayFeedbacks();
+            }
+            else
+            {
+                _selectionFeedback.StopFeedbacks();
+                _selectionFeedback.RestoreInitialValues();
+            }
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

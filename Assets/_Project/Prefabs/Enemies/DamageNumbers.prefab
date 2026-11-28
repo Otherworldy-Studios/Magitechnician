@@ -134,8 +134,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10
-  m_fontSizeBase: 10
+  m_fontSize: 7.5
+  m_fontSizeBase: 7.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -194,10 +194,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 757631e70dee9274b8a292ca5f644eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  _lifetime: 1
+  _lifetime: 0.6
   _rise: 1.5
   _fadeStart: 0.5
   _format: 0
-  _popScale: 1.3
+  _popScale: 1.2
   _popDuration: 0.12
   _referenceDistance: 10
+  _bigHitThreshold: 30
+  _bigHitSizeMultiplier: 1.4
+  _bigHitColor: {r: 1, g: 0.6470588, b: 0, a: 1}
+  _massiveHitThreshold: 60
+  _massiveHitSizeMultiplier: 1.8
+  _massiveHitColor: {r: 1, g: 0, b: 0, a: 1}

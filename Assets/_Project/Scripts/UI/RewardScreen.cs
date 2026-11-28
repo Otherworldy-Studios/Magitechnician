@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 /// <summary>
 /// The screen for picking one of the gun parts a cleared room rolled. UIManager.HandleRewards opens it and calls
@@ -23,6 +24,8 @@ public class RewardScreen : UIScreen
     [SerializeField] private TMP_Text _errorText;
 
     [SerializeField] private GunStatsPanel _gunStatsPanel;
+    
+    [SerializeField] private MMF_Player _errorFeedback;
 
     private const string NoSelectionMessage = "Pick a part first.";
 
@@ -123,6 +126,7 @@ public class RewardScreen : UIScreen
             return;
         }
 
+        SoundController.Instance.PlayUI("UI Confirm");
         Close();
     }
 
@@ -156,6 +160,13 @@ public class RewardScreen : UIScreen
 
         _errorText.text = message;
         _errorText.gameObject.SetActive(true);
+        
+        SoundController.Instance.PlayUI("UI Error");
+
+        if (_errorFeedback != null)
+        {
+            _errorFeedback.PlayFeedbacks();
+        }
     }
 
     private void HideError()

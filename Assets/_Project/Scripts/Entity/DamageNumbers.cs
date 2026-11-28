@@ -39,6 +39,19 @@ public class DamageNumbers : MonoBehaviour
              "It keeps that on-screen size at every distance, so far-away numbers stay readable.")]
     [Min(0.01f)]
     [SerializeField] private float _referenceDistance = 10f;
+    
+    [Header("Big Damage")]
+    [Tooltip("How much damage it takes to become emphasized and how emphasize it becomes")]
+    [SerializeField] private float _bigHitThreshold = 30f;
+    [SerializeField] private float _bigHitSizeMultiplier = 1.4f;
+    [SerializeField] private Color _bigHitColor = Color.orange;
+
+    [SerializeField] private float _massiveHitThreshold = 50f;
+    [SerializeField] private float _massiveHitSizeMultiplier = 1.8f;
+    [SerializeField] private Color _massiveHitColor = Color.red;
+
+    private float _baseFontSize;
+    private Color _baseColor;
 
     private const float StackGap = 0.15f;  // Space between stacked numbers, in line heights.
     private const float StackSpeed = 12f;  // How fast pushed numbers slide up, in line heights per second.
@@ -83,6 +96,27 @@ public class DamageNumbers : MonoBehaviour
     {
         _amount += amount;
         _text.text = _amount.ToString(_format);
+
+        float alpha = _text.alpha;
+
+        if (_amount >= _massiveHitThreshold)
+        {
+            _text.fontSize = _baseFontSize * _massiveHitSizeMultiplier;
+            _text.color = _massiveHitColor;
+        }
+        else if (_amount >= _bigHitThreshold)
+        {
+            _text.fontSize = _baseFontSize * _bigHitSizeMultiplier;
+            _text.color = _bigHitColor;
+        }
+        else
+        {
+            _text.fontSize = _baseFontSize;
+            _text.color = _baseColor;
+        }
+
+        _text.alpha = alpha;
+
         _size = Vector2.Scale(_text.GetPreferredValues(), _baseScale);
         _popTimer = 0f;
     }
@@ -91,6 +125,9 @@ public class DamageNumbers : MonoBehaviour
     {
         _text = GetComponent<TMP_Text>();
         _baseScale = transform.localScale;
+
+        _baseFontSize = _text.fontSize;
+        _baseColor = _text.color;
     }
 
     private void OnDisable() => Active.Remove(this);
