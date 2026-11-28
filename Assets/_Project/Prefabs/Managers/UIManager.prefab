@@ -44414,7 +44414,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 131908406137353189, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
       propertyPath: m_Color.a
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 131908406137353189, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
       propertyPath: m_Color.b
@@ -44444,6 +44444,10 @@ PrefabInstance:
       propertyPath: _assignedCategory
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2696495076802945683, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+      propertyPath: _selectionFeedback
+      value: 
+      objectReference: {fileID: 3623664287669160290}
     - target: {fileID: 3716665021399105599, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
       propertyPath: m_Name
       value: ItemSlot (1)
@@ -44573,6 +44577,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8902867607508362462, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+      propertyPath: managedReferences[606147099688697934].BoundImage
+      value: 
+      objectReference: {fileID: 5192686018765020761}
+    - target: {fileID: 8902867607508362462, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
       propertyPath: managedReferences[606147099688697934].Timing.PlayCount
       value: 1
       objectReference: {fileID: 0}
@@ -44586,6 +44594,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5867291162776131000, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
   m_PrefabInstance: {fileID: 5315515928833961404}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3623664287669160290 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8902867607508362462, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+  m_PrefabInstance: {fileID: 5315515928833961404}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MoreMountains.Tools::MoreMountains.Feedbacks.MMF_Player
+--- !u!114 &5192686018765020761 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 131908406137353189, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
+  m_PrefabInstance: {fileID: 5315515928833961404}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &7613327815329258239 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2333841920466958147, guid: c7177bb90dee98946bc71ef4722e2eec, type: 3}
