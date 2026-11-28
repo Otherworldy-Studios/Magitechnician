@@ -148,33 +148,16 @@ public class CrosshairUI : MonoBehaviour
     
     private void HandleDamageDealt(GameObject target, DamageInfo damageInfo)
     {
-        Debug.Log("Crosshair received OnDamageDealt");
-
         if (target == null || !isActiveAndEnabled) return;
-
-        Debug.Log("Hit target: " + target.name);
-        Debug.Log("Hit feedback assigned: " + (_hitFeedback != null));
-        Debug.Log("Hit marker assigned: " + (_hitMarker != null));
+        if (_hitFeedback == null || _hitMarker == null) return;
 
         EnemyBase enemy = target.GetComponentInParent<EnemyBase>();
 
-        if (enemy == null)
-        {
-            Debug.Log("EnemyBase not found");
-            return;
-        }
+        if (enemy == null) return;
 
         Health health = enemy.GetComponentInChildren<Health>(true);
 
-        if (health == null)
-        {
-            Debug.Log("Health not found");
-            return;
-        }
-
-        Debug.Log("Enemy health: " + health.CurrentHealth);
-
-        if (_hitFeedback == null || _hitMarker == null) return;
+        if (health == null) return;
 
         _hitFeedback.StopFeedbacks();
         _hitFeedback.RestoreInitialValues();
@@ -193,8 +176,6 @@ public class CrosshairUI : MonoBehaviour
             _hitMarker.rectTransform.localScale =
                 _hitMarkerBaseScale;
         }
-
-        Debug.Log("Playing hit marker feedback");
 
         _hitFeedback.PlayFeedbacks();
     }
