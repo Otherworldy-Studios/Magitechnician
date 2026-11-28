@@ -63,7 +63,15 @@ public class ItemGridUI : MonoBehaviour
 
         if (_selected != null) _selected.SetSelected(false);
         _selected = slot;
-        if (_selected != null) _selected.SetSelected(true);
+        if (_selected != null)
+        {
+            _selected.SetSelected(true);
+
+            if (SoundController.HasInstance)
+            {
+                SoundController.Instance.PlayUI("UI Select");
+            }
+        }
 
         if (_tooltip != null) _tooltip.Show(_selected != null ? _selected.Item : null, this);
 
